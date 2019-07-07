@@ -2,18 +2,29 @@ package main
 
 import (
 	"github.com/hajimehoshi/ebiten"
+	"github.com/pedritoelcabra/projectx/gui"
 )
 
 type game struct {
+	GUI gui.Gui
 }
 
 const (
-	ScreenWidth  = 420
+	ScreenWidth  = 800
 	ScreenHeight = 600
 )
 
 func New() (game, error) {
-	return game{}, nil
+	aGame := game{}
+	if error := aGame.init(); error != nil {
+		return aGame, error
+	}
+	return aGame, nil
+}
+
+func (g game) init() error {
+	g.GUI = gui.New()
+	return nil
 }
 
 func (g *game) Update(screen *ebiten.Image) error {

@@ -6,7 +6,6 @@ import (
 )
 
 func main() {
-
 	projectX, err := New()
 	handleError(err)
 
