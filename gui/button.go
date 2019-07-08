@@ -27,10 +27,23 @@ var imageSrcRects = map[imageType]image.Rectangle{
 }
 
 type button struct {
-	rect image.Rectangle
-	text string
+	box     image.Rectangle
+	drawBox image.Rectangle
+	text    string
 }
 
-func (b button) Draw(draw drawFunction) {
-	draw(b.rect, imageSrcRects[imageTypeButton])
+func (b *button) draw(drawFun drawFunction, box image.Rectangle) {
+	b.drawBox.Min.X = box.Min.X + b.box.Min.X
+	b.drawBox.Max.X = box.Min.X + b.box.Max.X
+	b.drawBox.Min.Y = box.Min.Y + b.box.Min.Y
+	b.drawBox.Max.Y = box.Min.Y + b.box.Max.Y
+	drawFun(b.drawBox, imageSrcRects[imageTypeButton])
+}
+
+func (b *button) getWidth() int {
+	return b.box.Max.X - b.box.Min.X
+}
+
+func (b *button) getBox() image.Rectangle {
+	return b.box
 }

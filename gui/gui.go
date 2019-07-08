@@ -11,7 +11,7 @@ import (
 )
 
 type Gui struct {
-	game  interface{}
+	box   image.Rectangle
 	menus map[string]*menu
 
 	uiImage       *ebiten.Image
@@ -20,9 +20,18 @@ type Gui struct {
 	uiFontMHeight int
 }
 
-func New(game interface{}) *Gui {
+type boxable interface {
+	getBox() image.Rectangle
+}
+
+type drawable interface {
+	draw(drawFunction, image.Rectangle)
+	getWidth() int
+}
+
+func New(x, y, w, h int) *Gui {
 	aGui := &Gui{}
-	aGui.game = game
+	aGui.box = image.Rect(x, y, w, h)
 	aGui.menus = make(map[string]*menu)
 	aGui.menus["startMenu"] = StartMenu(aGui)
 
@@ -57,15 +66,15 @@ func (g Gui) Update() {
 func (g Gui) Draw(screen *ebiten.Image) {
 	g.screen = screen
 	for _, menu := range g.menus {
-		menu.Draw(g.draw)
+		menu.draw(g.draw, g.box)
 	}
 }
 
-type drawFunction func(dstRect image.Rectangle, srcRect image.Rectangle)
-
-type drawable interface {
-	Draw(drawFunction)
+func (g *Gui) getBox() image.Rectangle {
+	return g.box
 }
+
+type drawFunction func(dstRect image.Rectangle, srcRect image.Rectangle)
 
 func (g Gui) draw(dstRect image.Rectangle, srcRect image.Rectangle) {
 	srcX := srcRect.Min.X

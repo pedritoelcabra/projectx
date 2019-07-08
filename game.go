@@ -21,7 +21,7 @@ func New() (*game, error) {
 }
 
 func (g *game) init() error {
-	g.GUI = gui.New(g)
+	g.GUI = gui.New(0, 0, ScreenWidth, ScreenHeight)
 	return nil
 }
 
