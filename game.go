@@ -6,7 +6,7 @@ import (
 )
 
 type game struct {
-	GUI gui.Gui
+	GUI *gui.Gui
 }
 
 const (
@@ -14,20 +14,19 @@ const (
 	ScreenHeight = 600
 )
 
-func New() (game, error) {
+func New() (*game, error) {
 	aGame := game{}
-	if error := aGame.init(); error != nil {
-		return aGame, error
-	}
-	return aGame, nil
+	error := aGame.init()
+	return &aGame, error
 }
 
-func (g game) init() error {
-	g.GUI = gui.New(&g)
+func (g *game) init() error {
+	g.GUI = gui.New(g)
 	return nil
 }
 
 func (g *game) Update(screen *ebiten.Image) error {
-	g.GUI.Update(screen)
+	g.GUI.Update()
+	g.GUI.Draw(screen)
 	return nil
 }

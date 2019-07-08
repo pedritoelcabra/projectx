@@ -5,11 +5,15 @@ import (
 	"log"
 )
 
-func main() {
-	projectX, err := New()
-	handleError(err)
+var projectX, err = New()
 
-	handleError(ebiten.Run(projectX.Update, ScreenWidth, ScreenHeight, 1, "ProjectX"))
+func main() {
+	handleError(err)
+	handleError(ebiten.Run(update, ScreenWidth, ScreenHeight, 1, "ProjectX"))
+}
+
+func update(screen *ebiten.Image) error {
+	return projectX.Update(screen)
 }
 
 func handleError(err ...interface{}) {
