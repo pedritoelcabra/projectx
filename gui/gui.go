@@ -27,6 +27,7 @@ type boxable interface {
 type drawable interface {
 	draw(drawFunction, image.Rectangle)
 	getWidth() int
+	getHeight() int
 }
 
 func New(x, y, w, h int) *Gui {

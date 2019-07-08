@@ -3,12 +3,13 @@ package gui
 import "image"
 
 type menu struct {
-	parent      interface{}
-	components  []drawable
-	box         image.Rectangle
-	hCentered   bool
-	topPadding  int
-	leftPadding int
+	parent            interface{}
+	components        []drawable
+	box               image.Rectangle
+	hCentered         bool
+	topPadding        int
+	leftPadding       int
+	horizontalSpacing int
 }
 
 func (m *menu) Update() {
@@ -21,9 +22,12 @@ func (m *menu) getBox() image.Rectangle {
 
 func (m *menu) draw(drawFun drawFunction, box image.Rectangle) {
 	drawSpace := box
+	drawSpace.Min.Y += m.topPadding
+	drawSpace.Min.X += m.leftPadding
 	drawSpace.Min.X += m.centeredOffset(box)
 	for _, component := range m.components {
 		component.draw(drawFun, drawSpace)
+		drawSpace.Min.Y += component.getHeight()
 	}
 }
 
@@ -49,6 +53,14 @@ func (m *menu) getWidth() int {
 	return maxWidth
 }
 
+func (m *menu) getHeight() int {
+	height := 0
+	for _, component := range m.components {
+		height += component.getHeight()
+	}
+	return height
+}
+
 func newMenu(parent interface{}) *menu {
 	aMenu := &menu{}
 	aMenu.parent = parent
@@ -59,7 +71,9 @@ func newMenu(parent interface{}) *menu {
 
 func StartMenu(parent interface{}) *menu {
 	startMenu := newMenu(parent)
-	startMenu.AddButton("Test", image.Rect(0, 0, 150, 50))
+	startMenu.topPadding = 50
+	startMenu.AddButton("Test", image.Rect(0, 0, 150, 30))
+	startMenu.AddButton("Test2", image.Rect(0, 0, 150, 30))
 	return startMenu
 }
 

@@ -44,6 +44,10 @@ func (b *button) getWidth() int {
 	return b.box.Max.X - b.box.Min.X
 }
 
+func (b *button) getHeight() int {
+	return b.box.Max.Y - b.box.Min.Y
+}
+
 func (b *button) getBox() image.Rectangle {
 	return b.box
 }
