@@ -23,10 +23,11 @@ func New() (game, error) {
 }
 
 func (g game) init() error {
-	g.GUI = gui.New()
+	g.GUI = gui.New(&g)
 	return nil
 }
 
 func (g *game) Update(screen *ebiten.Image) error {
+	g.GUI.Update(screen)
 	return nil
 }
