@@ -31,23 +31,3 @@ type button struct {
 	drawBox image.Rectangle
 	text    string
 }
-
-func (b *button) draw(drawFun drawFunction, box image.Rectangle) {
-	b.drawBox.Min.X = box.Min.X + b.box.Min.X
-	b.drawBox.Max.X = box.Min.X + b.box.Max.X
-	b.drawBox.Min.Y = box.Min.Y + b.box.Min.Y
-	b.drawBox.Max.Y = box.Min.Y + b.box.Max.Y
-	drawFun(b.drawBox, imageSrcRects[imageTypeButton])
-}
-
-func (b *button) getWidth() int {
-	return b.box.Max.X - b.box.Min.X
-}
-
-func (b *button) getHeight() int {
-	return b.box.Max.Y - b.box.Min.Y
-}
-
-func (b *button) getBox() image.Rectangle {
-	return b.box
-}

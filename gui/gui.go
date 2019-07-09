@@ -20,16 +20,6 @@ type Gui struct {
 	uiFontMHeight int
 }
 
-type boxable interface {
-	getBox() image.Rectangle
-}
-
-type drawable interface {
-	draw(drawFunction, image.Rectangle)
-	getWidth() int
-	getHeight() int
-}
-
 func New(x, y, w, h int) *Gui {
 	aGui := &Gui{}
 	aGui.box = image.Rect(x, y, w, h)
@@ -58,26 +48,22 @@ func New(x, y, w, h int) *Gui {
 	return aGui
 }
 
-func (g Gui) Update() {
+func (g *Gui) Update() {
 	for _, menu := range g.menus {
 		menu.Update()
 	}
 }
 
-func (g Gui) Draw(screen *ebiten.Image) {
+func (g *Gui) Draw(screen *ebiten.Image) {
 	g.screen = screen
 	for _, menu := range g.menus {
 		menu.draw(g.draw, g.box)
 	}
 }
 
-func (g *Gui) getBox() image.Rectangle {
-	return g.box
-}
-
 type drawFunction func(dstRect image.Rectangle, srcRect image.Rectangle)
 
-func (g Gui) draw(dstRect image.Rectangle, srcRect image.Rectangle) {
+func (g *Gui) draw(dstRect image.Rectangle, srcRect image.Rectangle) {
 	srcX := srcRect.Min.X
 	srcY := srcRect.Min.Y
 	srcW := srcRect.Dx()
