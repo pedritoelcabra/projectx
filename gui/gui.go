@@ -10,6 +10,10 @@ import (
 	"log"
 )
 
+const (
+	lineHeight = 16
+)
+
 type Gui struct {
 	box   image.Rectangle
 	menus map[string]*menu
@@ -57,11 +61,9 @@ func (g *Gui) Update() {
 func (g *Gui) Draw(screen *ebiten.Image) {
 	g.screen = screen
 	for _, menu := range g.menus {
-		menu.draw(g.draw, g.box)
+		menu.draw(g, g.box)
 	}
 }
-
-type drawFunction func(dstRect image.Rectangle, srcRect image.Rectangle)
 
 func (g *Gui) draw(dstRect image.Rectangle, srcRect image.Rectangle) {
 	srcX := srcRect.Min.X
@@ -114,4 +116,9 @@ func (g *Gui) draw(dstRect image.Rectangle, srcRect image.Rectangle) {
 			g.screen.DrawImage(g.uiImage.SubImage(image.Rect(sx, sy, sx+sw, sy+sh)).(*ebiten.Image), op)
 		}
 	}
+}
+
+func (g *Gui) drawImage(image *ebiten.Image, destRect image.Rectangle, op *ebiten.DrawImageOptions) {
+	op.GeoM.Translate(float64(destRect.Min.X), float64(destRect.Min.Y))
+	g.screen.DrawImage(image, op)
 }

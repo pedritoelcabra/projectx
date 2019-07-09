@@ -1,6 +1,8 @@
 package gui
 
-import "image"
+import (
+	"image"
+)
 
 type boxable interface {
 	getBox() image.Rectangle
@@ -16,4 +18,8 @@ func (b *button) getBox() image.Rectangle {
 
 func (m *menu) getBox() image.Rectangle {
 	return m.box
+}
+
+func (t *textBox) getBox() image.Rectangle {
+	return t.box
 }

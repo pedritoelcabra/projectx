@@ -36,10 +36,6 @@ func newMenu(parent interface{}) *menu {
 	return aMenu
 }
 
-func (m *menu) AddButton(text string, rect image.Rectangle) {
-	button1 := &button{
-		box:  rect,
-		text: text,
-	}
-	m.components = append(m.components, button1)
+func (m *menu) AddButton(text string, box image.Rectangle) {
+	m.components = append(m.components, NewButton(box, text))
 }

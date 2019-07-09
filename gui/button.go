@@ -27,7 +27,20 @@ var imageSrcRects = map[imageType]image.Rectangle{
 }
 
 type button struct {
-	box     image.Rectangle
-	drawBox image.Rectangle
-	text    string
+	box        image.Rectangle
+	drawBox    image.Rectangle
+	text       string
+	textBoxImg *textBox
+}
+
+func NewButton(box image.Rectangle, text string) *button {
+	aButton := &button{}
+	aButton.text = text
+	aButton.box = box
+	aButton.textBoxImg = &textBox{}
+	aButton.textBoxImg.text = text
+	aButton.textBoxImg.box = box
+	aButton.textBoxImg.vCenter = true
+	aButton.textBoxImg.hCenter = true
+	return aButton
 }

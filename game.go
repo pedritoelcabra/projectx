@@ -10,8 +10,8 @@ type game struct {
 }
 
 const (
-	ScreenWidth  = 800
-	ScreenHeight = 600
+	ScreenWidth  = 1200
+	ScreenHeight = 900
 )
 
 func New() (*game, error) {
