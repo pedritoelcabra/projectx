@@ -11,8 +11,40 @@ import (
 
 type drawable interface {
 	draw(*Gui, image.Rectangle)
+	update()
 	getWidth() int
 	getHeight() int
+}
+
+func (m *menu) update() {
+	for _, component := range m.components {
+		component.update()
+	}
+}
+
+func (b *button) update() {
+	if b.disabled {
+		return
+	}
+	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+		x, y := ebiten.CursorPosition()
+		if b.drawBox.Min.X <= x && x < b.drawBox.Max.X && b.drawBox.Min.Y <= y && y < b.drawBox.Max.Y {
+			b.mouseDown = true
+		} else {
+			b.mouseDown = false
+		}
+	} else {
+		if b.mouseDown {
+			if b.onPressed != nil {
+				b.onPressed(b)
+			}
+		}
+		b.mouseDown = false
+	}
+}
+
+func (t *textBox) update() {
+
 }
 
 func (m *menu) getWidth() int {
@@ -26,6 +58,9 @@ func (m *menu) getWidth() int {
 }
 
 func (b *button) getWidth() int {
+	if b.disabled {
+		return 0
+	}
 	return b.box.Max.X - b.box.Min.X
 }
 
@@ -42,6 +77,9 @@ func (m *menu) getHeight() int {
 }
 
 func (b *button) getHeight() int {
+	if b.disabled {
+		return 0
+	}
 	return b.box.Max.Y - b.box.Min.Y
 }
 
@@ -69,6 +107,9 @@ func offsetDrawBox(d *image.Rectangle, p *image.Rectangle, b *image.Rectangle) {
 }
 
 func (b *button) draw(gui *Gui, box image.Rectangle) {
+	if b.disabled {
+		return
+	}
 	offsetDrawBox(&b.drawBox, &box, &b.box)
 	gui.draw(b.drawBox, imageSrcRects[imageTypeButton])
 	b.textBoxImg.draw(gui, box)

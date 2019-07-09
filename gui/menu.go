@@ -3,17 +3,13 @@ package gui
 import "image"
 
 type menu struct {
-	parent            interface{}
+	gui               *Gui
 	components        []drawable
 	box               image.Rectangle
 	hCentered         bool
 	topPadding        int
 	leftPadding       int
 	horizontalSpacing int
-}
-
-func (m *menu) Update() {
-
 }
 
 func (m *menu) centeredOffset(box image.Rectangle) int {
@@ -28,14 +24,14 @@ func (m *menu) centeredOffset(box image.Rectangle) int {
 	return (maxSpace - maxWidth) / 2
 }
 
-func newMenu(parent interface{}) *menu {
+func newMenu(gui *Gui) *menu {
 	aMenu := &menu{}
-	aMenu.parent = parent
+	aMenu.gui = gui
 	aMenu.components = make([]drawable, 0)
 	aMenu.hCentered = true
 	return aMenu
 }
 
-func (m *menu) AddButton(text string, box image.Rectangle) {
-	m.components = append(m.components, NewButton(box, text))
+func (m *menu) addButton(aButton *button) {
+	m.components = append(m.components, aButton)
 }

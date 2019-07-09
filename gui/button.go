@@ -31,6 +31,9 @@ type button struct {
 	drawBox    image.Rectangle
 	text       string
 	textBoxImg *textBox
+	mouseDown  bool
+	disabled   bool
+	onPressed  func(b *button)
 }
 
 func NewButton(box image.Rectangle, text string) *button {

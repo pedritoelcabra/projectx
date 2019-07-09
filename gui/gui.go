@@ -54,7 +54,7 @@ func New(x, y, w, h int) *Gui {
 
 func (g *Gui) Update() {
 	for _, menu := range g.menus {
-		menu.Update()
+		menu.update()
 	}
 }
 

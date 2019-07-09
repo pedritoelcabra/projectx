@@ -27,6 +27,11 @@ func (g *game) init() error {
 
 func (g *game) Update(screen *ebiten.Image) error {
 	g.GUI.Update()
+
+	if ebiten.IsDrawingSkipped() {
+		return nil
+	}
+
 	g.GUI.Draw(screen)
 	return nil
 }
