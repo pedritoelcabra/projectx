@@ -28,10 +28,13 @@ func newMenu(gui *Gui) *menu {
 	aMenu := &menu{}
 	aMenu.gui = gui
 	aMenu.components = make([]drawable, 0)
-	aMenu.hCentered = true
 	return aMenu
 }
 
 func (m *menu) addButton(aButton *button) {
 	m.components = append(m.components, aButton)
+}
+
+func (m *menu) addTextBox(aBox *textBox) {
+	m.components = append(m.components, aBox)
 }

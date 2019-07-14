@@ -1,6 +1,9 @@
 package gui
 
-import "image"
+import (
+	"image"
+	"image/color"
+)
 
 type imageType int
 
@@ -45,5 +48,6 @@ func NewButton(box image.Rectangle, text string) *button {
 	aButton.textBoxImg.box = box
 	aButton.textBoxImg.vCenter = true
 	aButton.textBoxImg.hCenter = true
+	aButton.textBoxImg.fontColor = color.Black
 	return aButton
 }

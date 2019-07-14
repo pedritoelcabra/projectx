@@ -2,18 +2,16 @@ package main
 
 import (
 	"github.com/hajimehoshi/ebiten"
+	"github.com/pedritoelcabra/projectx/core"
 	"log"
 )
 
-var projectX, err = New()
-
 func main() {
-	handleError(err)
-	handleError(ebiten.Run(update, ScreenWidth, ScreenHeight, 1, "ProjectX"))
+	handleError(ebiten.Run(update, core.ScreenWidth, core.ScreenHeight, 1, "ProjectX"))
 }
 
 func update(screen *ebiten.Image) error {
-	return projectX.Update(screen)
+	return core.G().Update(screen)
 }
 
 func handleError(err ...interface{}) {

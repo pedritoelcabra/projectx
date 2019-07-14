@@ -2,11 +2,13 @@ package gui
 
 import (
 	"image"
+	"image/color"
 	"log"
 )
 
 func StartMenu(gui *Gui) *menu {
 	startMenu := newMenu(gui)
+	startMenu.hCentered = true
 	startMenu.topPadding = 50
 
 	buttonSize := image.Rect(0, 0, 150, 30)
@@ -34,4 +36,21 @@ func StartMenu(gui *Gui) *menu {
 	startMenu.addButton(stopButton)
 
 	return startMenu
+}
+
+func DebugMenu(gui *Gui) *menu {
+	debugMenu := newMenu(gui)
+
+	aBox := &textBox{}
+	aBox.box = image.Rect(0, 0, 200, 120)
+	aBox.leftPadding = 10
+	aBox.topPadding = 10
+	aBox.fontColor = color.White
+	aBox.onUpdate = func(t *textBox) {
+		t.text = gui.GetDebugInfo()
+	}
+
+	debugMenu.addTextBox(aBox)
+
+	return debugMenu
 }

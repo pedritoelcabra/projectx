@@ -5,7 +5,6 @@ import (
 	"github.com/hajimehoshi/ebiten/text"
 	"golang.org/x/image/font"
 	"image"
-	"image/color"
 	"strings"
 )
 
@@ -44,7 +43,10 @@ func (b *button) update() {
 }
 
 func (t *textBox) update() {
-
+	if t.onUpdate == nil {
+		return
+	}
+	t.onUpdate(t)
 }
 
 func (m *menu) getWidth() int {
@@ -145,7 +147,7 @@ func (t *textBox) draw(gui *Gui, box image.Rectangle) {
 			maxWidth = currentWidth
 		}
 
-		text.Draw(t.contentBuf, line, gui.uiFont, x, y, color.Black)
+		text.Draw(t.contentBuf, line, gui.uiFont, x, y, t.fontColor)
 	}
 
 	if t.vCenter && maxHeight < h {

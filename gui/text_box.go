@@ -3,6 +3,7 @@ package gui
 import (
 	"github.com/hajimehoshi/ebiten"
 	"image"
+	"image/color"
 )
 
 type textBox struct {
@@ -14,4 +15,6 @@ type textBox struct {
 	hCenter     bool
 	leftPadding int
 	topPadding  int
+	fontColor   color.Gray16
+	onUpdate    func(t *textBox)
 }
