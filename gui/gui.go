@@ -55,6 +55,10 @@ func (g *Gui) AddMenu(key string, menu *Menu) {
 	g.menus[key] = menu
 }
 
+func (g *Gui) GetMenu(key string) *Menu {
+	return g.menus[key]
+}
+
 func (g *Gui) Update() {
 	for _, menu := range g.menus {
 		menu.update()

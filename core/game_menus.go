@@ -13,9 +13,9 @@ func (g *game) InitMenus() {
 }
 
 func (g *game) BuildStartMenu() *gui.Menu {
-	startMenu := gui.NewMenu(g.GUI)
-	startMenu.SetHCentered(true)
-	startMenu.SetTopPadding(50)
+	aMenu := gui.NewMenu(g.GUI)
+	aMenu.SetHCentered(true)
+	aMenu.SetTopPadding(50)
 
 	buttonSize := image.Rect(0, 0, 150, 30)
 
@@ -24,10 +24,10 @@ func (g *game) BuildStartMenu() *gui.Menu {
 		log.Fatal("Stopped")
 	}
 
-	startMenu.AddButton(stopButton)
-	startMenu.SetDisabled(true)
+	aMenu.AddButton(stopButton)
+	aMenu.SetDisabled(true)
 
-	return startMenu
+	return aMenu
 }
 
 func (g *game) BuildDebugMenu() *gui.Menu {
@@ -45,4 +45,25 @@ func (g *game) BuildDebugMenu() *gui.Menu {
 	debugMenu.AddTextBox(aBox)
 
 	return debugMenu
+}
+
+func (g *game) BuildContextMenu(x, y int) *gui.Menu {
+	aMenu := gui.NewMenu(g.GUI)
+
+	buttonSize := image.Rect(0, 0, 150, 30)
+
+	aButton := gui.NewButton(buttonSize, "Button 1")
+	bButton := gui.NewButton(buttonSize, "Button 1")
+	cButton := gui.NewButton(buttonSize, "Button 1")
+
+	aMenu.AddButton(aButton)
+	aMenu.AddButton(bButton)
+	aMenu.AddButton(cButton)
+
+	aMenu.SetTopPadding(y)
+	aMenu.SetLeftPadding(x)
+
+	aMenu.ArrangeContextMenu()
+
+	return aMenu
 }

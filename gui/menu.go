@@ -55,3 +55,19 @@ func (m *Menu) AddButton(aButton *Button) {
 func (m *Menu) AddTextBox(aBox *TextBox) {
 	m.components = append(m.components, aBox)
 }
+
+func (m *Menu) ArrangeContextMenu() {
+	maxW := m.gui.box.Max.X
+	maxH := m.gui.box.Max.Y
+	currentX := m.leftPadding
+	currentY := m.topPadding
+	currentW := m.getWidth()
+	currentH := m.getHeight()
+	if currentW+currentX > maxW {
+		m.leftPadding -= currentW
+	}
+	if currentH+currentY > maxH {
+		m.topPadding -= currentH
+	}
+	return
+}

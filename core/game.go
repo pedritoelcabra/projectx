@@ -7,9 +7,10 @@ import (
 )
 
 type game struct {
-	GUI         *gui.Gui
-	tick        int
-	framesDrawn int
+	GUI            *gui.Gui
+	tick           int
+	framesDrawn    int
+	rightMouseDown bool
 }
 
 var projectX *game
@@ -41,6 +42,7 @@ func (g *game) init() error {
 func (g *game) Update(screen *ebiten.Image) error {
 	g.tick++
 	g.GUI.Update()
+	g.openContextMenu()
 
 	if ebiten.IsDrawingSkipped() {
 		return nil
@@ -49,6 +51,21 @@ func (g *game) Update(screen *ebiten.Image) error {
 
 	g.GUI.Draw(screen)
 	return nil
+}
+
+func (g *game) openContextMenu() {
+	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonRight) {
+		g.rightMouseDown = true
+	} else {
+		if g.rightMouseDown {
+			g.rightMouseDown = false
+			g.GUI.AddMenu("context", g.BuildContextMenu(ebiten.CursorPosition()))
+		}
+	}
+	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+		g.rightMouseDown = false
+		g.GUI.GetMenu("context").SetDisabled(true)
+	}
 }
 
 func (g *game) DebugInfo() string {
