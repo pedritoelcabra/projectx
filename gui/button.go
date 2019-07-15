@@ -29,25 +29,33 @@ var imageSrcRects = map[imageType]image.Rectangle{
 	imageTypeCheckBoxMark:    image.Rect(32, 32, 48, 48),
 }
 
-type button struct {
+type Button struct {
 	box        image.Rectangle
 	drawBox    image.Rectangle
 	text       string
-	textBoxImg *textBox
+	textBoxImg *TextBox
 	mouseDown  bool
 	disabled   bool
-	onPressed  func(b *button)
+	OnPressed  func(b *Button)
 }
 
-func NewButton(box image.Rectangle, text string) *button {
-	aButton := &button{}
+func NewButton(box image.Rectangle, text string) *Button {
+	aButton := &Button{}
 	aButton.text = text
 	aButton.box = box
-	aButton.textBoxImg = &textBox{}
+	aButton.textBoxImg = &TextBox{}
 	aButton.textBoxImg.text = text
 	aButton.textBoxImg.box = box
 	aButton.textBoxImg.vCenter = true
 	aButton.textBoxImg.hCenter = true
 	aButton.textBoxImg.fontColor = color.Black
 	return aButton
+}
+
+func (b *Button) SetDisabled(value bool) {
+	b.disabled = value
+}
+
+func (b *Button) GetDisabled() bool {
+	return b.disabled
 }

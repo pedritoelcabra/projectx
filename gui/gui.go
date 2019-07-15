@@ -16,7 +16,7 @@ const (
 
 type Gui struct {
 	box   image.Rectangle
-	menus map[string]*menu
+	menus map[string]*Menu
 
 	uiImage       *ebiten.Image
 	screen        *ebiten.Image
@@ -29,9 +29,7 @@ type Gui struct {
 func New(x, y, w, h int) *Gui {
 	aGui := &Gui{}
 	aGui.box = image.Rect(x, y, w, h)
-	aGui.menus = make(map[string]*menu)
-	aGui.menus["startMenu"] = StartMenu(aGui)
-	aGui.menus["debugInfo"] = DebugMenu(aGui)
+	aGui.menus = make(map[string]*Menu)
 
 	img, _, err := ebitenutil.NewImageFromFile("gui/ui.png", ebiten.FilterDefault)
 	if err != nil {
@@ -53,6 +51,10 @@ func New(x, y, w, h int) *Gui {
 	aGui.uiFontMHeight = (b.Max.Y - b.Min.Y).Ceil()
 
 	return aGui
+}
+
+func (g *Gui) AddMenu(key string, menu *Menu) {
+	g.menus[key] = menu
 }
 
 func (g *Gui) Update() {

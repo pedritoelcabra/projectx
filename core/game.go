@@ -34,6 +34,7 @@ func G() *game {
 
 func (g *game) init() error {
 	g.GUI = gui.New(0, 0, ScreenWidth, ScreenHeight)
+	g.InitMenus()
 	return nil
 }
 

@@ -6,7 +6,7 @@ import (
 	"image/color"
 )
 
-type textBox struct {
+type TextBox struct {
 	box         image.Rectangle
 	drawBox     image.Rectangle
 	text        string
@@ -16,5 +16,25 @@ type textBox struct {
 	leftPadding int
 	topPadding  int
 	fontColor   color.Gray16
-	onUpdate    func(t *textBox)
+	OnUpdate    func(t *TextBox)
+}
+
+func (t *TextBox) SetBox(box image.Rectangle) {
+	t.box = box
+}
+
+func (t *TextBox) SetLeftPadding(value int) {
+	t.leftPadding = value
+}
+
+func (t *TextBox) SetTopPadding(value int) {
+	t.topPadding = value
+}
+
+func (t *TextBox) SetColor(color color.Gray16) {
+	t.fontColor = color
+}
+
+func (t *TextBox) SetText(text string) {
+	t.text = text
 }

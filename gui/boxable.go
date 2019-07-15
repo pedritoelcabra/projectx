@@ -12,14 +12,14 @@ func (g *Gui) getBox() image.Rectangle {
 	return g.box
 }
 
-func (b *button) getBox() image.Rectangle {
+func (b *Button) getBox() image.Rectangle {
 	return b.box
 }
 
-func (m *menu) getBox() image.Rectangle {
+func (m *Menu) getBox() image.Rectangle {
 	return m.box
 }
 
-func (t *textBox) getBox() image.Rectangle {
+func (t *TextBox) getBox() image.Rectangle {
 	return t.box
 }

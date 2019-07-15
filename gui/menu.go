@@ -2,7 +2,7 @@ package gui
 
 import "image"
 
-type menu struct {
+type Menu struct {
 	gui               *Gui
 	components        []drawable
 	box               image.Rectangle
@@ -12,7 +12,19 @@ type menu struct {
 	horizontalSpacing int
 }
 
-func (m *menu) centeredOffset(box image.Rectangle) int {
+func (m *Menu) SetHCentered(centered bool) {
+	m.hCentered = centered
+}
+
+func (m *Menu) SetTopPadding(padding int) {
+	m.topPadding = padding
+}
+
+func (m *Menu) SetLeftPadding(padding int) {
+	m.leftPadding = padding
+}
+
+func (m *Menu) centeredOffset(box image.Rectangle) int {
 	if !m.hCentered {
 		return 0
 	}
@@ -24,17 +36,17 @@ func (m *menu) centeredOffset(box image.Rectangle) int {
 	return (maxSpace - maxWidth) / 2
 }
 
-func newMenu(gui *Gui) *menu {
-	aMenu := &menu{}
+func NewMenu(gui *Gui) *Menu {
+	aMenu := &Menu{}
 	aMenu.gui = gui
 	aMenu.components = make([]drawable, 0)
 	return aMenu
 }
 
-func (m *menu) addButton(aButton *button) {
+func (m *Menu) AddButton(aButton *Button) {
 	m.components = append(m.components, aButton)
 }
 
-func (m *menu) addTextBox(aBox *textBox) {
+func (m *Menu) AddTextBox(aBox *TextBox) {
 	m.components = append(m.components, aBox)
 }
