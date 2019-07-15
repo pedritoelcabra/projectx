@@ -16,6 +16,9 @@ type drawable interface {
 }
 
 func (m *Menu) update() {
+	if m.disabled {
+		return
+	}
 	for _, component := range m.components {
 		component.update()
 	}
@@ -90,6 +93,9 @@ func (t *TextBox) getHeight() int {
 }
 
 func (m *Menu) draw(gui *Gui, box image.Rectangle) {
+	if m.disabled {
+		return
+	}
 	drawSpace := box
 	drawSpace.Min.Y += m.topPadding
 	drawSpace.Min.X += m.leftPadding

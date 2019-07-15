@@ -10,6 +10,7 @@ type Menu struct {
 	topPadding        int
 	leftPadding       int
 	horizontalSpacing int
+	disabled          bool
 }
 
 func (m *Menu) SetHCentered(centered bool) {
@@ -18,6 +19,10 @@ func (m *Menu) SetHCentered(centered bool) {
 
 func (m *Menu) SetTopPadding(padding int) {
 	m.topPadding = padding
+}
+
+func (m *Menu) SetDisabled(value bool) {
+	m.disabled = value
 }
 
 func (m *Menu) SetLeftPadding(padding int) {

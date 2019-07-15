@@ -41,7 +41,6 @@ func (g *game) init() error {
 func (g *game) Update(screen *ebiten.Image) error {
 	g.tick++
 	g.GUI.Update()
-	g.GUI.SetDebugInfo(g.DebugInfo())
 
 	if ebiten.IsDrawingSkipped() {
 		return nil

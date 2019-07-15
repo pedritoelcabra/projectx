@@ -22,8 +22,6 @@ type Gui struct {
 	screen        *ebiten.Image
 	uiFont        font.Face
 	uiFontMHeight int
-
-	debugInfo string
 }
 
 func New(x, y, w, h int) *Gui {
@@ -126,12 +124,4 @@ func (g *Gui) draw(dstRect image.Rectangle, srcRect image.Rectangle) {
 func (g *Gui) drawImage(image *ebiten.Image, destRect image.Rectangle, op *ebiten.DrawImageOptions) {
 	op.GeoM.Translate(float64(destRect.Min.X), float64(destRect.Min.Y))
 	g.screen.DrawImage(image, op)
-}
-
-func (g *Gui) SetDebugInfo(info string) {
-	g.debugInfo = info
-}
-
-func (g *Gui) GetDebugInfo() string {
-	return g.debugInfo
 }
