@@ -25,7 +25,7 @@ func (g *game) BuildStartMenu() *gui.Menu {
 	}
 
 	aMenu.AddButton(stopButton)
-	aMenu.SetDisabled(true)
+	//aMenu.SetDisabled(true)
 
 	return aMenu
 }

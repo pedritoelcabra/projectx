@@ -28,18 +28,21 @@ func (b *Button) update() {
 	if b.disabled {
 		return
 	}
+	mouseOverButton := b.mouseIsOverButton()
+	if mouseOverButton {
+		b.buttonImage = imageTypeButtonPressed
+	} else {
+		b.buttonImage = imageTypeButton
+	}
 	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
-		x, y := ebiten.CursorPosition()
-		if b.drawBox.Min.X <= x && x < b.drawBox.Max.X && b.drawBox.Min.Y <= y && y < b.drawBox.Max.Y {
+		if mouseOverButton {
 			b.mouseDown = true
 		} else {
 			b.mouseDown = false
 		}
 	} else {
-		if b.mouseDown {
-			if b.OnPressed != nil {
-				b.OnPressed(b)
-			}
+		if b.mouseDown && b.OnPressed != nil {
+			b.OnPressed(b)
 		}
 		b.mouseDown = false
 	}
@@ -111,7 +114,7 @@ func (b *Button) draw(gui *Gui, box image.Rectangle) {
 		return
 	}
 	offsetDrawBox(&b.drawBox, &box, &b.box)
-	gui.draw(b.drawBox, imageSrcRects[imageTypeButton])
+	gui.draw(b.drawBox, imageSrcRects[b.buttonImage])
 	b.textBoxImg.draw(gui, box)
 }
 

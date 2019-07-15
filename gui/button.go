@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"github.com/hajimehoshi/ebiten"
 	"image"
 	"image/color"
 )
@@ -30,13 +31,14 @@ var imageSrcRects = map[imageType]image.Rectangle{
 }
 
 type Button struct {
-	box        image.Rectangle
-	drawBox    image.Rectangle
-	text       string
-	textBoxImg *TextBox
-	mouseDown  bool
-	disabled   bool
-	OnPressed  func(b *Button)
+	box         image.Rectangle
+	drawBox     image.Rectangle
+	text        string
+	textBoxImg  *TextBox
+	mouseDown   bool
+	disabled    bool
+	OnPressed   func(b *Button)
+	buttonImage imageType
 }
 
 func NewButton(box image.Rectangle, text string) *Button {
@@ -49,6 +51,7 @@ func NewButton(box image.Rectangle, text string) *Button {
 	aButton.textBoxImg.vCenter = true
 	aButton.textBoxImg.hCenter = true
 	aButton.textBoxImg.fontColor = color.Black
+	aButton.buttonImage = imageTypeButton
 	return aButton
 }
 
@@ -58,4 +61,12 @@ func (b *Button) SetDisabled(value bool) {
 
 func (b *Button) GetDisabled() bool {
 	return b.disabled
+}
+
+func (b *Button) mouseIsOverButton() bool {
+	x, y := ebiten.CursorPosition()
+	if b.drawBox.Min.X <= x && x < b.drawBox.Max.X && b.drawBox.Min.Y <= y && y < b.drawBox.Max.Y {
+		return true
+	}
+	return false
 }

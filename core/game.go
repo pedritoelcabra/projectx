@@ -3,6 +3,7 @@ package core
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/gui"
+	"image/color"
 	"strconv"
 )
 
@@ -41,6 +42,9 @@ func (g *game) init() error {
 
 func (g *game) Update(screen *ebiten.Image) error {
 	g.tick++
+
+	screen.Fill(color.Black)
+
 	g.GUI.Update()
 	g.openContextMenu()
 
@@ -58,13 +62,16 @@ func (g *game) openContextMenu() {
 		g.rightMouseDown = true
 	} else {
 		if g.rightMouseDown {
-			g.rightMouseDown = false
 			g.GUI.AddMenu("context", g.BuildContextMenu(ebiten.CursorPosition()))
 		}
+		g.rightMouseDown = false
 	}
 	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
 		g.rightMouseDown = false
-		g.GUI.GetMenu("context").SetDisabled(true)
+		contextMenu := g.GUI.GetMenu("context")
+		if contextMenu != nil {
+			contextMenu.SetDisabled(true)
+		}
 	}
 }
 
