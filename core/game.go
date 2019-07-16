@@ -3,16 +3,17 @@ package core
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/gui"
-	"image/color"
 	"strconv"
 )
 
 type game struct {
-	GUI            *gui.Gui
+	Gui            *gui.Gui
+	Input          *Input
 	tick           int
 	framesDrawn    int
 	isPaused       bool
 	rightMouseDown bool
+	debugMessage   string
 }
 
 var projectX *game
@@ -36,7 +37,8 @@ func G() *game {
 }
 
 func (g *game) init() error {
-	g.GUI = gui.New(0, 0, ScreenWidth, ScreenHeight)
+	g.Input = NewInput()
+	g.Gui = gui.New(0, 0, ScreenWidth, ScreenHeight)
 	g.InitMenus()
 	g.isPaused = true
 	return nil
@@ -44,21 +46,18 @@ func (g *game) init() error {
 
 func (g *game) Update(screen *ebiten.Image) error {
 
+	g.Gui.Update()
+	g.Input.Update()
+
 	if !g.isPaused {
 		g.ProcessTick()
 	}
 
-	screen.Fill(color.Black)
-
-	g.GUI.Update()
-	g.openContextMenu()
-
-	if ebiten.IsDrawingSkipped() {
-		return nil
+	if !ebiten.IsDrawingSkipped() {
+		g.framesDrawn++
+		g.Gui.Draw(screen)
 	}
-	g.framesDrawn++
 
-	g.GUI.Draw(screen)
 	return nil
 }
 
@@ -71,13 +70,13 @@ func (g *game) openContextMenu() {
 		g.rightMouseDown = true
 	} else {
 		if g.rightMouseDown {
-			g.GUI.AddMenu("context", g.BuildContextMenu(ebiten.CursorPosition()))
+			g.Gui.AddMenu("context", g.BuildContextMenu(ebiten.CursorPosition()))
 		}
 		g.rightMouseDown = false
 	}
 	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
 		g.rightMouseDown = false
-		contextMenu := g.GUI.GetMenu("context")
+		contextMenu := g.Gui.GetMenu("context")
 		if contextMenu != nil {
 			contextMenu.SetDisabled(true)
 		}
@@ -86,6 +85,10 @@ func (g *game) openContextMenu() {
 
 func (g *game) DebugInfo() string {
 	aString := "Tick: " + strconv.Itoa(g.tick)
+	aString += "\nFrame: " + strconv.Itoa(g.framesDrawn)
+	if g.debugMessage != "" {
+		aString += "\n" + g.debugMessage
+	}
 
 	return aString
 }
