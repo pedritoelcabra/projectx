@@ -59,6 +59,20 @@ func (g *Gui) GetMenu(key string) *Menu {
 	return g.menus[key]
 }
 
+func (g *Gui) DisableAllMenus() {
+	for key, menu := range g.menus {
+		if key == "debug" {
+			continue
+		}
+		menu.SetDisabled(true)
+	}
+}
+
+func (g *Gui) EnableOnlyMenu(key string) {
+	g.DisableAllMenus()
+	g.GetMenu(key).SetDisabled(false)
+}
+
 func (g *Gui) Update() {
 	for _, menu := range g.menus {
 		menu.update()

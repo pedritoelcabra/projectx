@@ -117,7 +117,11 @@ func (m *Menu) draw(gui *Gui, box image.Rectangle) {
 	drawSpace.Min.X += m.centeredOffset(box)
 	for _, component := range m.components {
 		component.draw(gui, drawSpace)
-		drawSpace.Min.Y += component.getHeight()
+		if m.horizontalMenu {
+			drawSpace.Min.X += component.getWidth()
+		} else {
+			drawSpace.Min.Y += component.getHeight()
+		}
 	}
 }
 

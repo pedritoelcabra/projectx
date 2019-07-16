@@ -3,14 +3,14 @@ package gui
 import "image"
 
 type Menu struct {
-	gui               *Gui
-	components        []drawable
-	box               image.Rectangle
-	hCentered         bool
-	topPadding        int
-	leftPadding       int
-	horizontalSpacing int
-	disabled          bool
+	gui            *Gui
+	components     []drawable
+	box            image.Rectangle
+	hCentered      bool
+	topPadding     int
+	leftPadding    int
+	horizontalMenu bool
+	disabled       bool
 }
 
 func (m *Menu) SetHCentered(centered bool) {
@@ -23,6 +23,14 @@ func (m *Menu) SetTopPadding(padding int) {
 
 func (m *Menu) SetDisabled(value bool) {
 	m.disabled = value
+}
+
+func (m *Menu) ToggleDisabled() {
+	m.disabled = !m.disabled
+}
+
+func (m *Menu) SetHorizontalMenu(value bool) {
+	m.horizontalMenu = value
 }
 
 func (m *Menu) SetLeftPadding(padding int) {
