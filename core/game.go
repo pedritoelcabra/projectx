@@ -11,6 +11,7 @@ type game struct {
 	GUI            *gui.Gui
 	tick           int
 	framesDrawn    int
+	isPaused       bool
 	rightMouseDown bool
 }
 
@@ -37,11 +38,15 @@ func G() *game {
 func (g *game) init() error {
 	g.GUI = gui.New(0, 0, ScreenWidth, ScreenHeight)
 	g.InitMenus()
+	g.isPaused = true
 	return nil
 }
 
 func (g *game) Update(screen *ebiten.Image) error {
-	g.tick++
+
+	if !g.isPaused {
+		g.ProcessTick()
+	}
 
 	screen.Fill(color.Black)
 
@@ -55,6 +60,10 @@ func (g *game) Update(screen *ebiten.Image) error {
 
 	g.GUI.Draw(screen)
 	return nil
+}
+
+func (g *game) ProcessTick() {
+	g.tick++
 }
 
 func (g *game) openContextMenu() {

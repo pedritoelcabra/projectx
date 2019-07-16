@@ -19,13 +19,19 @@ func (g *game) BuildStartMenu() *gui.Menu {
 
 	buttonSize := image.Rect(0, 0, 150, 30)
 
-	stopButton := gui.NewButton(buttonSize, "Stop!")
+	startButton := gui.NewButton(buttonSize, "Start")
+	startButton.OnPressed = func(b *gui.Button) {
+		g.isPaused = false
+		aMenu.SetDisabled(true)
+	}
+
+	stopButton := gui.NewButton(buttonSize, "Exit")
 	stopButton.OnPressed = func(b *gui.Button) {
 		log.Fatal("Stopped")
 	}
 
+	aMenu.AddButton(startButton)
 	aMenu.AddButton(stopButton)
-	//aMenu.SetDisabled(true)
 
 	return aMenu
 }
@@ -50,7 +56,7 @@ func (g *game) BuildDebugMenu() *gui.Menu {
 func (g *game) BuildContextMenu(x, y int) *gui.Menu {
 	aMenu := gui.NewMenu(g.GUI)
 
-	buttonSize := image.Rect(0, 0, 150, 30)
+	buttonSize := image.Rect(0, 0, 100, 25)
 
 	aButton := gui.NewButton(buttonSize, "Button 1")
 	bButton := gui.NewButton(buttonSize, "Button 1")

@@ -15,6 +15,9 @@ type drawable interface {
 	getHeight() int
 }
 
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+
 func (m *Menu) update() {
 	if m.disabled {
 		return
@@ -55,6 +58,9 @@ func (t *TextBox) update() {
 	t.OnUpdate(t)
 }
 
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+
 func (m *Menu) getWidth() int {
 	maxWidth := 0
 	for _, component := range m.components {
@@ -76,6 +82,9 @@ func (t *TextBox) getWidth() int {
 	return t.box.Max.X - t.box.Min.X
 }
 
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+
 func (m *Menu) getHeight() int {
 	height := 0
 	for _, component := range m.components {
@@ -94,6 +103,9 @@ func (b *Button) getHeight() int {
 func (t *TextBox) getHeight() int {
 	return t.box.Max.Y - t.box.Min.Y
 }
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 
 func (m *Menu) draw(gui *Gui, box image.Rectangle) {
 	if m.disabled {
@@ -165,6 +177,9 @@ func (t *TextBox) draw(gui *Gui, box image.Rectangle) {
 	op := &ebiten.DrawImageOptions{}
 	gui.drawImage(t.contentBuf, t.drawBox, op)
 }
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 
 func offsetDrawBox(d *image.Rectangle, p *image.Rectangle, b *image.Rectangle) {
 	d.Min.X = p.Min.X + b.Min.X
