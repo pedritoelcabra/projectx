@@ -6,6 +6,7 @@ type listenerFunction func(g *game)
 
 type Input struct {
 	listeners      map[string]map[string]listenerFunction
+	pressedKeys    map[ebiten.Key]bool
 	rightMouseDown bool
 	leftMouseDown  bool
 }
@@ -18,8 +19,14 @@ func NewInput() *Input {
 
 func (i *Input) Init() {
 	i.listeners = make(map[string]map[string]listenerFunction)
-	i.listeners["rightClick"] = make(map[string]listenerFunction)
-	i.listeners["leftClick"] = make(map[string]listenerFunction)
+	i.listeners["RightClick"] = make(map[string]listenerFunction)
+	i.listeners["LeftClick"] = make(map[string]listenerFunction)
+	i.listeners["EscapePress"] = make(map[string]listenerFunction)
+	i.listeners["EscapeRelease"] = make(map[string]listenerFunction)
+	i.pressedKeys = make(map[ebiten.Key]bool)
+	for k := ebiten.Key(0); k <= ebiten.KeyMax; k++ {
+		i.pressedKeys[k] = false
+	}
 }
 
 func (i *Input) Update() {
@@ -27,9 +34,7 @@ func (i *Input) Update() {
 		i.rightMouseDown = true
 	} else {
 		if i.rightMouseDown {
-			for _, callback := range i.listeners["rightClick"] {
-				callback(projectX)
-			}
+			i.TriggerCallbacks("RightClick")
 		}
 		i.rightMouseDown = false
 	}
@@ -37,14 +42,31 @@ func (i *Input) Update() {
 		i.leftMouseDown = true
 	} else {
 		if i.leftMouseDown {
-			for _, callback := range i.listeners["leftClick"] {
-				callback(projectX)
-			}
+			i.TriggerCallbacks("LeftClick")
 		}
 		i.leftMouseDown = false
+	}
+	for k := ebiten.Key(0); k <= ebiten.KeyMax; k++ {
+		if ebiten.IsKeyPressed(k) {
+			if !i.pressedKeys[k] {
+				i.TriggerCallbacks(k.String() + "Press")
+				i.pressedKeys[k] = true
+			}
+		} else {
+			if i.pressedKeys[k] {
+				i.TriggerCallbacks(k.String() + "Release")
+				i.pressedKeys[k] = false
+			}
+		}
 	}
 }
 
 func (i *Input) AddListener(event, name string, callback listenerFunction) {
 	i.listeners[event][name] = callback
+}
+
+func (i *Input) TriggerCallbacks(key string) {
+	for _, callback := range i.listeners[key] {
+		callback(projectX)
+	}
 }

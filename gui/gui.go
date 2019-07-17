@@ -66,6 +66,13 @@ func (g *Gui) SetDisabled(key string, value bool) {
 	}
 }
 
+func (g *Gui) ToggleDisabled(key string) {
+	aMenu := g.menus[key]
+	if aMenu != nil {
+		aMenu.SetDisabled(!aMenu.disabled)
+	}
+}
+
 func (g *Gui) DisableAllMenus() {
 	for key, menu := range g.menus {
 		if key == "debug" {
