@@ -58,6 +58,7 @@ func (g *game) Update(screen *ebiten.Image) error {
 
 	if !ebiten.IsDrawingSkipped() {
 		g.framesDrawn++
+		g.World.Draw(screen)
 		g.Gui.Draw(screen)
 	}
 

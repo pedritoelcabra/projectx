@@ -1,5 +1,11 @@
 package world
 
+import "github.com/hajimehoshi/ebiten"
+
 type Entity interface {
-	draw()
+	Draw(*ebiten.Image)
+}
+
+func (s *LpcSprite) Draw(screen *ebiten.Image) {
+
 }
