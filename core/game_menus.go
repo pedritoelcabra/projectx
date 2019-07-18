@@ -71,6 +71,9 @@ func (g *game) BuildDebugMenu() *gui.Menu {
 
 func (g *game) BuildContextMenu(x, y int) *gui.Menu {
 	aMenu := gui.NewMenu(g.Gui)
+	if g.isPaused {
+		aMenu.SetDisabled(true)
+	}
 
 	buttonSize := image.Rect(0, 0, 100, 25)
 
