@@ -3,12 +3,14 @@ package core
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/gui"
+	"github.com/pedritoelcabra/projectx/world"
 	"strconv"
 )
 
 type game struct {
 	Gui            *gui.Gui
 	Input          *Input
+	World          *world.World
 	tick           int
 	framesDrawn    int
 	isPaused       bool
@@ -37,6 +39,7 @@ func G() *game {
 }
 
 func (g *game) init() error {
+	g.World = nil
 	g.Input = NewInput()
 	g.Gui = gui.New(0, 0, ScreenWidth, ScreenHeight)
 	g.InitMenus()
@@ -91,4 +94,29 @@ func (g *game) DebugInfo() string {
 	}
 
 	return aString
+}
+
+func (g *game) TogglePause() {
+	if g.isPaused {
+		g.UnPause()
+		return
+	}
+	g.Pause()
+}
+
+func (g *game) UnPause() {
+	if g.World == nil {
+		g.World = world.NewWorld()
+	}
+	g.isPaused = false
+	g.Gui.SetDisabled("start", true)
+	g.Gui.SetDisabled("context", true)
+	g.Gui.SetDisabled("game", false)
+}
+
+func (g *game) Pause() {
+	g.isPaused = true
+	g.Gui.SetDisabled("context", true)
+	g.Gui.SetDisabled("game", true)
+	g.Gui.SetDisabled("start", false)
 }

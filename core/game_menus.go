@@ -19,7 +19,7 @@ func (g *game) InitMenus() {
 		g.Gui.SetDisabled("context", true)
 	})
 	g.Input.AddListener("EscapePress", "toggleMenu", func(g *game) {
-		g.Gui.ToggleDisabled("start")
+		g.TogglePause()
 	})
 }
 
@@ -32,9 +32,7 @@ func (g *game) BuildStartMenu() *gui.Menu {
 
 	startButton := gui.NewButton(buttonSize, "Start")
 	startButton.OnPressed = func(b *gui.Button) {
-		g.isPaused = false
-		g.Gui.DisableAllMenus()
-		g.Gui.SetDisabled("game", false)
+		g.TogglePause()
 	}
 
 	debugButton := gui.NewButton(buttonSize, "Toggle debug")
@@ -111,9 +109,7 @@ func (g *game) BuildInGameMenu() *gui.Menu {
 
 	mainMenuButton := gui.NewButton(buttonSize, "Main Menu")
 	mainMenuButton.OnPressed = func(b *gui.Button) {
-		g.isPaused = true
-		g.Gui.DisableAllMenus()
-		g.Gui.SetDisabled("start", false)
+		g.TogglePause()
 	}
 	aMenu.AddButton(mainMenuButton)
 
