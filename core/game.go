@@ -39,7 +39,7 @@ func G() *game {
 }
 
 func (g *game) init() error {
-	g.World = nil
+	g.World = world.NewWorld()
 	g.Input = NewInput()
 	g.Gui = gui.New(0, 0, ScreenWidth, ScreenHeight)
 	g.InitMenus()
@@ -106,8 +106,8 @@ func (g *game) TogglePause() {
 }
 
 func (g *game) UnPause() {
-	if g.World == nil {
-		g.World = world.NewWorld()
+	if !g.World.IsInitialized() {
+		g.World.Init()
 	}
 	g.isPaused = false
 	g.Gui.SetDisabled("start", true)
