@@ -2,6 +2,7 @@ package core
 
 import (
 	"github.com/hajimehoshi/ebiten"
+	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/gui"
 	"github.com/pedritoelcabra/projectx/world"
 	"strconv"
@@ -11,6 +12,7 @@ type game struct {
 	Gui            *gui.Gui
 	Input          *Input
 	World          *world.World
+	Graphics       *gfx.Graphics
 	tick           int
 	framesDrawn    int
 	isPaused       bool
@@ -41,6 +43,7 @@ func G() *game {
 func (g *game) init() error {
 	g.World = world.NewWorld()
 	g.Input = NewInput()
+	g.Graphics = gfx.NewGraphics()
 	g.Gui = gui.New(0, 0, ScreenWidth, ScreenHeight)
 	g.InitMenus()
 	g.isPaused = true
