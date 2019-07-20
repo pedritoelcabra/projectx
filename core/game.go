@@ -24,7 +24,7 @@ var projectX *game
 
 const (
 	ScreenWidth  = 1200
-	ScreenHeight = 900
+	ScreenHeight = 800
 )
 
 func New() *game {

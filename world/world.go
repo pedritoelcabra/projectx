@@ -1,9 +1,12 @@
 package world
 
-import "github.com/hajimehoshi/ebiten"
+import (
+	"github.com/hajimehoshi/ebiten"
+)
 
 type World struct {
 	Entities    map[int]Entity
+	entityCount int
 	initialised bool
 }
 
@@ -18,7 +21,13 @@ func (w *World) IsInitialized() bool {
 
 func (w *World) Init() {
 	w.Entities = make(map[int]Entity)
+	w.AddEntity(NewUnit())
 	w.initialised = true
+}
+
+func (w *World) AddEntity(entity Entity) {
+	w.Entities[w.entityCount] = entity
+	w.entityCount++
 }
 
 func (w *World) Draw(screen *ebiten.Image) {
@@ -26,6 +35,6 @@ func (w *World) Draw(screen *ebiten.Image) {
 		return
 	}
 	for _, e := range w.Entities {
-		e.Draw(screen)
+		e.DrawSprite(screen)
 	}
 }

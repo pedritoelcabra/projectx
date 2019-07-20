@@ -6,10 +6,12 @@ type LpcSprite struct {
 	key spriteKey
 }
 
-func NewSprite(key spriteKey) LpcSprite {
-	return LpcSprite{key}
+func NewLpcSprite(key spriteKey) *LpcSprite {
+	return &LpcSprite{key}
 }
 
-func (s *LpcSprite) Draw(screen *ebiten.Image) {
+func (s *LpcSprite) DrawSprite(screen *ebiten.Image) {
+	op := &ebiten.DrawImageOptions{}
 
+	screen.DrawImage(GetSprite(s.key), op)
 }
