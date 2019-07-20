@@ -21,7 +21,9 @@ func (w *World) IsInitialized() bool {
 
 func (w *World) Init() {
 	w.Entities = make(map[int]Entity)
-	w.AddEntity(NewUnit())
+	aUnit := NewUnit()
+	aUnit.SetPosition(400, 400)
+	w.AddEntity(aUnit)
 	w.initialised = true
 }
 

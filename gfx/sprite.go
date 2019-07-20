@@ -5,5 +5,5 @@ import (
 )
 
 type Sprite interface {
-	DrawSprite(*ebiten.Image)
+	DrawSprite(*ebiten.Image, float64, float64)
 }
