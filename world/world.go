@@ -6,6 +6,7 @@ import (
 
 type World struct {
 	Entities    map[int]Entity
+	PlayerUnit  *Player
 	entityCount int
 	initialised bool
 }
@@ -21,9 +22,9 @@ func (w *World) IsInitialized() bool {
 
 func (w *World) Init() {
 	w.Entities = make(map[int]Entity)
-	aUnit := NewUnit()
-	aUnit.SetPosition(400, 400)
-	w.AddEntity(aUnit)
+	w.PlayerUnit = NewPlayer()
+	w.PlayerUnit.SetPosition(400, 400)
+	w.AddEntity(w.PlayerUnit)
 	w.initialised = true
 }
 
@@ -38,5 +39,14 @@ func (w *World) Draw(screen *ebiten.Image) {
 	}
 	for _, e := range w.Entities {
 		e.DrawSprite(screen)
+	}
+}
+
+func (w *World) Update(tick int) {
+	if !w.initialised {
+		return
+	}
+	for _, e := range w.Entities {
+		e.Update(tick)
 	}
 }

@@ -25,3 +25,7 @@ func NewUnit() *Unit {
 	aUnit.sprite = gfx.NewLpcSprite(gfx.BodyMaleLight)
 	return aUnit
 }
+
+func (u *Unit) Update(tick int) {
+
+}

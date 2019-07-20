@@ -23,6 +23,14 @@ func (i *Input) Init() {
 	i.listeners["LeftClick"] = make(map[string]listenerFunction)
 	i.listeners["EscapePress"] = make(map[string]listenerFunction)
 	i.listeners["EscapeRelease"] = make(map[string]listenerFunction)
+	i.listeners["LeftPress"] = make(map[string]listenerFunction)
+	i.listeners["LeftRelease"] = make(map[string]listenerFunction)
+	i.listeners["DownPress"] = make(map[string]listenerFunction)
+	i.listeners["DownRelease"] = make(map[string]listenerFunction)
+	i.listeners["UpPress"] = make(map[string]listenerFunction)
+	i.listeners["UpRelease"] = make(map[string]listenerFunction)
+	i.listeners["RightPress"] = make(map[string]listenerFunction)
+	i.listeners["RightRelease"] = make(map[string]listenerFunction)
 	i.pressedKeys = make(map[ebiten.Key]bool)
 	for k := ebiten.Key(0); k <= ebiten.KeyMax; k++ {
 		i.pressedKeys[k] = false

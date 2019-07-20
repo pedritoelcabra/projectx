@@ -1,7 +1,6 @@
 package core
 
 import (
-	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/gui"
 	"image"
 	"image/color"
@@ -12,15 +11,6 @@ func (g *game) InitMenus() {
 	g.Gui.AddMenu("start", g.BuildStartMenu())
 	g.Gui.AddMenu("debug", g.BuildDebugMenu())
 	g.Gui.AddMenu("game", g.BuildInGameMenu())
-	g.Input.AddListener("RightClick", "openContext", func(g *game) {
-		g.Gui.AddMenu("context", g.BuildContextMenu(ebiten.CursorPosition()))
-	})
-	g.Input.AddListener("LeftClick", "closeContext", func(g *game) {
-		g.Gui.SetDisabled("context", true)
-	})
-	g.Input.AddListener("EscapePress", "toggleMenu", func(g *game) {
-		g.TogglePause()
-	})
 }
 
 func (g *game) BuildStartMenu() *gui.Menu {

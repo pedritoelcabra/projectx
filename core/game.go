@@ -42,8 +42,8 @@ func G() *game {
 
 func (g *game) init() error {
 	g.World = world.NewWorld()
-	g.Input = NewInput()
 	g.Graphics = gfx.NewGraphics()
+	g.InitInput()
 	g.Gui = gui.New(0, 0, ScreenWidth, ScreenHeight)
 	g.InitMenus()
 	g.isPaused = true
@@ -56,22 +56,19 @@ func (g *game) Update(screen *ebiten.Image) error {
 	g.Input.Update()
 
 	if !g.isPaused {
-		g.ProcessTick()
+		g.World.Update(g.tick)
+		g.tick++
 	}
 
 	if !ebiten.IsDrawingSkipped() {
-		g.framesDrawn++
 		if !g.isPaused {
 			g.World.Draw(screen)
 		}
 		g.Gui.Draw(screen)
+		g.framesDrawn++
 	}
 
 	return nil
-}
-
-func (g *game) ProcessTick() {
-	g.tick++
 }
 
 func (g *game) openContextMenu() {
@@ -125,4 +122,41 @@ func (g *game) Pause() {
 	g.Gui.SetDisabled("context", true)
 	g.Gui.SetDisabled("game", true)
 	g.Gui.SetDisabled("start", false)
+}
+
+func (g *game) InitInput() {
+	g.Input = NewInput()
+	g.Input.AddListener("RightClick", "openContext", func(g *game) {
+		g.Gui.AddMenu("context", g.BuildContextMenu(ebiten.CursorPosition()))
+	})
+	g.Input.AddListener("LeftClick", "closeContext", func(g *game) {
+		g.Gui.SetDisabled("context", true)
+	})
+	g.Input.AddListener("EscapePress", "toggleMenu", func(g *game) {
+		g.TogglePause()
+	})
+	g.Input.AddListener("LeftPress", "updatePlayer", func(g *game) {
+		g.World.PlayerUnit.MovingLeft(true)
+	})
+	g.Input.AddListener("LeftRelease", "updatePlayer", func(g *game) {
+		g.World.PlayerUnit.MovingLeft(false)
+	})
+	g.Input.AddListener("RightPress", "updatePlayer", func(g *game) {
+		g.World.PlayerUnit.MovingRight(true)
+	})
+	g.Input.AddListener("RightRelease", "updatePlayer", func(g *game) {
+		g.World.PlayerUnit.MovingRight(false)
+	})
+	g.Input.AddListener("UpPress", "updatePlayer", func(g *game) {
+		g.World.PlayerUnit.MovingUp(true)
+	})
+	g.Input.AddListener("UpRelease", "updatePlayer", func(g *game) {
+		g.World.PlayerUnit.MovingUp(false)
+	})
+	g.Input.AddListener("DownPress", "updatePlayer", func(g *game) {
+		g.World.PlayerUnit.MovingDown(true)
+	})
+	g.Input.AddListener("DownRelease", "updatePlayer", func(g *game) {
+		g.World.PlayerUnit.MovingDown(false)
+	})
 }
