@@ -92,6 +92,10 @@ func (g *game) openContextMenu() {
 func (g *game) DebugInfo() string {
 	aString := "Tick: " + strconv.Itoa(g.tick)
 	aString += "\nFrame: " + strconv.Itoa(g.framesDrawn)
+	if g.World.PlayerUnit != nil {
+		x, y := g.World.PlayerUnit.GetPos()
+		aString += "\nPlayer: " + strconv.Itoa(int(x)) + " / " + strconv.Itoa(int(y))
+	}
 	if g.debugMessage != "" {
 		aString += "\n" + g.debugMessage
 	}

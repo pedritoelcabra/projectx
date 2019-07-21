@@ -25,7 +25,27 @@ func (p *Player) SetPosition(x, y float64) {
 }
 
 func (p *Player) Update(tick int) {
+	p.UpdateDestination()
 	p.unit.Update(tick)
+}
+
+func (p *Player) UpdateDestination() {
+	destX := p.unit.destX
+	destY := p.unit.destY
+	displacement := float64(10)
+	if p.movingUp && !p.movingDown {
+		destY -= displacement
+	}
+	if p.movingDown && !p.movingUp {
+		destY += displacement
+	}
+	if p.movingLeft && !p.movingRight {
+		destX -= displacement
+	}
+	if p.movingRight && !p.movingLeft {
+		destX += displacement
+	}
+	p.unit.SetDestination(destX, destY)
 }
 
 func (p *Player) MovingUp(value bool) {
@@ -42,4 +62,8 @@ func (p *Player) MovingDown(value bool) {
 
 func (p *Player) MovingRight(value bool) {
 	p.movingRight = value
+}
+
+func (p *Player) GetPos() (x, y float64) {
+	return p.unit.GetPos()
 }
