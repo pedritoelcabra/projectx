@@ -2,6 +2,15 @@ package world
 
 import "github.com/hajimehoshi/ebiten"
 
+type PlayerDirection int
+
+const (
+	PLAYERUP PlayerDirection = iota
+	PLAYERLEFT
+	PLAYERDOWN
+	PLAYERRIGHT
+)
+
 type Player struct {
 	unit        *Unit
 	movingUp    bool
@@ -30,8 +39,8 @@ func (p *Player) Update(tick int) {
 }
 
 func (p *Player) UpdateDestination() {
-	destX := p.unit.destX
-	destY := p.unit.destY
+	destX := p.unit.x
+	destY := p.unit.y
 	displacement := float64(10)
 	if p.movingUp && !p.movingDown {
 		destY -= displacement
@@ -48,22 +57,19 @@ func (p *Player) UpdateDestination() {
 	p.unit.SetDestination(destX, destY)
 }
 
-func (p *Player) MovingUp(value bool) {
-	p.movingUp = value
-}
-
-func (p *Player) MovingLeft(value bool) {
-	p.movingLeft = value
-}
-
-func (p *Player) MovingDown(value bool) {
-	p.movingDown = value
-}
-
-func (p *Player) MovingRight(value bool) {
-	p.movingRight = value
-}
-
 func (p *Player) GetPos() (x, y float64) {
 	return p.unit.GetPos()
+}
+
+func (p *Player) SetMovement(direction PlayerDirection, value bool) {
+	switch direction {
+	case PLAYERUP:
+		p.movingUp = value
+	case PLAYERLEFT:
+		p.movingLeft = value
+	case PLAYERDOWN:
+		p.movingDown = value
+	case PLAYERRIGHT:
+		p.movingRight = value
+	}
 }

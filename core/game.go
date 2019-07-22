@@ -140,27 +140,34 @@ func (g *game) InitInput() {
 		g.TogglePause()
 	})
 	g.Input.AddListener("LeftPress", "updatePlayer", func(g *game) {
-		g.World.PlayerUnit.MovingLeft(true)
+		g.UpdatePlayerMovement(world.PLAYERLEFT, true)
 	})
 	g.Input.AddListener("LeftRelease", "updatePlayer", func(g *game) {
-		g.World.PlayerUnit.MovingLeft(false)
+		g.UpdatePlayerMovement(world.PLAYERLEFT, false)
 	})
 	g.Input.AddListener("RightPress", "updatePlayer", func(g *game) {
-		g.World.PlayerUnit.MovingRight(true)
+		g.UpdatePlayerMovement(world.PLAYERRIGHT, true)
 	})
 	g.Input.AddListener("RightRelease", "updatePlayer", func(g *game) {
-		g.World.PlayerUnit.MovingRight(false)
+		g.UpdatePlayerMovement(world.PLAYERRIGHT, false)
 	})
 	g.Input.AddListener("UpPress", "updatePlayer", func(g *game) {
-		g.World.PlayerUnit.MovingUp(true)
+		g.UpdatePlayerMovement(world.PLAYERUP, true)
 	})
 	g.Input.AddListener("UpRelease", "updatePlayer", func(g *game) {
-		g.World.PlayerUnit.MovingUp(false)
+		g.UpdatePlayerMovement(world.PLAYERUP, false)
 	})
 	g.Input.AddListener("DownPress", "updatePlayer", func(g *game) {
-		g.World.PlayerUnit.MovingDown(true)
+		g.UpdatePlayerMovement(world.PLAYERDOWN, true)
 	})
 	g.Input.AddListener("DownRelease", "updatePlayer", func(g *game) {
-		g.World.PlayerUnit.MovingDown(false)
+		g.UpdatePlayerMovement(world.PLAYERDOWN, false)
 	})
+}
+
+func (g *game) UpdatePlayerMovement(dir world.PlayerDirection, value bool) {
+	if g.World == nil || g.World.PlayerUnit == nil {
+		return
+	}
+	g.World.PlayerUnit.SetMovement(dir, value)
 }
