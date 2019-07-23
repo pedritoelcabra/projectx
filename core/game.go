@@ -36,7 +36,7 @@ func G() *game {
 	return projectX
 }
 
-func (g *game) init() error {
+func (g *game) init() {
 	g.Screen = gfx.NewScreen()
 	g.World = world.NewWorld()
 	g.Graphics = gfx.NewGraphics()
@@ -44,7 +44,6 @@ func (g *game) init() error {
 	g.Gui = gui.New(0, 0, gfx.ScreenWidth, gfx.ScreenHeight)
 	g.InitMenus()
 	g.isPaused = true
-	return nil
 }
 
 func (g *game) Update(screen *ebiten.Image) error {
