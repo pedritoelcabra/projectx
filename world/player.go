@@ -24,6 +24,7 @@ type Player struct {
 func NewPlayer() *Player {
 	aPlayer := &Player{}
 	aPlayer.unit = NewUnit()
+	aPlayer.unit.SetSpeed(5)
 	return aPlayer
 }
 
@@ -43,7 +44,7 @@ func (p *Player) Update(tick int) {
 func (p *Player) UpdateDestination() {
 	destX := p.unit.x
 	destY := p.unit.y
-	displacement := float64(10)
+	displacement := float64(1000)
 	if p.movingUp && !p.movingDown {
 		destY -= displacement
 	}

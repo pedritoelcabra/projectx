@@ -32,6 +32,10 @@ func (u *Unit) SetDestination(x, y float64) {
 	u.CheckIfMoving()
 }
 
+func (u *Unit) SetSpeed(speed float64) {
+	u.speed = speed
+}
+
 func NewUnit() *Unit {
 	aUnit := &Unit{}
 	aUnit.sprite = gfx.NewLpcSprite(gfx.BodyMaleLight)

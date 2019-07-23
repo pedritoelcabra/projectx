@@ -34,6 +34,7 @@ func TestMovementAlongLine(t *testing.T) {
 		{0, 0, 0, -100, 50, 0, -50},
 		{0, 0, 100, 100, 50, 35.36, 35.36},
 		{0, 0, 100, 200, 100, 44.72, 89.44},
+		{100, 0, 100, 200, 100, 100, 100},
 	}
 	for _, c := range distances {
 		x3, y3 := world.AdvanceAlongLine(c.x1, c.y1, c.x2, c.y2, c.speed)

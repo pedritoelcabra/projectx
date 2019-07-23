@@ -8,8 +8,8 @@ func AdvanceAlongLine(x1, y1, x2, y2, maxDis float64) (x3, y3 float64) {
 		return x2, y2
 	}
 	ratio := maxDis / dis
-	x3 = ratio * (x2 - x1)
-	y3 = ratio * (y2 - y1)
+	x3 = x1 + (ratio * (x2 - x1))
+	y3 = y1 + (ratio * (y2 - y1))
 	return
 }
 
