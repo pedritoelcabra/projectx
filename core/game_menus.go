@@ -1,6 +1,7 @@
 package core
 
 import (
+	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/gui"
 	"image"
 	"image/color"
@@ -96,7 +97,7 @@ func (g *game) BuildInGameMenu() *gui.Menu {
 	aMenu := gui.NewMenu(g.Gui)
 	aMenu.SetHorizontalMenu(true)
 	menuHeight := 30
-	aMenu.SetTopPadding(ScreenHeight - menuHeight)
+	aMenu.SetTopPadding(gfx.ScreenHeight - menuHeight)
 
 	buttonSize := image.Rect(0, 0, 150, menuHeight)
 

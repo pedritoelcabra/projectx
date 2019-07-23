@@ -23,11 +23,6 @@ type game struct {
 
 var projectX *game
 
-const (
-	ScreenWidth  = 1200
-	ScreenHeight = 800
-)
-
 func New() *game {
 	aGame := game{}
 	aGame.init()
@@ -46,7 +41,7 @@ func (g *game) init() error {
 	g.World = world.NewWorld()
 	g.Graphics = gfx.NewGraphics()
 	g.InitInput()
-	g.Gui = gui.New(0, 0, ScreenWidth, ScreenHeight)
+	g.Gui = gui.New(0, 0, gfx.ScreenWidth, gfx.ScreenHeight)
 	g.InitMenus()
 	g.isPaused = true
 	return nil
@@ -60,6 +55,7 @@ func (g *game) Update(screen *ebiten.Image) error {
 
 	if !g.isPaused {
 		g.World.Update(g.tick)
+		g.Screen.SetCameraCoords(g.World.PlayerUnit.GetPos())
 		g.tick++
 	}
 

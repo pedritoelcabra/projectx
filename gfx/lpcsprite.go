@@ -9,8 +9,10 @@ type lpcAnimation int
 type lpcFacing int
 
 const (
-	spriteWidth  = 64
-	spriteHeight = 64
+	spriteWidth      = 64
+	spriteWidthHalf  = 32
+	spriteHeight     = 64
+	spriteHeightHalf = 32
 )
 
 const (
@@ -73,7 +75,7 @@ func NewLpcSprite(key spriteKey) *LpcSprite {
 
 func (s *LpcSprite) DrawSprite(screen *Screen, x, y float64) {
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM = ebiten.TranslateGeo(x, y)
+	op.GeoM = ebiten.TranslateGeo(x-spriteWidthHalf, y-spriteHeightHalf)
 	screen.DrawImage(s.getFrame(), op)
 }
 
