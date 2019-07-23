@@ -1,7 +1,6 @@
 package world
 
 import (
-	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/gfx"
 )
 
@@ -15,7 +14,7 @@ type Unit struct {
 	speed  float64
 }
 
-func (u *Unit) DrawSprite(screen *ebiten.Image) {
+func (u *Unit) DrawSprite(screen *gfx.Screen) {
 	u.sprite.DrawSprite(screen, u.x, u.y)
 }
 

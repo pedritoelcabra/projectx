@@ -1,7 +1,7 @@
 package world
 
 import (
-	"github.com/hajimehoshi/ebiten"
+	"github.com/pedritoelcabra/projectx/gfx"
 )
 
 type World struct {
@@ -33,7 +33,7 @@ func (w *World) AddEntity(entity Entity) {
 	w.entityCount++
 }
 
-func (w *World) Draw(screen *ebiten.Image) {
+func (w *World) Draw(screen *gfx.Screen) {
 	if !w.initialised {
 		return
 	}

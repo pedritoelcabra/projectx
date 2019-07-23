@@ -1,6 +1,8 @@
 package world
 
-import "github.com/hajimehoshi/ebiten"
+import (
+	"github.com/pedritoelcabra/projectx/gfx"
+)
 
 type PlayerDirection int
 
@@ -25,7 +27,7 @@ func NewPlayer() *Player {
 	return aPlayer
 }
 
-func (p *Player) DrawSprite(screen *ebiten.Image) {
+func (p *Player) DrawSprite(screen *gfx.Screen) {
 	p.unit.DrawSprite(screen)
 }
 

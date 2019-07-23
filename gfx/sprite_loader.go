@@ -29,6 +29,6 @@ func LoadLPCSprites() {
 
 func SpritePaths() map[spriteKey]string {
 	return map[spriteKey]string{
-		BodyMaleLight: "resources/body/male/light.png",
+		BodyMaleLight: "resources/Universal-LPC-spritesheet/body/male/light.png",
 	}
 }

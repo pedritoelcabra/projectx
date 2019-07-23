@@ -13,6 +13,7 @@ type game struct {
 	Input          *Input
 	World          *world.World
 	Graphics       *gfx.Graphics
+	Screen         *gfx.Screen
 	tick           int
 	framesDrawn    int
 	isPaused       bool
@@ -41,6 +42,7 @@ func G() *game {
 }
 
 func (g *game) init() error {
+	g.Screen = gfx.NewScreen()
 	g.World = world.NewWorld()
 	g.Graphics = gfx.NewGraphics()
 	g.InitInput()
@@ -52,6 +54,7 @@ func (g *game) init() error {
 
 func (g *game) Update(screen *ebiten.Image) error {
 
+	g.Screen.SetScreen(screen)
 	g.Gui.Update()
 	g.Input.Update()
 
@@ -62,7 +65,7 @@ func (g *game) Update(screen *ebiten.Image) error {
 
 	if !ebiten.IsDrawingSkipped() {
 		if !g.isPaused {
-			g.World.Draw(screen)
+			g.World.Draw(g.Screen)
 		}
 		g.Gui.Draw(screen)
 		g.framesDrawn++

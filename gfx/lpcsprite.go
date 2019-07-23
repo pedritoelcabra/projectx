@@ -71,7 +71,7 @@ func NewLpcSprite(key spriteKey) *LpcSprite {
 	return aSprite
 }
 
-func (s *LpcSprite) DrawSprite(screen *ebiten.Image, x, y float64) {
+func (s *LpcSprite) DrawSprite(screen *Screen, x, y float64) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM = ebiten.TranslateGeo(x, y)
 	screen.DrawImage(s.getFrame(), op)

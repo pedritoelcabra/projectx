@@ -1,9 +1,11 @@
 package world
 
-import "github.com/hajimehoshi/ebiten"
+import (
+	"github.com/pedritoelcabra/projectx/gfx"
+)
 
 type Entity interface {
-	DrawSprite(*ebiten.Image)
+	DrawSprite(screen *gfx.Screen)
 	SetPosition(float64, float64)
 	Update(int)
 }
