@@ -7,7 +7,10 @@ func AdvanceAlongLine(x1, y1, x2, y2, maxDis float64) (x3, y3 float64) {
 	if dis <= maxDis {
 		return x2, y2
 	}
-	return x1, y1
+	ratio := maxDis / dis
+	x3 = ratio * (x2 - x1)
+	y3 = ratio * (y2 - y1)
+	return
 }
 
 func CalculateDistance(x1, y1, x2, y2 float64) float64 {

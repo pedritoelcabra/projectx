@@ -18,5 +18,5 @@ func handleError(err ...interface{}) {
 	if err[0] == nil {
 		return
 	}
-	log.Fatal(err)
+	log.Fatal(err...)
 }
