@@ -38,9 +38,7 @@ func (u *Unit) CheckOrientation() {
 	if !u.moving {
 		return
 	}
-	xDist := u.x - u.destX
-	yDist := u.y - u.destY
-	if math.Abs(xDist)+1 > math.Abs(yDist) {
+	if math.Abs(u.x-u.destX)+1 > math.Abs(u.y-u.destY) {
 		if u.x > u.destX {
 			u.sprite.SetFacing(gfx.FaceLeft)
 			return
