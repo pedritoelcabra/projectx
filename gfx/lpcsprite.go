@@ -6,20 +6,12 @@ import (
 )
 
 type lpcAnimation int
-type lpcFacing int
 
 const (
 	spriteWidth      = 64
 	spriteWidthHalf  = 32
 	spriteHeight     = 64
 	spriteHeightHalf = 32
-)
-
-const (
-	FaceUp lpcFacing = iota
-	FaceLeft
-	FaceDown
-	FaceRight
 )
 
 const (
@@ -40,18 +32,18 @@ var animationLength = map[lpcAnimation]int{
 	Dying:     6,
 }
 
-var offsetMap = make(map[lpcAnimation]map[lpcFacing]map[int]image.Rectangle)
+var offsetMap = make(map[lpcAnimation]map[spriteFacing]map[int]image.Rectangle)
 
 type LpcSprite struct {
 	key       spriteKey
-	facing    lpcFacing
+	facing    spriteFacing
 	animation lpcAnimation
 	frame     int
 }
 
 func SetUpLpcSpritesOffsets() {
 	for i := Casting; i <= Dying; i++ {
-		offsetMap[i] = make(map[lpcFacing]map[int]image.Rectangle)
+		offsetMap[i] = make(map[spriteFacing]map[int]image.Rectangle)
 		for k := FaceUp; k <= FaceRight; k++ {
 			offsetMap[i][k] = make(map[int]image.Rectangle)
 			for f := 0; f < animationLength[Shooting]; f++ {
@@ -86,4 +78,8 @@ func (s *LpcSprite) getFrame() *ebiten.Image {
 func (s *LpcSprite) getRect() image.Rectangle {
 	rect := offsetMap[s.animation][s.facing][s.frame]
 	return rect
+}
+
+func (s *LpcSprite) SetFacing(direction spriteFacing) {
+	s.facing = direction
 }
