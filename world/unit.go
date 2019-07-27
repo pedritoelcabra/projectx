@@ -2,6 +2,7 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/gfx"
+	"math"
 )
 
 type Unit struct {
@@ -30,6 +31,28 @@ func (u *Unit) SetDestination(x, y float64) {
 	u.destX = x
 	u.destY = y
 	u.CheckIfMoving()
+	u.CheckOrientation()
+}
+
+func (u *Unit) CheckOrientation() {
+	if !u.moving {
+		return
+	}
+	xDist := u.x - u.destX
+	yDist := u.y - u.destY
+	if math.Abs(xDist)+1 > math.Abs(yDist) {
+		if u.x > u.destX {
+			u.sprite.SetFacing(gfx.FaceLeft)
+			return
+		}
+		u.sprite.SetFacing(gfx.FaceRight)
+		return
+	}
+	if u.y > u.destY {
+		u.sprite.SetFacing(gfx.FaceUp)
+		return
+	}
+	u.sprite.SetFacing(gfx.FaceDown)
 }
 
 func (u *Unit) SetSpeed(speed float64) {
