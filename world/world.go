@@ -32,6 +32,7 @@ func (w *World) SetSeed(seed int) {
 func (w *World) Init() {
 	w.Noise = noise.New(w.seed)
 	w.Grid = grid.New()
+	w.Grid.SetNoise(w.Noise)
 	w.Entities = make(map[int]Entity)
 	w.PlayerUnit = NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)

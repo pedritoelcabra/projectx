@@ -21,6 +21,12 @@ func NewChunk(location coord) *chunk {
 	return aChunk
 }
 
+func (ch *chunk) RunOnAllTiles(f func(t *tile)) {
+	for _, c := range ch.tiles {
+		f(c)
+	}
+}
+
 func (ch *chunk) Tile(tileCoord coord) *tile {
 	return ch.tiles[ch.tileIndex(tileCoord.X(), tileCoord.Y())]
 

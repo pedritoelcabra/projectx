@@ -2,6 +2,7 @@
 package grid
 
 import (
+	"github.com/pedritoelcabra/projectx/world/noise"
 	"log"
 )
 
@@ -15,12 +16,19 @@ const (
 
 type Grid struct {
 	chunks map[int]*chunk
+	noise  *noise.NoiseGenerator
 }
 
 func New() *Grid {
 	arraySize := GridSize * GridSize
 	arrayChunks := make(map[int]*chunk, arraySize)
-	return &Grid{arrayChunks}
+	aGrid := &Grid{}
+	aGrid.chunks = arrayChunks
+	return aGrid
+}
+
+func (g *Grid) SetNoise(noise *noise.NoiseGenerator) {
+	g.noise = noise
 }
 
 func (g *Grid) Tile(tileCoord coord) *tile {
@@ -29,8 +37,17 @@ func (g *Grid) Tile(tileCoord coord) *tile {
 	if aChunk, chunkExists := g.chunks[chunkIndex]; chunkExists {
 		return aChunk.Tile(tileCoord)
 	}
-	g.chunks[chunkIndex] = NewChunk(chunkCoord)
+	g.initializeChunk(chunkCoord)
 	return g.chunks[chunkIndex].Tile(tileCoord)
+}
+
+func (g *Grid) initializeChunk(chunkCoord coord) {
+	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
+	aChunk := NewChunk(chunkCoord)
+	aChunk.RunOnAllTiles(func(t *tile) {
+		t.Set(Height, g.noise.GetHeight(t.X(), t.Y()))
+	})
+	g.chunks[chunkIndex] = aChunk
 }
 
 func (g *Grid) chunkIndex(x, y int) int {

@@ -68,8 +68,6 @@ func TestTileCoord(t *testing.T) {
 func TestTileVariables(t *testing.T) {
 
 	aGrid := New()
-	const Population = 1
-	const Height = 2
 
 	aCoord := Coord(100, 200)
 	bCoord := Coord(0, 0)

@@ -21,3 +21,8 @@ func (t tile) Get(key int) int {
 func (t tile) Set(key, value int) {
 	t.values[key] = value
 }
+
+const (
+	Height int = iota
+	Population
+)

@@ -17,3 +17,9 @@ func New(seed int) *NoiseGenerator {
 	aGenerator.p = perlin.NewPerlin(alpha, beta, n, int64(seed))
 	return aGenerator
 }
+
+func (n *NoiseGenerator) GetHeight(x, y int) int {
+	noise := n.p.Noise2D(float64(x), float64(y))
+	adjustedNoise := int(noise * 1000)
+	return adjustedNoise
+}
