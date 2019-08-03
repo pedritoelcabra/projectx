@@ -92,7 +92,9 @@ func (g *game) DebugInfo() string {
 	aString += "\nFrame: " + strconv.Itoa(g.framesDrawn)
 	if g.World.PlayerUnit != nil {
 		x, y := g.World.PlayerUnit.GetPos()
-		aString += "\nPlayer: " + strconv.Itoa(int(x)) + " / " + strconv.Itoa(int(y))
+		aString += "\nPlayer Pos: " + strconv.Itoa(int(x)) + " / " + strconv.Itoa(int(y))
+		tx, ty := world.PosToTile(int(x), int(y))
+		aString += "\nPlayer Tile: " + strconv.Itoa(int(tx)) + " / " + strconv.Itoa(int(ty))
 	}
 	if g.debugMessage != "" {
 		aString += "\n" + g.debugMessage

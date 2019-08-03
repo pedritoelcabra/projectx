@@ -2,7 +2,7 @@ package grid
 
 // Tile is the data contained in any given coordinate in the grid
 type tile struct {
-	coordinates coord
+	coordinates Coord
 	values      map[int]int
 }
 

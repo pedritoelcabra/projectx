@@ -1,20 +1,20 @@
 package grid
 
 // Coord is a simple structure to hold X and Y values
-type coord struct {
+type Coord struct {
 	x, y int
 }
 
 // Build a Coord from X and Y
-func Coord(x, y int) coord {
-	aCoord := coord{x, y}
+func NewCoord(x, y int) Coord {
+	aCoord := Coord{x, y}
 	return aCoord
 }
 
-func (c coord) X() int {
+func (c Coord) X() int {
 	return c.x
 }
 
-func (c coord) Y() int {
+func (c Coord) Y() int {
 	return c.y
 }

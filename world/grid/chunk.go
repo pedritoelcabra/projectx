@@ -2,17 +2,17 @@ package grid
 
 type chunk struct {
 	tiles    []*tile
-	location coord
+	location Coord
 }
 
-func NewChunk(location coord) *chunk {
+func NewChunk(location Coord) *chunk {
 	arrayTiles := make([]*tile, ChunkSize*ChunkSize)
 	aChunk := &chunk{arrayTiles, location}
 	for x := 0; x < ChunkSize; x++ {
 		for y := 0; y < ChunkSize; y++ {
 			tileX := (location.X() * ChunkSize) + x
 			tileY := (location.Y() * ChunkSize) + y
-			tileLocation := Coord(tileX, tileY)
+			tileLocation := NewCoord(tileX, tileY)
 			tileIndex := aChunk.tileIndex(tileX, tileY)
 			aTile := &tile{tileLocation, make(map[int]int)}
 			aChunk.tiles[tileIndex] = aTile
@@ -27,12 +27,12 @@ func (ch *chunk) RunOnAllTiles(f func(t *tile)) {
 	}
 }
 
-func (ch *chunk) Tile(tileCoord coord) *tile {
+func (ch *chunk) Tile(tileCoord Coord) *tile {
 	return ch.tiles[ch.tileIndex(tileCoord.X(), tileCoord.Y())]
 
 }
 
-func (ch *chunk) initTile(c coord) *tile {
+func (ch *chunk) initTile(c Coord) *tile {
 	return &tile{c, make(map[int]int)}
 }
 

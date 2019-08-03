@@ -1,5 +1,29 @@
 package world
 
+import (
+	"github.com/pedritoelcabra/projectx/world/grid"
+)
+
 const (
 	TileSize = 32
 )
+
+func PosToTileC(coord grid.Coord) grid.Coord {
+	return grid.NewCoord(PosToTile(coord.X(), coord.Y()))
+}
+
+func TileToPosC(tile grid.Coord) grid.Coord {
+	return grid.NewCoord(PosToTile(tile.X(), tile.Y()))
+}
+
+func PosToTile(x, y int) (tx, ty int) {
+	tx = int(x / TileSize)
+	ty = int(y / TileSize)
+	return
+}
+
+func TileToPos(tx, ty int) (x, y int) {
+	x = tx * TileSize
+	y = ty * TileSize
+	return
+}
