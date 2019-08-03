@@ -1,15 +1,15 @@
-// A package for managing a grid based game world
+// A package for managing a Grid based game world
 package grid
 
 import "log"
 
-type grid struct {
+type Grid struct {
 	size   int
 	radius int
 	tiles  []tile
 }
 
-func New(size int) grid {
+func New(size int) Grid {
 	if size < 0 {
 		size = -size
 	}
@@ -18,18 +18,18 @@ func New(size int) grid {
 	}
 	arraySize := size * size
 	arrayTiles := make([]tile, arraySize)
-	return grid{size, size / 2, arrayTiles}
+	return Grid{size, size / 2, arrayTiles}
 }
 
-func (g grid) Size() int {
+func (g Grid) Size() int {
 	return g.size
 }
 
-func (g grid) Radius() int {
+func (g Grid) Radius() int {
 	return g.radius
 }
 
-func (g grid) Tile(c coord) tile {
+func (g Grid) Tile(c coord) tile {
 	x, y := c.X(), c.Y()
 	if x < 1 || x > g.Size() || y < 1 || y > g.Size() {
 		log.Fatalf("Grid.Tile() requested invalid coordinates %d / %d", x, y)
@@ -42,15 +42,15 @@ func (g grid) Tile(c coord) tile {
 	return aTile
 }
 
-func (g grid) initTile(c coord) tile {
+func (g Grid) initTile(c coord) tile {
 	return tile{c, make(map[int]int)}
 }
 
-func (g grid) gridIndex(x, y int) int {
+func (g Grid) gridIndex(x, y int) int {
 	return (x * g.size) + y
 }
 
-func (g grid) gridCoordinates(index int) (x, y int) {
+func (g Grid) gridCoordinates(index int) (x, y int) {
 	y = index % g.size
 	x = (index - y) / g.size
 	return
