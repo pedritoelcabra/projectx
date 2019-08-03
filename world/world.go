@@ -11,6 +11,8 @@ type World struct {
 	Noise       *noise.NoiseGenerator
 	entityCount int
 	initialised bool
+	seed        int
+	size        int
 }
 
 func NewWorld() *World {
@@ -22,8 +24,16 @@ func (w *World) IsInitialized() bool {
 	return w.initialised
 }
 
-func (w *World) Init(seed int) {
-	w.Noise = noise.New(seed)
+func (w *World) SetSeed(seed int) {
+	w.seed = seed
+}
+
+func (w *World) SetSize(size int) {
+	w.size = size
+}
+
+func (w *World) Init() {
+	w.Noise = noise.New(w.seed)
 	w.Entities = make(map[int]Entity)
 	w.PlayerUnit = NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)
