@@ -5,6 +5,7 @@ import (
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/gui"
 	"github.com/pedritoelcabra/projectx/world"
+	"github.com/pedritoelcabra/projectx/world/grid"
 	"strconv"
 )
 
@@ -94,7 +95,11 @@ func (g *game) DebugInfo() string {
 		x, y := g.World.PlayerUnit.GetPos()
 		aString += "\nPlayer Pos: " + strconv.Itoa(int(x)) + " / " + strconv.Itoa(int(y))
 		tx, ty := world.PosToTile(int(x), int(y))
-		aString += "\nPlayer Tile: " + strconv.Itoa(int(tx)) + " / " + strconv.Itoa(int(ty))
+		aString += "\nPlayer Tile: " + strconv.Itoa(tx) + " / " + strconv.Itoa(ty)
+		tile := g.World.Grid.Tile(grid.NewCoord(tx, ty))
+		height := tile.Get(grid.Height)
+		aString += "\nTile Height: " + strconv.Itoa(height)
+
 	}
 	if g.debugMessage != "" {
 		aString += "\n" + g.debugMessage
