@@ -14,7 +14,6 @@ type World struct {
 	entityCount int
 	initialised bool
 	seed        int
-	size        int
 }
 
 func NewWorld() *World {
@@ -30,13 +29,9 @@ func (w *World) SetSeed(seed int) {
 	w.seed = seed
 }
 
-func (w *World) SetSize(size int) {
-	w.size = size
-}
-
 func (w *World) Init() {
 	w.Noise = noise.New(w.seed)
-	w.Grid = grid.New(w.size)
+	w.Grid = grid.New()
 	w.Entities = make(map[int]Entity)
 	w.PlayerUnit = NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)

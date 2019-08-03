@@ -1,57 +1,49 @@
-// A package for managing a Grid based game world
+// A package for managing a grid based game world
 package grid
 
-import "log"
+import (
+	"log"
+)
+
+const (
+	ChunkSize  = 32
+	GridSize   = 1000
+	GridOffset = 500
+	GridTiles  = 32000
+	TileOffset = 16000
+)
 
 type Grid struct {
-	size   int
-	radius int
-	tiles  []tile
+	chunks map[int]*chunk
 }
 
-func New(size int) *Grid {
-	if size < 0 {
-		size = -size
+func New() *Grid {
+	arraySize := GridSize * GridSize
+	arrayChunks := make(map[int]*chunk, arraySize)
+	return &Grid{arrayChunks}
+}
+
+func (g *Grid) Tile(tileCoord coord) *tile {
+	chunkCoord := g.chunkCoord(tileCoord)
+	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
+	if aChunk, chunkExists := g.chunks[chunkIndex]; chunkExists {
+		return aChunk.Tile(tileCoord)
 	}
-	if size%2 == 1 {
-		size++
+	g.chunks[chunkIndex] = NewChunk(chunkCoord)
+	return g.chunks[chunkIndex].Tile(tileCoord)
+}
+
+func (g *Grid) chunkIndex(x, y int) int {
+	x += GridOffset
+	y += GridOffset
+	if x < 0 || x >= GridSize || y < 0 || y >= GridSize {
+		log.Fatalf("Grid.Tile() requested invalid chunk %d / %d", x, y)
 	}
-	arraySize := size * size
-	arrayTiles := make([]tile, arraySize)
-	return &Grid{size, size / 2, arrayTiles}
+	return (x * GridSize) + y
 }
 
-func (g Grid) Size() int {
-	return g.size
-}
-
-func (g Grid) Radius() int {
-	return g.radius
-}
-
-func (g Grid) Tile(c coord) tile {
-	x, y := c.X(), c.Y()
-	if x < 1 || x > g.Size() || y < 1 || y > g.Size() {
-		log.Fatalf("Grid.Tile() requested invalid coordinates %d / %d", x, y)
-	}
-	aTile := g.tiles[g.gridIndex(x, y)]
-	if aTile.X() == 0 {
-		g.tiles[g.gridIndex(x, y)] = g.initTile(c)
-		aTile = g.tiles[g.gridIndex(x, y)]
-	}
-	return aTile
-}
-
-func (g Grid) initTile(c coord) tile {
-	return tile{c, make(map[int]int)}
-}
-
-func (g Grid) gridIndex(x, y int) int {
-	return (x * g.size) + y
-}
-
-func (g Grid) gridCoordinates(index int) (x, y int) {
-	y = index % g.size
-	x = (index - y) / g.size
-	return
+func (g *Grid) chunkCoord(tileCoord coord) coord {
+	x := ((tileCoord.X() + TileOffset) / ChunkSize) - GridOffset
+	y := ((tileCoord.Y() + TileOffset) / ChunkSize) - GridOffset
+	return Coord(x, y)
 }

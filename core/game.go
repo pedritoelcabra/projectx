@@ -121,7 +121,6 @@ func (g *game) UnPause() {
 
 func (g *game) InitializeNewWorld() {
 	g.World.SetSeed(100)
-	g.World.SetSize(100)
 	g.World.Init()
 }
 
