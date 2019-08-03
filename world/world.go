@@ -2,11 +2,13 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/gfx"
+	"github.com/pedritoelcabra/projectx/world/noise"
 )
 
 type World struct {
 	Entities    map[int]Entity
 	PlayerUnit  *Player
+	Noise       *noise.NoiseGenerator
 	entityCount int
 	initialised bool
 }
@@ -20,7 +22,8 @@ func (w *World) IsInitialized() bool {
 	return w.initialised
 }
 
-func (w *World) Init() {
+func (w *World) Init(seed int) {
+	w.Noise = noise.New(seed)
 	w.Entities = make(map[int]Entity)
 	w.PlayerUnit = NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)

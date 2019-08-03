@@ -19,6 +19,7 @@ type game struct {
 	isPaused       bool
 	rightMouseDown bool
 	debugMessage   string
+	seed           int
 }
 
 var projectX *game
@@ -26,6 +27,7 @@ var projectX *game
 func New() *game {
 	aGame := game{}
 	aGame.init()
+	aGame.seed = 100
 	return &aGame
 }
 
@@ -111,7 +113,7 @@ func (g *game) TogglePause() {
 
 func (g *game) UnPause() {
 	if !g.World.IsInitialized() {
-		g.World.Init()
+		g.World.Init(g.seed)
 	}
 	g.isPaused = false
 	g.Gui.SetDisabled("start", true)
