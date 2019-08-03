@@ -18,7 +18,13 @@ func TileToPosC(tile grid.Coord) grid.Coord {
 
 func PosToTile(x, y int) (tx, ty int) {
 	tx = int(x / TileSize)
+	if x < 0 {
+		tx--
+	}
 	ty = int(y / TileSize)
+	if y < 0 {
+		ty--
+	}
 	return
 }
 
