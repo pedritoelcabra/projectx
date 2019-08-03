@@ -2,6 +2,7 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/gfx"
+	"github.com/pedritoelcabra/projectx/world/grid"
 	"github.com/pedritoelcabra/projectx/world/noise"
 )
 
@@ -9,6 +10,7 @@ type World struct {
 	Entities    map[int]Entity
 	PlayerUnit  *Player
 	Noise       *noise.NoiseGenerator
+	Grid        *grid.Grid
 	entityCount int
 	initialised bool
 	seed        int
@@ -34,6 +36,7 @@ func (w *World) SetSize(size int) {
 
 func (w *World) Init() {
 	w.Noise = noise.New(w.seed)
+	w.Grid = grid.New(w.size)
 	w.Entities = make(map[int]Entity)
 	w.PlayerUnit = NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)

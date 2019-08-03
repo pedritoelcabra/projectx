@@ -9,7 +9,7 @@ type Grid struct {
 	tiles  []tile
 }
 
-func New(size int) Grid {
+func New(size int) *Grid {
 	if size < 0 {
 		size = -size
 	}
@@ -18,7 +18,7 @@ func New(size int) Grid {
 	}
 	arraySize := size * size
 	arrayTiles := make([]tile, arraySize)
-	return Grid{size, size / 2, arrayTiles}
+	return &Grid{size, size / 2, arrayTiles}
 }
 
 func (g Grid) Size() int {
