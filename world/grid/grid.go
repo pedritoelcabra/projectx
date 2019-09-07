@@ -2,6 +2,7 @@
 package grid
 
 import (
+	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/world/noise"
 	"log"
 )
@@ -37,17 +38,27 @@ func (g *Grid) Tile(tileCoord Coord) *tile {
 	if aChunk, chunkExists := g.chunks[chunkIndex]; chunkExists {
 		return aChunk.Tile(tileCoord)
 	}
-	g.initializeChunk(chunkCoord)
+	g.InitializeChunk(chunkCoord)
 	return g.chunks[chunkIndex].Tile(tileCoord)
 }
 
-func (g *Grid) initializeChunk(chunkCoord Coord) {
+func (g *Grid) InitializeChunk(chunkCoord Coord) {
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
 	aChunk := NewChunk(chunkCoord)
 	aChunk.RunOnAllTiles(func(t *tile) {
-		t.Set(Height, g.noise.GetHeight(t.X(), t.Y()))
+		t.InitializeTile(g)
 	})
 	g.chunks[chunkIndex] = aChunk
+}
+
+func (t *tile) InitializeTile(g *Grid) {
+	height := g.noise.GetHeight(t.X(), t.Y())
+	t.Set(Height, height)
+	terrain := -1
+	if height < 0 {
+		terrain = gfx.WaterFull
+	}
+	t.Set(TerrainBase, terrain)
 }
 
 func (g *Grid) chunkIndex(x, y int) int {

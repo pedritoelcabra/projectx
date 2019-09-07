@@ -17,6 +17,12 @@ const (
 	TileSize           = 32
 )
 
+const (
+	DesertFull = 107
+	GrassFull  = 233
+	WaterFull  = 365
+)
+
 func SetUpBasicTerrainOffsets() {
 	terrainTypeMap = make(map[BasicTerrainTypes]image.Rectangle)
 	for x := 0; x < BasicTerrainWidth; x++ {

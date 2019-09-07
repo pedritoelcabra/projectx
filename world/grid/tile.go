@@ -25,4 +25,6 @@ func (t tile) Set(key, value int) {
 const (
 	Height int = iota
 	Population
+	TerrainBase
+	TerrainOverlay
 )

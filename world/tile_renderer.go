@@ -2,6 +2,7 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/gfx"
+	"github.com/pedritoelcabra/projectx/world/grid"
 	"math"
 )
 
@@ -28,12 +29,12 @@ func RenderTiles(screen *gfx.Screen, world *World) {
 	endY := playerTileY + halfScreenTileHeight
 	for x := startX; x <= endX; x++ {
 		for y := startY; y <= endY; y++ {
-			RenderTile(x, y, RenderModeHeight, screen)
+			RenderTile(world.Grid.Tile(grid.NewCoord(x, y)), RenderModeHeight, screen)
 		}
 	}
 }
 
-func RenderTile(x int, y int, mode TileRenderMode, screen *gfx.Screen) {
+func RenderTile(tile *grid.tile, mode TileRenderMode, screen *gfx.Screen) {
 	tx, ty := TileToPosFloat(x, y)
-	gfx.DrawBasicTerrain(tx, ty, 107, screen)
+	gfx.DrawBasicTerrain(tx, ty, gfx.WaterFull, screen)
 }
