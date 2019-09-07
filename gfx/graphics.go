@@ -5,7 +5,8 @@ type Graphics struct {
 
 func NewGraphics() *Graphics {
 	aGraphics := &Graphics{}
-	LoadLPCSprites()
+	LoadSprites()
 	SetUpLpcSpritesOffsets()
+	SetUpBasicTerrainOffsets()
 	return aGraphics
 }

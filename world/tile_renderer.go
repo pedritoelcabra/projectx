@@ -34,5 +34,6 @@ func RenderTiles(screen *gfx.Screen, world *World) {
 }
 
 func RenderTile(x int, y int, mode TileRenderMode, screen *gfx.Screen) {
-	return
+	tx, ty := TileToPosFloat(x, y)
+	gfx.DrawBasicTerrain(tx, ty, 107, screen)
 }

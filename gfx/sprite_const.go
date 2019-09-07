@@ -15,4 +15,5 @@ const (
 	BodyMaleSkeleton
 	BodyMaleTanned
 	BodyMaleTanned2
+	BasicTerrain
 )

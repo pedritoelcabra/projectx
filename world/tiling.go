@@ -37,3 +37,8 @@ func TileToPos(tx, ty int) (x, y int) {
 	y = ty * TileSize
 	return
 }
+
+func TileToPosFloat(tx, ty int) (x, y float64) {
+	ix, iy := TileToPos(tx, ty)
+	return float64(ix), float64(iy)
+}

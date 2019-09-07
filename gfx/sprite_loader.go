@@ -16,7 +16,7 @@ func GetSprite(key spriteKey) *ebiten.Image {
 	return spriteMap[key]
 }
 
-func LoadLPCSprites() {
+func LoadSprites() {
 	spriteMap = make(map[spriteKey]*ebiten.Image)
 	for key, path := range SpritePaths() {
 		img, _, err := ebitenutil.NewImageFromFile(path, ebiten.FilterDefault)
@@ -30,5 +30,6 @@ func LoadLPCSprites() {
 func SpritePaths() map[spriteKey]string {
 	return map[spriteKey]string{
 		BodyMaleLight: "resources/Universal-LPC-spritesheet/body/male/light.png",
+		BasicTerrain:  "resources/tiles/terrain.png",
 	}
 }
