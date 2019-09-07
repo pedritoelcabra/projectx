@@ -16,6 +16,10 @@ func TileToPosC(tile grid.Coord) grid.Coord {
 	return grid.NewCoord(PosToTile(tile.X(), tile.Y()))
 }
 
+func PosFloatToTile(x, y float64) (tx, ty int) {
+	return PosToTile(int(x), int(y))
+}
+
 func PosToTile(x, y int) (tx, ty int) {
 	tx = int(x / TileSize)
 	if x < 0 {

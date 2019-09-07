@@ -49,6 +49,7 @@ func (w *World) Draw(screen *gfx.Screen) {
 	if !w.initialised {
 		return
 	}
+	RenderTiles(screen, w)
 	for _, e := range w.Entities {
 		e.DrawSprite(screen)
 	}
