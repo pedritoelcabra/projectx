@@ -1,24 +1,24 @@
 package grid
 
 // Tile is the data contained in any given coordinate in the grid
-type tile struct {
+type Tile struct {
 	coordinates Coord
 	values      map[int]int
 }
 
-func (t tile) X() int {
+func (t Tile) X() int {
 	return t.coordinates.X()
 }
 
-func (t tile) Y() int {
+func (t Tile) Y() int {
 	return t.coordinates.Y()
 }
 
-func (t tile) Get(key int) int {
+func (t Tile) Get(key int) int {
 	return t.values[key]
 }
 
-func (t tile) Set(key, value int) {
+func (t Tile) Set(key, value int) {
 	t.values[key] = value
 }
 

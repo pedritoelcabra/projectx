@@ -19,7 +19,7 @@ func New(seed int) *NoiseGenerator {
 }
 
 func (n *NoiseGenerator) GetHeight(x, y int) int {
-	noise := n.p.Noise2D(float64(x)/1000, float64(y)/1000)
+	noise := n.p.Noise2D(float64(x)/10, float64(y)/10)
 	adjustedNoise := int(noise * 1000)
 	return adjustedNoise
 }

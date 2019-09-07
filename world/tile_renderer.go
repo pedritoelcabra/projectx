@@ -1,9 +1,12 @@
 package world
 
 import (
+	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/world/grid"
+	"log"
 	"math"
+	"strconv"
 )
 
 type TileRenderMode int
@@ -34,7 +37,26 @@ func RenderTiles(screen *gfx.Screen, world *World) {
 	}
 }
 
-func RenderTile(tile *grid.tile, mode TileRenderMode, screen *gfx.Screen) {
-	tx, ty := TileToPosFloat(x, y)
-	gfx.DrawBasicTerrain(tx, ty, gfx.WaterFull, screen)
+func RenderTile(tile *grid.Tile, mode TileRenderMode, screen *gfx.Screen) {
+	op := &ebiten.DrawImageOptions{}
+	tx, ty := TileToPosFloat(tile.X(), tile.Y())
+	if mode == RenderModeHeight {
+		RenderHeightMapTile(tile, screen, op)
+		return
+	}
+	terrainBase := tile.Get(grid.TerrainBase)
+	if terrainBase >= 0 {
+		gfx.DrawBasicTerrain(tx, ty, gfx.BasicTerrainTypes(terrainBase), screen, op)
+	}
+}
+
+func RenderHeightMapTile(tile *grid.Tile, screen *gfx.Screen, op *ebiten.DrawImageOptions) {
+	tx, ty := TileToPosFloat(tile.X(), tile.Y())
+	height := tile.Get(grid.Height)
+	if height < -1000 || height > 1000 {
+		log.Fatal("Unsupported height " + strconv.Itoa(height))
+	}
+	alpha := (float64(height) + 1000.0) / 2000.0
+	op.ColorM.Scale(1.0, 1.0, 1.0, alpha)
+	gfx.DrawBasicTerrain(tx, ty, gfx.BasicTerrainTypes(gfx.StoneBlockFull), screen, op)
 }

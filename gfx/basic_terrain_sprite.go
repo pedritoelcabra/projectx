@@ -18,9 +18,10 @@ const (
 )
 
 const (
-	DesertFull = 107
-	GrassFull  = 233
-	WaterFull  = 365
+	DesertFull     = 107
+	GrassFull      = 233
+	WaterFull      = 365
+	StoneBlockFull = 334
 )
 
 func SetUpBasicTerrainOffsets() {
@@ -36,8 +37,7 @@ func SetUpBasicTerrainOffsets() {
 	}
 }
 
-func DrawBasicTerrain(x, y float64, terrainType BasicTerrainTypes, screen *Screen) {
-	op := &ebiten.DrawImageOptions{}
+func DrawBasicTerrain(x, y float64, terrainType BasicTerrainTypes, screen *Screen, op *ebiten.DrawImageOptions) {
 	op.GeoM = ebiten.TranslateGeo(x, y)
 	screen.DrawImage(GetSprite(BasicTerrain).SubImage(terrainTypeMap[terrainType]).(*ebiten.Image), op)
 }

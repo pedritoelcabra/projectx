@@ -32,7 +32,7 @@ func (g *Grid) SetNoise(noise *noise.NoiseGenerator) {
 	g.noise = noise
 }
 
-func (g *Grid) Tile(tileCoord Coord) *tile {
+func (g *Grid) Tile(tileCoord Coord) *Tile {
 	chunkCoord := g.chunkCoord(tileCoord)
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
 	if aChunk, chunkExists := g.chunks[chunkIndex]; chunkExists {
@@ -45,13 +45,13 @@ func (g *Grid) Tile(tileCoord Coord) *tile {
 func (g *Grid) InitializeChunk(chunkCoord Coord) {
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
 	aChunk := NewChunk(chunkCoord)
-	aChunk.RunOnAllTiles(func(t *tile) {
+	aChunk.RunOnAllTiles(func(t *Tile) {
 		t.InitializeTile(g)
 	})
 	g.chunks[chunkIndex] = aChunk
 }
 
-func (t *tile) InitializeTile(g *Grid) {
+func (t *Tile) InitializeTile(g *Grid) {
 	height := g.noise.GetHeight(t.X(), t.Y())
 	t.Set(Height, height)
 	terrain := -1
