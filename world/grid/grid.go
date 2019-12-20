@@ -55,6 +55,13 @@ func (t *Tile) InitializeTile(g *Grid) {
 	height := g.noise.GetHeight(t.X(), t.Y())
 	t.Set(Height, height)
 	terrain := -1
+	terrain = gfx.StoneBlockFull
+	if height < 600 {
+		terrain = gfx.DesertFull
+	}
+	if height < 200 {
+		terrain = gfx.GrassFull
+	}
 	if height < 0 {
 		terrain = gfx.WaterFull
 	}

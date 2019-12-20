@@ -3,6 +3,7 @@ package core
 import (
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/gui"
+	"github.com/pedritoelcabra/projectx/world"
 	"image"
 	"image/color"
 	"log"
@@ -107,15 +108,15 @@ func (g *game) BuildInGameMenu() *gui.Menu {
 	}
 	aMenu.AddButton(mainMenuButton)
 
-	aButton := gui.NewButton(buttonSize, "Placeholder 1")
+	aButton := gui.NewButton(buttonSize, "Height Map")
 	aButton.OnPressed = func(b *gui.Button) {
-		g.debugMessage = "Placeholder 1 pressed"
+		g.World.SetRenderMode(world.RenderModeHeight)
 	}
 	aMenu.AddButton(aButton)
 
-	bButton := gui.NewButton(buttonSize, "Placeholder 2")
+	bButton := gui.NewButton(buttonSize, "Basic Terrain")
 	bButton.OnPressed = func(b *gui.Button) {
-		g.debugMessage = "Placeholder 2 pressed"
+		g.World.SetRenderMode(world.RenderModeBasic)
 	}
 	aMenu.AddButton(bButton)
 

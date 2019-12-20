@@ -13,13 +13,14 @@ type TileRenderMode int
 
 const (
 	RenderModeHeight TileRenderMode = iota
+	RenderModeBasic
 )
 
 type TileRenderer struct {
 	tileRenderSize int
 }
 
-func RenderTiles(screen *gfx.Screen, world *World) {
+func RenderTiles(screen *gfx.Screen, world *World, mode TileRenderMode) {
 	tileSize := TileSize
 	screenTileWidth := int(math.Ceil(float64(gfx.ScreenWidth / tileSize)))
 	screenTileHeight := int(math.Ceil(float64(gfx.ScreenHeight / tileSize)))
@@ -32,7 +33,7 @@ func RenderTiles(screen *gfx.Screen, world *World) {
 	endY := playerTileY + halfScreenTileHeight
 	for x := startX; x <= endX; x++ {
 		for y := startY; y <= endY; y++ {
-			RenderTile(world.Grid.Tile(grid.NewCoord(x, y)), RenderModeHeight, screen)
+			RenderTile(world.Grid.Tile(grid.NewCoord(x, y)), mode, screen)
 		}
 	}
 }

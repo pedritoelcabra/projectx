@@ -14,6 +14,7 @@ type World struct {
 	entityCount int
 	initialised bool
 	seed        int
+	renderMode  TileRenderMode
 }
 
 func NewWorld() *World {
@@ -37,6 +38,7 @@ func (w *World) Init() {
 	w.PlayerUnit = NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)
 	w.AddEntity(w.PlayerUnit)
+	w.renderMode = RenderModeBasic
 	w.initialised = true
 }
 
@@ -49,7 +51,7 @@ func (w *World) Draw(screen *gfx.Screen) {
 	if !w.initialised {
 		return
 	}
-	RenderTiles(screen, w)
+	RenderTiles(screen, w, w.renderMode)
 	for _, e := range w.Entities {
 		e.DrawSprite(screen)
 	}
@@ -62,4 +64,8 @@ func (w *World) Update(tick int) {
 	for _, e := range w.Entities {
 		e.Update(tick)
 	}
+}
+
+func (w *World) SetRenderMode(mode TileRenderMode) {
+	w.renderMode = mode
 }
