@@ -38,6 +38,6 @@ func SetUpBasicTerrainOffsets() {
 }
 
 func DrawBasicTerrain(x, y float64, terrainType BasicTerrainTypes, screen *Screen, op *ebiten.DrawImageOptions) {
-	op.GeoM = ebiten.TranslateGeo(x, y)
+	op.GeoM.Translate(x, y)
 	screen.DrawImage(GetSprite(BasicTerrain).SubImage(terrainTypeMap[terrainType]).(*ebiten.Image), op)
 }

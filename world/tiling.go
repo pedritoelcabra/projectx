@@ -5,7 +5,8 @@ import (
 )
 
 const (
-	TileSize = 32
+	BaseTileSize = 32
+	TileSize     = 32
 )
 
 func PosToTileC(coord grid.Coord) grid.Coord {

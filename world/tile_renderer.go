@@ -39,11 +39,13 @@ func RenderTiles(screen *gfx.Screen, world *World) {
 
 func RenderTile(tile *grid.Tile, mode TileRenderMode, screen *gfx.Screen) {
 	op := &ebiten.DrawImageOptions{}
-	tx, ty := TileToPosFloat(tile.X(), tile.Y())
+	scale := float64(TileSize) / float64(BaseTileSize)
+	op.GeoM.Scale(scale, scale)
 	if mode == RenderModeHeight {
 		RenderHeightMapTile(tile, screen, op)
 		return
 	}
+	tx, ty := TileToPosFloat(tile.X(), tile.Y())
 	terrainBase := tile.Get(grid.TerrainBase)
 	if terrainBase >= 0 {
 		gfx.DrawBasicTerrain(tx, ty, gfx.BasicTerrainTypes(terrainBase), screen, op)
