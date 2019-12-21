@@ -2,7 +2,7 @@
 package grid
 
 import (
-	"github.com/pedritoelcabra/projectx/gfx"
+	"github.com/pedritoelcabra/projectx/world/defs"
 	"github.com/pedritoelcabra/projectx/world/noise"
 	"log"
 )
@@ -55,15 +55,15 @@ func (t *Tile) InitializeTile(g *Grid) {
 	height := g.noise.GetHeight(t.X(), t.Y())
 	t.Set(Height, height)
 	terrain := -1
-	terrain = gfx.StoneBlockFull
+	terrain = defs.BasicMountain
 	if height < 600 {
-		terrain = gfx.DesertFull
+		terrain = defs.BasicDesert
 	}
 	if height < 200 {
-		terrain = gfx.GrassFull
+		terrain = defs.BasicGrass
 	}
 	if height < 0 {
-		terrain = gfx.WaterFull
+		terrain = defs.BasicWater
 	}
 	t.Set(TerrainBase, terrain)
 }

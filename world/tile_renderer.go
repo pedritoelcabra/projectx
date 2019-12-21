@@ -48,9 +48,7 @@ func RenderTile(tile *grid.Tile, mode TileRenderMode, screen *gfx.Screen) {
 	}
 	tx, ty := TileToPosFloat(tile.X(), tile.Y())
 	terrainBase := tile.Get(grid.TerrainBase)
-	if terrainBase >= 0 {
-		gfx.DrawBasicTerrain(tx, ty, gfx.BasicTerrainTypes(terrainBase), screen, op)
-	}
+	gfx.DrawHexTerrain(tx, ty, terrainBase, screen, op)
 }
 
 func RenderHeightMapTile(tile *grid.Tile, screen *gfx.Screen, op *ebiten.DrawImageOptions) {

@@ -16,4 +16,5 @@ const (
 	BodyMaleTanned
 	BodyMaleTanned2
 	BasicTerrain
+	HexTerrain1
 )
