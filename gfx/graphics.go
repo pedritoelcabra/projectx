@@ -7,7 +7,6 @@ func NewGraphics() *Graphics {
 	aGraphics := &Graphics{}
 	LoadSprites()
 	SetUpLpcSpritesOffsets()
-	SetUpBasicTerrainOffsets()
 	SetUpHexTerrainOffsets()
 	return aGraphics
 }

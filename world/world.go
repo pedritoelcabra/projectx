@@ -39,6 +39,7 @@ func (w *World) Init() {
 	w.PlayerUnit.SetPosition(400, 400)
 	w.AddEntity(w.PlayerUnit)
 	w.renderMode = RenderModeBasic
+	InitTiling()
 	w.initialised = true
 }
 
