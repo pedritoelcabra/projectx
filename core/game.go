@@ -100,6 +100,17 @@ func (g *game) DebugInfo() string {
 		height := tile.Get(grid.Height)
 		aString += "\nTile Height: " + strconv.Itoa(height)
 
+		mx, my := ebiten.CursorPosition()
+		cx, cy := g.Screen.GetCameraCoords()
+		mx += int(cx)
+		my += int(cy)
+		aString += "\nMouse Pos: " + strconv.Itoa(int(mx)) + " / " + strconv.Itoa(int(my))
+		mtx, mty := world.PosToTile(int(mx), int(my))
+		aString += "\nMouse Tile: " + strconv.Itoa(mtx) + " / " + strconv.Itoa(mty)
+		mTile := g.World.Grid.Tile(grid.NewCoord(mtx, mty))
+		mHeight := mTile.Get(grid.Height)
+		aString += "\nMouse Tile Height: " + strconv.Itoa(mHeight)
+
 	}
 	if g.debugMessage != "" {
 		aString += "\n" + g.debugMessage

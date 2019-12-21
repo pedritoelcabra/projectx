@@ -22,20 +22,26 @@ func PosFloatToTile(x, y float64) (tx, ty int) {
 }
 
 func PosToTile(x, y int) (tx, ty int) {
-	tx = int(x / TileSize)
-	if x < 0 {
-		tx--
-	}
-	ty = int(y / TileSize)
+	ty = y / TileSize
 	if y < 0 {
 		ty--
+	}
+	if ty%2 > 0 {
+		x += TileSize / 2
+	}
+	tx = x / TileSize
+	if x < 0 {
+		tx--
 	}
 	return
 }
 
 func TileToPos(tx, ty int) (x, y int) {
-	x = tx * TileSize
 	y = ty * TileSize
+	x = tx * TileSize
+	if ty%2 > 0 {
+		x += TileSize / 2
+	}
 	return
 }
 

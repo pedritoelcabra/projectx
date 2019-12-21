@@ -48,7 +48,7 @@ func (g *game) BuildDebugMenu() *gui.Menu {
 	debugMenu := gui.NewMenu(g.Gui)
 
 	aBox := &gui.TextBox{}
-	aBox.SetBox(image.Rect(0, 0, 200, 120))
+	aBox.SetBox(image.Rect(0, 0, 200, 300))
 	aBox.SetLeftPadding(10)
 	aBox.SetTopPadding(10)
 	aBox.SetColor(color.White)

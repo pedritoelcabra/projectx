@@ -29,6 +29,10 @@ func (s *Screen) SetCameraCoords(x, y float64) {
 	s.cameraY = y - (ScreenHeight / 2)
 }
 
+func (s *Screen) GetCameraCoords() (x, y float64) {
+	return s.cameraX, s.cameraY
+}
+
 func (s *Screen) DrawImage(image *ebiten.Image, options *ebiten.DrawImageOptions) {
 	options.GeoM.Translate(-s.cameraX, -s.cameraY)
 	s.image.DrawImage(image, options)
