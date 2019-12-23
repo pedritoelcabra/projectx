@@ -13,7 +13,8 @@ var saveGameBasePath = "save_games/"
 var DefaultSaveGameName = "save.pxs"
 
 type SaveGameData struct {
-	Seed int `json:"Seed"`
+	Seed int
+	Tick int
 }
 
 func getSaveGameFullPath(fileName string) string {

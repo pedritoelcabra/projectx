@@ -175,10 +175,12 @@ func (g *game) UpdatePlayerMovement(dir world.PlayerDirection, value bool) {
 func (g *game) SaveGameState() {
 	state := file.SaveGameData{}
 	state.Seed = g.World.GetSeed()
+	state.Tick = g.tick
 	file.SaveToFile(state, file.DefaultSaveGameName)
 }
 
 func (g *game) LoadGameState() {
 	dataStructure := file.LoadFromFile(file.DefaultSaveGameName)
+	g.tick = dataStructure.Tick
 	g.LoadSavedWorld(dataStructure)
 }
