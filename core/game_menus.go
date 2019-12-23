@@ -1,6 +1,7 @@
 package core
 
 import (
+	"github.com/pedritoelcabra/projectx/core/file"
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/gui"
 	"github.com/pedritoelcabra/projectx/world"
@@ -26,25 +27,34 @@ func (g *game) BuildStartMenu() *gui.Menu {
 	startButton.OnPressed = func(b *gui.Button) {
 		g.TogglePause()
 	}
+	aMenu.AddButton(startButton)
 
 	debugButton := gui.NewButton(buttonSize, "Toggle debug")
 	debugButton.OnPressed = func(b *gui.Button) {
 		g.Gui.GetMenu("debug").ToggleDisabled()
 	}
+	aMenu.AddButton(debugButton)
 
-	saveButton := gui.NewButton(buttonSize, "Save")
-	saveButton.OnPressed = func(b *gui.Button) {
-		g.SaveGameState()
+	if g.World.IsInitialized() {
+		saveButton := gui.NewButton(buttonSize, "Save")
+		saveButton.OnPressed = func(b *gui.Button) {
+			g.SaveGameState()
+		}
+		aMenu.AddButton(saveButton)
+	}
+
+	if file.SaveGameExists(file.DefaultSaveGameName) {
+		loadButton := gui.NewButton(buttonSize, "Load")
+		loadButton.OnPressed = func(b *gui.Button) {
+			g.LoadGameState()
+		}
+		aMenu.AddButton(loadButton)
 	}
 
 	stopButton := gui.NewButton(buttonSize, "Exit")
 	stopButton.OnPressed = func(b *gui.Button) {
 		log.Fatal("Stopped")
 	}
-
-	aMenu.AddButton(startButton)
-	aMenu.AddButton(debugButton)
-	aMenu.AddButton(saveButton)
 	aMenu.AddButton(stopButton)
 
 	return aMenu

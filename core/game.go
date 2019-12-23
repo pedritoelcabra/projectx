@@ -141,6 +141,7 @@ func (g *game) UnPause() {
 func (g *game) InitializeNewWorld() {
 	g.World.SetSeed(100)
 	g.World.Init()
+	g.InitMenus()
 }
 
 func (g *game) Pause() {
@@ -160,5 +161,9 @@ func (g *game) UpdatePlayerMovement(dir world.PlayerDirection, value bool) {
 func (g *game) SaveGameState() {
 	state := file.SaveGameData{}
 	state.Seed = g.World.GetSeed()
-	file.SaveToFile(state, "test.pxs")
+	file.SaveToFile(state, file.DefaultSaveGameName)
+}
+
+func (g *game) LoadGameState() {
+
 }
