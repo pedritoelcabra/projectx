@@ -16,16 +16,21 @@ type SaveGameData struct {
 	Seed int
 }
 
-func SaveToFile(data SaveGameData, fileName string) {
+func getSaveGameFullPath(fileName string) string {
 	absolutePath, err := filepath.Abs(saveGameBasePath)
-	if _, err := os.Stat(absolutePath); os.IsNotExist(err) {
-		os.Mkdir(absolutePath, os.ModeDir|os.ModePerm)
-	}
-	fullPath := saveGameBasePath + fileName
 	if err != nil {
 		log.Fatal(err)
 	}
+	if _, err := os.Stat(absolutePath); os.IsNotExist(err) {
+		os.Mkdir(absolutePath, os.ModeDir|os.ModePerm)
+	}
+	return saveGameBasePath + fileName
+}
+
+func SaveToFile(data SaveGameData, fileName string) {
+	fullPath := getSaveGameFullPath(fileName)
 	file, err := os.Create(fullPath)
+	defer file.Close()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -37,7 +42,17 @@ func SaveToFile(data SaveGameData, fileName string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func LoadFromFile(fileName string) SaveGameData {
+	file, err := os.Open(getSaveGameFullPath(fileName))
 	defer file.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
+	dataStructure := SaveGameData{}
+	json.NewDecoder(file).Decode(dataStructure)
+	return dataStructure
 }
 
 func Marshal(v interface{}) (io.Reader, error) {
@@ -49,12 +64,8 @@ func Marshal(v interface{}) (io.Reader, error) {
 }
 
 func SaveGameExists(fileName string) bool {
-	saveGameFilePath := saveGameBasePath + "/" + fileName
-	absolutePath, err := filepath.Abs(saveGameFilePath)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if _, err := os.Stat(absolutePath); os.IsNotExist(err) {
+	fullPath := getSaveGameFullPath(fileName)
+	if _, err := os.Stat(fullPath); os.IsNotExist(err) {
 		return false
 	}
 	return true

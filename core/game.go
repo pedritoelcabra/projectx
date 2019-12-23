@@ -7,6 +7,7 @@ import (
 	"github.com/pedritoelcabra/projectx/gui"
 	"github.com/pedritoelcabra/projectx/world"
 	"github.com/pedritoelcabra/projectx/world/grid"
+	"math/rand"
 	"strconv"
 )
 
@@ -40,7 +41,6 @@ func G() *game {
 
 func (g *game) init() {
 	g.Screen = gfx.NewScreen()
-	g.World = world.NewWorld()
 	g.Graphics = gfx.NewGraphics()
 	g.InitInput()
 	g.Gui = gui.New(0, 0, gfx.ScreenWidth, gfx.ScreenHeight)
@@ -92,7 +92,7 @@ func (g *game) openContextMenu() {
 func (g *game) DebugInfo() string {
 	aString := "Tick: " + strconv.Itoa(g.tick)
 	aString += "\nFrame: " + strconv.Itoa(g.framesDrawn)
-	if g.World.PlayerUnit != nil {
+	if g.HasLoadedWorld() {
 		x, y := g.World.PlayerUnit.GetPos()
 		aString += "\nPlayer Pos: " + strconv.Itoa(int(x)) + " / " + strconv.Itoa(int(y))
 		tx, ty := world.PosToTile(int(x), int(y))
@@ -138,10 +138,16 @@ func (g *game) UnPause() {
 	g.Gui.SetDisabled("game", false)
 }
 
+func (g *game) HasLoadedWorld() bool {
+	return g.World != nil && g.World.IsInitialized()
+}
+
 func (g *game) InitializeNewWorld() {
-	g.World.SetSeed(100)
+	g.World = world.NewWorld()
+	g.World.SetSeed(rand.Intn(10000))
 	g.World.Init()
 	g.InitMenus()
+	g.UnPause()
 }
 
 func (g *game) Pause() {
@@ -165,5 +171,6 @@ func (g *game) SaveGameState() {
 }
 
 func (g *game) LoadGameState() {
-
+	dataStructure := file.LoadFromFile(file.DefaultSaveGameName)
+	_ = dataStructure
 }

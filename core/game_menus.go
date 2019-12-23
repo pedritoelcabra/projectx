@@ -23,9 +23,17 @@ func (g *game) BuildStartMenu() *gui.Menu {
 
 	buttonSize := image.Rect(0, 0, 150, 30)
 
+	if g.HasLoadedWorld() {
+		continueButton := gui.NewButton(buttonSize, "Resume")
+		continueButton.OnPressed = func(b *gui.Button) {
+			g.TogglePause()
+		}
+		aMenu.AddButton(continueButton)
+	}
+
 	startButton := gui.NewButton(buttonSize, "New World")
 	startButton.OnPressed = func(b *gui.Button) {
-		g.TogglePause()
+		g.InitializeNewWorld()
 	}
 	aMenu.AddButton(startButton)
 
@@ -35,7 +43,7 @@ func (g *game) BuildStartMenu() *gui.Menu {
 	}
 	aMenu.AddButton(debugButton)
 
-	if g.World.IsInitialized() {
+	if g.HasLoadedWorld() {
 		saveButton := gui.NewButton(buttonSize, "Save")
 		saveButton.OnPressed = func(b *gui.Button) {
 			g.SaveGameState()
