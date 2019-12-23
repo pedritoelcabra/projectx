@@ -2,6 +2,7 @@ package core
 
 import (
 	"github.com/hajimehoshi/ebiten"
+	"github.com/pedritoelcabra/projectx/core/file"
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/gui"
 	"github.com/pedritoelcabra/projectx/world"
@@ -154,4 +155,10 @@ func (g *game) UpdatePlayerMovement(dir world.PlayerDirection, value bool) {
 		return
 	}
 	g.World.PlayerUnit.SetMovement(dir, value)
+}
+
+func (g *game) SaveGameState() {
+	state := file.SaveGameData{}
+	state.Seed = g.World.GetSeed()
+	file.SaveToFile(state, "test.pxs")
 }

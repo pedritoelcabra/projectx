@@ -32,6 +32,11 @@ func (g *game) BuildStartMenu() *gui.Menu {
 		g.Gui.GetMenu("debug").ToggleDisabled()
 	}
 
+	saveButton := gui.NewButton(buttonSize, "Save")
+	saveButton.OnPressed = func(b *gui.Button) {
+		g.SaveGameState()
+	}
+
 	stopButton := gui.NewButton(buttonSize, "Exit")
 	stopButton.OnPressed = func(b *gui.Button) {
 		log.Fatal("Stopped")
@@ -39,6 +44,7 @@ func (g *game) BuildStartMenu() *gui.Menu {
 
 	aMenu.AddButton(startButton)
 	aMenu.AddButton(debugButton)
+	aMenu.AddButton(saveButton)
 	aMenu.AddButton(stopButton)
 
 	return aMenu

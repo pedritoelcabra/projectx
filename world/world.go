@@ -30,6 +30,10 @@ func (w *World) SetSeed(seed int) {
 	w.seed = seed
 }
 
+func (w *World) GetSeed() int {
+	return w.seed
+}
+
 func (w *World) Init() {
 	w.Noise = noise.New(w.seed)
 	w.Grid = grid.New()
