@@ -23,7 +23,7 @@ func (g *game) BuildStartMenu() *gui.Menu {
 
 	buttonSize := image.Rect(0, 0, 150, 30)
 
-	startButton := gui.NewButton(buttonSize, "Start")
+	startButton := gui.NewButton(buttonSize, "New World")
 	startButton.OnPressed = func(b *gui.Button) {
 		g.TogglePause()
 	}
