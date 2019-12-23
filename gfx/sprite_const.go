@@ -1,9 +1,9 @@
 package gfx
 
-type spriteKey int
+type SpriteKey int
 
 const (
-	_ spriteKey = iota
+	_ SpriteKey = iota
 
 	BodyMaleDark
 	BodyMaleDark2

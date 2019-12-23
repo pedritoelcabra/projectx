@@ -176,6 +176,7 @@ func (g *game) SaveGameState() {
 	state := file.SaveGameData{}
 	state.Seed = g.World.GetSeed()
 	state.Tick = g.tick
+	state.Player = *g.World.PlayerUnit
 	file.SaveToFile(state, file.DefaultSaveGameName)
 }
 

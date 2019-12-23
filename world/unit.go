@@ -6,79 +6,81 @@ import (
 )
 
 type Unit struct {
-	sprite gfx.Sprite
-	x      float64
-	y      float64
-	destX  float64
-	destY  float64
-	moving bool
-	speed  float64
+	Sprite     gfx.Sprite
+	SpriteName gfx.SpriteKey
+	X          float64
+	Y          float64
+	DestX      float64
+	DestY      float64
+	Moving     bool
+	Speed      float64
 }
 
 func (u *Unit) DrawSprite(screen *gfx.Screen) {
-	u.sprite.DrawSprite(screen, u.x, u.y)
+	u.Sprite.DrawSprite(screen, u.X, u.Y)
 }
 
 func (u *Unit) SetPosition(x, y float64) {
-	u.x = x
-	u.y = y
-	u.destX = x
-	u.destY = y
+	u.X = x
+	u.Y = y
+	u.DestX = x
+	u.DestY = y
 	u.CheckIfMoving()
 }
 
 func (u *Unit) SetDestination(x, y float64) {
-	u.destX = x
-	u.destY = y
+	u.DestX = x
+	u.DestY = y
 	u.CheckIfMoving()
 	u.CheckOrientation()
 }
 
 func (u *Unit) CheckOrientation() {
-	if !u.moving {
+	if !u.Moving {
 		return
 	}
-	if math.Abs(u.x-u.destX)+1 > math.Abs(u.y-u.destY) {
-		if u.x > u.destX {
-			u.sprite.SetFacing(gfx.FaceLeft)
+	if math.Abs(u.X-u.DestX)+1 > math.Abs(u.Y-u.DestY) {
+		if u.X > u.DestX {
+			u.Sprite.SetFacing(gfx.FaceLeft)
 			return
 		}
-		u.sprite.SetFacing(gfx.FaceRight)
+		u.Sprite.SetFacing(gfx.FaceRight)
 		return
 	}
-	if u.y > u.destY {
-		u.sprite.SetFacing(gfx.FaceUp)
+	if u.Y > u.DestY {
+		u.Sprite.SetFacing(gfx.FaceUp)
 		return
 	}
-	u.sprite.SetFacing(gfx.FaceDown)
+	u.Sprite.SetFacing(gfx.FaceDown)
 }
 
 func (u *Unit) SetSpeed(speed float64) {
-	u.speed = speed
+	u.Speed = speed
 }
 
 func NewUnit() *Unit {
 	aUnit := &Unit{}
-	aUnit.sprite = gfx.NewLpcSprite(gfx.BodyMaleLight)
-	aUnit.speed = 100
+	aUnit.SpriteName = gfx.BodyMaleLight
+	aUnit.Sprite = gfx.NewLpcSprite(aUnit.SpriteName)
+	aUnit.Speed = 100
 	return aUnit
 }
 
 func (u *Unit) Update(tick int) {
-	if u.moving {
-		newX, newY := AdvanceAlongLine(u.x, u.y, u.destX, u.destY, u.speed)
+	if u.Moving {
+		newX, newY := AdvanceAlongLine(u.X, u.Y, u.DestX, u.DestY, u.Speed)
 		u.SetPosition(newX, newY)
 	}
 }
 
 func (u *Unit) CheckIfMoving() {
-	if u.destY != u.y || u.destX != u.x {
-		u.moving = true
+	if u.DestY != u.Y || u.DestX != u.X {
+		u.Moving = true
 		return
 	}
-	u.moving = false
+	u.Moving = false
 }
 
 func (u *Unit) GetPos() (x, y float64) {
-	return u.x, u.y
+	return u.X, u.Y
 }
