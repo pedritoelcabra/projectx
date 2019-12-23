@@ -150,6 +150,14 @@ func (g *game) InitializeNewWorld() {
 	g.UnPause()
 }
 
+func (g *game) LoadSavedWorld(data file.SaveGameData) {
+	g.World = world.NewWorld()
+	g.World.SetSeed(data.Seed)
+	g.World.Init()
+	g.InitMenus()
+	g.UnPause()
+}
+
 func (g *game) Pause() {
 	g.isPaused = true
 	g.Gui.SetDisabled("context", true)
@@ -172,5 +180,5 @@ func (g *game) SaveGameState() {
 
 func (g *game) LoadGameState() {
 	dataStructure := file.LoadFromFile(file.DefaultSaveGameName)
-	_ = dataStructure
+	g.LoadSavedWorld(dataStructure)
 }

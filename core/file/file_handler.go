@@ -13,7 +13,7 @@ var saveGameBasePath = "save_games/"
 var DefaultSaveGameName = "save.pxs"
 
 type SaveGameData struct {
-	Seed int
+	Seed int `json:"Seed"`
 }
 
 func getSaveGameFullPath(fileName string) string {
@@ -24,7 +24,7 @@ func getSaveGameFullPath(fileName string) string {
 	if _, err := os.Stat(absolutePath); os.IsNotExist(err) {
 		os.Mkdir(absolutePath, os.ModeDir|os.ModePerm)
 	}
-	return saveGameBasePath + fileName
+	return absolutePath + "/" + fileName
 }
 
 func SaveToFile(data SaveGameData, fileName string) {
@@ -34,7 +34,7 @@ func SaveToFile(data SaveGameData, fileName string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	jsonData, err := Marshal(data)
+	jsonData, err := Encode(data)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -45,17 +45,25 @@ func SaveToFile(data SaveGameData, fileName string) {
 }
 
 func LoadFromFile(fileName string) SaveGameData {
-	file, err := os.Open(getSaveGameFullPath(fileName))
-	defer file.Close()
+	fullPath := getSaveGameFullPath(fileName)
+	file, err := os.Open(fullPath)
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer file.Close()
 	dataStructure := SaveGameData{}
-	json.NewDecoder(file).Decode(dataStructure)
+	err = Decode(file, &dataStructure)
+	if err != nil {
+		log.Fatal(err)
+	}
 	return dataStructure
 }
 
-func Marshal(v interface{}) (io.Reader, error) {
+func Decode(reader io.Reader, structure interface{}) error {
+	return json.NewDecoder(reader).Decode(structure)
+}
+
+func Encode(v interface{}) (io.Reader, error) {
 	b, err := json.MarshalIndent(v, "", "\t")
 	if err != nil {
 		return nil, err
