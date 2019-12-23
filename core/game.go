@@ -9,6 +9,7 @@ import (
 	"github.com/pedritoelcabra/projectx/world/grid"
 	"math/rand"
 	"strconv"
+	"time"
 )
 
 type game struct {
@@ -129,9 +130,6 @@ func (g *game) TogglePause() {
 }
 
 func (g *game) UnPause() {
-	if !g.World.IsInitialized() {
-		g.InitializeNewWorld()
-	}
 	g.isPaused = false
 	g.Gui.SetDisabled("start", true)
 	g.Gui.SetDisabled("context", true)
@@ -144,7 +142,9 @@ func (g *game) HasLoadedWorld() bool {
 
 func (g *game) InitializeNewWorld() {
 	g.World = world.NewWorld()
-	g.World.SetSeed(rand.Intn(10000))
+	s1 := rand.NewSource(time.Now().UnixNano())
+	r1 := rand.New(s1)
+	g.World.SetSeed(r1.Intn(10000))
 	g.World.Init()
 	g.InitMenus()
 	g.UnPause()
