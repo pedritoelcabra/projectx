@@ -1,4 +1,4 @@
-package world
+package units
 
 import (
 	"github.com/pedritoelcabra/projectx/gfx"

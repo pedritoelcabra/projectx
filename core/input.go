@@ -2,7 +2,7 @@ package core
 
 import (
 	"github.com/hajimehoshi/ebiten"
-	"github.com/pedritoelcabra/projectx/world"
+	"github.com/pedritoelcabra/projectx/world/units"
 )
 
 type listenerFunction func(g *game)
@@ -102,51 +102,51 @@ func (g *game) InitInput() {
 		g.TogglePause()
 	})
 	g.Input.AddListener("LeftPress", "updatePlayer", func(g *game) {
-		g.UpdatePlayerMovement(world.PLAYERLEFT, true)
+		g.UpdatePlayerMovement(units.PLAYERLEFT, true)
 	})
 	g.Input.AddListener("LeftRelease", "updatePlayer", func(g *game) {
-		g.UpdatePlayerMovement(world.PLAYERLEFT, false)
+		g.UpdatePlayerMovement(units.PLAYERLEFT, false)
 	})
 	g.Input.AddListener("APress", "updatePlayer", func(g *game) {
-		g.UpdatePlayerMovement(world.PLAYERLEFT, true)
+		g.UpdatePlayerMovement(units.PLAYERLEFT, true)
 	})
 	g.Input.AddListener("ARelease", "updatePlayer", func(g *game) {
-		g.UpdatePlayerMovement(world.PLAYERLEFT, false)
+		g.UpdatePlayerMovement(units.PLAYERLEFT, false)
 	})
 	g.Input.AddListener("RightPress", "updatePlayer", func(g *game) {
-		g.UpdatePlayerMovement(world.PLAYERRIGHT, true)
+		g.UpdatePlayerMovement(units.PLAYERRIGHT, true)
 	})
 	g.Input.AddListener("RightRelease", "updatePlayer", func(g *game) {
-		g.UpdatePlayerMovement(world.PLAYERRIGHT, false)
+		g.UpdatePlayerMovement(units.PLAYERRIGHT, false)
 	})
 	g.Input.AddListener("DPress", "updatePlayer", func(g *game) {
-		g.UpdatePlayerMovement(world.PLAYERRIGHT, true)
+		g.UpdatePlayerMovement(units.PLAYERRIGHT, true)
 	})
 	g.Input.AddListener("DRelease", "updatePlayer", func(g *game) {
-		g.UpdatePlayerMovement(world.PLAYERRIGHT, false)
+		g.UpdatePlayerMovement(units.PLAYERRIGHT, false)
 	})
 	g.Input.AddListener("UpPress", "updatePlayer", func(g *game) {
-		g.UpdatePlayerMovement(world.PLAYERUP, true)
+		g.UpdatePlayerMovement(units.PLAYERUP, true)
 	})
 	g.Input.AddListener("UpRelease", "updatePlayer", func(g *game) {
-		g.UpdatePlayerMovement(world.PLAYERUP, false)
+		g.UpdatePlayerMovement(units.PLAYERUP, false)
 	})
 	g.Input.AddListener("WPress", "updatePlayer", func(g *game) {
-		g.UpdatePlayerMovement(world.PLAYERUP, true)
+		g.UpdatePlayerMovement(units.PLAYERUP, true)
 	})
 	g.Input.AddListener("WRelease", "updatePlayer", func(g *game) {
-		g.UpdatePlayerMovement(world.PLAYERUP, false)
+		g.UpdatePlayerMovement(units.PLAYERUP, false)
 	})
 	g.Input.AddListener("DownPress", "updatePlayer", func(g *game) {
-		g.UpdatePlayerMovement(world.PLAYERDOWN, true)
+		g.UpdatePlayerMovement(units.PLAYERDOWN, true)
 	})
 	g.Input.AddListener("DownRelease", "updatePlayer", func(g *game) {
-		g.UpdatePlayerMovement(world.PLAYERDOWN, false)
+		g.UpdatePlayerMovement(units.PLAYERDOWN, false)
 	})
 	g.Input.AddListener("SPress", "updatePlayer", func(g *game) {
-		g.UpdatePlayerMovement(world.PLAYERDOWN, true)
+		g.UpdatePlayerMovement(units.PLAYERDOWN, true)
 	})
 	g.Input.AddListener("SRelease", "updatePlayer", func(g *game) {
-		g.UpdatePlayerMovement(world.PLAYERDOWN, false)
+		g.UpdatePlayerMovement(units.PLAYERDOWN, false)
 	})
 }

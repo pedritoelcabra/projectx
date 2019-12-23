@@ -3,7 +3,7 @@ package file
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/pedritoelcabra/projectx/world"
+	"github.com/pedritoelcabra/projectx/world/units"
 	"io"
 	"log"
 	"os"
@@ -16,7 +16,7 @@ var DefaultSaveGameName = "save.pxs"
 type SaveGameData struct {
 	Seed   int
 	Tick   int
-	Player world.Player
+	Player units.Player
 }
 
 func getSaveGameFullPath(fileName string) string {

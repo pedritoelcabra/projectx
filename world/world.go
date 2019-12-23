@@ -1,14 +1,16 @@
 package world
 
 import (
+	"github.com/pedritoelcabra/projectx/core/file"
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/world/grid"
 	"github.com/pedritoelcabra/projectx/world/noise"
+	"github.com/pedritoelcabra/projectx/world/units"
 )
 
 type World struct {
 	Entities    map[int]Entity
-	PlayerUnit  *Player
+	PlayerUnit  *units.Player
 	Noise       *noise.NoiseGenerator
 	Grid        *grid.Grid
 	entityCount int
@@ -39,8 +41,21 @@ func (w *World) Init() {
 	w.Grid = grid.New()
 	w.Grid.SetNoise(w.Noise)
 	w.Entities = make(map[int]Entity)
-	w.PlayerUnit = NewPlayer()
+	w.PlayerUnit = units.NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)
+	w.AddEntity(w.PlayerUnit)
+	w.renderMode = RenderModeBasic
+	w.initialised = true
+}
+
+func (w *World) LoadFromSave(data file.SaveGameData) {
+	w.SetSeed(data.Seed)
+	w.Noise = noise.New(w.seed)
+	w.Grid = grid.New()
+	w.Grid.SetNoise(w.Noise)
+	w.Entities = make(map[int]Entity)
+	w.PlayerUnit = &data.Player
+	w.PlayerUnit.Unit.InitObjects()
 	w.AddEntity(w.PlayerUnit)
 	w.renderMode = RenderModeBasic
 	w.initialised = true

@@ -1,7 +1,7 @@
 package test
 
 import (
-	"github.com/pedritoelcabra/projectx/world"
+	"github.com/pedritoelcabra/projectx/world/movement"
 	"math"
 	"testing"
 )
@@ -16,7 +16,7 @@ func TestDistance(t *testing.T) {
 		{-10, -10, 10, 10, 28.28},
 	}
 	for _, c := range distances {
-		measured := math.Round(world.CalculateDistance(c.x1, c.y1, c.x2, c.y2)*100) / 100
+		measured := math.Round(movement.CalculateDistance(c.x1, c.y1, c.x2, c.y2)*100) / 100
 		if measured != c.dist {
 			t.Errorf("%.2f / %.2f to %.2f / %.2f measured %.2f, want %.2f", c.x1, c.y1, c.x2, c.y2, measured, c.dist)
 		}
@@ -37,7 +37,7 @@ func TestMovementAlongLine(t *testing.T) {
 		{100, 0, 100, 200, 100, 100, 100},
 	}
 	for _, c := range distances {
-		x3, y3 := world.AdvanceAlongLine(c.x1, c.y1, c.x2, c.y2, c.speed)
+		x3, y3 := movement.AdvanceAlongLine(c.x1, c.y1, c.x2, c.y2, c.speed)
 		x3 = math.Round(x3*100) / 100
 		y3 = math.Round(y3*100) / 100
 		if x3 != c.x3 || y3 != c.y3 {

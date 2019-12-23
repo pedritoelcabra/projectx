@@ -7,6 +7,7 @@ import (
 	"github.com/pedritoelcabra/projectx/gui"
 	"github.com/pedritoelcabra/projectx/world"
 	"github.com/pedritoelcabra/projectx/world/grid"
+	"github.com/pedritoelcabra/projectx/world/units"
 	"math/rand"
 	"strconv"
 	"time"
@@ -150,14 +151,6 @@ func (g *game) InitializeNewWorld() {
 	g.UnPause()
 }
 
-func (g *game) LoadSavedWorld(data file.SaveGameData) {
-	g.World = world.NewWorld()
-	g.World.SetSeed(data.Seed)
-	g.World.Init()
-	g.InitMenus()
-	g.UnPause()
-}
-
 func (g *game) Pause() {
 	g.isPaused = true
 	g.Gui.SetDisabled("context", true)
@@ -165,7 +158,7 @@ func (g *game) Pause() {
 	g.Gui.SetDisabled("start", false)
 }
 
-func (g *game) UpdatePlayerMovement(dir world.PlayerDirection, value bool) {
+func (g *game) UpdatePlayerMovement(dir units.PlayerDirection, value bool) {
 	if g.World == nil || g.World.PlayerUnit == nil {
 		return
 	}
@@ -183,5 +176,8 @@ func (g *game) SaveGameState() {
 func (g *game) LoadGameState() {
 	dataStructure := file.LoadFromFile(file.DefaultSaveGameName)
 	g.tick = dataStructure.Tick
-	g.LoadSavedWorld(dataStructure)
+	g.World = world.NewWorld()
+	g.World.LoadFromSave(dataStructure)
+	g.InitMenus()
+	g.UnPause()
 }

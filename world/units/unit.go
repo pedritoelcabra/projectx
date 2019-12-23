@@ -1,12 +1,13 @@
-package world
+package units
 
 import (
 	"github.com/pedritoelcabra/projectx/gfx"
+	"github.com/pedritoelcabra/projectx/world/movement"
 	"math"
 )
 
 type Unit struct {
-	Sprite     gfx.Sprite
+	Sprite     gfx.Sprite `json:"-"`
 	SpriteName gfx.SpriteKey
 	X          float64
 	Y          float64
@@ -61,14 +62,18 @@ func (u *Unit) SetSpeed(speed float64) {
 func NewUnit() *Unit {
 	aUnit := &Unit{}
 	aUnit.SpriteName = gfx.BodyMaleLight
-	aUnit.Sprite = gfx.NewLpcSprite(aUnit.SpriteName)
+	aUnit.InitObjects()
 	aUnit.Speed = 100
 	return aUnit
 }
 
+func (u *Unit) InitObjects() {
+	u.Sprite = gfx.NewLpcSprite(u.SpriteName)
+}
+
 func (u *Unit) Update(tick int) {
 	if u.Moving {
-		newX, newY := AdvanceAlongLine(u.X, u.Y, u.DestX, u.DestY, u.Speed)
+		newX, newY := movement.AdvanceAlongLine(u.X, u.Y, u.DestX, u.DestY, u.Speed)
 		u.SetPosition(newX, newY)
 	}
 }
