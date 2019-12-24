@@ -1,5 +1,7 @@
 package grid
 
+import "strconv"
+
 // Coord is a simple structure to hold X and Y values
 type Coord struct {
 	x, y int
@@ -17,4 +19,8 @@ func (c Coord) X() int {
 
 func (c Coord) Y() int {
 	return c.y
+}
+
+func (c Coord) ToString() string {
+	return strconv.Itoa(c.x) + "/" + strconv.Itoa(c.y)
 }

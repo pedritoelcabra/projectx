@@ -1,9 +1,5 @@
 package logger
 
-import (
-	"github.com/pedritoelcabra/projectx/world"
-)
-
 type LogType int
 
 const (
@@ -20,7 +16,7 @@ type LogEntry struct {
 	message    string
 	tick       int
 	timeString string
-	entity     *world.Entity
+	entity     *LocatableEntity
 }
 
 var Logger = &Manager{}
@@ -33,11 +29,11 @@ func (l *LogEntry) Message() string {
 	return l.message
 }
 
-func General(message string, entity *world.Entity) {
+func General(message string, entity *LocatableEntity) {
 	Log(GeneralLog, message, entity)
 }
 
-func Log(key LogType, message string, entity *world.Entity) {
+func Log(key LogType, message string, entity *LocatableEntity) {
 	aLog := &LogEntry{}
 	aLog.message = message
 	aLog.tick = Logger.tick
