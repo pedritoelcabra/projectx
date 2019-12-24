@@ -22,29 +22,6 @@ func NewInput() *Input {
 
 func (i *Input) Init() {
 	i.listeners = make(map[string]map[string]listenerFunction)
-	i.listeners["RightClick"] = make(map[string]listenerFunction)
-	i.listeners["LeftClick"] = make(map[string]listenerFunction)
-	i.listeners["EscapePress"] = make(map[string]listenerFunction)
-	i.listeners["EscapeRelease"] = make(map[string]listenerFunction)
-	i.listeners["LeftPress"] = make(map[string]listenerFunction)
-	i.listeners["LeftRelease"] = make(map[string]listenerFunction)
-	i.listeners["DownPress"] = make(map[string]listenerFunction)
-	i.listeners["DownRelease"] = make(map[string]listenerFunction)
-	i.listeners["UpPress"] = make(map[string]listenerFunction)
-	i.listeners["UpRelease"] = make(map[string]listenerFunction)
-	i.listeners["RightPress"] = make(map[string]listenerFunction)
-	i.listeners["RightRelease"] = make(map[string]listenerFunction)
-	i.listeners["APress"] = make(map[string]listenerFunction)
-	i.listeners["ARelease"] = make(map[string]listenerFunction)
-	i.listeners["SPress"] = make(map[string]listenerFunction)
-	i.listeners["SRelease"] = make(map[string]listenerFunction)
-	i.listeners["WPress"] = make(map[string]listenerFunction)
-	i.listeners["WRelease"] = make(map[string]listenerFunction)
-	i.listeners["DPress"] = make(map[string]listenerFunction)
-	i.listeners["DRelease"] = make(map[string]listenerFunction)
-	i.listeners["GraveAccentPress"] = make(map[string]listenerFunction)
-	i.listeners["F5Press"] = make(map[string]listenerFunction)
-	i.listeners["F9Press"] = make(map[string]listenerFunction)
 	i.pressedKeys = make(map[ebiten.Key]bool)
 	for k := ebiten.Key(0); k <= ebiten.KeyMax; k++ {
 		i.pressedKeys[k] = false
@@ -84,7 +61,14 @@ func (i *Input) Update() {
 }
 
 func (i *Input) AddListener(event, name string, callback listenerFunction) {
+	i.InitKey(event)
 	i.listeners[event][name] = callback
+}
+
+func (i *Input) InitKey(event string) {
+	if _, ok := i.listeners[event]; !ok {
+		i.listeners[event] = make(map[string]listenerFunction)
+	}
 }
 
 func (i *Input) TriggerCallbacks(key string) {

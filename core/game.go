@@ -191,7 +191,7 @@ func (g *game) QuickSave() {
 	file.SaveToFile(state, file.DefaultSaveGameName)
 	g.InitMenus()
 	g.UnPause()
-	logger.General("Quick Saved Game", nil)
+	logger.General("Quick Saved", nil)
 }
 
 func (g *game) QuickLoad() {
@@ -201,5 +201,5 @@ func (g *game) QuickLoad() {
 	g.World.LoadFromSave(dataStructure)
 	g.InitMenus()
 	g.UnPause()
-	logger.General("Quick Loaded Game", nil)
+	logger.General("Quick Loaded", nil)
 }
