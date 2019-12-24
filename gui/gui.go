@@ -51,6 +51,11 @@ func New(x, y, w, h int) *Gui {
 	return aGui
 }
 
+func (g *Gui) ToggleDebug() {
+	g.GetMenu("debug").ToggleDisabled()
+	g.GetMenu("log").ToggleDisabled()
+}
+
 func (g *Gui) AddMenu(key string, menu *Menu) {
 	g.menus[key] = menu
 }

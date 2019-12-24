@@ -151,6 +151,6 @@ func (g *game) InitInput() {
 		g.UpdatePlayerMovement(units.PLAYERDOWN, false)
 	})
 	g.Input.AddListener("GraveAccentPress", "toggleDebug", func(g *game) {
-		g.Gui.GetMenu("debug").ToggleDisabled()
+		g.Gui.ToggleDebug()
 	})
 }

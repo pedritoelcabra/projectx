@@ -14,6 +14,7 @@ func (g *game) InitMenus() {
 	g.Gui.AddMenu("start", g.BuildStartMenu())
 	g.Gui.AddMenu("debug", g.BuildDebugMenu())
 	g.Gui.AddMenu("game", g.BuildInGameMenu())
+	g.Gui.AddMenu("log", g.BuildLog())
 }
 
 func (g *game) BuildStartMenu() *gui.Menu {
@@ -39,7 +40,7 @@ func (g *game) BuildStartMenu() *gui.Menu {
 
 	debugButton := gui.NewButton(buttonSize, "Toggle debug")
 	debugButton.OnPressed = func(b *gui.Button) {
-		g.Gui.GetMenu("debug").ToggleDisabled()
+		g.Gui.ToggleDebug()
 	}
 	aMenu.AddButton(debugButton)
 
@@ -83,6 +84,23 @@ func (g *game) BuildDebugMenu() *gui.Menu {
 	debugMenu.AddTextBox(aBox)
 
 	return debugMenu
+}
+
+func (g *game) BuildLog() *gui.Menu {
+	logMenu := gui.NewMenu(g.Gui)
+
+	aBox := &gui.TextBox{}
+	aBox.SetBox(image.Rect(0, gfx.ScreenHeight-200, gfx.ScreenWidth, gfx.ScreenHeight))
+	aBox.SetLeftPadding(10)
+	aBox.SetTopPadding(10)
+	aBox.SetColor(color.White)
+	aBox.OnUpdate = func(t *gui.TextBox) {
+		t.SetText(g.LogText())
+	}
+
+	logMenu.AddTextBox(aBox)
+
+	return logMenu
 }
 
 func (g *game) BuildContextMenu(x, y int) *gui.Menu {
