@@ -11,7 +11,7 @@ import (
 )
 
 var saveGameBasePath = "save_games/"
-var DefaultSaveGameName = "save.pxs"
+var DefaultSaveGameName = "quicksave.pxs"
 
 type SaveGameData struct {
 	Seed   int

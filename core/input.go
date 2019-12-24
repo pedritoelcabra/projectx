@@ -43,6 +43,8 @@ func (i *Input) Init() {
 	i.listeners["DPress"] = make(map[string]listenerFunction)
 	i.listeners["DRelease"] = make(map[string]listenerFunction)
 	i.listeners["GraveAccentPress"] = make(map[string]listenerFunction)
+	i.listeners["F5Press"] = make(map[string]listenerFunction)
+	i.listeners["F9Press"] = make(map[string]listenerFunction)
 	i.pressedKeys = make(map[ebiten.Key]bool)
 	for k := ebiten.Key(0); k <= ebiten.KeyMax; k++ {
 		i.pressedKeys[k] = false
@@ -152,5 +154,11 @@ func (g *game) InitInput() {
 	})
 	g.Input.AddListener("GraveAccentPress", "toggleDebug", func(g *game) {
 		g.Gui.ToggleDebug()
+	})
+	g.Input.AddListener("F5Press", "quickSave", func(g *game) {
+		g.QuickSave()
+	})
+	g.Input.AddListener("F9Press", "quickLoad", func(g *game) {
+		g.QuickLoad()
 	})
 }

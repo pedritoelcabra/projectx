@@ -45,17 +45,17 @@ func (g *game) BuildStartMenu() *gui.Menu {
 	aMenu.AddButton(debugButton)
 
 	if g.HasLoadedWorld() {
-		saveButton := gui.NewButton(buttonSize, "Save")
+		saveButton := gui.NewButton(buttonSize, "Quick Save (F5)")
 		saveButton.OnPressed = func(b *gui.Button) {
-			g.SaveGameState()
+			g.QuickSave()
 		}
 		aMenu.AddButton(saveButton)
 	}
 
 	if file.SaveGameExists(file.DefaultSaveGameName) {
-		loadButton := gui.NewButton(buttonSize, "Load")
+		loadButton := gui.NewButton(buttonSize, "Quick Load (F9)")
 		loadButton.OnPressed = func(b *gui.Button) {
-			g.LoadGameState()
+			g.QuickLoad()
 		}
 		aMenu.AddButton(loadButton)
 	}

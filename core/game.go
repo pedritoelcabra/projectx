@@ -183,21 +183,23 @@ func (g *game) UpdatePlayerMovement(dir units.PlayerDirection, value bool) {
 	g.World.PlayerUnit.SetMovement(dir, value)
 }
 
-func (g *game) SaveGameState() {
+func (g *game) QuickSave() {
 	state := file.SaveGameData{}
 	state.Seed = g.World.GetSeed()
 	state.Tick = g.tick
 	state.Player = *g.World.PlayerUnit
 	file.SaveToFile(state, file.DefaultSaveGameName)
-	logger.General("Saved Game", nil)
+	g.InitMenus()
+	g.UnPause()
+	logger.General("Quick Saved Game", nil)
 }
 
-func (g *game) LoadGameState() {
+func (g *game) QuickLoad() {
 	dataStructure := file.LoadFromFile(file.DefaultSaveGameName)
 	g.tick = dataStructure.Tick
 	g.World = world.NewWorld()
 	g.World.LoadFromSave(dataStructure)
 	g.InitMenus()
 	g.UnPause()
-	logger.General("Loaded Game", nil)
+	logger.General("Quick Loaded Game", nil)
 }
