@@ -89,10 +89,11 @@ func (g *game) BuildDebugMenu() *gui.Menu {
 func (g *game) BuildLog() *gui.Menu {
 	logMenu := gui.NewMenu(g.Gui)
 
+	logHeight := 200
 	aBox := &gui.TextBox{}
-	aBox.SetBox(image.Rect(0, gfx.ScreenHeight-200, gfx.ScreenWidth, gfx.ScreenHeight))
+	aBox.SetBox(image.Rect(0, 0, gfx.ScreenWidth, logHeight-InGameMenuHeight()))
 	aBox.SetLeftPadding(10)
-	aBox.SetTopPadding(10)
+	aBox.SetTopPadding(gfx.ScreenHeight - logHeight)
 	aBox.SetColor(color.White)
 	aBox.OnUpdate = func(t *gui.TextBox) {
 		t.SetText(g.GetLogText())
@@ -139,10 +140,9 @@ func (g *game) BuildContextMenu(x, y int) *gui.Menu {
 func (g *game) BuildInGameMenu() *gui.Menu {
 	aMenu := gui.NewMenu(g.Gui)
 	aMenu.SetHorizontalMenu(true)
-	menuHeight := 30
-	aMenu.SetTopPadding(gfx.ScreenHeight - menuHeight)
+	aMenu.SetTopPadding(gfx.ScreenHeight - InGameMenuHeight())
 
-	buttonSize := image.Rect(0, 0, 150, menuHeight)
+	buttonSize := image.Rect(0, 0, 150, InGameMenuHeight())
 
 	mainMenuButton := gui.NewButton(buttonSize, "Main Menu")
 	mainMenuButton.OnPressed = func(b *gui.Button) {
@@ -165,4 +165,8 @@ func (g *game) BuildInGameMenu() *gui.Menu {
 	aMenu.SetDisabled(true)
 
 	return aMenu
+}
+
+func InGameMenuHeight() int {
+	return 30
 }

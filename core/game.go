@@ -127,11 +127,12 @@ func (g *game) DebugInfo() string {
 
 func (g *game) GetLogText() string {
 	aString := ""
-	for _, e := range logger.Get(logger.GeneralLog) {
+	log := logger.Get(logger.GeneralLog)
+	for i := len(log) - 1; i >= 0; i-- {
 		if aString != "" {
 			aString += "\n"
 		}
-		aString += e.Message()
+		aString += log[i].Message()
 	}
 
 	return aString
