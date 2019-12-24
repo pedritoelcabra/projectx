@@ -95,7 +95,7 @@ func (g *game) BuildLog() *gui.Menu {
 	aBox.SetTopPadding(10)
 	aBox.SetColor(color.White)
 	aBox.OnUpdate = func(t *gui.TextBox) {
-		t.SetText(g.LogText())
+		t.SetText(g.GetLogText())
 	}
 
 	logMenu.AddTextBox(aBox)

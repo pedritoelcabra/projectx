@@ -3,6 +3,7 @@ package core
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/core/file"
+	"github.com/pedritoelcabra/projectx/core/logger"
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/gui"
 	"github.com/pedritoelcabra/projectx/world"
@@ -42,12 +43,14 @@ func G() *game {
 }
 
 func (g *game) init() {
+	logger.InitLogger()
 	g.Screen = gfx.NewScreen()
 	g.Graphics = gfx.NewGraphics()
 	g.InitInput()
 	g.Gui = gui.New(0, 0, gfx.ScreenWidth, gfx.ScreenHeight)
 	g.InitMenus()
 	g.isPaused = true
+	logger.General("Initialised Game", nil)
 }
 
 func (g *game) Update(screen *ebiten.Image) error {
@@ -122,32 +125,13 @@ func (g *game) DebugInfo() string {
 	return aString
 }
 
-func (g *game) LogText() string {
-	aString := "Tick: " + strconv.Itoa(g.tick)
-	aString += "\nFrame: " + strconv.Itoa(g.framesDrawn)
-	if g.HasLoadedWorld() {
-		x, y := g.World.PlayerUnit.GetPos()
-		aString += "\nPlayer Pos: " + strconv.Itoa(int(x)) + " / " + strconv.Itoa(int(y))
-		tx, ty := world.PosToTile(int(x), int(y))
-		aString += "\nPlayer Tile: " + strconv.Itoa(tx) + " / " + strconv.Itoa(ty)
-		tile := g.World.Grid.Tile(grid.NewCoord(tx, ty))
-		height := tile.Get(grid.Height)
-		aString += "\nTile Height: " + strconv.Itoa(height)
-
-		mx, my := ebiten.CursorPosition()
-		cx, cy := g.Screen.GetCameraCoords()
-		mx += int(cx)
-		my += int(cy)
-		aString += "\nMouse Pos: " + strconv.Itoa(int(mx)) + " / " + strconv.Itoa(int(my))
-		mtx, mty := world.PosToTile(int(mx), int(my))
-		aString += "\nMouse Tile: " + strconv.Itoa(mtx) + " / " + strconv.Itoa(mty)
-		mTile := g.World.Grid.Tile(grid.NewCoord(mtx, mty))
-		mHeight := mTile.Get(grid.Height)
-		aString += "\nMouse Tile Height: " + strconv.Itoa(mHeight)
-
-	}
-	if g.debugMessage != "" {
-		aString += "\n" + g.debugMessage
+func (g *game) GetLogText() string {
+	aString := ""
+	for _, e := range logger.Get(logger.GeneralLog) {
+		if aString != "" {
+			aString += "\n"
+		}
+		aString += e.Message()
 	}
 
 	return aString
@@ -179,7 +163,9 @@ func (g *game) InitializeNewWorld() {
 	g.World.SetSeed(r1.Intn(10000))
 	g.World.Init()
 	g.InitMenus()
+	g.tick = 0
 	g.UnPause()
+	logger.General("Created a New World with seed "+strconv.Itoa(g.World.GetSeed()), nil)
 }
 
 func (g *game) Pause() {
@@ -202,6 +188,7 @@ func (g *game) SaveGameState() {
 	state.Tick = g.tick
 	state.Player = *g.World.PlayerUnit
 	file.SaveToFile(state, file.DefaultSaveGameName)
+	logger.General("Saved Game", nil)
 }
 
 func (g *game) LoadGameState() {
@@ -211,4 +198,5 @@ func (g *game) LoadGameState() {
 	g.World.LoadFromSave(dataStructure)
 	g.InitMenus()
 	g.UnPause()
+	logger.General("Loaded Game", nil)
 }
