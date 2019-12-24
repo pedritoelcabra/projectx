@@ -11,7 +11,7 @@ const (
 	ErrorLog
 )
 
-type LoggerManager struct {
+type Manager struct {
 	logEntries map[LogType][]*LogEntry
 	tick       int
 }
@@ -23,7 +23,7 @@ type LogEntry struct {
 	entity     *world.Entity
 }
 
-var Logger = &LoggerManager{}
+var Logger = &Manager{}
 
 func InitLogger() {
 	Logger.logEntries = make(map[LogType][]*LogEntry)
@@ -48,7 +48,7 @@ func Log(key LogType, message string, entity *world.Entity) {
 	}
 }
 
-func (l *LoggerManager) addLogEntry(key LogType, entry *LogEntry) {
+func (l *Manager) addLogEntry(key LogType, entry *LogEntry) {
 	l.InitKey(key)
 	l.logEntries[key] = append(l.logEntries[key], entry)
 }
@@ -58,7 +58,7 @@ func Get(key LogType) []*LogEntry {
 	return Logger.logEntries[key]
 }
 
-func (l *LoggerManager) InitKey(key LogType) {
+func (l *Manager) InitKey(key LogType) {
 	if _, ok := l.logEntries[key]; !ok {
 		l.logEntries[key] = make([]*LogEntry, 0)
 	}
