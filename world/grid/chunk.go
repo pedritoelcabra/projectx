@@ -18,6 +18,9 @@ func NewChunk(location Coord) *chunk {
 }
 
 func (ch *chunk) Preload(location Coord) {
+	if ch.isPreloaded {
+		return
+	}
 	ch.tiles = make([]*Tile, ChunkSize*ChunkSize)
 	ch.Location = location
 	for x := 0; x < ChunkSize; x++ {

@@ -13,6 +13,10 @@ func NewCoord(x, y int) Coord {
 	return aCoord
 }
 
+func NewCoordF(x, y float64) Coord {
+	return NewCoord(int(x), int(y))
+}
+
 func (c Coord) X() int {
 	return c.CX
 }

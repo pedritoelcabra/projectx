@@ -37,7 +37,7 @@ func (g *Grid) SetNoise(noise *noise.NoiseGenerator) {
 }
 
 func (g *Grid) Tile(tileCoord Coord) *Tile {
-	return g.Chunk(g.chunkCoord(tileCoord)).Tile(tileCoord)
+	return g.Chunk(g.ChunkCoord(tileCoord)).Tile(tileCoord)
 }
 
 func (g *Grid) Chunk(chunkCoord Coord) *chunk {
@@ -59,7 +59,6 @@ func (g *Grid) CreateNewChunk(chunkCoord Coord) {
 	g.chunksToGenerate = append(g.chunksToGenerate, chunkCoord)
 	aChunk.queuedForGeneration = true
 	aChunk.Generated = false
-	logger.General("Preloaded chunk: "+chunkCoord.ToString(), nil)
 }
 
 func (g *Grid) ChunkGeneration(playerTile Coord, tick int) {
@@ -67,7 +66,7 @@ func (g *Grid) ChunkGeneration(playerTile Coord, tick int) {
 	if tick%60 > 0 {
 		return
 	}
-	playerChunk := g.chunkCoord(playerTile)
+	playerChunk := g.ChunkCoord(playerTile)
 	for x := playerChunk.X() - 3; x <= playerChunk.X()+3; x++ {
 		for y := playerChunk.Y() - 3; y <= playerChunk.Y()+3; y++ {
 			chunkIndex := g.chunkIndex(x, y)
@@ -126,7 +125,7 @@ func (g *Grid) chunkIndex(x, y int) int {
 	return (x * GridSize) + y
 }
 
-func (g *Grid) chunkCoord(tileCoord Coord) Coord {
+func (g *Grid) ChunkCoord(tileCoord Coord) Coord {
 	x := ((tileCoord.X() + TileOffset) / ChunkSize) - GridOffset
 	y := ((tileCoord.Y() + TileOffset) / ChunkSize) - GridOffset
 	return NewCoord(x, y)

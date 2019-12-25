@@ -19,7 +19,7 @@ func TestChunkCoord(t *testing.T) {
 	}
 	for _, c := range cases {
 		grid := New()
-		chunkCoord := grid.chunkCoord(NewCoord(c.tx, c.ty))
+		chunkCoord := grid.ChunkCoord(NewCoord(c.tx, c.ty))
 		if chunkCoord.X() != c.cx || chunkCoord.Y() != c.cy {
 			t.Errorf("%d / %d, want %d / %d", chunkCoord.X(), chunkCoord.Y(), c.cx, c.cy)
 		}
