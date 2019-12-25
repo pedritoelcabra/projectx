@@ -89,7 +89,7 @@ func (g *game) BuildDebugMenu() *gui.Menu {
 func (g *game) BuildLog() *gui.Menu {
 	logMenu := gui.NewMenu(g.Gui)
 
-	logHeight := 200
+	logHeight := 150
 	aBox := &gui.TextBox{}
 	aBox.SetBox(image.Rect(0, 0, gfx.ScreenWidth, logHeight-InGameMenuHeight()))
 	aBox.SetLeftPadding(10)

@@ -49,9 +49,12 @@ func (l *Manager) addLogEntry(key LogType, entry *LogEntry) {
 	l.logEntries[key] = append(l.logEntries[key], entry)
 }
 
-func Get(key LogType) []*LogEntry {
+func Get(key LogType, amount int) []*LogEntry {
 	Logger.InitKey(key)
-	return Logger.logEntries[key]
+	if len(Logger.logEntries[key]) <= amount {
+		return Logger.logEntries[key]
+	}
+	return Logger.logEntries[key][len(Logger.logEntries[key])-amount:]
 }
 
 func (l *Manager) InitKey(key LogType) {
