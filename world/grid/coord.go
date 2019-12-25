@@ -4,7 +4,8 @@ import "strconv"
 
 // Coord is a simple structure to hold X and Y values
 type Coord struct {
-	x, y int
+	CX int `json:"X"`
+	CY int `json:"Y"`
 }
 
 func NewCoord(x, y int) Coord {
@@ -13,13 +14,13 @@ func NewCoord(x, y int) Coord {
 }
 
 func (c Coord) X() int {
-	return c.x
+	return c.CX
 }
 
 func (c Coord) Y() int {
-	return c.y
+	return c.CY
 }
 
 func (c Coord) ToString() string {
-	return strconv.Itoa(c.x) + "/" + strconv.Itoa(c.y)
+	return strconv.Itoa(c.CX) + "/" + strconv.Itoa(c.CY)
 }

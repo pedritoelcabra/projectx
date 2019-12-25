@@ -20,8 +20,6 @@ func NewChunk(location Coord) *chunk {
 func (ch *chunk) Preload(location Coord) {
 	ch.tiles = make([]*Tile, ChunkSize*ChunkSize)
 	ch.Location = location
-	ch.Generated = false
-	ch.queuedForGeneration = false
 	for x := 0; x < ChunkSize; x++ {
 		for y := 0; y < ChunkSize; y++ {
 			tileX := (ch.Location.X() * ChunkSize) + x

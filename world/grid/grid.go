@@ -55,7 +55,6 @@ func (g *Grid) Chunk(chunkCoord Coord) *chunk {
 func (g *Grid) CreateNewChunk(chunkCoord Coord) {
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
 	aChunk := NewChunk(chunkCoord)
-	aChunk.Preload(chunkCoord)
 	g.Chunks[chunkIndex] = aChunk
 	g.chunksToGenerate = append(g.chunksToGenerate, chunkCoord)
 	aChunk.queuedForGeneration = true
@@ -79,10 +78,14 @@ func (g *Grid) ChunkGeneration(playerTile Coord, tick int) {
 				continue
 			}
 			if !aChunk.Generated && !aChunk.queuedForGeneration {
-				g.chunksToGenerate = append(g.chunksToGenerate, chunkCoord)
+				g.QueueChunkForGeneration(chunkCoord)
 			}
 		}
 	}
+}
+
+func (g *Grid) QueueChunkForGeneration(chunkCoord Coord) {
+	g.chunksToGenerate = append(g.chunksToGenerate, chunkCoord)
 }
 
 func (g *Grid) GenerateChunk() {
