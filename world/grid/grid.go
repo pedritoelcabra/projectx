@@ -2,6 +2,7 @@
 package grid
 
 import (
+	"github.com/pedritoelcabra/projectx/core/logger"
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/world/noise"
 	"log"
@@ -38,17 +39,18 @@ func (g *Grid) Tile(tileCoord Coord) *Tile {
 	if aChunk, chunkExists := g.chunks[chunkIndex]; chunkExists {
 		return aChunk.Tile(tileCoord)
 	}
-	g.InitializeChunk(chunkCoord)
+	g.PreLoadChunk(chunkCoord)
 	return g.chunks[chunkIndex].Tile(tileCoord)
 }
 
-func (g *Grid) InitializeChunk(chunkCoord Coord) {
+func (g *Grid) PreLoadChunk(chunkCoord Coord) {
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
 	aChunk := NewChunk(chunkCoord)
 	aChunk.RunOnAllTiles(func(t *Tile) {
 		t.InitializeTile(g)
 	})
 	g.chunks[chunkIndex] = aChunk
+	logger.General("Preloaded chunk: "+chunkCoord.ToString(), nil)
 }
 
 func (t *Tile) InitializeTile(g *Grid) {

@@ -20,7 +20,6 @@ func NewChunk(location Coord) *chunk {
 			aChunk.tiles[tileIndex] = aTile
 		}
 	}
-	logger.General("Generated chunk: "+location.ToString(), nil)
 	return aChunk
 }
 
