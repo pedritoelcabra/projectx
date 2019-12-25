@@ -16,11 +16,13 @@ type World struct {
 	entityCount int
 	initialised bool
 	seed        int
+	tick        int
 	renderMode  TileRenderMode
 }
 
 func NewWorld() *World {
 	aWorld := &World{}
+	aWorld.tick = 0
 	return aWorld
 }
 
@@ -34,6 +36,10 @@ func (w *World) SetSeed(seed int) {
 
 func (w *World) GetSeed() int {
 	return w.seed
+}
+
+func (w *World) GetTick() int {
+	return w.tick
 }
 
 func (w *World) Init() {
@@ -50,6 +56,7 @@ func (w *World) Init() {
 
 func (w *World) LoadFromSave(data file.SaveGameData) {
 	w.SetSeed(data.Seed)
+	w.tick = data.Tick
 	w.Noise = noise.New(w.seed)
 	w.Grid = grid.New()
 	w.Grid.SetNoise(w.Noise)
@@ -76,13 +83,14 @@ func (w *World) Draw(screen *gfx.Screen) {
 	}
 }
 
-func (w *World) Update(tick int) {
+func (w *World) Update() {
 	if !w.initialised {
 		return
 	}
 	for _, e := range w.Entities {
-		e.Update(tick)
+		e.Update(w.tick)
 	}
+	w.tick++
 }
 
 func (w *World) SetRenderMode(mode TileRenderMode) {

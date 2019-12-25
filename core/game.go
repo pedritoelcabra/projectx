@@ -20,7 +20,6 @@ type game struct {
 	World          *world.World
 	Graphics       *gfx.Graphics
 	Screen         *gfx.Screen
-	tick           int
 	framesDrawn    int
 	isPaused       bool
 	rightMouseDown bool
@@ -60,9 +59,8 @@ func (g *game) Update(screen *ebiten.Image) error {
 	g.Input.Update()
 
 	if !g.isPaused {
-		g.World.Update(g.tick)
+		g.World.Update()
 		g.Screen.SetCameraCoords(g.World.PlayerUnit.GetPos())
-		g.tick++
 	}
 
 	if !ebiten.IsDrawingSkipped() {
@@ -95,9 +93,10 @@ func (g *game) openContextMenu() {
 }
 
 func (g *game) DebugInfo() string {
-	aString := "Tick: " + strconv.Itoa(g.tick)
+	aString := ""
 	aString += "\nFrame: " + strconv.Itoa(g.framesDrawn)
 	if g.HasLoadedWorld() {
+		aString += "\nTick: " + strconv.Itoa(g.World.GetTick())
 		x, y := g.World.PlayerUnit.GetPos()
 		aString += "\nPlayer Pos: " + strconv.Itoa(int(x)) + " / " + strconv.Itoa(int(y))
 		tx, ty := world.PosToTile(int(x), int(y))
@@ -164,7 +163,6 @@ func (g *game) InitializeNewWorld() {
 	g.World.SetSeed(r1.Intn(10000))
 	g.World.Init()
 	g.InitMenus()
-	g.tick = 0
 	g.UnPause()
 	logger.General("Created a New World with seed "+strconv.Itoa(g.World.GetSeed()), nil)
 }
@@ -186,7 +184,7 @@ func (g *game) UpdatePlayerMovement(dir units.PlayerDirection, value bool) {
 func (g *game) QuickSave() {
 	state := file.SaveGameData{}
 	state.Seed = g.World.GetSeed()
-	state.Tick = g.tick
+	state.Tick = g.World.GetTick()
 	state.Player = *g.World.PlayerUnit
 	file.SaveToFile(state, file.DefaultSaveGameName)
 	g.InitMenus()
@@ -196,7 +194,6 @@ func (g *game) QuickSave() {
 
 func (g *game) QuickLoad() {
 	dataStructure := file.LoadFromFile(file.DefaultSaveGameName)
-	g.tick = dataStructure.Tick
 	g.World = world.NewWorld()
 	g.World.LoadFromSave(dataStructure)
 	g.InitMenus()
