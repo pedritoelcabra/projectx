@@ -8,9 +8,10 @@ import (
 )
 
 func (g *game) DebugInfo() string {
-	aString := "Tick: " + strconv.Itoa(g.tick)
+	aString := ""
 	aString += "\nFrame: " + strconv.Itoa(g.framesDrawn)
-	if g.World.PlayerUnit != nil {
+	if g.HasLoadedWorld() {
+		aString += "\nTick: " + strconv.Itoa(g.World.GetTick())
 		x, y := g.World.PlayerUnit.GetPos()
 		aString += "\nPlayer Pos: " + strconv.Itoa(int(x)) + " / " + strconv.Itoa(int(y))
 		tx, ty := world.PosToTile(int(x), int(y))
@@ -29,7 +30,6 @@ func (g *game) DebugInfo() string {
 		mTile := g.World.Grid.Tile(grid.NewCoord(mtx, mty))
 		mHeight := mTile.Get(grid.Height)
 		aString += "\nMouse Tile Height: " + strconv.Itoa(mHeight)
-		aString += "\nMouse Tile Terrain: " + strconv.Itoa(mTile.Get(grid.TerrainBase))
 
 	}
 	if g.debugMessage != "" {

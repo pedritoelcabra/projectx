@@ -2,9 +2,8 @@
 package grid
 
 import (
-	"github.com/pedritoelcabra/projectx/world/defs"
 	"github.com/pedritoelcabra/projectx/core/logger"
-	"github.com/pedritoelcabra/projectx/gfx"
+	"github.com/pedritoelcabra/projectx/world/defs"
 	"github.com/pedritoelcabra/projectx/world/noise"
 	"log"
 )
