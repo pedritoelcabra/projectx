@@ -43,18 +43,19 @@ func (g *Grid) Tile(tileCoord Coord) *Tile {
 func (g *Grid) Chunk(chunkCoord Coord) *chunk {
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
 	if aChunk, chunkExists := g.Chunks[chunkIndex]; chunkExists {
+		if !aChunk.isPreloaded {
+			aChunk.Preload(chunkCoord)
+		}
 		return aChunk
 	}
-	g.PreLoadChunk(chunkCoord)
+	g.CreateNewChunk(chunkCoord)
 	return g.Chunks[chunkIndex]
 }
 
-func (g *Grid) PreLoadChunk(chunkCoord Coord) {
+func (g *Grid) CreateNewChunk(chunkCoord Coord) {
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
 	aChunk := NewChunk(chunkCoord)
-	aChunk.RunOnAllTiles(func(t *Tile) {
-		t.InitializeTile(g)
-	})
+	aChunk.Preload(chunkCoord)
 	g.Chunks[chunkIndex] = aChunk
 	g.chunksToGenerate = append(g.chunksToGenerate, chunkCoord)
 	aChunk.queuedForGeneration = true
@@ -74,7 +75,7 @@ func (g *Grid) ChunkGeneration(playerTile Coord, tick int) {
 			chunkCoord := NewCoord(x, y)
 			aChunk, chunkExists := g.Chunks[chunkIndex]
 			if !chunkExists {
-				g.PreLoadChunk(chunkCoord)
+				g.CreateNewChunk(chunkCoord)
 				continue
 			}
 			if !aChunk.Generated && !aChunk.queuedForGeneration {
@@ -90,14 +91,14 @@ func (g *Grid) GenerateChunk() {
 	}
 	chunkCoord := g.chunksToGenerate[0]
 	g.chunksToGenerate = g.chunksToGenerate[1:]
-	logger.General("Generateed chunk: "+chunkCoord.ToString(), nil)
 	aChunk := g.Chunk(chunkCoord)
 	aChunk.queuedForGeneration = false
 	aChunk.Generated = true
+	logger.General("Generated chunk: "+chunkCoord.ToString(), nil)
 }
 
-func (t *Tile) InitializeTile(g *Grid) {
-	height := g.noise.GetHeight(t.X(), t.Y())
+func (t *Tile) InitializeTile() {
+	height := noise.Generator.GetHeight(t.X(), t.Y())
 	t.Set(Height, height)
 	terrain := -1
 	terrain = defs.BasicMountain

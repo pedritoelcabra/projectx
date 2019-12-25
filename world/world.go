@@ -11,7 +11,6 @@ import (
 type World struct {
 	Entities    map[int]Entity
 	PlayerUnit  *units.Player
-	Noise       *noise.NoiseGenerator
 	Grid        *grid.Grid
 	entityCount int
 	initialised bool
@@ -43,26 +42,26 @@ func (w *World) GetTick() int {
 }
 
 func (w *World) Init() {
-	w.Noise = noise.New(w.seed)
+	InitTiling()
+	noise.Seed(w.seed)
 	w.Grid = grid.New()
-	w.Grid.SetNoise(w.Noise)
 	w.Entities = make(map[int]Entity)
 	w.PlayerUnit = units.NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)
 	w.AddEntity(w.PlayerUnit)
 	w.renderMode = RenderModeBasic
-	InitTiling()
 	w.initialised = true
 }
 
 func (w *World) LoadFromSave(data file.SaveGameData) {
+	InitTiling()
 	w.SetSeed(data.Seed)
 	w.tick = data.Tick
-	w.Noise = noise.New(w.seed)
-	w.Grid = grid.New()
-	w.Grid.SetNoise(w.Noise)
+	noise.Seed(w.seed)
+	w.Grid = &data.Grid
 	w.Entities = make(map[int]Entity)
 	w.PlayerUnit = &data.Player
+	w.Grid.ChunkGeneration(grid.NewCoord(PosFloatToTile(w.PlayerUnit.GetPos())), 0)
 	w.PlayerUnit.Unit.InitObjects()
 	w.AddEntity(w.PlayerUnit)
 	w.renderMode = RenderModeBasic

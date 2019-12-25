@@ -1,29 +1,42 @@
 package grid
 
+import "github.com/pedritoelcabra/projectx/core/logger"
+
 type chunk struct {
 	tiles               []*Tile
-	location            Coord
+	Location            Coord
 	Generated           bool
 	queuedForGeneration bool
+	isPreloaded         bool
 }
 
 func NewChunk(location Coord) *chunk {
 	aChunk := &chunk{}
-	aChunk.tiles = make([]*Tile, ChunkSize*ChunkSize)
-	aChunk.location = location
-	aChunk.Generated = false
-	aChunk.queuedForGeneration = false
+	aChunk.isPreloaded = false
+	aChunk.Preload(location)
+	return aChunk
+}
+
+func (ch *chunk) Preload(location Coord) {
+	ch.tiles = make([]*Tile, ChunkSize*ChunkSize)
+	ch.Location = location
+	ch.Generated = false
+	ch.queuedForGeneration = false
 	for x := 0; x < ChunkSize; x++ {
 		for y := 0; y < ChunkSize; y++ {
-			tileX := (location.X() * ChunkSize) + x
-			tileY := (location.Y() * ChunkSize) + y
+			tileX := (ch.Location.X() * ChunkSize) + x
+			tileY := (ch.Location.Y() * ChunkSize) + y
 			tileLocation := NewCoord(tileX, tileY)
-			tileIndex := aChunk.tileIndex(tileX, tileY)
+			tileIndex := ch.tileIndex(tileX, tileY)
 			aTile := &Tile{tileLocation, make(map[int]int)}
-			aChunk.tiles[tileIndex] = aTile
+			ch.tiles[tileIndex] = aTile
 		}
 	}
-	return aChunk
+	ch.RunOnAllTiles(func(t *Tile) {
+		t.InitializeTile()
+	})
+	ch.isPreloaded = true
+	logger.General("Preloaded chunk: "+location.ToString(), nil)
 }
 
 func (ch *chunk) IsGenerated() bool {
@@ -42,7 +55,6 @@ func (ch *chunk) RunOnAllTiles(f func(t *Tile)) {
 
 func (ch *chunk) Tile(tileCoord Coord) *Tile {
 	return ch.tiles[ch.tileIndex(tileCoord.X(), tileCoord.Y())]
-
 }
 
 func (ch *chunk) initTile(c Coord) *Tile {
@@ -50,7 +62,7 @@ func (ch *chunk) initTile(c Coord) *Tile {
 }
 
 func (ch *chunk) tileIndex(x, y int) int {
-	x -= ch.location.X() * ChunkSize
-	y -= ch.location.Y() * ChunkSize
+	x -= ch.Location.X() * ChunkSize
+	y -= ch.Location.Y() * ChunkSize
 	return (x * ChunkSize) + y
 }

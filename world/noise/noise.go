@@ -15,10 +15,10 @@ type NoiseGenerator struct {
 	p *perlin.Perlin
 }
 
-func New(seed int) *NoiseGenerator {
-	aGenerator := &NoiseGenerator{}
-	aGenerator.p = perlin.NewPerlin(alpha, beta, n, int64(seed))
-	return aGenerator
+var Generator = NoiseGenerator{}
+
+func Seed(seed int) {
+	Generator.p = perlin.NewPerlin(alpha, beta, n, int64(seed))
 }
 
 func (n *NoiseGenerator) GetHeight(x, y int) int {
