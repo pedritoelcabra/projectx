@@ -1,4 +1,4 @@
-package world
+package units
 
 import (
 	"github.com/pedritoelcabra/projectx/gfx"
@@ -14,65 +14,65 @@ const (
 )
 
 type Player struct {
-	unit        *Unit
-	movingUp    bool
-	movingLeft  bool
-	movingDown  bool
-	movingRight bool
+	Unit        *Unit
+	MovingUp    bool
+	MovingLeft  bool
+	MovingDown  bool
+	MovingRight bool
 }
 
 func NewPlayer() *Player {
 	aPlayer := &Player{}
-	aPlayer.unit = NewUnit()
-	aPlayer.unit.SetSpeed(5)
+	aPlayer.Unit = NewUnit()
+	aPlayer.Unit.SetSpeed(5)
 	return aPlayer
 }
 
 func (p *Player) DrawSprite(screen *gfx.Screen) {
-	p.unit.DrawSprite(screen)
+	p.Unit.DrawSprite(screen)
 }
 
 func (p *Player) SetPosition(x, y float64) {
-	p.unit.SetPosition(x, y)
+	p.Unit.SetPosition(x, y)
 }
 
 func (p *Player) Update(tick int) {
 	p.UpdateDestination()
-	p.unit.Update(tick)
+	p.Unit.Update(tick)
 }
 
 func (p *Player) UpdateDestination() {
-	destX := p.unit.x
-	destY := p.unit.y
+	destX := p.Unit.X
+	destY := p.Unit.Y
 	displacement := float64(1000)
-	if p.movingUp && !p.movingDown {
+	if p.MovingUp && !p.MovingDown {
 		destY -= displacement
 	}
-	if p.movingDown && !p.movingUp {
+	if p.MovingDown && !p.MovingUp {
 		destY += displacement
 	}
-	if p.movingLeft && !p.movingRight {
+	if p.MovingLeft && !p.MovingRight {
 		destX -= displacement
 	}
-	if p.movingRight && !p.movingLeft {
+	if p.MovingRight && !p.MovingLeft {
 		destX += displacement
 	}
-	p.unit.SetDestination(destX, destY)
+	p.Unit.SetDestination(destX, destY)
 }
 
 func (p *Player) GetPos() (x, y float64) {
-	return p.unit.GetPos()
+	return p.Unit.GetPos()
 }
 
 func (p *Player) SetMovement(direction PlayerDirection, value bool) {
 	switch direction {
 	case PLAYERUP:
-		p.movingUp = value
+		p.MovingUp = value
 	case PLAYERLEFT:
-		p.movingLeft = value
+		p.MovingLeft = value
 	case PLAYERDOWN:
-		p.movingDown = value
+		p.MovingDown = value
 	case PLAYERRIGHT:
-		p.movingRight = value
+		p.MovingRight = value
 	}
 }

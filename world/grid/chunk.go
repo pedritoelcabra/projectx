@@ -1,13 +1,18 @@
 package grid
 
 type chunk struct {
-	tiles    []*Tile
-	location Coord
+	tiles               []*Tile
+	location            Coord
+	Generated           bool
+	queuedForGeneration bool
 }
 
 func NewChunk(location Coord) *chunk {
-	arrayTiles := make([]*Tile, ChunkSize*ChunkSize)
-	aChunk := &chunk{arrayTiles, location}
+	aChunk := &chunk{}
+	aChunk.tiles = make([]*Tile, ChunkSize*ChunkSize)
+	aChunk.location = location
+	aChunk.Generated = false
+	aChunk.queuedForGeneration = false
 	for x := 0; x < ChunkSize; x++ {
 		for y := 0; y < ChunkSize; y++ {
 			tileX := (location.X() * ChunkSize) + x
@@ -19,6 +24,14 @@ func NewChunk(location Coord) *chunk {
 		}
 	}
 	return aChunk
+}
+
+func (ch *chunk) IsGenerated() bool {
+	return ch.Generated
+}
+
+func (ch *chunk) IsQueueForGeneration() bool {
+	return ch.queuedForGeneration
 }
 
 func (ch *chunk) RunOnAllTiles(f func(t *Tile)) {

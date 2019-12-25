@@ -3,3 +3,6 @@
 projectx
 projectx.exe
 resources/Universal-LPC-spritesheet/**
+
+*/*.pxs
+*/*.prof

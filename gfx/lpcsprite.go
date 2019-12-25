@@ -35,7 +35,7 @@ var animationLength = map[lpcAnimation]int{
 var offsetMap = make(map[lpcAnimation]map[spriteFacing]map[int]image.Rectangle)
 
 type LpcSprite struct {
-	key       spriteKey
+	key       SpriteKey
 	facing    spriteFacing
 	animation lpcAnimation
 	frame     int
@@ -56,7 +56,7 @@ func SetUpLpcSpritesOffsets() {
 	}
 }
 
-func NewLpcSprite(key spriteKey) *LpcSprite {
+func NewLpcSprite(key SpriteKey) *LpcSprite {
 	aSprite := &LpcSprite{}
 	aSprite.key = key
 	aSprite.animation = Walking
