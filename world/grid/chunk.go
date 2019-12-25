@@ -1,7 +1,5 @@
 package grid
 
-import "github.com/pedritoelcabra/projectx/core/logger"
-
 type chunk struct {
 	tiles    []*Tile
 	location Coord

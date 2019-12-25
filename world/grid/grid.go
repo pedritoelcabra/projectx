@@ -17,7 +17,7 @@ const (
 )
 
 type Grid struct {
-	chunks map[int]*chunk
+	Chunks map[int]*chunk
 	noise  *noise.NoiseGenerator
 }
 
@@ -25,7 +25,7 @@ func New() *Grid {
 	arraySize := GridSize * GridSize
 	arrayChunks := make(map[int]*chunk, arraySize)
 	aGrid := &Grid{}
-	aGrid.chunks = arrayChunks
+	aGrid.Chunks = arrayChunks
 	return aGrid
 }
 
@@ -36,11 +36,11 @@ func (g *Grid) SetNoise(noise *noise.NoiseGenerator) {
 func (g *Grid) Tile(tileCoord Coord) *Tile {
 	chunkCoord := g.chunkCoord(tileCoord)
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
-	if aChunk, chunkExists := g.chunks[chunkIndex]; chunkExists {
+	if aChunk, chunkExists := g.Chunks[chunkIndex]; chunkExists {
 		return aChunk.Tile(tileCoord)
 	}
 	g.PreLoadChunk(chunkCoord)
-	return g.chunks[chunkIndex].Tile(tileCoord)
+	return g.Chunks[chunkIndex].Tile(tileCoord)
 }
 
 func (g *Grid) PreLoadChunk(chunkCoord Coord) {
@@ -49,7 +49,7 @@ func (g *Grid) PreLoadChunk(chunkCoord Coord) {
 	aChunk.RunOnAllTiles(func(t *Tile) {
 		t.InitializeTile(g)
 	})
-	g.chunks[chunkIndex] = aChunk
+	g.Chunks[chunkIndex] = aChunk
 	logger.General("Preloaded chunk: "+chunkCoord.ToString(), nil)
 }
 
