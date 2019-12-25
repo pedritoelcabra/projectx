@@ -7,10 +7,13 @@ type Coord struct {
 	x, y int
 }
 
-// Build a Coord from X and Y
 func NewCoord(x, y int) Coord {
 	aCoord := Coord{x, y}
 	return aCoord
+}
+
+func NewCoordF(x, y float64) Coord {
+	return NewCoord(int(x), int(y))
 }
 
 func (c Coord) X() int {

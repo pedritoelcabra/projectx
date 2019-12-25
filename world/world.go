@@ -87,6 +87,7 @@ func (w *World) Update() {
 	if !w.initialised {
 		return
 	}
+	w.Grid.ChunkGeneration(grid.NewCoord(PosFloatToTile(w.PlayerUnit.GetPos())), w.tick)
 	for _, e := range w.Entities {
 		e.Update(w.tick)
 	}

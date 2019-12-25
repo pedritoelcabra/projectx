@@ -186,6 +186,7 @@ func (g *game) QuickSave() {
 	state.Seed = g.World.GetSeed()
 	state.Tick = g.World.GetTick()
 	state.Player = *g.World.PlayerUnit
+	state.Grid = *g.World.Grid
 	file.SaveToFile(state, file.DefaultSaveGameName)
 	g.InitMenus()
 	g.UnPause()

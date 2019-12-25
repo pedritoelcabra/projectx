@@ -3,6 +3,7 @@ package file
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/pedritoelcabra/projectx/world/grid"
 	"github.com/pedritoelcabra/projectx/world/units"
 	"io"
 	"log"
@@ -17,6 +18,7 @@ type SaveGameData struct {
 	Seed   int
 	Tick   int
 	Player units.Player
+	Grid   grid.Grid
 }
 
 func getSaveGameFullPath(fileName string) string {

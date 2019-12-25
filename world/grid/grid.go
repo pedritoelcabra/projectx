@@ -16,9 +16,12 @@ const (
 	TileOffset = 16000
 )
 
+type ChunkMap map[int]*chunk
+
 type Grid struct {
-	Chunks map[int]*chunk
-	noise  *noise.NoiseGenerator
+	Chunks           ChunkMap
+	chunksToGenerate []Coord
+	noise            *noise.NoiseGenerator
 }
 
 func New() *Grid {
@@ -34,13 +37,16 @@ func (g *Grid) SetNoise(noise *noise.NoiseGenerator) {
 }
 
 func (g *Grid) Tile(tileCoord Coord) *Tile {
-	chunkCoord := g.chunkCoord(tileCoord)
+	return g.Chunk(g.chunkCoord(tileCoord)).Tile(tileCoord)
+}
+
+func (g *Grid) Chunk(chunkCoord Coord) *chunk {
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
 	if aChunk, chunkExists := g.Chunks[chunkIndex]; chunkExists {
-		return aChunk.Tile(tileCoord)
+		return aChunk
 	}
 	g.PreLoadChunk(chunkCoord)
-	return g.Chunks[chunkIndex].Tile(tileCoord)
+	return g.Chunks[chunkIndex]
 }
 
 func (g *Grid) PreLoadChunk(chunkCoord Coord) {
@@ -50,7 +56,44 @@ func (g *Grid) PreLoadChunk(chunkCoord Coord) {
 		t.InitializeTile(g)
 	})
 	g.Chunks[chunkIndex] = aChunk
+	g.chunksToGenerate = append(g.chunksToGenerate, chunkCoord)
+	aChunk.queuedForGeneration = true
+	aChunk.Generated = false
 	logger.General("Preloaded chunk: "+chunkCoord.ToString(), nil)
+}
+
+func (g *Grid) ChunkGeneration(playerTile Coord, tick int) {
+	g.GenerateChunk()
+	if tick%60 > 0 {
+		return
+	}
+	playerChunk := g.chunkCoord(playerTile)
+	for x := playerChunk.X() - 3; x <= playerChunk.X()+3; x++ {
+		for y := playerChunk.Y() - 3; y <= playerChunk.Y()+3; y++ {
+			chunkIndex := g.chunkIndex(x, y)
+			chunkCoord := NewCoord(x, y)
+			aChunk, chunkExists := g.Chunks[chunkIndex]
+			if !chunkExists {
+				g.PreLoadChunk(chunkCoord)
+				continue
+			}
+			if !aChunk.Generated && !aChunk.queuedForGeneration {
+				g.chunksToGenerate = append(g.chunksToGenerate, chunkCoord)
+			}
+		}
+	}
+}
+
+func (g *Grid) GenerateChunk() {
+	if len(g.chunksToGenerate) < 1 {
+		return
+	}
+	chunkCoord := g.chunksToGenerate[0]
+	g.chunksToGenerate = g.chunksToGenerate[1:]
+	logger.General("Generateed chunk: "+chunkCoord.ToString(), nil)
+	aChunk := g.Chunk(chunkCoord)
+	aChunk.queuedForGeneration = false
+	aChunk.Generated = true
 }
 
 func (t *Tile) InitializeTile(g *Grid) {
