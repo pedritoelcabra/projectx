@@ -81,7 +81,7 @@ var brushImage, _ = ebiten.NewImageFromImage(&image.Alpha{
 }, ebiten.FilterDefault)
 
 func DrawDot(x, y float64, screen *gfx.Screen) {
-
+	return
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(x-2.0, y-2.0)
 	screen.DrawImage(brushImage, op)
