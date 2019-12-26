@@ -3,8 +3,10 @@ package world
 import (
 	"github.com/pedritoelcabra/projectx/core/file"
 	"github.com/pedritoelcabra/projectx/gfx"
+	"github.com/pedritoelcabra/projectx/world/coord"
 	"github.com/pedritoelcabra/projectx/world/grid"
 	"github.com/pedritoelcabra/projectx/world/noise"
+	"github.com/pedritoelcabra/projectx/world/tiling"
 	"github.com/pedritoelcabra/projectx/world/units"
 )
 
@@ -42,7 +44,7 @@ func (w *World) GetTick() int {
 }
 
 func (w *World) Init() {
-	InitTiling()
+	tiling.InitTiling()
 	noise.Seed(w.seed)
 	w.Grid = grid.New()
 	w.Entities = make(map[int]Entity)
@@ -54,14 +56,14 @@ func (w *World) Init() {
 }
 
 func (w *World) LoadFromSave(data file.SaveGameData) {
-	InitTiling()
+	tiling.InitTiling()
 	w.SetSeed(data.Seed)
 	w.tick = data.Tick
 	noise.Seed(w.seed)
 	w.Grid = &data.Grid
 	w.Entities = make(map[int]Entity)
 	w.PlayerUnit = &data.Player
-	w.Grid.ChunkGeneration(grid.NewCoord(PixelFloatToTile(w.PlayerUnit.GetPos())), 0)
+	w.Grid.ChunkGeneration(coord.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), 0)
 	w.PlayerUnit.Unit.InitObjects()
 	w.AddEntity(w.PlayerUnit)
 	w.renderMode = RenderModeBasic
@@ -87,7 +89,7 @@ func (w *World) Update() {
 	if !w.initialised {
 		return
 	}
-	w.Grid.ChunkGeneration(grid.NewCoord(PixelFloatToTile(w.PlayerUnit.GetPos())), w.tick)
+	w.Grid.ChunkGeneration(coord.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), w.tick)
 	for _, e := range w.Entities {
 		e.Update(w.tick)
 	}

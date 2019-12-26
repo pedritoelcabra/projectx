@@ -3,8 +3,10 @@ package grid
 
 import (
 	"github.com/pedritoelcabra/projectx/core/logger"
+	"github.com/pedritoelcabra/projectx/world/coord"
 	"github.com/pedritoelcabra/projectx/world/defs"
 	"github.com/pedritoelcabra/projectx/world/noise"
+	"github.com/pedritoelcabra/projectx/world/tiling"
 	"log"
 )
 
@@ -20,7 +22,7 @@ type ChunkMap map[int]*chunk
 
 type Grid struct {
 	Chunks           ChunkMap
-	chunksToGenerate []Coord
+	chunksToGenerate []coord.Coord
 	noise            *noise.NoiseGenerator
 }
 
@@ -36,11 +38,11 @@ func (g *Grid) SetNoise(noise *noise.NoiseGenerator) {
 	g.noise = noise
 }
 
-func (g *Grid) Tile(tileCoord Coord) *Tile {
+func (g *Grid) Tile(tileCoord coord.Coord) *Tile {
 	return g.Chunk(g.ChunkCoord(tileCoord)).Tile(tileCoord)
 }
 
-func (g *Grid) Chunk(chunkCoord Coord) *chunk {
+func (g *Grid) Chunk(chunkCoord coord.Coord) *chunk {
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
 	if aChunk, chunkExists := g.Chunks[chunkIndex]; chunkExists {
 		if !aChunk.isPreloaded {
@@ -52,7 +54,7 @@ func (g *Grid) Chunk(chunkCoord Coord) *chunk {
 	return g.Chunks[chunkIndex]
 }
 
-func (g *Grid) CreateNewChunk(chunkCoord Coord) {
+func (g *Grid) CreateNewChunk(chunkCoord coord.Coord) {
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
 	aChunk := NewChunk(chunkCoord)
 	g.Chunks[chunkIndex] = aChunk
@@ -61,7 +63,7 @@ func (g *Grid) CreateNewChunk(chunkCoord Coord) {
 	aChunk.Generated = false
 }
 
-func (g *Grid) ChunkGeneration(playerTile Coord, tick int) {
+func (g *Grid) ChunkGeneration(playerTile coord.Coord, tick int) {
 	g.GenerateChunk()
 	if tick%60 > 0 {
 		return
@@ -70,7 +72,7 @@ func (g *Grid) ChunkGeneration(playerTile Coord, tick int) {
 	for x := playerChunk.X() - 3; x <= playerChunk.X()+3; x++ {
 		for y := playerChunk.Y() - 3; y <= playerChunk.Y()+3; y++ {
 			chunkIndex := g.chunkIndex(x, y)
-			chunkCoord := NewCoord(x, y)
+			chunkCoord := coord.NewCoord(x, y)
 			aChunk, chunkExists := g.Chunks[chunkIndex]
 			if !chunkExists {
 				g.CreateNewChunk(chunkCoord)
@@ -83,7 +85,7 @@ func (g *Grid) ChunkGeneration(playerTile Coord, tick int) {
 	}
 }
 
-func (g *Grid) QueueChunkForGeneration(chunkCoord Coord) {
+func (g *Grid) QueueChunkForGeneration(chunkCoord coord.Coord) {
 	g.chunksToGenerate = append(g.chunksToGenerate, chunkCoord)
 }
 
@@ -114,6 +116,9 @@ func (t *Tile) InitializeTile() {
 		terrain = defs.BasicWater
 	}
 	t.Set(TerrainBase, terrain)
+	pixelX, pixelY := tiling.TileIToPixelF(t.X(), t.Y())
+	t.SetF(RenderX, pixelX)
+	t.SetF(RenderY, pixelY)
 }
 
 func (g *Grid) chunkIndex(x, y int) int {
@@ -125,8 +130,8 @@ func (g *Grid) chunkIndex(x, y int) int {
 	return (x * GridSize) + y
 }
 
-func (g *Grid) ChunkCoord(tileCoord Coord) Coord {
+func (g *Grid) ChunkCoord(tileCoord coord.Coord) coord.Coord {
 	x := ((tileCoord.X() + TileOffset) / ChunkSize) - GridOffset
 	y := ((tileCoord.Y() + TileOffset) / ChunkSize) - GridOffset
-	return NewCoord(x, y)
+	return coord.NewCoord(x, y)
 }

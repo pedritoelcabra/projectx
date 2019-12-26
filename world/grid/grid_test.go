@@ -1,6 +1,7 @@
 package grid
 
 import (
+	"github.com/pedritoelcabra/projectx/world/coord"
 	"testing"
 )
 
@@ -19,7 +20,7 @@ func TestChunkCoord(t *testing.T) {
 	}
 	for _, c := range cases {
 		grid := New()
-		chunkCoord := grid.ChunkCoord(NewCoord(c.tx, c.ty))
+		chunkCoord := grid.ChunkCoord(coord.NewCoord(c.tx, c.ty))
 		if chunkCoord.X() != c.cx || chunkCoord.Y() != c.cy {
 			t.Errorf("%d / %d, want %d / %d", chunkCoord.X(), chunkCoord.Y(), c.cx, c.cy)
 		}
@@ -58,7 +59,7 @@ func TestTileCoord(t *testing.T) {
 	}
 	for _, c := range cases {
 		grid := New()
-		aTile := grid.Tile(NewCoord(c.x, c.y))
+		aTile := grid.Tile(coord.NewCoord(c.x, c.y))
 		if aTile.X() != c.x || aTile.Y() != c.y {
 			t.Errorf("%d / %d, want %d / %d", aTile.X(), aTile.Y(), c.x, c.y)
 		}
@@ -69,8 +70,8 @@ func TestTileVariables(t *testing.T) {
 
 	aGrid := New()
 
-	aCoord := NewCoord(100, 200)
-	bCoord := NewCoord(0, 0)
+	aCoord := coord.NewCoord(100, 200)
+	bCoord := coord.NewCoord(0, 0)
 	aTile := aGrid.Tile(aCoord)
 	bTile := aGrid.Tile(bCoord)
 

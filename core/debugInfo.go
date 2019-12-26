@@ -2,8 +2,9 @@ package core
 
 import (
 	"github.com/hajimehoshi/ebiten"
-	"github.com/pedritoelcabra/projectx/world"
+	"github.com/pedritoelcabra/projectx/world/coord"
 	"github.com/pedritoelcabra/projectx/world/grid"
+	"github.com/pedritoelcabra/projectx/world/tiling"
 	"strconv"
 )
 
@@ -17,8 +18,8 @@ func (g *game) DebugInfo() string {
 		cx, cy := g.Screen.GetCameraCoords()
 		mx += int(cx)
 		my += int(cy)
-		aString += "\nMouse Pos: " + grid.NewCoord(mx, my).ToString()
-		mouseTileCoord := grid.NewCoord(world.PixelToTile(mx, my))
+		aString += "\nMouse Pos: " + coord.NewCoord(mx, my).ToString()
+		mouseTileCoord := coord.NewCoord(tiling.PixelIToTileI(mx, my))
 		aString += "\nMouse Tile: " + mouseTileCoord.ToString()
 		mHeight := g.World.Grid.Tile(mouseTileCoord).Get(grid.Height)
 		aString += "\nMouse Tile Height: " + strconv.Itoa(mHeight)

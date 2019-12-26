@@ -1,7 +1,7 @@
-package world
+package tiling
 
 import (
-	"github.com/pedritoelcabra/projectx/world/grid"
+	"github.com/pedritoelcabra/projectx/world/coord"
 	"math"
 )
 
@@ -21,33 +21,33 @@ func InitTiling() {
 	Sqrt3 = math.Sqrt(3.0)
 }
 
-func PixelFloatToTile(x, y float64) (tx, ty int) {
-	return PixelToTile(int(x), int(y))
+func PixelFToTileI(x, y float64) (tx, ty int) {
+	return PixelIToTileI(int(x), int(y))
 }
 
-func PixelToTile(x, y int) (tx, ty int) {
-	coord := PixelToHex(float64(x), float64(y))
+func PixelIToTileI(x, y int) (tx, ty int) {
+	coord := PixelFToTileC(float64(x), float64(y))
 	return coord.X(), coord.Y()
 }
 
-func TileToPixelFloat(tx, ty int) (x, y float64) {
-	pixelCoord := HexToPixel(grid.NewCoord(tx, ty))
+func TileIToPixelF(tx, ty int) (x, y float64) {
+	pixelCoord := TileCToPixelC(coord.NewCoord(tx, ty))
 	return float64(pixelCoord.X()), float64(pixelCoord.Y())
 }
 
-func PixelToHex(x, y float64) grid.Coord {
+func PixelFToTileC(x, y float64) coord.Coord {
 	var q = (2.0 / 3.0 * x) / TileSize
 	var r = (-1.0/3.0*x + Sqrt3/3.0*y) / TileSize
-	return CubeToCoord(CubeRound(grid.NewCube(q, -q-r, r)))
+	return CubeToCoord(CubeRound(coord.NewCube(q, -q-r, r)))
 }
 
-func HexToPixel(coord grid.Coord) grid.Coord {
-	var x = TileSize * 3 / 2 * float64(coord.X())
-	var y = TileSize * Sqrt3 * (float64(coord.Y()) + 0.5*float64(coord.X()&One))
-	return grid.NewCoordF(x, y)
+func TileCToPixelC(tileCoord coord.Coord) coord.Coord {
+	var x = TileSize * 3 / 2 * float64(tileCoord.X())
+	var y = TileSize * Sqrt3 * (float64(tileCoord.Y()) + 0.5*float64(tileCoord.X()&One))
+	return coord.NewCoordF(x, y)
 }
 
-func CubeRound(cube grid.Cube) grid.Cube {
+func CubeRound(cube coord.Cube) coord.Cube {
 	var rx = math.Round(cube.X)
 	var ry = math.Round(cube.Y)
 	var rz = math.Round(cube.Z)
@@ -62,11 +62,11 @@ func CubeRound(cube grid.Cube) grid.Cube {
 		rz = -rx - ry
 	}
 
-	return grid.NewCube(rx, ry, rz)
+	return coord.NewCube(rx, ry, rz)
 }
 
-func CubeToCoord(cube grid.Cube) grid.Coord {
+func CubeToCoord(cube coord.Cube) coord.Coord {
 	var col = cube.X
 	var row = cube.Z + (cube.X-float64(int(cube.X)&One))/2
-	return grid.NewCoord(int(col), int(row))
+	return coord.NewCoord(int(col), int(row))
 }

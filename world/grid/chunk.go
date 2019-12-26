@@ -1,23 +1,26 @@
 package grid
 
-import "github.com/pedritoelcabra/projectx/core/logger"
+import (
+	"github.com/pedritoelcabra/projectx/core/logger"
+	"github.com/pedritoelcabra/projectx/world/coord"
+)
 
 type chunk struct {
 	tiles               []*Tile
-	Location            Coord
+	Location            coord.Coord
 	Generated           bool
 	queuedForGeneration bool
 	isPreloaded         bool
 }
 
-func NewChunk(location Coord) *chunk {
+func NewChunk(location coord.Coord) *chunk {
 	aChunk := &chunk{}
 	aChunk.isPreloaded = false
 	aChunk.Preload(location)
 	return aChunk
 }
 
-func (ch *chunk) Preload(location Coord) {
+func (ch *chunk) Preload(location coord.Coord) {
 	if ch.isPreloaded {
 		return
 	}
@@ -27,9 +30,12 @@ func (ch *chunk) Preload(location Coord) {
 		for y := 0; y < ChunkSize; y++ {
 			tileX := (ch.Location.X() * ChunkSize) + x
 			tileY := (ch.Location.Y() * ChunkSize) + y
-			tileLocation := NewCoord(tileX, tileY)
+			tileLocation := coord.NewCoord(tileX, tileY)
 			tileIndex := ch.tileIndex(tileX, tileY)
-			aTile := &Tile{tileLocation, make(map[int]int)}
+			aTile := &Tile{}
+			aTile.values = make(map[int]int)
+			aTile.valuesF = make(map[int]float64)
+			aTile.coordinates = tileLocation
 			ch.tiles[tileIndex] = aTile
 		}
 	}
@@ -54,12 +60,8 @@ func (ch *chunk) RunOnAllTiles(f func(t *Tile)) {
 	}
 }
 
-func (ch *chunk) Tile(tileCoord Coord) *Tile {
+func (ch *chunk) Tile(tileCoord coord.Coord) *Tile {
 	return ch.tiles[ch.tileIndex(tileCoord.X(), tileCoord.Y())]
-}
-
-func (ch *chunk) initTile(c Coord) *Tile {
-	return &Tile{c, make(map[int]int)}
 }
 
 func (ch *chunk) tileIndex(x, y int) int {

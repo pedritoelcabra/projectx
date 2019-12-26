@@ -1,8 +1,7 @@
-package grid
+package coord
 
 import "strconv"
 
-// Coord is a simple structure to hold X and Y values
 type Coord struct {
 	CX int `json:"X"`
 	CY int `json:"Y"`
