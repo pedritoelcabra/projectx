@@ -24,7 +24,7 @@ func RenderTiles(screen *gfx.Screen, world *World, mode TileRenderMode) {
 	screenTileHeight := int(math.Ceil(float64(gfx.ScreenHeight / tileSize)))
 	halfScreenTileWidth := int(math.Ceil(float64(screenTileWidth)))
 	halfScreenTileHeight := int(math.Ceil(float64(screenTileHeight)))
-	playerTileX, playerTileY := PosFloatToTile(world.PlayerUnit.GetPos())
+	playerTileX, playerTileY := PixelFloatToTile(world.PlayerUnit.GetPos())
 	startX := playerTileX - halfScreenTileWidth
 	endX := playerTileX + halfScreenTileWidth
 	startY := playerTileY - halfScreenTileHeight
@@ -39,7 +39,7 @@ func RenderTiles(screen *gfx.Screen, world *World, mode TileRenderMode) {
 func RenderTile(tile *grid.Tile, mode TileRenderMode, screen *gfx.Screen) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Scale(TileScaleFactor, TileScaleFactor)
-	tx, ty := TileToPosFloat(tile.X(), tile.Y())
+	tx, ty := TileToPixelFloat(tile.X(), tile.Y())
 	terrainBase := tile.Get(grid.TerrainBase)
 	gfx.DrawHexTerrain(tx, ty, terrainBase, screen, op)
 }

@@ -61,7 +61,7 @@ func (w *World) LoadFromSave(data file.SaveGameData) {
 	w.Grid = &data.Grid
 	w.Entities = make(map[int]Entity)
 	w.PlayerUnit = &data.Player
-	w.Grid.ChunkGeneration(grid.NewCoord(PosFloatToTile(w.PlayerUnit.GetPos())), 0)
+	w.Grid.ChunkGeneration(grid.NewCoord(PixelFloatToTile(w.PlayerUnit.GetPos())), 0)
 	w.PlayerUnit.Unit.InitObjects()
 	w.AddEntity(w.PlayerUnit)
 	w.renderMode = RenderModeBasic
@@ -87,7 +87,7 @@ func (w *World) Update() {
 	if !w.initialised {
 		return
 	}
-	w.Grid.ChunkGeneration(grid.NewCoord(PosFloatToTile(w.PlayerUnit.GetPos())), w.tick)
+	w.Grid.ChunkGeneration(grid.NewCoord(PixelFloatToTile(w.PlayerUnit.GetPos())), w.tick)
 	for _, e := range w.Entities {
 		e.Update(w.tick)
 	}

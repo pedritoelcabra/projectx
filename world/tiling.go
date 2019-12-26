@@ -13,6 +13,7 @@ const (
 var TileHorizontalSeparation = 0
 var TileScaleFactor = 0.0
 var Sqrt3 = 0.0
+var One = 1
 
 func InitTiling() {
 	TileHorizontalSeparation = int(TileSize * 0.75)
@@ -20,41 +21,30 @@ func InitTiling() {
 	Sqrt3 = math.Sqrt(3.0)
 }
 
-func PosToTileC(coord grid.Coord) grid.Coord {
-	return grid.NewCoord(PosToTile(coord.X(), coord.Y()))
+func PixelFloatToTile(x, y float64) (tx, ty int) {
+	return PixelToTile(int(x), int(y))
 }
 
-func TileToPosC(tile grid.Coord) grid.Coord {
-	return grid.NewCoord(PosToTile(tile.X(), tile.Y()))
-}
-
-func PosFloatToTile(x, y float64) (tx, ty int) {
-	return PosToTile(int(x), int(y))
-}
-
-func PosToTile(x, y int) (tx, ty int) {
+func PixelToTile(x, y int) (tx, ty int) {
 	coord := PixelToHex(float64(x), float64(y))
 	return coord.X(), coord.Y()
 }
 
-func TileToPos(tx, ty int) (x, y int) {
-	y = ty * TileSize
-	x = tx * TileHorizontalSeparation
-	if tx%2 != 0 {
-		y += TileSize / 2
-	}
-	return
-}
-
-func TileToPosFloat(tx, ty int) (x, y float64) {
-	ix, iy := TileToPos(tx, ty)
-	return float64(ix), float64(iy)
+func TileToPixelFloat(tx, ty int) (x, y float64) {
+	pixelCoord := HexToPixel(grid.NewCoord(tx, ty))
+	return float64(pixelCoord.X()), float64(pixelCoord.Y())
 }
 
 func PixelToHex(x, y float64) grid.Coord {
 	var q = (2.0 / 3.0 * x) / TileSize
 	var r = (-1.0/3.0*x + Sqrt3/3.0*y) / TileSize
 	return CubeToCoord(CubeRound(grid.NewCube(q, -q-r, r)))
+}
+
+func HexToPixel(coord grid.Coord) grid.Coord {
+	var x = TileSize * 3 / 2 * float64(coord.X())
+	var y = TileSize * Sqrt3 * (float64(coord.Y()) + 0.5*float64(coord.X()&One))
+	return grid.NewCoordF(x, y)
 }
 
 func CubeRound(cube grid.Cube) grid.Cube {
@@ -77,7 +67,6 @@ func CubeRound(cube grid.Cube) grid.Cube {
 
 func CubeToCoord(cube grid.Cube) grid.Coord {
 	var col = cube.X
-	one := 1
-	var row = cube.Z + (cube.X-float64(int(cube.X)&one))/2
+	var row = cube.Z + (cube.X-float64(int(cube.X)&One))/2
 	return grid.NewCoord(int(col), int(row))
 }

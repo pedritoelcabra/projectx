@@ -18,7 +18,7 @@ func (g *game) DebugInfo() string {
 		mx += int(cx)
 		my += int(cy)
 		aString += "\nMouse Pos: " + grid.NewCoord(mx, my).ToString()
-		mouseTileCoord := grid.NewCoord(world.PosToTile(mx, my))
+		mouseTileCoord := grid.NewCoord(world.PixelToTile(mx, my))
 		aString += "\nMouse Tile: " + mouseTileCoord.ToString()
 		mHeight := g.World.Grid.Tile(mouseTileCoord).Get(grid.Height)
 		aString += "\nMouse Tile Height: " + strconv.Itoa(mHeight)
