@@ -42,3 +42,8 @@ func DrawHexTerrain(x, y float64, terrain int, screen *Screen, op *ebiten.DrawIm
 	op.GeoM.Translate(x, y)
 	screen.DrawImage(GetSprite(HexTerrain1).SubImage(hexTerrainTypeMap[terrainToHex[terrain]]).(*ebiten.Image), op)
 }
+
+func DrawHexTerrainToImage(x, y float64, terrain int, image *ebiten.Image, op *ebiten.DrawImageOptions) {
+	op.GeoM.Translate(x, y)
+	image.DrawImage(GetSprite(HexTerrain1).SubImage(hexTerrainTypeMap[terrainToHex[terrain]]).(*ebiten.Image), op)
+}

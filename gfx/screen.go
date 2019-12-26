@@ -33,7 +33,11 @@ func (s *Screen) GetCameraCoords() (x, y float64) {
 	return s.cameraX, s.cameraY
 }
 
+func (s *Screen) GetCameraOffset() (x, y float64) {
+	return -s.cameraX, -s.cameraY
+}
+
 func (s *Screen) DrawImage(image *ebiten.Image, options *ebiten.DrawImageOptions) {
-	options.GeoM.Translate(-s.cameraX, -s.cameraY)
+	options.GeoM.Translate(s.GetCameraOffset())
 	s.image.DrawImage(image, options)
 }

@@ -17,6 +17,8 @@ const (
 	RenderModeBasic
 )
 
+var lastRenderedChunkCoord = coord.NewCoord(-999, 999)
+
 type TileRenderer struct {
 	tileRenderSize int
 }
@@ -34,17 +36,29 @@ func RenderTiles(screen *gfx.Screen, world *World, mode TileRenderMode) {
 	endY := playerTileY + halfScreenTileHeight
 	for x := startX; x <= endX; x++ {
 		for y := startY; y <= endY; y++ {
-			RenderTile(world.Grid.Tile(coord.NewCoord(x, y)), mode, screen)
+			RenderChunk(x, y, screen, world)
+		}
+	}
+	for x := startX; x <= endX; x++ {
+		for y := startY; y <= endY; y++ {
+			renderedTile := world.Grid.Tile(coord.NewCoord(x, y))
+			DrawDot(renderedTile.GetF(grid.CenterX), renderedTile.GetF(grid.CenterY), screen)
 		}
 	}
 }
 
-func RenderTile(tile *grid.Tile, mode TileRenderMode, screen *gfx.Screen) {
+func RenderChunk(x, y int, screen *gfx.Screen, world *World) {
+	chunkCoord := world.Grid.ChunkCoord(coord.NewCoord(x, y))
+	if lastRenderedChunkCoord == chunkCoord {
+		return
+	}
+	lastRenderedChunkCoord = chunkCoord
+	chunk := world.Grid.Chunk(chunkCoord)
+	chunk.GenerateImage()
+	chunkImage := chunk.GetImage()
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Scale(tiling.TileWidthScale, tiling.TileHeightScale)
-	terrainBase := tile.Get(grid.TerrainBase)
-	gfx.DrawHexTerrain(tile.GetF(grid.RenderX), tile.GetF(grid.RenderY), terrainBase, screen, op)
-	//DrawDot(tile.GetF(grid.CenterX), tile.GetF(grid.CenterY), screen)
+	op.GeoM.Translate(chunk.FirstTile().GetF(grid.RenderX), chunk.FirstTile().GetF(grid.RenderY))
+	screen.DrawImage(chunkImage, op)
 }
 
 const (

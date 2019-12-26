@@ -1,7 +1,9 @@
 package grid
 
 import (
+	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/core/logger"
+	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/world/coord"
 	"github.com/pedritoelcabra/projectx/world/tiling"
 )
@@ -12,11 +14,13 @@ type chunk struct {
 	Generated           bool
 	queuedForGeneration bool
 	isPreloaded         bool
+	terrainImage        *ebiten.Image
 }
 
 func NewChunk(location coord.Coord) *chunk {
 	aChunk := &chunk{}
 	aChunk.isPreloaded = false
+	aChunk.terrainImage = nil
 	aChunk.Preload(location)
 	return aChunk
 }
@@ -81,4 +85,35 @@ func (ch *chunk) tileIndex(x, y int) int {
 	x -= ch.Location.X() * ChunkSize
 	y -= ch.Location.Y() * ChunkSize
 	return (x * ChunkSize) + y
+}
+
+func (ch *chunk) SetImage(image *ebiten.Image) {
+	ch.terrainImage = image
+}
+
+func (ch *chunk) GetImage() *ebiten.Image {
+	return ch.terrainImage
+}
+
+func (ch *chunk) GenerateImage() {
+	if ch.GetImage() != nil {
+		return
+	}
+	imageWidth := (ChunkSize + 1) * tiling.TileHorizontalSeparation
+	imageHeight := (ChunkSize + 1) * tiling.TileHeight
+	ch.terrainImage, _ = ebiten.NewImage(int(imageWidth), int(imageHeight), ebiten.FilterDefault)
+
+	for _, t := range ch.tiles {
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Scale(tiling.TileWidthScale, tiling.TileHeightScale)
+		xOff := tiling.TileHorizontalSeparation * float64(ch.Location.X()*ChunkSize)
+		yOff := tiling.TileHeight * float64(ch.Location.Y()*ChunkSize)
+		localX := t.GetF(RenderX) - xOff + (tiling.TileWidth / 2)
+		localY := t.GetF(RenderY) - yOff + (tiling.TileHeight / 2)
+		gfx.DrawHexTerrainToImage(localX, localY, t.Get(TerrainBase), ch.terrainImage, op)
+	}
+}
+
+func (ch *chunk) FirstTile() *Tile {
+	return ch.tiles[0]
 }

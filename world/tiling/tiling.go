@@ -23,9 +23,9 @@ func InitTiling() {
 	Sqrt3 = math.Sqrt(3.0)
 	TileWidth = TileSize * 2
 	TileWidthScale = TileWidth / GfxTileSize
-	TileHeight = TileSize * Sqrt3
+	TileHeight = math.Floor(TileSize * Sqrt3)
 	TileHeightScale = TileHeight / GfxTileSize
-	TileHorizontalSeparation = TileWidth * 0.75
+	TileHorizontalSeparation = math.Floor(TileWidth * 0.75)
 }
 
 func PixelFToTileI(x, y float64) (tx, ty int) {
