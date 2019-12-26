@@ -6,19 +6,26 @@ import (
 )
 
 const (
-	BaseTileSize = 72
-	TileSize     = 72
+	BaseTileSize = 36
+	TileSize     = 36
+	GfxTileSize  = 72
 )
 
-var TileHorizontalSeparation = 0
-var TileScaleFactor = 0.0
+var TileWidth = 0.0
+var TileHorizontalSeparation = 0.0
+var TileWidthScale = 0.0
+var TileHeight = 0.0
+var TileHeightScale = 0.0
 var Sqrt3 = 0.0
 var One = 1
 
 func InitTiling() {
-	TileHorizontalSeparation = int(TileSize * 0.75)
-	TileScaleFactor = float64(TileSize) / float64(BaseTileSize)
 	Sqrt3 = math.Sqrt(3.0)
+	TileWidth = TileSize * 2
+	TileWidthScale = TileWidth / GfxTileSize
+	TileHeight = TileSize * Sqrt3
+	TileHeightScale = TileHeight / GfxTileSize
+	TileHorizontalSeparation = TileWidth * 0.75
 }
 
 func PixelFToTileI(x, y float64) (tx, ty int) {
@@ -42,7 +49,7 @@ func PixelFToTileC(x, y float64) coord.Coord {
 }
 
 func TileCToPixelC(tileCoord coord.Coord) coord.Coord {
-	var x = TileSize * 3 / 2 * float64(tileCoord.X())
+	var x = TileSize * (3 / 2) * float64(tileCoord.X())
 	var y = TileSize * Sqrt3 * (float64(tileCoord.Y()) + 0.5*float64(tileCoord.X()&One))
 	return coord.NewCoordF(x, y)
 }

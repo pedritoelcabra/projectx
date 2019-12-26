@@ -6,7 +6,6 @@ import (
 	"github.com/pedritoelcabra/projectx/world/coord"
 	"github.com/pedritoelcabra/projectx/world/defs"
 	"github.com/pedritoelcabra/projectx/world/noise"
-	"github.com/pedritoelcabra/projectx/world/tiling"
 	"log"
 )
 
@@ -116,9 +115,6 @@ func (t *Tile) InitializeTile() {
 		terrain = defs.BasicWater
 	}
 	t.Set(TerrainBase, terrain)
-	pixelX, pixelY := tiling.TileIToPixelF(t.X(), t.Y())
-	t.SetF(RenderX, pixelX)
-	t.SetF(RenderY, pixelY)
 }
 
 func (g *Grid) chunkIndex(x, y int) int {

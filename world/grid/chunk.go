@@ -3,6 +3,7 @@ package grid
 import (
 	"github.com/pedritoelcabra/projectx/core/logger"
 	"github.com/pedritoelcabra/projectx/world/coord"
+	"github.com/pedritoelcabra/projectx/world/tiling"
 )
 
 type chunk struct {
@@ -36,6 +37,18 @@ func (ch *chunk) Preload(location coord.Coord) {
 			aTile.values = make(map[int]int)
 			aTile.valuesF = make(map[int]float64)
 			aTile.coordinates = tileLocation
+
+			centerX := float64(tileX) * tiling.TileHorizontalSeparation
+			centerY := float64(tileY) * tiling.TileHeight
+			if x%2 > 0 {
+				centerY += tiling.TileHeight / 2
+			}
+			renderX := centerX - tiling.TileWidth/2
+			renderY := centerY - tiling.TileHeight/2
+			aTile.SetF(RenderX, renderX)
+			aTile.SetF(RenderY, renderY)
+			aTile.SetF(CenterX, centerX)
+			aTile.SetF(CenterY, centerY)
 			ch.tiles[tileIndex] = aTile
 		}
 	}

@@ -40,6 +40,8 @@ const (
 	TerrainOverlay
 	RenderX
 	RenderY
+	CenterX
+	CenterY
 	RenderW
 	RenderH
 )
