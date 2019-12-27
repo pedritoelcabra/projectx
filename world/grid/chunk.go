@@ -2,7 +2,6 @@ package grid
 
 import (
 	"github.com/hajimehoshi/ebiten"
-	"github.com/pedritoelcabra/projectx/core/logger"
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/world/container"
 	"github.com/pedritoelcabra/projectx/world/coord"
@@ -63,7 +62,6 @@ func (ch *chunk) Preload(location coord.Coord) {
 	})
 	ch.PreloadChunkData()
 	ch.isPreloaded = true
-	logger.General("Preloaded chunk: "+location.ToString(), nil)
 }
 
 func (ch *chunk) PreloadChunkData() {

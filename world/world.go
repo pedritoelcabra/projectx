@@ -2,6 +2,7 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/core/file"
+	"github.com/pedritoelcabra/projectx/core/randomizer"
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/world/coord"
 	"github.com/pedritoelcabra/projectx/world/grid"
@@ -33,6 +34,7 @@ func (w *World) IsInitialized() bool {
 
 func (w *World) SetSeed(seed int) {
 	w.seed = seed
+	randomizer.SetSeed(seed)
 }
 
 func (w *World) GetSeed() int {

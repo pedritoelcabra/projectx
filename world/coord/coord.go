@@ -1,6 +1,9 @@
 package coord
 
-import "strconv"
+import (
+	"github.com/pedritoelcabra/projectx/world/calc"
+	"strconv"
+)
 
 type Coord struct {
 	CX int `json:"X"`
@@ -37,4 +40,16 @@ func (c Coord) Y() int {
 
 func (c Coord) ToString() string {
 	return strconv.Itoa(c.CX) + "/" + strconv.Itoa(c.CY)
+}
+
+func (c1 Coord) ManhattanDist(c2 Coord) int {
+	yDist := calc.AbsInt(c1.CY - c2.CY)
+	xDist := calc.AbsInt(c1.CX - c2.CX)
+	return yDist + xDist
+}
+
+func (c1 Coord) ChebyshevDist(c2 Coord) int {
+	yDist := calc.AbsInt(c1.CY - c2.CY)
+	xDist := calc.AbsInt(c1.CX - c2.CX)
+	return calc.MaxInt(yDist, xDist)
 }

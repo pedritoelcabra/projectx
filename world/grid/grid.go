@@ -2,7 +2,6 @@
 package grid
 
 import (
-	"github.com/pedritoelcabra/projectx/core/logger"
 	"github.com/pedritoelcabra/projectx/world/coord"
 	"github.com/pedritoelcabra/projectx/world/defs"
 	"github.com/pedritoelcabra/projectx/world/noise"
@@ -51,61 +50,6 @@ func (g *Grid) Chunk(chunkCoord coord.Coord) *chunk {
 	}
 	g.CreateNewChunk(chunkCoord)
 	return g.Chunks[chunkIndex]
-}
-
-func (g *Grid) CreateNewChunk(chunkCoord coord.Coord) {
-	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
-	aChunk := NewChunk(chunkCoord)
-	g.Chunks[chunkIndex] = aChunk
-	g.chunksToGenerate = append(g.chunksToGenerate, chunkCoord)
-	aChunk.queuedForGeneration = true
-	aChunk.Generated = false
-}
-
-func (g *Grid) ChunkGeneration(playerTile coord.Coord, tick int) {
-	g.ProcessChunkGenerationQueue()
-	if tick%60 > 0 {
-		return
-	}
-	playerChunk := g.ChunkCoord(playerTile)
-	for x := playerChunk.X() - 3; x <= playerChunk.X()+3; x++ {
-		for y := playerChunk.Y() - 3; y <= playerChunk.Y()+3; y++ {
-			chunkIndex := g.chunkIndex(x, y)
-			chunkCoord := coord.NewCoord(x, y)
-			aChunk, chunkExists := g.Chunks[chunkIndex]
-			if !chunkExists {
-				g.CreateNewChunk(chunkCoord)
-				continue
-			}
-			if !aChunk.Generated && !aChunk.queuedForGeneration {
-				g.QueueChunkForGeneration(chunkCoord)
-			}
-		}
-	}
-}
-
-func (g *Grid) QueueChunkForGeneration(chunkCoord coord.Coord) {
-	g.chunksToGenerate = append(g.chunksToGenerate, chunkCoord)
-}
-
-func (g *Grid) ProcessChunkGenerationQueue() {
-	if len(g.chunksToGenerate) < 1 {
-		return
-	}
-	chunkCoord := g.chunksToGenerate[0]
-	g.chunksToGenerate = g.chunksToGenerate[1:]
-	g.GenerateChunk(chunkCoord)
-}
-
-func (g *Grid) GenerateChunk(chunkCoord coord.Coord) {
-	aChunk := g.Chunk(chunkCoord)
-	if aChunk.IsGenerated() {
-		return
-	}
-
-	aChunk.queuedForGeneration = false
-	aChunk.Generated = true
-	logger.General("Generated chunk: "+chunkCoord.ToString(), nil)
 }
 
 func (t *Tile) InitializeTile() {

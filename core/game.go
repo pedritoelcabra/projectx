@@ -4,13 +4,12 @@ import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/core/file"
 	"github.com/pedritoelcabra/projectx/core/logger"
+	"github.com/pedritoelcabra/projectx/core/randomizer"
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/gui"
 	"github.com/pedritoelcabra/projectx/world"
 	"github.com/pedritoelcabra/projectx/world/units"
-	"math/rand"
 	"strconv"
-	"time"
 )
 
 type game struct {
@@ -125,9 +124,7 @@ func (g *game) HasLoadedWorld() bool {
 
 func (g *game) InitializeNewWorld() {
 	g.World = world.NewWorld()
-	s1 := rand.NewSource(time.Now().UnixNano())
-	r1 := rand.New(s1)
-	g.World.SetSeed(r1.Intn(10000))
+	g.World.SetSeed(randomizer.NewSeed())
 	g.World.Init()
 	g.InitMenus()
 	g.UnPause()
