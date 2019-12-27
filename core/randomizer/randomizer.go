@@ -23,6 +23,14 @@ func SetSeed(seed int) {
 }
 
 func RandomInt(min, max int) int {
+	if min > max {
+		return RandomInt(max, min)
+	}
+	if min < 0 {
+		offset := -min
+		offsetResult := RandomInt(min+offset, max+offset)
+		return min + offsetResult
+	}
 	randomInt := Randomizer.rand.Intn(max)
 	return min + randomInt
 }

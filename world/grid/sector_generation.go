@@ -19,7 +19,33 @@ func (g *Grid) SpawnSector(aChunk *chunk) {
 }
 
 func (g *Grid) SuitableSectorCenter(aChunk *chunk) (coord.Coord, bool) {
-	return aChunk.FirstTile().coordinates, true
+	minX := aChunk.FirstTile().X() + 5
+	maxX := aChunk.FirstTile().X() + ChunkSize - 5
+	minY := aChunk.FirstTile().Y() + 5
+	maxY := aChunk.FirstTile().Y() + ChunkSize - 5
+	for attempts := 0; attempts <= 10; attempts++ {
+		randomX := randomizer.RandomInt(minX, maxX)
+		randomY := randomizer.RandomInt(minY, maxY)
+		aTile := g.Tile(coord.NewCoord(randomX, randomY))
+		if g.TileIsSuitableForSectorCenter(aTile) {
+			return aTile.coordinates, true
+		}
+	}
+	logger.General("Failed to find a suitable center for sector in chunk: "+aChunk.Location.ToString(), nil)
+	return aChunk.FirstTile().coordinates, false
+}
+
+func (g *Grid) TileIsSuitableForSectorCenter(aTile *Tile) bool {
+	necessarySpace := 3
+	for x := aTile.X() - necessarySpace; x <= aTile.X()+necessarySpace; x++ {
+		for y := aTile.Y() - necessarySpace; y <= aTile.Y()+necessarySpace; y++ {
+			nearbyTile := g.Tile(coord.NewCoord(x, y))
+			if nearbyTile.IsImpassable() {
+				return false
+			}
+		}
+	}
+	return true
 }
 
 func (g *Grid) ShouldSpawnSector(aChunk *chunk) bool {
@@ -27,8 +53,9 @@ func (g *Grid) ShouldSpawnSector(aChunk *chunk) bool {
 	if aChunk.ChunkData.Get(AvgHeight) < 0 {
 		return false
 	}
-	for x := aChunk.Location.X() - 2; x <= aChunk.Location.X()+2; x++ {
-		for y := aChunk.Location.Y() - 2; y <= aChunk.Location.Y()+2; y++ {
+	radiusToCheck := 3
+	for x := aChunk.Location.X() - radiusToCheck; x <= aChunk.Location.X()+radiusToCheck; x++ {
+		for y := aChunk.Location.Y() - radiusToCheck; y <= aChunk.Location.Y()+radiusToCheck; y++ {
 			bChunk := g.Chunk(coord.NewCoord(x, y))
 			if bChunk.Sector == nil {
 				continue
@@ -40,7 +67,7 @@ func (g *Grid) ShouldSpawnSector(aChunk *chunk) bool {
 		}
 	}
 
-	// 80% chance to generate sector at no neighbours, 20% with the maximum (4) neighbours in the other circle
+	// 80% chance to generate sector at no neighbours, 15% less for each nearby sector
 	chanceToGenerateSector := 80
 	chanceToGenerateSector -= nearbySectorCount * 15
 	if !randomizer.PercentageRoll(chanceToGenerateSector) {

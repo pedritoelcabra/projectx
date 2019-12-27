@@ -3,6 +3,7 @@ package grid
 import (
 	"github.com/pedritoelcabra/projectx/world/container"
 	"github.com/pedritoelcabra/projectx/world/coord"
+	"github.com/pedritoelcabra/projectx/world/defs"
 )
 
 // Tile is the data contained in any given coordinate in the grid
@@ -39,4 +40,11 @@ func (t *Tile) Set(key, value int) {
 
 func (t *Tile) SetF(key int, value float64) {
 	t.Data.SetF(key, value)
+}
+
+func (t *Tile) IsImpassable() bool {
+	if t.Get(TerrainBase) == defs.BasicWater || t.Get(TerrainBase) == defs.BasicMountain {
+		return true
+	}
+	return false
 }
