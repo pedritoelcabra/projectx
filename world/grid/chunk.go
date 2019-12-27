@@ -10,6 +10,7 @@ import (
 
 type chunk struct {
 	tiles               []*Tile
+	ChunkData           *Tile
 	Location            coord.Coord
 	Generated           bool
 	queuedForGeneration bool
@@ -21,6 +22,7 @@ func NewChunk(location coord.Coord) *chunk {
 	aChunk := &chunk{}
 	aChunk.isPreloaded = false
 	aChunk.terrainImage = nil
+	aChunk.ChunkData = NewTile()
 	aChunk.Preload(location)
 	return aChunk
 }
@@ -37,9 +39,7 @@ func (ch *chunk) Preload(location coord.Coord) {
 			tileY := (ch.Location.Y() * ChunkSize) + y
 			tileLocation := coord.NewCoord(tileX, tileY)
 			tileIndex := ch.tileIndex(tileX, tileY)
-			aTile := &Tile{}
-			aTile.values = make(map[int]int)
-			aTile.valuesF = make(map[int]float64)
+			aTile := NewTile()
 			aTile.coordinates = tileLocation
 
 			centerX := float64(tileX) * tiling.TileHorizontalSeparation
@@ -59,8 +59,29 @@ func (ch *chunk) Preload(location coord.Coord) {
 	ch.RunOnAllTiles(func(t *Tile) {
 		t.InitializeTile()
 	})
+	ch.PreloadChunkData()
 	ch.isPreloaded = true
 	logger.General("Preloaded chunk: "+location.ToString(), nil)
+}
+
+func (ch *chunk) PreloadChunkData() {
+	totalHeight := 0
+	maxHeight := 0
+	minHeight := 0
+	totalTiles := ChunkSize * ChunkSize
+	for _, tile := range ch.tiles {
+		tileHeight := tile.Get(Height)
+		totalHeight += tileHeight
+		if maxHeight < tileHeight {
+			maxHeight = tileHeight
+		}
+		if minHeight > tileHeight {
+			minHeight = tileHeight
+		}
+	}
+	ch.ChunkData.Set(AvgHeight, totalHeight/totalTiles)
+	ch.ChunkData.Set(MaxHeight, maxHeight)
+	ch.ChunkData.Set(MinHeight, minHeight)
 }
 
 func (ch *chunk) IsGenerated() bool {

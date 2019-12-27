@@ -7,7 +7,7 @@ import (
 
 const (
 	BaseTileSize = 36
-	TileSize     = 36
+	TileSize     = 5
 	GfxTileSize  = 72
 )
 

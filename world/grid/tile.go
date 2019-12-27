@@ -5,8 +5,15 @@ import "github.com/pedritoelcabra/projectx/world/coord"
 // Tile is the data contained in any given coordinate in the grid
 type Tile struct {
 	coordinates coord.Coord
-	values      map[int]int
-	valuesF     map[int]float64
+	Values      map[int]int
+	ValuesF     map[int]float64
+}
+
+func NewTile() *Tile {
+	aTile := &Tile{}
+	aTile.Values = make(map[int]int)
+	aTile.ValuesF = make(map[int]float64)
+	return aTile
 }
 
 func (t Tile) X() int {
@@ -18,30 +25,17 @@ func (t Tile) Y() int {
 }
 
 func (t Tile) Get(key int) int {
-	return t.values[key]
+	return t.Values[key]
 }
 
 func (t Tile) GetF(key int) float64 {
-	return t.valuesF[key]
+	return t.ValuesF[key]
 }
 
 func (t Tile) Set(key, value int) {
-	t.values[key] = value
+	t.Values[key] = value
 }
 
 func (t Tile) SetF(key int, value float64) {
-	t.valuesF[key] = value
+	t.ValuesF[key] = value
 }
-
-const (
-	Height int = iota
-	Population
-	TerrainBase
-	TerrainOverlay
-	RenderX
-	RenderY
-	CenterX
-	CenterY
-	RenderW
-	RenderH
-)
