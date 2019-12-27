@@ -41,6 +41,7 @@ func G() *game {
 
 func (g *game) init() {
 	logger.InitLogger()
+	file.InitDefs()
 	g.Screen = gfx.NewScreen()
 	g.Graphics = gfx.NewGraphics()
 	g.InitInput()
