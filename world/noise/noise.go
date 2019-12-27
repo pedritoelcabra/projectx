@@ -23,11 +23,14 @@ func Seed(seed int) {
 
 func (n *NoiseGenerator) GetHeight(x, y int) int {
 	height := 0.0
-	rugged_intensity := math.Abs(n.ApplyFilter(x, y, 100.0, 1000.0) / 1000)
-	rugged := n.ApplyFilter(x+100, y+100, 10.0, 200.0)
-	rugged *= rugged_intensity
+	ruggedIntensity := math.Abs(n.ApplyFilter(x, y, 100.0, 2000.0) / 1000)
+	if ruggedIntensity >= 1.0 {
+		ruggedIntensity = 1.0
+	}
+	rugged := n.ApplyFilter(x+100, y+100, 10.0, 400.0)
+	rugged *= ruggedIntensity
 	height += rugged
-	plaque := n.ApplyFilter(x+10000, y+10000, 50.0, 700.0)
+	plaque := n.ApplyFilter(x+10000, y+10000, 100.0, 600.0)
 	height += plaque
 	return int(height)
 }
