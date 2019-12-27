@@ -4,25 +4,27 @@ import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/core/logger"
 	"github.com/pedritoelcabra/projectx/gfx"
+	"github.com/pedritoelcabra/projectx/world/container"
 	"github.com/pedritoelcabra/projectx/world/coord"
 	"github.com/pedritoelcabra/projectx/world/tiling"
 )
 
 type chunk struct {
 	tiles               []*Tile
-	ChunkData           *Tile
+	ChunkData           *container.Container
 	Location            coord.Coord
 	Generated           bool
 	queuedForGeneration bool
 	isPreloaded         bool
 	terrainImage        *ebiten.Image
+	Sector              *Sector
 }
 
 func NewChunk(location coord.Coord) *chunk {
 	aChunk := &chunk{}
 	aChunk.isPreloaded = false
 	aChunk.terrainImage = nil
-	aChunk.ChunkData = NewTile()
+	aChunk.ChunkData = container.NewContainer()
 	aChunk.Preload(location)
 	return aChunk
 }
