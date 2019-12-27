@@ -37,15 +37,17 @@ func (g *Grid) SuitableSectorCenter(aChunk *chunk) (coord.Coord, bool) {
 
 func (g *Grid) TileIsSuitableForSectorCenter(aTile *Tile) bool {
 	necessarySpace := 3
+	maxImpassableTiles := 5
+	currentImpassableTiles := 0
 	for x := aTile.X() - necessarySpace; x <= aTile.X()+necessarySpace; x++ {
 		for y := aTile.Y() - necessarySpace; y <= aTile.Y()+necessarySpace; y++ {
 			nearbyTile := g.Tile(coord.NewCoord(x, y))
 			if nearbyTile.IsImpassable() {
-				return false
+				currentImpassableTiles++
 			}
 		}
 	}
-	return true
+	return currentImpassableTiles <= maxImpassableTiles
 }
 
 func (g *Grid) ShouldSpawnSector(aChunk *chunk) bool {
