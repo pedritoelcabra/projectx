@@ -39,12 +39,6 @@ func RenderTiles(screen *gfx.Screen, world *World, mode TileRenderMode) {
 			RenderChunk(x, y, screen, world)
 		}
 	}
-	for x := startX; x <= endX; x++ {
-		for y := startY; y <= endY; y++ {
-			renderedTile := world.Grid.Tile(coord.NewCoord(x, y))
-			DrawDot(renderedTile.GetF(grid.CenterX), renderedTile.GetF(grid.CenterY), screen)
-		}
-	}
 }
 
 func RenderChunk(x, y int, screen *gfx.Screen, world *World) {
@@ -53,12 +47,17 @@ func RenderChunk(x, y int, screen *gfx.Screen, world *World) {
 		return
 	}
 	lastRenderedChunkCoord = chunkCoord
-	chunk := world.Grid.Chunk(chunkCoord)
-	chunk.GenerateImage()
-	chunkImage := chunk.GetImage()
+	aChunk := world.Grid.Chunk(chunkCoord)
+	aChunk.GenerateImage()
+	chunkImage := aChunk.GetImage()
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(chunk.FirstTile().GetF(grid.RenderX), chunk.FirstTile().GetF(grid.RenderY))
+	op.GeoM.Translate(aChunk.FirstTile().GetF(grid.RenderX), aChunk.FirstTile().GetF(grid.RenderY))
 	screen.DrawImage(chunkImage, op)
+	if aChunk.Sector != nil {
+		sectorCoord := aChunk.Sector.Center
+		sectorTile := world.Grid.Tile(sectorCoord)
+		DrawDot(sectorTile.GetF(grid.CenterX), sectorTile.GetF(grid.CenterY), screen, 4.0)
+	}
 }
 
 const (
@@ -80,9 +79,9 @@ var brushImage, _ = ebiten.NewImageFromImage(&image.Alpha{
 	Rect:   image.Rect(0, 0, 4, 4),
 }, ebiten.FilterDefault)
 
-func DrawDot(x, y float64, screen *gfx.Screen) {
-	return
+func DrawDot(x, y float64, screen *gfx.Screen, scale float64) {
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(x-2.0, y-2.0)
+	op.GeoM.Scale(scale, scale)
+	op.GeoM.Translate(x-8.0, y-8.0)
 	screen.DrawImage(brushImage, op)
 }

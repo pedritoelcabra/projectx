@@ -57,14 +57,17 @@ func (t *Tile) InitializeTile() {
 	t.Set(Height, height)
 	terrain := -1
 	terrain = defs.BasicMountain
-	if height < 600 {
-		terrain = defs.BasicDesert
+	if height < 300 {
+		terrain = defs.BasicHills
 	}
-	if height < 200 {
+	if height < 150 {
 		terrain = defs.BasicGrass
 	}
 	if height < 0 {
 		terrain = defs.BasicWater
+	}
+	if height < -50 {
+		terrain = defs.BasicDeepWater
 	}
 	t.Set(TerrainBase, terrain)
 }

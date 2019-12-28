@@ -32,10 +32,11 @@ func SetUpHexTerrainOffsets() {
 			hexTerrainTypeMap[key] = imageRect
 		}
 	}
-	terrainToHex[defs.BasicWater] = 2
-	terrainToHex[defs.BasicDesert] = 24
+	terrainToHex[defs.BasicWater] = 1
+	terrainToHex[defs.BasicDeepWater] = 0
+	terrainToHex[defs.BasicHills] = 38
 	terrainToHex[defs.BasicGrass] = 51
-	terrainToHex[defs.BasicMountain] = 60
+	terrainToHex[defs.BasicMountain] = 41
 }
 
 func DrawHexTerrain(x, y float64, terrain int, screen *Screen, op *ebiten.DrawImageOptions) {

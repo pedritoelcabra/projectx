@@ -32,6 +32,11 @@ func (n *NoiseGenerator) GetHeight(x, y int) int {
 	height += rugged
 	plaque := n.ApplyFilter(x+10000, y+10000, 100.0, 600.0)
 	height += plaque
+	baseline := 100.0
+	height += baseline
+	if height >= 1000 {
+		height = 999.0
+	}
 	return int(height)
 }
 
