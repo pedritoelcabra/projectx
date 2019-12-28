@@ -93,7 +93,7 @@ func (w *World) Update() {
 	}
 	w.Grid.ChunkGeneration(coord.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), w.tick)
 	for _, e := range w.Entities {
-		e.Update(w.tick)
+		e.Update(w.tick, w.Grid)
 	}
 	w.tick++
 }

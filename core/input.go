@@ -73,7 +73,7 @@ func (i *Input) InitKey(event string) {
 
 func (i *Input) TriggerCallbacks(key string) {
 	for _, callback := range i.listeners[key] {
-		callback(projectX)
+		callback(ProjectX)
 	}
 }
 

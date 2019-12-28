@@ -2,6 +2,7 @@ package units
 
 import (
 	"github.com/pedritoelcabra/projectx/gfx"
+	"github.com/pedritoelcabra/projectx/world/grid"
 )
 
 type PlayerDirection int
@@ -36,9 +37,9 @@ func (p *Player) SetPosition(x, y float64) {
 	p.Unit.SetPosition(x, y)
 }
 
-func (p *Player) Update(tick int) {
+func (p *Player) Update(tick int, grid *grid.Grid) {
 	p.UpdateDestination()
-	p.Unit.Update(tick)
+	p.Unit.Update(tick, grid)
 }
 
 func (p *Player) UpdateDestination() {

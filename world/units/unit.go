@@ -2,7 +2,9 @@ package units
 
 import (
 	"github.com/pedritoelcabra/projectx/gfx"
+	"github.com/pedritoelcabra/projectx/world/grid"
 	"github.com/pedritoelcabra/projectx/world/movement"
+	"github.com/pedritoelcabra/projectx/world/tiling"
 	"math"
 )
 
@@ -71,10 +73,27 @@ func (u *Unit) InitObjects() {
 	u.Sprite = gfx.NewLpcSprite(u.SpriteName)
 }
 
-func (u *Unit) Update(tick int) {
+func (u *Unit) Update(tick int, grid *grid.Grid) {
 	if u.Moving {
-		newX, newY := movement.AdvanceAlongLine(u.X, u.Y, u.DestX, u.DestY, u.Speed)
-		u.SetPosition(newX, newY)
+		oldCoord := tiling.PixelFToTileC(u.X, u.X)
+		oldTile := grid.Tile(oldCoord)
+		movementCost := oldTile.MovementCost()
+		if movementCost == 0 {
+			movementCost = 1.0
+		}
+		movementSpeed := u.Speed / movementCost
+		newX, newY := movement.AdvanceAlongLine(u.X, u.Y, u.DestX, u.DestY, movementSpeed)
+		newCoord := tiling.PixelFToTileC(newX, newY)
+		canMove := true
+		if oldCoord != newCoord {
+			newTile := grid.Tile(newCoord)
+			if newTile.IsImpassable() {
+				canMove = false
+			}
+		}
+		if canMove {
+			u.SetPosition(newX, newY)
+		}
 	}
 }
 

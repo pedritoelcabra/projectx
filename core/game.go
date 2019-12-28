@@ -24,7 +24,7 @@ type game struct {
 	debugMessage   string
 }
 
-var projectX *game
+var ProjectX *game
 
 func New() *game {
 	aGame := game{}
@@ -33,10 +33,10 @@ func New() *game {
 }
 
 func G() *game {
-	if projectX == nil {
-		projectX = New()
+	if ProjectX == nil {
+		ProjectX = New()
 	}
-	return projectX
+	return ProjectX
 }
 
 func (g *game) init() {
