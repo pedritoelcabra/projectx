@@ -43,8 +43,5 @@ func (t *Tile) SetF(key int, value float64) {
 }
 
 func (t *Tile) IsImpassable() bool {
-	if t.Get(TerrainBase) == defs.BasicWater || t.Get(TerrainBase) == defs.BasicMountain {
-		return true
-	}
-	return false
+	return defs.MovementCost(t.Get(TerrainBase)) > 0
 }
