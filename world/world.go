@@ -1,19 +1,17 @@
 package world
 
 import (
-	"github.com/pedritoelcabra/projectx/core/file"
 	"github.com/pedritoelcabra/projectx/core/randomizer"
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/world/coord"
 	"github.com/pedritoelcabra/projectx/world/grid"
 	"github.com/pedritoelcabra/projectx/world/noise"
 	"github.com/pedritoelcabra/projectx/world/tiling"
-	"github.com/pedritoelcabra/projectx/world/units"
 )
 
 type World struct {
 	Entities    map[int]Entity
-	PlayerUnit  *units.Player
+	PlayerUnit  *Player
 	Grid        *grid.Grid
 	entityCount int
 	initialised bool
@@ -50,14 +48,14 @@ func (w *World) Init() {
 	noise.Seed(w.seed)
 	w.Grid = grid.New()
 	w.Entities = make(map[int]Entity)
-	w.PlayerUnit = units.NewPlayer()
+	w.PlayerUnit = NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)
 	w.AddEntity(w.PlayerUnit)
 	w.renderMode = RenderModeBasic
 	w.initialised = true
 }
 
-func (w *World) LoadFromSave(data file.SaveGameData) {
+func (w *World) LoadFromSave(data SaveGameData) {
 	tiling.InitTiling()
 	w.SetSeed(data.Seed)
 	w.tick = data.Tick

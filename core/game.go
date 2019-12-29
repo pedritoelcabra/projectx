@@ -8,7 +8,6 @@ import (
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/gui"
 	"github.com/pedritoelcabra/projectx/world"
-	"github.com/pedritoelcabra/projectx/world/units"
 	"strconv"
 )
 
@@ -139,7 +138,7 @@ func (g *game) Pause() {
 	g.Gui.SetDisabled("start", false)
 }
 
-func (g *game) UpdatePlayerMovement(dir units.PlayerDirection, value bool) {
+func (g *game) UpdatePlayerMovement(dir world.PlayerDirection, value bool) {
 	if g.World == nil || g.World.PlayerUnit == nil {
 		return
 	}
@@ -147,7 +146,7 @@ func (g *game) UpdatePlayerMovement(dir units.PlayerDirection, value bool) {
 }
 
 func (g *game) QuickSave() {
-	state := file.SaveGameData{}
+	state := world.SaveGameData{}
 	state.Seed = g.World.GetSeed()
 	state.Tick = g.World.GetTick()
 	state.Player = *g.World.PlayerUnit

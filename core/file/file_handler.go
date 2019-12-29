@@ -3,8 +3,7 @@ package file
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/pedritoelcabra/projectx/world/grid"
-	"github.com/pedritoelcabra/projectx/world/units"
+	"github.com/pedritoelcabra/projectx/world"
 	"io"
 	"log"
 	"os"
@@ -13,13 +12,6 @@ import (
 
 var saveGameBasePath = "save_games/"
 var DefaultSaveGameName = "quicksave.pxs"
-
-type SaveGameData struct {
-	Seed   int
-	Tick   int
-	Player units.Player
-	Grid   grid.Grid
-}
 
 func getSaveGameFullPath(fileName string) string {
 	absolutePath, err := filepath.Abs(saveGameBasePath)
@@ -32,7 +24,7 @@ func getSaveGameFullPath(fileName string) string {
 	return absolutePath + "/" + fileName
 }
 
-func SaveToFile(data SaveGameData, fileName string) {
+func SaveToFile(data world.SaveGameData, fileName string) {
 	fullPath := getSaveGameFullPath(fileName)
 	file, err := os.Create(fullPath)
 	defer file.Close()
@@ -49,14 +41,14 @@ func SaveToFile(data SaveGameData, fileName string) {
 	}
 }
 
-func LoadFromFile(fileName string) SaveGameData {
+func LoadFromFile(fileName string) world.SaveGameData {
 	fullPath := getSaveGameFullPath(fileName)
 	file, err := os.Open(fullPath)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
-	dataStructure := SaveGameData{}
+	dataStructure := world.SaveGameData{}
 	err = Decode(file, &dataStructure)
 	if err != nil {
 		log.Fatal(err)
