@@ -8,26 +8,12 @@ import (
 
 const defFolder = "defs/"
 
-type DefClass interface {
-	GetName() string
-}
-
-type SectorDef struct {
-	Name          string
-	CenterGraphic string
-	Weight        int
-	Land          int
-}
-
-func (s *SectorDef) GetName() string {
-	return s.Name
-}
-
 func NewDefClass(className string) DefClass {
 	switch className {
-	case "Sector":
+	case "Sectors":
 		return &SectorDef{}
-
+	case "Buildings":
+		return &BuildingDef{}
 	}
 	log.Fatal("Trying to spawn non-existant Def Class")
 	return &SectorDef{}
@@ -41,7 +27,12 @@ func GetDefs(defType string) map[string]DefClass {
 
 func InitDefs() {
 	defs = make(map[string]map[string]DefClass)
-	defs["Sectors"] = LoadDefClass(NewDefClass("Sector"), "sectors")
+	LoadDefFolder("Sectors")
+	LoadDefFolder("Buildings")
+}
+
+func LoadDefFolder(name string) {
+	defs[name] = LoadDefClass(NewDefClass(name), name)
 }
 
 func LoadDefClass(defClass DefClass, folderName string) map[string]DefClass {
