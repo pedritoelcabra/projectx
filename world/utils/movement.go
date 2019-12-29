@@ -1,4 +1,4 @@
-package movement
+package utils
 
 import "math"
 

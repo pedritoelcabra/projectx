@@ -2,9 +2,8 @@
 package grid
 
 import (
-	"github.com/pedritoelcabra/projectx/world/coord"
-	"github.com/pedritoelcabra/projectx/world/defs"
-	"github.com/pedritoelcabra/projectx/world/noise"
+	"github.com/pedritoelcabra/projectx/world/tiling"
+	"github.com/pedritoelcabra/projectx/world/utils"
 	"log"
 )
 
@@ -20,8 +19,8 @@ type ChunkMap map[int]*chunk
 
 type Grid struct {
 	Chunks           ChunkMap
-	chunksToGenerate []coord.Coord
-	noise            *noise.NoiseGenerator
+	chunksToGenerate []tiling.Coord
+	noise            *utils.NoiseGenerator
 }
 
 func New() *Grid {
@@ -32,15 +31,15 @@ func New() *Grid {
 	return aGrid
 }
 
-func (g *Grid) SetNoise(noise *noise.NoiseGenerator) {
+func (g *Grid) SetNoise(noise *utils.NoiseGenerator) {
 	g.noise = noise
 }
 
-func (g *Grid) Tile(tileCoord coord.Coord) *Tile {
+func (g *Grid) Tile(tileCoord tiling.Coord) *Tile {
 	return g.Chunk(g.ChunkCoord(tileCoord)).Tile(tileCoord)
 }
 
-func (g *Grid) Chunk(chunkCoord coord.Coord) *chunk {
+func (g *Grid) Chunk(chunkCoord tiling.Coord) *chunk {
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
 	if aChunk, chunkExists := g.Chunks[chunkIndex]; chunkExists {
 		if !aChunk.isPreloaded {
@@ -53,21 +52,21 @@ func (g *Grid) Chunk(chunkCoord coord.Coord) *chunk {
 }
 
 func (t *Tile) InitializeTile() {
-	height := noise.Generator.GetHeight(t.X(), t.Y())
+	height := utils.Generator.GetHeight(t.X(), t.Y())
 	t.Set(Height, height)
 	terrain := -1
-	terrain = defs.BasicMountain
+	terrain = utils.BasicMountain
 	if height < 300 {
-		terrain = defs.BasicHills
+		terrain = utils.BasicHills
 	}
 	if height < 150 {
-		terrain = defs.BasicGrass
+		terrain = utils.BasicGrass
 	}
 	if height < 0 {
-		terrain = defs.BasicWater
+		terrain = utils.BasicWater
 	}
 	if height < -50 {
-		terrain = defs.BasicDeepWater
+		terrain = utils.BasicDeepWater
 	}
 	t.Set(TerrainBase, terrain)
 }
@@ -81,8 +80,8 @@ func (g *Grid) chunkIndex(x, y int) int {
 	return (x * GridSize) + y
 }
 
-func (g *Grid) ChunkCoord(tileCoord coord.Coord) coord.Coord {
+func (g *Grid) ChunkCoord(tileCoord tiling.Coord) tiling.Coord {
 	x := ((tileCoord.X() + TileOffset) / ChunkSize) - GridOffset
 	y := ((tileCoord.Y() + TileOffset) / ChunkSize) - GridOffset
-	return coord.NewCoord(x, y)
+	return tiling.NewCoord(x, y)
 }

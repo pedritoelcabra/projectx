@@ -3,7 +3,6 @@ package world
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/gfx"
-	"github.com/pedritoelcabra/projectx/world/coord"
 	"github.com/pedritoelcabra/projectx/world/grid"
 	"github.com/pedritoelcabra/projectx/world/tiling"
 	"math"
@@ -16,7 +15,7 @@ const (
 	RenderModeBasic
 )
 
-var lastRenderedChunkCoord = coord.NewCoord(-999, 999)
+var lastRenderedChunkCoord = tiling.NewCoord(-999, 999)
 
 type TileRenderer struct {
 	tileRenderSize int
@@ -41,7 +40,7 @@ func RenderTiles(screen *gfx.Screen, world *World, mode TileRenderMode) {
 }
 
 func RenderChunk(x, y int, screen *gfx.Screen, world *World) {
-	chunkCoord := world.Grid.ChunkCoord(coord.NewCoord(x, y))
+	chunkCoord := world.Grid.ChunkCoord(tiling.NewCoord(x, y))
 	if lastRenderedChunkCoord == chunkCoord {
 		return
 	}

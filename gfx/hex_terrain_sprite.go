@@ -2,7 +2,7 @@ package gfx
 
 import (
 	"github.com/hajimehoshi/ebiten"
-	"github.com/pedritoelcabra/projectx/world/defs"
+	"github.com/pedritoelcabra/projectx/world/utils"
 	"image"
 )
 
@@ -32,11 +32,11 @@ func SetUpHexTerrainOffsets() {
 			hexTerrainTypeMap[key] = imageRect
 		}
 	}
-	terrainToHex[defs.BasicWater] = 1
-	terrainToHex[defs.BasicDeepWater] = 0
-	terrainToHex[defs.BasicHills] = 38
-	terrainToHex[defs.BasicGrass] = 51
-	terrainToHex[defs.BasicMountain] = 41
+	terrainToHex[utils.BasicWater] = 1
+	terrainToHex[utils.BasicDeepWater] = 0
+	terrainToHex[utils.BasicHills] = 38
+	terrainToHex[utils.BasicGrass] = 51
+	terrainToHex[utils.BasicMountain] = 41
 }
 
 func DrawHexTerrain(x, y float64, terrain int, screen *Screen, op *ebiten.DrawImageOptions) {

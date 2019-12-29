@@ -1,4 +1,4 @@
-package noise
+package utils
 
 import (
 	"github.com/aquilax/go-perlin"

@@ -4,14 +4,13 @@ import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/world/container"
-	"github.com/pedritoelcabra/projectx/world/coord"
 	"github.com/pedritoelcabra/projectx/world/tiling"
 )
 
 type chunk struct {
 	tiles               []*Tile
 	ChunkData           *container.Container
-	Location            coord.Coord
+	Location            tiling.Coord
 	Generated           bool
 	queuedForGeneration bool
 	isPreloaded         bool
@@ -19,7 +18,7 @@ type chunk struct {
 	Sector              *Sector
 }
 
-func NewChunk(location coord.Coord) *chunk {
+func NewChunk(location tiling.Coord) *chunk {
 	aChunk := &chunk{}
 	aChunk.isPreloaded = false
 	aChunk.terrainImage = nil
@@ -28,7 +27,7 @@ func NewChunk(location coord.Coord) *chunk {
 	return aChunk
 }
 
-func (ch *chunk) Preload(location coord.Coord) {
+func (ch *chunk) Preload(location tiling.Coord) {
 	if ch.isPreloaded {
 		return
 	}
@@ -38,7 +37,7 @@ func (ch *chunk) Preload(location coord.Coord) {
 		for y := 0; y < ChunkSize; y++ {
 			tileX := (ch.Location.X() * ChunkSize) + x
 			tileY := (ch.Location.Y() * ChunkSize) + y
-			tileLocation := coord.NewCoord(tileX, tileY)
+			tileLocation := tiling.NewCoord(tileX, tileY)
 			tileIndex := ch.tileIndex(tileX, tileY)
 			aTile := NewTile()
 			aTile.coordinates = tileLocation
@@ -98,7 +97,7 @@ func (ch *chunk) RunOnAllTiles(f func(t *Tile)) {
 	}
 }
 
-func (ch *chunk) Tile(tileCoord coord.Coord) *Tile {
+func (ch *chunk) Tile(tileCoord tiling.Coord) *Tile {
 	return ch.tiles[ch.tileIndex(tileCoord.X(), tileCoord.Y())]
 }
 

@@ -2,13 +2,13 @@ package grid
 
 import (
 	"github.com/pedritoelcabra/projectx/world/container"
-	"github.com/pedritoelcabra/projectx/world/coord"
-	"github.com/pedritoelcabra/projectx/world/defs"
+	"github.com/pedritoelcabra/projectx/world/tiling"
+	"github.com/pedritoelcabra/projectx/world/utils"
 )
 
 // Tile is the data contained in any given coordinate in the grid
 type Tile struct {
-	coordinates coord.Coord
+	coordinates tiling.Coord
 	Data        *container.Container
 }
 
@@ -47,5 +47,5 @@ func (t *Tile) IsImpassable() bool {
 }
 
 func (t *Tile) MovementCost() float64 {
-	return defs.MovementCost(t.Get(TerrainBase))
+	return utils.MovementCost(t.Get(TerrainBase))
 }

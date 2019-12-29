@@ -3,8 +3,8 @@ package world
 import (
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/world/grid"
-	"github.com/pedritoelcabra/projectx/world/movement"
 	"github.com/pedritoelcabra/projectx/world/tiling"
+	"github.com/pedritoelcabra/projectx/world/utils"
 	"math"
 )
 
@@ -82,7 +82,7 @@ func (u *Unit) Update(tick int, grid *grid.Grid) {
 			movementCost = 1.0
 		}
 		movementSpeed := u.Speed / movementCost
-		newX, newY := movement.AdvanceAlongLine(u.X, u.Y, u.DestX, u.DestY, movementSpeed)
+		newX, newY := utils.AdvanceAlongLine(u.X, u.Y, u.DestX, u.DestY, movementSpeed)
 		newCoord := tiling.PixelFToTileC(newX, newY)
 		canMove := true
 		if oldCoord != newCoord {

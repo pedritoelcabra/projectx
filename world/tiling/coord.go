@@ -1,7 +1,7 @@
-package coord
+package tiling
 
 import (
-	"github.com/pedritoelcabra/projectx/world/calc"
+	"github.com/pedritoelcabra/projectx/world/utils"
 	"strconv"
 )
 
@@ -43,13 +43,13 @@ func (c Coord) ToString() string {
 }
 
 func (c1 Coord) ManhattanDist(c2 Coord) int {
-	yDist := calc.AbsInt(c1.CY - c2.CY)
-	xDist := calc.AbsInt(c1.CX - c2.CX)
+	yDist := utils.AbsInt(c1.CY - c2.CY)
+	xDist := utils.AbsInt(c1.CX - c2.CX)
 	return yDist + xDist
 }
 
 func (c1 Coord) ChebyshevDist(c2 Coord) int {
-	yDist := calc.AbsInt(c1.CY - c2.CY)
-	xDist := calc.AbsInt(c1.CX - c2.CX)
-	return calc.MaxInt(yDist, xDist)
+	yDist := utils.AbsInt(c1.CY - c2.CY)
+	xDist := utils.AbsInt(c1.CX - c2.CX)
+	return utils.MaxInt(yDist, xDist)
 }

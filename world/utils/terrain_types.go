@@ -1,4 +1,4 @@
-package defs
+package utils
 
 type TerrainTypes int
 

@@ -1,7 +1,6 @@
 package tiling
 
 import (
-	"github.com/pedritoelcabra/projectx/world/coord"
 	"math"
 )
 
@@ -38,23 +37,23 @@ func PixelIToTileI(x, y int) (tx, ty int) {
 }
 
 func TileIToPixelF(tx, ty int) (x, y float64) {
-	pixelCoord := TileCToPixelC(coord.NewCoord(tx, ty))
+	pixelCoord := TileCToPixelC(NewCoord(tx, ty))
 	return float64(pixelCoord.X()), float64(pixelCoord.Y())
 }
 
-func PixelFToTileC(x, y float64) coord.Coord {
+func PixelFToTileC(x, y float64) Coord {
 	var q = (2.0 / 3.0 * x) / TileSize
 	var r = (-1.0/3.0*x + Sqrt3/3.0*y) / TileSize
-	return CubeToCoord(CubeRound(coord.NewCube(q, -q-r, r)))
+	return CubeToCoord(CubeRound(NewCube(q, -q-r, r)))
 }
 
-func TileCToPixelC(tileCoord coord.Coord) coord.Coord {
+func TileCToPixelC(tileCoord Coord) Coord {
 	var x = TileSize * (3 / 2) * float64(tileCoord.X())
 	var y = TileSize * Sqrt3 * (float64(tileCoord.Y()) + 0.5*float64(tileCoord.X()&One))
-	return coord.NewCoordF(x, y)
+	return NewCoordF(x, y)
 }
 
-func CubeRound(cube coord.Cube) coord.Cube {
+func CubeRound(cube Cube) Cube {
 	var rx = math.Round(cube.X)
 	var ry = math.Round(cube.Y)
 	var rz = math.Round(cube.Z)
@@ -69,11 +68,11 @@ func CubeRound(cube coord.Cube) coord.Cube {
 		rz = -rx - ry
 	}
 
-	return coord.NewCube(rx, ry, rz)
+	return NewCube(rx, ry, rz)
 }
 
-func CubeToCoord(cube coord.Cube) coord.Coord {
+func CubeToCoord(cube Cube) Coord {
 	var col = cube.X
 	var row = cube.Z + (cube.X-float64(int(cube.X)&One))/2
-	return coord.NewCoord(int(col), int(row))
+	return NewCoord(int(col), int(row))
 }

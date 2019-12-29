@@ -1,17 +1,17 @@
 package grid
 
 import (
-	"github.com/pedritoelcabra/projectx/world/coord"
+	"github.com/pedritoelcabra/projectx/world/tiling"
 )
 
-func (g *Grid) CreateNewChunk(chunkCoord coord.Coord) {
+func (g *Grid) CreateNewChunk(chunkCoord tiling.Coord) {
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
 	aChunk := NewChunk(chunkCoord)
 	g.Chunks[chunkIndex] = aChunk
 	aChunk.Generated = false
 }
 
-func (g *Grid) ChunkGeneration(playerTile coord.Coord, tick int) {
+func (g *Grid) ChunkGeneration(playerTile tiling.Coord, tick int) {
 	g.ProcessChunkGenerationQueue()
 	if tick%60 > 0 {
 		return
@@ -20,7 +20,7 @@ func (g *Grid) ChunkGeneration(playerTile coord.Coord, tick int) {
 	for x := playerChunk.X() - 3; x <= playerChunk.X()+3; x++ {
 		for y := playerChunk.Y() - 3; y <= playerChunk.Y()+3; y++ {
 			chunkIndex := g.chunkIndex(x, y)
-			chunkCoord := coord.NewCoord(x, y)
+			chunkCoord := tiling.NewCoord(x, y)
 			aChunk, chunkExists := g.Chunks[chunkIndex]
 			if !chunkExists {
 				g.CreateNewChunk(chunkCoord)
@@ -47,7 +47,7 @@ func (g *Grid) ProcessChunkGenerationQueue() {
 	g.GenerateChunk(chunkCoord)
 }
 
-func (g *Grid) GenerateChunk(chunkCoord coord.Coord) {
+func (g *Grid) GenerateChunk(chunkCoord tiling.Coord) {
 	aChunk := g.Chunk(chunkCoord)
 	if aChunk.IsGenerated() {
 		return
