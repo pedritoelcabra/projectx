@@ -12,6 +12,8 @@ const (
 	spriteWidthHalf  = 32
 	spriteHeight     = 64
 	spriteHeightHalf = 32
+	centerXAxis      = 36
+	centerYAxis      = 64
 )
 
 const (
@@ -67,8 +69,9 @@ func NewLpcSprite(key SpriteKey) *LpcSprite {
 
 func (s *LpcSprite) DrawSprite(screen *Screen, x, y float64) {
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM = ebiten.TranslateGeo(x-spriteWidthHalf, y-spriteHeightHalf)
+	op.GeoM = ebiten.TranslateGeo(x-centerXAxis, y-centerYAxis)
 	screen.DrawImage(s.getFrame(), op)
+	DrawDot(x, y, screen, 1.0)
 }
 
 func (s *LpcSprite) getFrame() *ebiten.Image {

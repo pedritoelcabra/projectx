@@ -80,6 +80,10 @@ func (w *World) Draw(screen *gfx.Screen) {
 		return
 	}
 	RenderTiles(screen, w, w.renderMode)
+	w.DrawEntities(screen)
+}
+
+func (w *World) DrawEntities(screen *gfx.Screen) {
 	for _, e := range w.Entities {
 		e.DrawSprite(screen)
 	}

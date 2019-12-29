@@ -75,7 +75,7 @@ func (u *Unit) InitObjects() {
 
 func (u *Unit) Update(tick int, grid *grid.Grid) {
 	if u.Moving {
-		oldCoord := tiling.PixelFToTileC(u.X, u.X)
+		oldCoord := tiling.PixelFToTileC(u.GetPos())
 		oldTile := grid.Tile(oldCoord)
 		movementCost := oldTile.MovementCost()
 		if movementCost == 0 {

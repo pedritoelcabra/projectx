@@ -2,6 +2,7 @@ package gfx
 
 import (
 	"github.com/hajimehoshi/ebiten"
+	"image"
 )
 
 const (
@@ -40,4 +41,30 @@ func (s *Screen) GetCameraOffset() (x, y float64) {
 func (s *Screen) DrawImage(image *ebiten.Image, options *ebiten.DrawImageOptions) {
 	options.GeoM.Translate(s.GetCameraOffset())
 	s.image.DrawImage(image, options)
+}
+
+const (
+	a0 = 0x40
+	a1 = 0xc0
+	a2 = 0xff
+)
+
+var pixels = []uint8{
+	a0, a1, a1, a0,
+	a1, a2, a2, a1,
+	a1, a2, a2, a1,
+	a0, a1, a1, a0,
+}
+
+var brushImage, _ = ebiten.NewImageFromImage(&image.Alpha{
+	Pix:    pixels,
+	Stride: 4,
+	Rect:   image.Rect(0, 0, 4, 4),
+}, ebiten.FilterDefault)
+
+func DrawDot(x, y float64, screen *Screen, scale float64) {
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Scale(scale, scale)
+	op.GeoM.Translate(x-8.0, y-8.0)
+	screen.DrawImage(brushImage, op)
 }

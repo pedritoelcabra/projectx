@@ -6,7 +6,6 @@ import (
 	"github.com/pedritoelcabra/projectx/world/coord"
 	"github.com/pedritoelcabra/projectx/world/grid"
 	"github.com/pedritoelcabra/projectx/world/tiling"
-	"image"
 	"math"
 )
 
@@ -56,32 +55,6 @@ func RenderChunk(x, y int, screen *gfx.Screen, world *World) {
 	if aChunk.Sector != nil {
 		sectorCoord := aChunk.Sector.Center
 		sectorTile := world.Grid.Tile(sectorCoord)
-		DrawDot(sectorTile.GetF(grid.CenterX), sectorTile.GetF(grid.CenterY), screen, 4.0)
+		gfx.DrawDot(sectorTile.GetF(grid.CenterX), sectorTile.GetF(grid.CenterY), screen, 4.0)
 	}
-}
-
-const (
-	a0 = 0x40
-	a1 = 0xc0
-	a2 = 0xff
-)
-
-var pixels = []uint8{
-	a0, a1, a1, a0,
-	a1, a2, a2, a1,
-	a1, a2, a2, a1,
-	a0, a1, a1, a0,
-}
-
-var brushImage, _ = ebiten.NewImageFromImage(&image.Alpha{
-	Pix:    pixels,
-	Stride: 4,
-	Rect:   image.Rect(0, 0, 4, 4),
-}, ebiten.FilterDefault)
-
-func DrawDot(x, y float64, screen *gfx.Screen, scale float64) {
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Scale(scale, scale)
-	op.GeoM.Translate(x-8.0, y-8.0)
-	screen.DrawImage(brushImage, op)
 }
