@@ -5,6 +5,7 @@ import (
 	"github.com/pedritoelcabra/projectx/core/file"
 	"github.com/pedritoelcabra/projectx/core/logger"
 	"github.com/pedritoelcabra/projectx/core/randomizer"
+	"github.com/pedritoelcabra/projectx/defs"
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/gui"
 	"github.com/pedritoelcabra/projectx/world"
@@ -40,7 +41,7 @@ func G() *game {
 
 func (g *game) init() {
 	logger.InitLogger()
-	file.InitDefs()
+	defs.InitDefs()
 	g.Screen = gfx.NewScreen()
 	g.Graphics = gfx.NewGraphics()
 	g.InitInput()

@@ -22,10 +22,10 @@ func (g *Grid) SpawnSector(aChunk *chunk) {
 }
 
 func (g *Grid) CreateCenterBuilding(aSector *Sector) {
-	buildingDefs := defs.GetDefs("Buildings")
-	def := buildingDefs["Human House"]
+	buildingDefs := defs.BuildingDefs()
+	def := buildingDefs["Small House"]
 	tile := g.Tile(aSector.Center)
-	centerBuilding := NewBuilding(def.GetName(), gfx.GetSpriteKey(def.GetGraphic()), tile)
+	centerBuilding := NewBuilding(def.Name, gfx.GetSpriteKey(def.Graphic), tile)
 	tile.SetBuilding(centerBuilding)
 	theWorld.AddEntity(centerBuilding)
 }
