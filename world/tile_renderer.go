@@ -3,7 +3,6 @@ package world
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/gfx"
-	"github.com/pedritoelcabra/projectx/world/grid"
 	"github.com/pedritoelcabra/projectx/world/tiling"
 	"math"
 )
@@ -49,11 +48,11 @@ func RenderChunk(x, y int, screen *gfx.Screen, world *World) {
 	aChunk.GenerateImage()
 	chunkImage := aChunk.GetImage()
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(aChunk.FirstTile().GetF(grid.RenderX), aChunk.FirstTile().GetF(grid.RenderY))
+	op.GeoM.Translate(aChunk.FirstTile().GetF(RenderX), aChunk.FirstTile().GetF(RenderY))
 	screen.DrawImage(chunkImage, op)
 	if aChunk.Sector != nil {
 		sectorCoord := aChunk.Sector.Center
 		sectorTile := world.Grid.Tile(sectorCoord)
-		gfx.DrawDot(sectorTile.GetF(grid.CenterX), sectorTile.GetF(grid.CenterY), screen, 4.0)
+		gfx.DrawDot(sectorTile.GetF(CenterX), sectorTile.GetF(CenterY), screen, 4.0)
 	}
 }

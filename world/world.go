@@ -3,7 +3,6 @@ package world
 import (
 	"github.com/pedritoelcabra/projectx/core/randomizer"
 	"github.com/pedritoelcabra/projectx/gfx"
-	"github.com/pedritoelcabra/projectx/world/grid"
 	"github.com/pedritoelcabra/projectx/world/tiling"
 	"github.com/pedritoelcabra/projectx/world/utils"
 )
@@ -11,7 +10,7 @@ import (
 type World struct {
 	Entities    map[int]Entity
 	PlayerUnit  *Player
-	Grid        *grid.Grid
+	Grid        *Grid
 	entityCount int
 	initialised bool
 	seed        int
@@ -45,7 +44,7 @@ func (w *World) GetTick() int {
 func (w *World) Init() {
 	tiling.InitTiling()
 	utils.Seed(w.seed)
-	w.Grid = grid.New()
+	w.Grid = New()
 	w.Entities = make(map[int]Entity)
 	w.PlayerUnit = NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)

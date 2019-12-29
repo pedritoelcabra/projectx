@@ -1,4 +1,4 @@
-package grid
+package world
 
 import (
 	"github.com/pedritoelcabra/projectx/world/container"

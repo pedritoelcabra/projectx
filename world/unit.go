@@ -2,7 +2,6 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/gfx"
-	"github.com/pedritoelcabra/projectx/world/grid"
 	"github.com/pedritoelcabra/projectx/world/tiling"
 	"github.com/pedritoelcabra/projectx/world/utils"
 	"math"
@@ -73,7 +72,7 @@ func (u *Unit) InitObjects() {
 	u.Sprite = gfx.NewLpcSprite(u.SpriteName)
 }
 
-func (u *Unit) Update(tick int, grid *grid.Grid) {
+func (u *Unit) Update(tick int, grid *Grid) {
 	if u.Moving {
 		oldCoord := tiling.PixelFToTileC(u.GetPos())
 		oldTile := grid.Tile(oldCoord)

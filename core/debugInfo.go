@@ -2,7 +2,7 @@ package core
 
 import (
 	"github.com/hajimehoshi/ebiten"
-	"github.com/pedritoelcabra/projectx/world/grid"
+	"github.com/pedritoelcabra/projectx/world"
 	"github.com/pedritoelcabra/projectx/world/tiling"
 	"strconv"
 	"time"
@@ -34,7 +34,7 @@ func (g *game) DebugInfo() string {
 		aString += "\nMouse Pos: " + tiling.NewCoord(mx, my).ToString()
 		mouseTileCoord := tiling.NewCoord(tiling.PixelIToTileI(mx, my))
 		aString += "\nMouse Tile: " + mouseTileCoord.ToString()
-		mHeight := g.World.Grid.Tile(mouseTileCoord).Get(grid.Height)
+		mHeight := g.World.Grid.Tile(mouseTileCoord).Get(world.Height)
 		aString += "\nMouse Tile Height: " + strconv.Itoa(mHeight)
 		aString += "\nMouse Tile Chunk: " + g.World.Grid.ChunkCoord(mouseTileCoord).ToString()
 

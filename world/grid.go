@@ -1,5 +1,5 @@
 // A package for managing a grid based game world
-package grid
+package world
 
 import (
 	"github.com/pedritoelcabra/projectx/world/tiling"
