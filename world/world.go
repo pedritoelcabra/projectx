@@ -1,6 +1,7 @@
 package world
 
 import (
+	"encoding/json"
 	"github.com/pedritoelcabra/projectx/core/randomizer"
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/world/tiling"
@@ -50,7 +51,7 @@ func (w *World) Init() {
 	tiling.InitTiling()
 	utils.Seed(w.seed)
 	w.Grid = New()
-	w.Entities = make(map[int]Entity)
+	w.Entities = make(EntityMap)
 	w.PlayerUnit = NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)
 	w.AddEntity(w.PlayerUnit)
@@ -65,14 +66,21 @@ func LoadFromSave(data SaveGameData) *World {
 	w.tick = data.Tick
 	utils.Seed(w.seed)
 	w.Grid = &data.Grid
-	w.Entities = make(map[int]Entity)
 	w.PlayerUnit = &data.Player
+	w.Entities = data.Entities
+	w.AddEntity(w.PlayerUnit)
+	w.InitEntities()
 	w.Grid.ChunkGeneration(tiling.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), 0)
 	w.PlayerUnit.Unit.InitObjects()
-	w.AddEntity(w.PlayerUnit)
 	w.renderMode = RenderModeBasic
 	w.initialised = true
 	return w
+}
+
+func (w *World) InitEntities() {
+	for _, entity := range w.Entities {
+		entity.Init()
+	}
 }
 
 func (w *World) GetSaveState() SaveGameData {
@@ -81,6 +89,7 @@ func (w *World) GetSaveState() SaveGameData {
 	state.Tick = w.GetTick()
 	state.Player = *w.PlayerUnit
 	state.Grid = *w.Grid
+	state.Entities = w.Entities
 	return state
 }
 
@@ -116,4 +125,39 @@ func (w *World) Update() {
 
 func (w *World) SetRenderMode(mode TileRenderMode) {
 	w.renderMode = mode
+}
+
+// UnmarshalJSON sets *m to a copy of data.
+func (e *EntityMap) UnmarshalJSON(data []byte) error {
+	aMap := make(EntityMap)
+
+	var entities map[int]*json.RawMessage
+	if err := json.Unmarshal(data, &entities); err != nil {
+		return err
+	}
+
+	for index, entity := range entities {
+		err, parsedEntity := UnMarshalEntity(entity)
+		if err == nil {
+			aMap[index] = parsedEntity
+		}
+	}
+	*e = aMap
+	return nil
+}
+
+func UnMarshalEntity(rawString *json.RawMessage) (error, Entity) {
+	entityTypes := make(map[string]Entity)
+	entityTypes["Player"] = &Player{}
+	entityTypes["Building"] = &Building{}
+	entityTypes["Unit"] = &Unit{}
+
+	for className, entity := range entityTypes {
+		err := json.Unmarshal(*rawString, entity)
+		if err == nil && entity.GetClassName() == className {
+			return nil, entity
+		}
+	}
+	err := &json.UnmarshalTypeError{}
+	return err, nil
 }

@@ -14,6 +14,7 @@ const (
 )
 
 type Player struct {
+	ClassName   string
 	Unit        *Unit
 	MovingUp    bool
 	MovingLeft  bool
@@ -23,9 +24,14 @@ type Player struct {
 
 func NewPlayer() *Player {
 	aPlayer := &Player{}
+	aPlayer.Init()
 	aPlayer.Unit = NewUnit()
 	aPlayer.Unit.SetSpeed(5)
 	return aPlayer
+}
+
+func (p *Player) Init() {
+	p.ClassName = "Player"
 }
 
 func (p *Player) DrawSprite(screen *gfx.Screen) {
@@ -75,4 +81,8 @@ func (p *Player) SetMovement(direction PlayerDirection, value bool) {
 	case PLAYERRIGHT:
 		p.MovingRight = value
 	}
+}
+
+func (b *Player) GetClassName() string {
+	return b.ClassName
 }

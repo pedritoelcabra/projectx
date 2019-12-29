@@ -8,6 +8,7 @@ import (
 )
 
 type Unit struct {
+	ClassName  string
 	Sprite     gfx.Sprite `json:"-"`
 	SpriteName gfx.SpriteKey
 	X          float64
@@ -62,13 +63,18 @@ func (u *Unit) SetSpeed(speed float64) {
 
 func NewUnit() *Unit {
 	aUnit := &Unit{}
-	aUnit.SpriteName = gfx.BodyMaleLight
-	aUnit.InitObjects()
+	aUnit.Init()
 	aUnit.Speed = 100
 	return aUnit
 }
 
+func (u *Unit) Init() {
+	u.ClassName = "Unit"
+	u.InitObjects()
+}
+
 func (u *Unit) InitObjects() {
+	u.SpriteName = gfx.BodyMaleLight
 	u.Sprite = gfx.NewLpcSprite(u.SpriteName)
 }
 
@@ -106,4 +112,8 @@ func (u *Unit) CheckIfMoving() {
 
 func (u *Unit) GetPos() (x, y float64) {
 	return u.X, u.Y
+}
+
+func (b *Unit) GetClassName() string {
+	return b.ClassName
 }
