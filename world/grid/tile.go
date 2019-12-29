@@ -18,6 +18,10 @@ func NewTile() *Tile {
 	return aTile
 }
 
+func (t *Tile) Coord() tiling.Coord {
+	return t.coordinates
+}
+
 func (t *Tile) X() int {
 	return t.coordinates.X()
 }

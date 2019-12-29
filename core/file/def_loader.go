@@ -13,9 +13,10 @@ type DefClass interface {
 }
 
 type SectorDef struct {
-	Name   string
-	Weight int
-	Land   int
+	Name          string
+	CenterGraphic string
+	Weight        int
+	Land          int
 }
 
 func (s *SectorDef) GetName() string {
