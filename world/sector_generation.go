@@ -15,13 +15,13 @@ func (g *Grid) SpawnSector(aChunk *chunk) {
 		return
 	}
 	aChunk.Sector = NewSector(centerCoord)
-
+	g.CreateCenterBuilding(aChunk.Sector)
 	logger.General("Spawned sector in chunk: "+aChunk.Location.ToString()+" at "+centerCoord.ToString(), nil)
 }
 
 func (g *Grid) CreateCenterBuilding(aSector *Sector) {
-	//centerBuilding := world.NewBuilding("human_house_1", g.Tile(aSector.Center))
-	//_ = centerBuilding
+	centerBuilding := NewBuilding("human_house_1", g.Tile(aSector.Center))
+	theWorld.AddEntity(centerBuilding)
 }
 
 func (g *Grid) SuitableSectorCenter(aChunk *chunk) (tiling.Coord, bool) {

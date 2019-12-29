@@ -71,7 +71,6 @@ func (s *LpcSprite) DrawSprite(screen *Screen, x, y float64) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM = ebiten.TranslateGeo(x-centerXAxis, y-centerYAxis)
 	screen.DrawImage(s.getFrame(), op)
-	DrawDot(x, y, screen, 1.0)
 }
 
 func (s *LpcSprite) getFrame() *ebiten.Image {

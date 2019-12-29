@@ -18,9 +18,12 @@ type World struct {
 	renderMode  TileRenderMode
 }
 
+var theWorld = &World{}
+
 func NewWorld() *World {
 	aWorld := &World{}
 	aWorld.tick = 0
+	theWorld = aWorld
 	return aWorld
 }
 

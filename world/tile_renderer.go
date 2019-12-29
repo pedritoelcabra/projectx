@@ -50,9 +50,4 @@ func RenderChunk(x, y int, screen *gfx.Screen, world *World) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(aChunk.FirstTile().GetF(RenderX), aChunk.FirstTile().GetF(RenderY))
 	screen.DrawImage(chunkImage, op)
-	if aChunk.Sector != nil {
-		sectorCoord := aChunk.Sector.Center
-		sectorTile := world.Grid.Tile(sectorCoord)
-		gfx.DrawDot(sectorTile.GetF(CenterX), sectorTile.GetF(CenterY), screen, 4.0)
-	}
 }

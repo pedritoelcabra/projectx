@@ -2,6 +2,7 @@ package gfx
 
 import (
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -30,6 +31,11 @@ func LoadGfxFolder(folderName string) {
 		_, fileName := filepath.Split(path)
 		fileName = strings.Replace(fileName, filepath.Ext(path), "", -1)
 		spriteToKeyMap[fileName] = SpriteKey(spriteKeyCount)
+		img, _, err := ebitenutil.NewImageFromFile(path, ebiten.FilterDefault)
+		if err != nil {
+			log.Fatal(err)
+		}
+		spriteMap[SpriteKey(spriteKeyCount)] = img
 		return walkErr
 	})
 	if walkErr != nil {
@@ -53,9 +59,8 @@ func NewHexSprite(key SpriteKey) *HexSprite {
 
 func (h *HexSprite) DrawSprite(screen *Screen, x, y float64) {
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM = ebiten.TranslateGeo(x-centerXAxis, y-centerYAxis)
+	op.GeoM = ebiten.TranslateGeo(x, y)
 	screen.DrawImage(GetSprite(h.key), op)
-	DrawDot(x, y, screen, 1.0)
 }
 
 func (h *HexSprite) SetFacing(direction spriteFacing) {
