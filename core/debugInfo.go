@@ -34,10 +34,16 @@ func (g *game) DebugInfo() string {
 		aString += "\nMouse Pos: " + tiling.NewCoord(mx, my).ToString()
 		mouseTileCoord := tiling.NewCoord(tiling.PixelIToTileI(mx, my))
 		aString += "\nMouse Tile: " + mouseTileCoord.ToString()
-		mHeight := g.World.Grid.Tile(mouseTileCoord).Get(world.Height)
+		tile := g.World.Grid.Tile(mouseTileCoord)
+		mHeight := tile.Get(world.Height)
 		aString += "\nMouse Tile Height: " + strconv.Itoa(mHeight)
 		aString += "\nMouse Tile Chunk: " + g.World.Grid.ChunkCoord(mouseTileCoord).ToString()
 
+		building := tile.GetBuilding()
+		if building != nil {
+			aString += "\n-----"
+			aString += "\nBuilding: " + building.GetName()
+		}
 	}
 	if g.debugMessage != "" {
 		aString += "\n" + g.debugMessage

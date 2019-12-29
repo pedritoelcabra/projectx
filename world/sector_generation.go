@@ -3,6 +3,8 @@ package world
 import (
 	"github.com/pedritoelcabra/projectx/core/logger"
 	"github.com/pedritoelcabra/projectx/core/randomizer"
+	"github.com/pedritoelcabra/projectx/defs"
+	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/world/tiling"
 )
 
@@ -20,7 +22,11 @@ func (g *Grid) SpawnSector(aChunk *chunk) {
 }
 
 func (g *Grid) CreateCenterBuilding(aSector *Sector) {
-	centerBuilding := NewBuilding("human_house_1", g.Tile(aSector.Center))
+	buildingDefs := defs.GetDefs("Buildings")
+	def := buildingDefs["Human House"]
+	tile := g.Tile(aSector.Center)
+	centerBuilding := NewBuilding(def.GetName(), gfx.GetSpriteKey(def.GetGraphic()), tile)
+	tile.SetBuilding(centerBuilding)
 	theWorld.AddEntity(centerBuilding)
 }
 

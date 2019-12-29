@@ -1,6 +1,7 @@
 package file
 
 import (
+	"github.com/pedritoelcabra/projectx/defs"
 	"log"
 	"os"
 	"path/filepath"
@@ -8,36 +9,30 @@ import (
 
 const defFolder = "defs/"
 
-func NewDefClass(className string) DefClass {
+func NewDefClass(className string) defs.DefClass {
 	switch className {
 	case "Sectors":
-		return &SectorDef{}
+		return &defs.SectorDef{}
 	case "Buildings":
-		return &BuildingDef{}
+		return &defs.BuildingDef{}
 	}
 	log.Fatal("Trying to spawn non-existant Def Class")
-	return &SectorDef{}
-}
-
-var defs = make(map[string]map[string]DefClass)
-
-func GetDefs(defType string) map[string]DefClass {
-	return defs[defType]
+	return &defs.SectorDef{}
 }
 
 func InitDefs() {
-	defs = make(map[string]map[string]DefClass)
+	defs.Definitions = make(map[string]map[string]defs.DefClass)
 	LoadDefFolder("Sectors")
 	LoadDefFolder("Buildings")
 }
 
 func LoadDefFolder(name string) {
-	defs[name] = LoadDefClass(NewDefClass(name), name)
+	defs.Definitions[name] = LoadDefClass(NewDefClass(name), name)
 }
 
-func LoadDefClass(defClass DefClass, folderName string) map[string]DefClass {
+func LoadDefClass(defClass defs.DefClass, folderName string) map[string]defs.DefClass {
 	directoryPath, _ := filepath.Abs(defFolder + folderName)
-	defClasses := make(map[string]DefClass, 0)
+	defClasses := make(map[string]defs.DefClass, 0)
 	walkErr := filepath.Walk(directoryPath, func(path string, info os.FileInfo, walkErr error) error {
 		file, err := os.Open(path)
 		if err != nil {

@@ -55,6 +55,7 @@ func (w *World) Init() {
 	w.PlayerUnit = NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)
 	w.AddEntity(w.PlayerUnit)
+	w.InitEntities()
 	w.renderMode = RenderModeBasic
 	w.initialised = true
 }

@@ -8,14 +8,16 @@ type Building struct {
 	ClassName string
 	Sprite    gfx.Sprite `json:"-"`
 	SpriteKey gfx.SpriteKey
+	Name      string
 	Location  *Tile
 	X         float64
 	Y         float64
 }
 
-func NewBuilding(spriteName string, location *Tile) *Building {
+func NewBuilding(name string, spriteKey gfx.SpriteKey, location *Tile) *Building {
 	aBuilding := &Building{}
-	aBuilding.SpriteKey = gfx.GetSpriteKey(spriteName)
+	aBuilding.SpriteKey = spriteKey
+	aBuilding.Name = name
 	aBuilding.Init()
 	aBuilding.Location = location
 	aBuilding.X = location.GetF(RenderX)
@@ -42,4 +44,8 @@ func (b *Building) Update(tick int, grid *Grid) {
 
 func (b *Building) GetClassName() string {
 	return b.ClassName
+}
+
+func (b *Building) GetName() string {
+	return b.Name
 }

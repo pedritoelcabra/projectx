@@ -10,12 +10,21 @@ import (
 type Tile struct {
 	coordinates tiling.Coord
 	Data        *container.Container
+	Building    *Building
 }
 
 func NewTile() *Tile {
 	aTile := &Tile{}
 	aTile.Data = container.NewContainer()
 	return aTile
+}
+
+func (t *Tile) SetBuilding(building *Building) {
+	t.Building = building
+}
+
+func (t *Tile) GetBuilding() *Building {
+	return t.Building
 }
 
 func (t *Tile) Coord() tiling.Coord {
