@@ -146,12 +146,7 @@ func (g *game) UpdatePlayerMovement(dir world.PlayerDirection, value bool) {
 }
 
 func (g *game) QuickSave() {
-	state := world.SaveGameData{}
-	state.Seed = g.World.GetSeed()
-	state.Tick = g.World.GetTick()
-	state.Player = *g.World.PlayerUnit
-	state.Grid = *g.World.Grid
-	file.SaveToFile(state, file.DefaultSaveGameName)
+	file.SaveToFile(g.World.GetSaveState(), file.DefaultSaveGameName)
 	g.InitMenus()
 	g.UnPause()
 	logger.General("Quick Saved", nil)
@@ -159,8 +154,7 @@ func (g *game) QuickSave() {
 
 func (g *game) QuickLoad() {
 	dataStructure := file.LoadFromFile(file.DefaultSaveGameName)
-	g.World = world.NewWorld()
-	g.World.LoadFromSave(dataStructure)
+	g.World = world.LoadFromSave(dataStructure)
 	g.InitMenus()
 	g.UnPause()
 	logger.General("Quick Loaded", nil)

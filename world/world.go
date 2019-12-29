@@ -7,8 +7,10 @@ import (
 	"github.com/pedritoelcabra/projectx/world/utils"
 )
 
+type EntityMap map[int]Entity
+
 type World struct {
-	Entities    map[int]Entity
+	Entities    EntityMap
 	PlayerUnit  *Player
 	Grid        *Grid
 	entityCount int
@@ -56,7 +58,8 @@ func (w *World) Init() {
 	w.initialised = true
 }
 
-func (w *World) LoadFromSave(data SaveGameData) {
+func LoadFromSave(data SaveGameData) *World {
+	w := NewWorld()
 	tiling.InitTiling()
 	w.SetSeed(data.Seed)
 	w.tick = data.Tick
@@ -69,6 +72,16 @@ func (w *World) LoadFromSave(data SaveGameData) {
 	w.AddEntity(w.PlayerUnit)
 	w.renderMode = RenderModeBasic
 	w.initialised = true
+	return w
+}
+
+func (w *World) GetSaveState() SaveGameData {
+	state := SaveGameData{}
+	state.Seed = w.GetSeed()
+	state.Tick = w.GetTick()
+	state.Player = *w.PlayerUnit
+	state.Grid = *w.Grid
+	return state
 }
 
 func (w *World) AddEntity(entity Entity) {
