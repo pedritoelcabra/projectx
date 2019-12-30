@@ -26,7 +26,6 @@ func (g *Grid) CreateCenterBuilding(aSector *Sector) {
 	def := buildingDefs["Small House"]
 	tile := g.Tile(aSector.Center)
 	centerBuilding := NewBuilding(def.Name, gfx.GetSpriteKey(def.Graphic), tile)
-	tile.SetBuilding(centerBuilding)
 	theWorld.AddEntity(centerBuilding)
 }
 

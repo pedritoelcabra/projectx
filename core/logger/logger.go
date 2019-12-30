@@ -1,5 +1,10 @@
 package logger
 
+import (
+	"log"
+	"os"
+)
+
 type LogType int
 
 const (
@@ -23,6 +28,11 @@ var Logger = &Manager{}
 
 func InitLogger() {
 	Logger.logEntries = make(map[LogType][]*LogEntry)
+	file, err := os.Create("log.txt")
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
 }
 
 func (l *LogEntry) Message() string {
@@ -41,6 +51,15 @@ func Log(key LogType, message string, entity *LocatableEntity) {
 	Logger.addLogEntry(key, aLog)
 	if key != GeneralLog {
 		Logger.addLogEntry(GeneralLog, aLog)
+	}
+
+	file, err := os.OpenFile("log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+	if _, err2 := file.WriteString(message + "\n"); err2 != nil {
+		log.Println(err)
 	}
 }
 

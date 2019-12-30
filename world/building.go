@@ -20,6 +20,7 @@ func NewBuilding(name string, spriteKey gfx.SpriteKey, location *Tile) *Building
 	aBuilding.Name = name
 	aBuilding.Init()
 	aBuilding.Location = location
+	location.SetBuilding(aBuilding)
 	aBuilding.X = location.GetF(RenderX)
 	aBuilding.Y = location.GetF(RenderY)
 	return aBuilding
