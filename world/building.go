@@ -9,7 +9,7 @@ type Building struct {
 	Sprite    gfx.Sprite `json:"-"`
 	SpriteKey gfx.SpriteKey
 	Name      string
-	Location  *Tile
+	location  *Tile
 	X         float64
 	Y         float64
 }
@@ -19,7 +19,7 @@ func NewBuilding(name string, spriteKey gfx.SpriteKey, location *Tile) *Building
 	aBuilding.SpriteKey = spriteKey
 	aBuilding.Name = name
 	aBuilding.Init()
-	aBuilding.Location = location
+	aBuilding.location = location
 	location.SetBuilding(aBuilding)
 	aBuilding.X = location.GetF(RenderX)
 	aBuilding.Y = location.GetF(RenderY)

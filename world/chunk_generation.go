@@ -13,7 +13,7 @@ func (g *Grid) CreateNewChunk(chunkCoord tiling.Coord) {
 
 func (g *Grid) ChunkGeneration(playerTile tiling.Coord, tick int) {
 	g.ProcessChunkGenerationQueue()
-	if tick < 100 || tick%60 > 0 {
+	if tick > 100 && tick%60 > 0 {
 		return
 	}
 	playerChunk := g.ChunkCoord(playerTile)

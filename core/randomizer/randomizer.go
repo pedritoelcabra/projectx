@@ -12,7 +12,7 @@ type RandomizerClass struct {
 var Randomizer = RandomizerClass{}
 
 func NewSeed() int {
-	return 8730
+	return 6592
 	source := rand.NewSource(time.Now().UnixNano())
 	random := rand.New(source)
 	return random.Intn(10000)
