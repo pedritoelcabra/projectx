@@ -14,7 +14,7 @@ type World struct {
 	Entities    EntityMap
 	PlayerUnit  *Player
 	Grid        *Grid
-	entityCount EntityKey
+	EntityCount EntityKey
 	initialised bool
 	seed        int
 	tick        int
@@ -26,7 +26,7 @@ var theWorld = &World{}
 func NewWorld() *World {
 	aWorld := &World{}
 	aWorld.tick = 0
-	aWorld.entityCount = 1
+	aWorld.EntityCount = 1
 	theWorld = aWorld
 	return aWorld
 }
@@ -69,6 +69,7 @@ func LoadFromSave(data SaveGameData) *World {
 	w.Grid = &data.Grid
 	w.PlayerUnit = &data.Player
 	w.Entities = data.Entities
+	w.EntityCount = data.EntityCount
 	w.InitEntities()
 	w.Grid.ChunkGeneration(tiling.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), 0)
 	w.PlayerUnit.Unit.InitObjects()
@@ -95,9 +96,9 @@ func (w *World) GetSaveState() SaveGameData {
 }
 
 func (w *World) AddEntity(entity Entity) EntityKey {
-	w.Entities[w.entityCount] = entity
-	w.entityCount++
-	return w.entityCount - 1
+	w.Entities[w.EntityCount] = entity
+	w.EntityCount++
+	return w.EntityCount - 1
 }
 
 func (w *World) GetEntity(key EntityKey) Entity {
