@@ -10,10 +10,10 @@ import (
 const defFolder = "defs/"
 
 type SectorDef struct {
-	Name          string
-	CenterGraphic string
-	Weight        int
-	Land          int
+	Name           string
+	CenterBuilding string
+	Weight         int
+	Land           int
 }
 
 type BuildingDef struct {
@@ -64,7 +64,7 @@ func LoadBuildingDefs() {
 }
 
 func LoadSectorDefs() {
-	directoryPath, _ := filepath.Abs(defFolder + "Buildings")
+	directoryPath, _ := filepath.Abs(defFolder + "Sectors")
 	walkErr := filepath.Walk(directoryPath, func(path string, info os.FileInfo, walkErr error) error {
 		file, err := os.Open(path)
 		if err != nil {
@@ -74,12 +74,12 @@ func LoadSectorDefs() {
 		if filepath.Ext(path) != ".json" {
 			return nil
 		}
-		dataStructure := &BuildingDef{}
+		dataStructure := &SectorDef{}
 		err = json.NewDecoder(file).Decode(dataStructure)
 		if err != nil {
 			log.Fatal(err)
 		}
-		buildingDefs[dataStructure.Name] = dataStructure
+		sectorDefs[dataStructure.Name] = dataStructure
 		return walkErr
 	})
 	if walkErr != nil {

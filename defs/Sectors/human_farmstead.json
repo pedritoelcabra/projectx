@@ -1,6 +1,6 @@
 {
-  "Name": "Human Farmstead",
-  "CenterGraphic": "human_house_1",
+  "Name": "Farmstead",
+  "CenterBuilding": "Small House",
   "Weight": 100,
   "Land": 30
 }

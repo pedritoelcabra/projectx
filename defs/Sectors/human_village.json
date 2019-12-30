@@ -1,5 +1,6 @@
 {
-  "Name": "Human Village",
-  "Weight": 50,
+  "Name": "Village",
+  "CenterBuilding": "Stone House",
+  "Weight": 70,
   "Land": 100
 }
