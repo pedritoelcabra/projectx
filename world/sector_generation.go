@@ -3,8 +3,6 @@ package world
 import (
 	"github.com/pedritoelcabra/projectx/core/logger"
 	"github.com/pedritoelcabra/projectx/core/randomizer"
-	"github.com/pedritoelcabra/projectx/defs"
-	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/world/tiling"
 )
 
@@ -17,15 +15,9 @@ func (g *Grid) SpawnSector(aChunk *chunk) {
 		return
 	}
 	aChunk.Sector = NewSector(centerCoord)
-	g.CreateCenterBuilding(aChunk.Sector)
+	tile := g.Tile(centerCoord)
+	_ = NewBuilding("Small House", tile)
 	logger.General("Spawned sector in chunk: "+aChunk.Location.ToString()+" at "+centerCoord.ToString(), nil)
-}
-
-func (g *Grid) CreateCenterBuilding(aSector *Sector) {
-	buildingDefs := defs.BuildingDefs()
-	def := buildingDefs["Small House"]
-	tile := g.Tile(aSector.Center)
-	_ = NewBuilding(def.Name, gfx.GetSpriteKey(def.Graphic), tile)
 }
 
 func (g *Grid) SuitableSectorCenter(aChunk *chunk) (tiling.Coord, bool) {

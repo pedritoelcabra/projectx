@@ -1,6 +1,7 @@
 package world
 
 import (
+	"github.com/pedritoelcabra/projectx/defs"
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/world/tiling"
 )
@@ -16,9 +17,11 @@ type Building struct {
 	Y         float64
 }
 
-func NewBuilding(name string, spriteKey gfx.SpriteKey, location *Tile) *Building {
+func NewBuilding(name string, location *Tile) *Building {
+	buildingDefs := defs.BuildingDefs()
+	def := buildingDefs[name]
 	aBuilding := &Building{}
-	aBuilding.SpriteKey = spriteKey
+	aBuilding.SpriteKey = gfx.GetSpriteKey(def.Graphic)
 	aBuilding.Name = name
 	aBuilding.Init()
 	aBuilding.Location = location.GetCoord()
