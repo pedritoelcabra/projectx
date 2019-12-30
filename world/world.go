@@ -8,13 +8,13 @@ import (
 	"github.com/pedritoelcabra/projectx/world/utils"
 )
 
-type EntityMap map[int]Entity
+type EntityMap map[EntityKey]Entity
 
 type World struct {
 	Entities    EntityMap
 	PlayerUnit  *Player
 	Grid        *Grid
-	entityCount int
+	entityCount EntityKey
 	initialised bool
 	seed        int
 	tick        int
@@ -132,7 +132,7 @@ func (w *World) SetRenderMode(mode TileRenderMode) {
 func (e *EntityMap) UnmarshalJSON(data []byte) error {
 	aMap := make(EntityMap)
 
-	var entities map[int]*json.RawMessage
+	var entities map[EntityKey]*json.RawMessage
 	if err := json.Unmarshal(data, &entities); err != nil {
 		return err
 	}
