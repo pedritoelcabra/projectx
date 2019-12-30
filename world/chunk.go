@@ -15,7 +15,8 @@ type chunk struct {
 	queuedForGeneration bool
 	isPreloaded         bool
 	terrainImage        *ebiten.Image
-	Sector              *Sector
+	sector              *Sector
+	SectorId            SectorKey
 }
 
 func NewChunk(location tiling.Coord) *chunk {
@@ -25,6 +26,14 @@ func NewChunk(location tiling.Coord) *chunk {
 	aChunk.ChunkData = container.NewContainer()
 	aChunk.Preload(location)
 	return aChunk
+}
+
+func (ch *chunk) GetSector() *Sector {
+	return ch.sector
+}
+
+func (ch *chunk) SetSector(sector *Sector) {
+	ch.sector = sector
 }
 
 func (ch *chunk) Preload(location tiling.Coord) {

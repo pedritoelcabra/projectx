@@ -9,12 +9,13 @@ import (
 )
 
 type EntityMap map[EntityKey]Entity
+type SectorMap map[SectorKey]*Sector
 
 type World struct {
 	Entities    EntityMap
+	Sectors     SectorMap
 	PlayerUnit  *Player
 	Grid        *Grid
-	EntityCount EntityKey
 	initialised bool
 	seed        int
 	tick        int
@@ -26,7 +27,6 @@ var theWorld = &World{}
 func NewWorld() *World {
 	aWorld := &World{}
 	aWorld.tick = 0
-	aWorld.EntityCount = 1
 	theWorld = aWorld
 	return aWorld
 }
@@ -53,6 +53,7 @@ func (w *World) Init() {
 	utils.Seed(w.seed)
 	w.Grid = New()
 	w.Entities = make(EntityMap)
+	w.Sectors = make(SectorMap)
 	w.PlayerUnit = NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)
 	w.InitEntities()
@@ -69,7 +70,7 @@ func LoadFromSave(data SaveGameData) *World {
 	w.Grid = &data.Grid
 	w.PlayerUnit = &data.Player
 	w.Entities = data.Entities
-	w.EntityCount = data.EntityCount
+	w.Sectors = data.Sectors
 	w.InitEntities()
 	w.Grid.ChunkGeneration(tiling.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), 0)
 	w.PlayerUnit.Unit.InitObjects()
@@ -83,6 +84,9 @@ func (w *World) InitEntities() {
 	for _, entity := range w.Entities {
 		entity.Init()
 	}
+	for _, sector := range w.Sectors {
+		sector.Init()
+	}
 }
 
 func (w *World) GetSaveState() SaveGameData {
@@ -92,17 +96,28 @@ func (w *World) GetSaveState() SaveGameData {
 	state.Player = *w.PlayerUnit
 	state.Grid = *w.Grid
 	state.Entities = w.Entities
+	state.Sectors = w.Sectors
 	return state
 }
 
 func (w *World) AddEntity(entity Entity) EntityKey {
-	w.Entities[w.EntityCount] = entity
-	w.EntityCount++
-	return w.EntityCount - 1
+	key := EntityKey(len(w.Entities))
+	w.Entities[key] = entity
+	return key
 }
 
 func (w *World) GetEntity(key EntityKey) Entity {
 	return w.Entities[key]
+}
+
+func (w *World) AddSector(sector *Sector) SectorKey {
+	key := SectorKey(len(w.Sectors))
+	w.Sectors[key] = sector
+	return key
+}
+
+func (w *World) GetSector(key SectorKey) *Sector {
+	return w.Sectors[key]
 }
 
 func (w *World) Draw(screen *gfx.Screen) {
@@ -114,10 +129,17 @@ func (w *World) Draw(screen *gfx.Screen) {
 }
 
 func (w *World) DrawEntities(screen *gfx.Screen) {
-	w.PlayerUnit.DrawSprite(screen)
 	for _, e := range w.Entities {
-		e.DrawSprite(screen)
+		if e.GetClassName() != "Building" {
+			e.DrawSprite(screen)
+		}
 	}
+	for _, e := range w.Entities {
+		if e.GetClassName() == "Building" {
+			e.DrawSprite(screen)
+		}
+	}
+	w.PlayerUnit.DrawSprite(screen)
 }
 
 func (w *World) Update() {

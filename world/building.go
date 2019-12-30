@@ -7,7 +7,7 @@ import (
 )
 
 type Building struct {
-	ID        EntityKey
+	Id        EntityKey
 	ClassName string
 	Sprite    gfx.Sprite `json:"-"`
 	SpriteKey gfx.SpriteKey
@@ -27,7 +27,7 @@ func NewBuilding(name string, location *Tile) *Building {
 	aBuilding.Location = location.GetCoord()
 	aBuilding.X = location.GetF(RenderX)
 	aBuilding.Y = location.GetF(RenderY)
-	aBuilding.ID = theWorld.AddEntity(aBuilding)
+	aBuilding.Id = theWorld.AddEntity(aBuilding)
 	location.SetBuilding(aBuilding)
 	return aBuilding
 }
@@ -62,5 +62,5 @@ func (b *Building) GetName() string {
 }
 
 func (b *Building) GetId() EntityKey {
-	return b.ID
+	return b.Id
 }

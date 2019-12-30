@@ -19,7 +19,7 @@ func (g *Grid) SpawnSector(aChunk *chunk) {
 	if template == nil {
 		return
 	}
-	aChunk.Sector = NewSector(centerCoord)
+	_ = NewSector(centerCoord)
 	tile := g.Tile(centerCoord)
 	_ = NewBuilding(template.CenterBuilding, tile)
 	logger.General("Spawned a "+template.Name+" sector in chunk: "+aChunk.Location.ToString()+" at "+centerCoord.ToString(), nil)
@@ -82,7 +82,7 @@ func (g *Grid) ShouldSpawnSector(aChunk *chunk) bool {
 	for x := aChunk.Location.X() - radiusToCheck; x <= aChunk.Location.X()+radiusToCheck; x++ {
 		for y := aChunk.Location.Y() - radiusToCheck; y <= aChunk.Location.Y()+radiusToCheck; y++ {
 			bChunk := g.Chunk(tiling.NewCoord(x, y))
-			if bChunk.Sector == nil {
+			if bChunk.GetSector() == nil {
 				continue
 			}
 			if aChunk.Location.ChebyshevDist(bChunk.Location) <= 1 {
