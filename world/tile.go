@@ -10,7 +10,8 @@ import (
 type Tile struct {
 	coordinates tiling.Coord
 	Data        *container.Container
-	Building    *Building
+	BuildingKey EntityKey
+	building    *Building
 }
 
 func NewTile() *Tile {
@@ -19,12 +20,17 @@ func NewTile() *Tile {
 	return aTile
 }
 
+func (t *Tile) GetCoord() tiling.Coord {
+	return t.coordinates
+}
+
 func (t *Tile) SetBuilding(building *Building) {
-	t.Building = building
+	t.building = building
+	t.BuildingKey = building.GetId()
 }
 
 func (t *Tile) GetBuilding() *Building {
-	return t.Building
+	return t.building
 }
 
 func (t *Tile) Coord() tiling.Coord {

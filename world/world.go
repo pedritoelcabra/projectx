@@ -26,6 +26,7 @@ var theWorld = &World{}
 func NewWorld() *World {
 	aWorld := &World{}
 	aWorld.tick = 0
+	aWorld.entityCount = 1
 	theWorld = aWorld
 	return aWorld
 }
@@ -93,9 +94,14 @@ func (w *World) GetSaveState() SaveGameData {
 	return state
 }
 
-func (w *World) AddEntity(entity Entity) {
+func (w *World) AddEntity(entity Entity) EntityKey {
 	w.Entities[w.entityCount] = entity
 	w.entityCount++
+	return w.entityCount - 1
+}
+
+func (w *World) GetEntity(key EntityKey) Entity {
+	return w.Entities[key]
 }
 
 func (w *World) Draw(screen *gfx.Screen) {
