@@ -54,7 +54,6 @@ func (w *World) Init() {
 	w.Entities = make(EntityMap)
 	w.PlayerUnit = NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)
-	w.AddEntity(w.PlayerUnit)
 	w.InitEntities()
 	w.renderMode = RenderModeBasic
 	w.initialised = true
@@ -69,7 +68,6 @@ func LoadFromSave(data SaveGameData) *World {
 	w.Grid = &data.Grid
 	w.PlayerUnit = &data.Player
 	w.Entities = data.Entities
-	w.AddEntity(w.PlayerUnit)
 	w.InitEntities()
 	w.Grid.ChunkGeneration(tiling.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), 0)
 	w.PlayerUnit.Unit.InitObjects()
@@ -79,6 +77,7 @@ func LoadFromSave(data SaveGameData) *World {
 }
 
 func (w *World) InitEntities() {
+	w.PlayerUnit.Init()
 	for _, entity := range w.Entities {
 		entity.Init()
 	}
@@ -108,6 +107,7 @@ func (w *World) Draw(screen *gfx.Screen) {
 }
 
 func (w *World) DrawEntities(screen *gfx.Screen) {
+	w.PlayerUnit.DrawSprite(screen)
 	for _, e := range w.Entities {
 		e.DrawSprite(screen)
 	}
@@ -118,6 +118,7 @@ func (w *World) Update() {
 		return
 	}
 	w.Grid.ChunkGeneration(tiling.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), w.tick)
+	w.PlayerUnit.Update(w.tick, w.Grid)
 	for _, e := range w.Entities {
 		e.Update(w.tick, w.Grid)
 	}
