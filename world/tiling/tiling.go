@@ -77,6 +77,21 @@ func CubeToCoord(cube Cube) Coord {
 	return NewCoord(int(col), int(row))
 }
 
+func CoordToCube(coord Coord) Cube {
+	x := coord.X()
+	z := coord.Y() - (coord.X()-(coord.X()&One))/2
+	y := -x - z
+	return NewCube(float64(x), float64(y), float64(z))
+}
+
+func HexDistance(a Coord, b Coord) float64 {
+	return HexCubeDistance(CoordToCube(a), CoordToCube(b))
+}
+
+func HexCubeDistance(a Cube, b Cube) float64 {
+	return (math.Abs(a.X-b.X) + math.Abs(a.Y-b.Y) + math.Abs(a.Z-b.Z)) / 2
+}
+
 func NeighbouringHexes(c Coord) []Coord {
 	var neighbours []Coord
 	if c.X()%2 != 0 {

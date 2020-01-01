@@ -34,6 +34,11 @@ func NewSector(location tiling.Coord, def *defs.SectorDef) *Sector {
 
 func (s *Sector) GrowSectorToSize(size int) {
 	s.Size = size
+	if s.Id != 0 {
+		return
+	}
+	coordB := tiling.NewCoord(s.Center.X()+4, s.Center.Y()+2)
+	_ = FindPath(s.Center, coordB)
 }
 
 func (s *Sector) RecalculateTiles() {

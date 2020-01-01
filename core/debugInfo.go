@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/world"
 	"github.com/pedritoelcabra/projectx/world/tiling"
@@ -25,22 +26,26 @@ func (g *game) DebugInfo() string {
 	if g.HasLoadedWorld() {
 		aString += "\nTick: " + strconv.Itoa(g.World.GetTick())
 
-		//pX, pY := g.World.PlayerUnit.GetPos()
+		pX, pY := g.World.PlayerUnit.GetPos()
 		//playerCoord := tiling.NewCoord(int(pX), int(pY))
-		//playerTileCoord := tiling.NewCoord(tiling.PixelIToTileI(int(pX), int(pY)))
+		playerTileCoord := tiling.NewCoord(tiling.PixelIToTileI(int(pX), int(pY)))
 		//aString += "\nPlayer Pos: " + playerCoord.ToString()
 		//aString += "\nPlayer Tile: " + playerTileCoord.ToString()
 		mx, my := ebiten.CursorPosition()
 		cx, cy := g.Screen.GetCameraCoords()
 		mx += int(cx)
 		my += int(cy)
-		aString += "\nMouse Pos: " + tiling.NewCoord(mx, my).ToString()
+		mouseCoord := tiling.NewCoord(mx, my)
+		aString += "\nMouse Pos: " + mouseCoord.ToString()
 		mouseTileCoord := tiling.NewCoord(tiling.PixelIToTileI(mx, my))
 		aString += "\nMouse Tile: " + mouseTileCoord.ToString()
 		tile := g.World.Grid.Tile(mouseTileCoord)
 		mHeight := tile.Get(world.Height)
 		aString += "\nMouse Tile Height: " + strconv.Itoa(mHeight)
 		aString += "\nMouse Tile Chunk: " + g.World.Grid.ChunkCoord(mouseTileCoord).ToString()
+
+		playerMouseDist := tiling.HexDistance(playerTileCoord, mouseTileCoord)
+		aString += "\nMouse distance to player: " + fmt.Sprintf("%f", playerMouseDist)
 
 		aString += "\n-----"
 
@@ -54,6 +59,7 @@ func (g *game) DebugInfo() string {
 			sectorName = sector.GetName()
 		}
 		aString += "\nSector: " + sectorName
+
 	}
 	if g.debugMessage != "" {
 		aString += "\n" + g.debugMessage
