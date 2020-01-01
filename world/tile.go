@@ -106,3 +106,11 @@ func DrawSectorBorders(t *Tile) {
 	op.GeoM = ebiten.TranslateGeo(t.GetF(RenderX), t.GetF(RenderY))
 	theWorld.GetScreen().DrawImage(t.borderSprite, op)
 }
+
+func (t *Tile) Neighbours() [6]*Tile {
+	var neighbours = [6]*Tile{}
+	for key, coord := range tiling.NeighbouringHexes(t.coordinates) {
+		neighbours[key] = theWorld.Grid.Tile(coord)
+	}
+	return neighbours
+}

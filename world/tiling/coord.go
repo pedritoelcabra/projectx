@@ -42,6 +42,10 @@ func (c Coord) ToString() string {
 	return strconv.Itoa(c.CX) + "/" + strconv.Itoa(c.CY)
 }
 
+func (c Coord) Equals(b Coord) bool {
+	return c.X() == b.X() && c.Y() == b.Y()
+}
+
 func (c1 Coord) ManhattanDist(c2 Coord) int {
 	yDist := utils.AbsInt(c1.CY - c2.CY)
 	xDist := utils.AbsInt(c1.CX - c2.CX)
