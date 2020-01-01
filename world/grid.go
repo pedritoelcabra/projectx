@@ -70,6 +70,7 @@ func (t *Tile) InitializeTile() {
 	}
 	t.Set(TerrainBase, terrain)
 	t.Set(SectorId, -1)
+	t.Recalculate()
 }
 
 func (g *Grid) chunkIndex(x, y int) int {

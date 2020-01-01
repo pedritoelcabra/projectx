@@ -15,4 +15,5 @@ const (
 	MaxHeight
 	MinHeight
 	SectorId
+	MovementCost
 )

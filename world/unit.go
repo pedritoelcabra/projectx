@@ -82,7 +82,7 @@ func (u *Unit) Update(tick int, grid *Grid) {
 	if u.Moving {
 		oldCoord := tiling.PixelFToTileC(u.GetPos())
 		oldTile := grid.Tile(oldCoord)
-		movementCost := oldTile.MovementCost()
+		movementCost := oldTile.GetF(MovementCost)
 		if movementCost == 0 {
 			movementCost = 1.0
 		}

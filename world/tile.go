@@ -62,9 +62,9 @@ func (t *Tile) SetF(key int, value float64) {
 }
 
 func (t *Tile) IsImpassable() bool {
-	return t.MovementCost() == 0
+	return t.GetF(MovementCost) > 100
 }
 
-func (t *Tile) MovementCost() float64 {
-	return utils.MovementCost(t.Get(TerrainBase))
+func (t *Tile) Recalculate() {
+	t.SetF(MovementCost, utils.MovementCost(t.Get(TerrainBase)))
 }

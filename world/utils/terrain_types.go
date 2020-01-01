@@ -17,9 +17,9 @@ func MovementCost(terrain int) float64 {
 	case BasicHills:
 		return 2.0
 	case BasicDeepWater:
-		return 0.0
+		return 1000.0
 	case BasicMountain:
-		return 0.0
+		return 1000.0
 	case BasicGrass:
 		return 1.0
 	case BasicWater:
