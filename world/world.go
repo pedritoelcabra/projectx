@@ -20,6 +20,7 @@ type World struct {
 	seed        int
 	tick        int
 	renderMode  TileRenderMode
+	screen      *gfx.Screen
 }
 
 var theWorld = &World{}
@@ -127,6 +128,7 @@ func (w *World) Draw(screen *gfx.Screen) {
 	if !w.initialised {
 		return
 	}
+	w.screen = screen
 	RenderTiles(screen, w, w.renderMode)
 	w.DrawEntities(screen)
 }
@@ -159,6 +161,10 @@ func (w *World) Update() {
 
 func (w *World) SetRenderMode(mode TileRenderMode) {
 	w.renderMode = mode
+}
+
+func (w *World) GetScreen() *gfx.Screen {
+	return w.screen
 }
 
 // UnmarshalJSON sets *m to a copy of data.

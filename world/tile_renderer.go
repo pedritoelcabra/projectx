@@ -40,14 +40,14 @@ func RenderTiles(screen *gfx.Screen, world *World, mode TileRenderMode) {
 
 func RenderChunk(x, y int, screen *gfx.Screen, world *World) {
 	chunkCoord := world.Grid.ChunkCoord(tiling.NewCoord(x, y))
-	if lastRenderedChunkCoord == chunkCoord {
-		return
+	if lastRenderedChunkCoord != chunkCoord {
+		lastRenderedChunkCoord = chunkCoord
+		aChunk := world.Grid.Chunk(chunkCoord)
+		aChunk.GenerateImage()
+		chunkImage := aChunk.GetImage()
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(aChunk.FirstTile().GetF(RenderX), aChunk.FirstTile().GetF(RenderY))
+		screen.DrawImage(chunkImage, op)
+		aChunk.RunOnAllTiles(DrawSectorBorders)
 	}
-	lastRenderedChunkCoord = chunkCoord
-	aChunk := world.Grid.Chunk(chunkCoord)
-	aChunk.GenerateImage()
-	chunkImage := aChunk.GetImage()
-	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(aChunk.FirstTile().GetF(RenderX), aChunk.FirstTile().GetF(RenderY))
-	screen.DrawImage(chunkImage, op)
 }

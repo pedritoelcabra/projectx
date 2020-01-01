@@ -16,7 +16,7 @@ var terrainToHex = make(map[int]HexTerrainTypes)
 
 const (
 	HexTerrainWidth  = 7
-	HexTerrainHeight = 15
+	HexTerrainHeight = 16
 	HexTileSize      = 72
 )
 
@@ -37,6 +37,12 @@ func SetUpHexTerrainOffsets() {
 	terrainToHex[utils.BasicHills] = 38
 	terrainToHex[utils.BasicGrass] = 51
 	terrainToHex[utils.BasicMountain] = 41
+	terrainToHex[utils.BorderN] = 105
+	terrainToHex[utils.BorderNE] = 106
+	terrainToHex[utils.BorderNW] = 107
+	terrainToHex[utils.BorderS] = 108
+	terrainToHex[utils.BorderSW] = 109
+	terrainToHex[utils.BorderSE] = 110
 }
 
 func DrawHexTerrain(x, y float64, terrain int, screen *Screen, op *ebiten.DrawImageOptions) {
