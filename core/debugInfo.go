@@ -39,11 +39,18 @@ func (g *game) DebugInfo() string {
 		aString += "\nMouse Tile Height: " + strconv.Itoa(mHeight)
 		aString += "\nMouse Tile Chunk: " + g.World.Grid.ChunkCoord(mouseTileCoord).ToString()
 
+		aString += "\n-----"
+
 		building := tile.GetBuilding()
 		if building != nil {
-			aString += "\n-----"
 			aString += "\nBuilding: " + building.GetName()
 		}
+		sector := g.World.GetSector(world.SectorKey(tile.Get(world.SectorId)))
+		sectorName := "No mans land"
+		if sector != nil {
+			sectorName = sector.GetName()
+		}
+		aString += "\nSector: " + sectorName
 	}
 	if g.debugMessage != "" {
 		aString += "\n" + g.debugMessage

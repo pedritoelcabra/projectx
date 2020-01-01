@@ -69,6 +69,7 @@ func (t *Tile) InitializeTile() {
 		terrain = utils.BasicDeepWater
 	}
 	t.Set(TerrainBase, terrain)
+	t.Set(SectorId, -1)
 }
 
 func (g *Grid) chunkIndex(x, y int) int {

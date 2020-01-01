@@ -19,7 +19,7 @@ func (g *Grid) SpawnSector(aChunk *chunk) {
 	if template == nil {
 		return
 	}
-	_ = NewSector(centerCoord)
+	_ = NewSector(centerCoord, template)
 	tile := g.Tile(centerCoord)
 	_ = NewBuilding(template.CenterBuilding, tile)
 	logger.General("Spawned a "+template.Name+" sector in chunk: "+aChunk.Location.ToString()+" at "+centerCoord.ToString(), nil)

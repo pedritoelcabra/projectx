@@ -15,13 +15,14 @@ type Building struct {
 	Location  tiling.Coord
 	X         float64
 	Y         float64
+	Template  *defs.BuildingDef
 }
 
 func NewBuilding(name string, location *Tile) *Building {
 	buildingDefs := defs.BuildingDefs()
-	def := buildingDefs[name]
 	aBuilding := &Building{}
-	aBuilding.SpriteKey = gfx.GetSpriteKey(def.Graphic)
+	aBuilding.Template = buildingDefs[name]
+	aBuilding.SpriteKey = gfx.GetSpriteKey(aBuilding.Template.Graphic)
 	aBuilding.Name = name
 	aBuilding.Init()
 	aBuilding.Location = location.GetCoord()

@@ -14,4 +14,5 @@ const (
 	AvgHeight
 	MaxHeight
 	MinHeight
+	SectorId
 )

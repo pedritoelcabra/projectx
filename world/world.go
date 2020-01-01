@@ -117,6 +117,9 @@ func (w *World) AddSector(sector *Sector) SectorKey {
 }
 
 func (w *World) GetSector(key SectorKey) *Sector {
+	if key < 0 {
+		return nil
+	}
 	return w.Sectors[key]
 }
 
