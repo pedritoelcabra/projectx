@@ -26,14 +26,14 @@ func NewSector(location tiling.Coord, def *defs.SectorDef) *Sector {
 	aSector.Center = location
 	aSector.Id = theWorld.AddSector(aSector)
 	aSector.Name = aSector.Template.Name + " " + strconv.Itoa(int(aSector.Id))
-	aSector.GrowSector()
+	aSector.Tiles = append(aSector.Tiles, aSector.Center)
+	aSector.GrowSectorToSize(def.Size)
 	aSector.Init()
 	return aSector
 }
 
-func (s *Sector) GrowSector() {
-	s.Tiles = append(s.Tiles, s.Center)
-	s.Tiles = append(s.Tiles, tiling.NewCoord(s.Center.X()-1, s.Center.Y()-1))
+func (s *Sector) GrowSectorToSize(size int) {
+	s.Size = size
 }
 
 func (s *Sector) RecalculateTiles() {

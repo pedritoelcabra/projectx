@@ -2,5 +2,5 @@
   "Name": "Village",
   "CenterBuilding": "Stone House",
   "Weight": 70,
-  "Land": 100
+  "Size": 10
 }

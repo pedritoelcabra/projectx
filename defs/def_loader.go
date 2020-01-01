@@ -13,7 +13,7 @@ type SectorDef struct {
 	Name           string
 	CenterBuilding string
 	Weight         int
-	Land           int
+	Size           int
 }
 
 type BuildingDef struct {
