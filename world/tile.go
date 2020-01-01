@@ -8,10 +8,11 @@ import (
 
 // Tile is the data contained in any given coordinate in the grid
 type Tile struct {
-	coordinates tiling.Coord
-	Data        *container.Container
-	BuildingId  EntityKey
-	building    *Building
+	coordinates       tiling.Coord
+	Data              *container.Container
+	BuildingId        EntityKey
+	building          *Building
+	neighbouringHexes [6]tiling.Coord
 }
 
 func NewTile() *Tile {

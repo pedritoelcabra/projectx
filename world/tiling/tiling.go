@@ -76,3 +76,23 @@ func CubeToCoord(cube Cube) Coord {
 	var row = cube.Z + (cube.X-float64(int(cube.X)&One))/2
 	return NewCoord(int(col), int(row))
 }
+
+func NeighbouringHexes(c Coord) []Coord {
+	var neighbours []Coord
+	if c.X()%2 != 0 {
+		neighbours = append(neighbours, NewCoord(c.X(), c.Y()-1))
+		neighbours = append(neighbours, NewCoord(c.X()+1, c.Y()))
+		neighbours = append(neighbours, NewCoord(c.X()+1, c.Y()+1))
+		neighbours = append(neighbours, NewCoord(c.X(), c.Y()+1))
+		neighbours = append(neighbours, NewCoord(c.X()-1, c.Y()+1))
+		neighbours = append(neighbours, NewCoord(c.X()-1, c.Y()))
+	} else {
+		neighbours = append(neighbours, NewCoord(c.X(), c.Y()-1))
+		neighbours = append(neighbours, NewCoord(c.X()+1, c.Y()-1))
+		neighbours = append(neighbours, NewCoord(c.X()+1, c.Y()))
+		neighbours = append(neighbours, NewCoord(c.X(), c.Y()+1))
+		neighbours = append(neighbours, NewCoord(c.X()-1, c.Y()))
+		neighbours = append(neighbours, NewCoord(c.X()-1, c.Y()-1))
+	}
+	return neighbours
+}

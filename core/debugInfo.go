@@ -25,8 +25,11 @@ func (g *game) DebugInfo() string {
 	if g.HasLoadedWorld() {
 		aString += "\nTick: " + strconv.Itoa(g.World.GetTick())
 
-		pX, pY := g.World.PlayerUnit.GetPos()
-		aString += "\nPlayer Pos: " + tiling.NewCoord(int(pX), int(pY)).ToString()
+		//pX, pY := g.World.PlayerUnit.GetPos()
+		//playerCoord := tiling.NewCoord(int(pX), int(pY))
+		//playerTileCoord := tiling.NewCoord(tiling.PixelIToTileI(int(pX), int(pY)))
+		//aString += "\nPlayer Pos: " + playerCoord.ToString()
+		//aString += "\nPlayer Tile: " + playerTileCoord.ToString()
 		mx, my := ebiten.CursorPosition()
 		cx, cy := g.Screen.GetCameraCoords()
 		mx += int(cx)
