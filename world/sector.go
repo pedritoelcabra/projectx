@@ -26,7 +26,7 @@ func NewSector(location tiling.Coord, def *defs.SectorDef) *Sector {
 	aSector.Center = location
 	aSector.Id = theWorld.AddSector(aSector)
 	aSector.Name = aSector.Template.Name + " " + strconv.Itoa(int(aSector.Id))
-	aSector.Tiles = append(aSector.Tiles, aSector.Center)
+	aSector.AddTile(aSector.Center)
 	aSector.GrowSectorToSize(def.Size)
 	aSector.Init()
 	return aSector
@@ -34,11 +34,28 @@ func NewSector(location tiling.Coord, def *defs.SectorDef) *Sector {
 
 func (s *Sector) GrowSectorToSize(size int) {
 	s.Size = size
-	if s.Id != 0 {
-		return
+	options := NewPathOptions()
+	options.MinMoveCost = 1.0
+	sizeF := float64(size)
+	for x := s.Center.X() - size; x <= s.Center.X()+size; x++ {
+		for y := s.Center.Y() - size; y <= s.Center.Y()+size; y++ {
+			aCoord := tiling.NewCoord(x, y)
+			path := FindPathWithOptions(s.Center, aCoord, options)
+			if path.IsValid() && path.GetCost() <= sizeF {
+				s.AddTile(aCoord)
+			}
+		}
 	}
-	coordB := tiling.NewCoord(s.Center.X()+4, s.Center.Y()+2)
-	_ = FindPath(s.Center, coordB)
+}
+
+func (s *Sector) AddTile(tileCoord tiling.Coord) {
+	for _, existantTiles := range s.Tiles {
+		if existantTiles.Equals(tileCoord) {
+			return
+		}
+	}
+	s.Tiles = append(s.Tiles, tileCoord)
+	theWorld.Grid.Tile(tileCoord).Set(SectorId, int(s.Id))
 }
 
 func (s *Sector) RecalculateTiles() {

@@ -13,11 +13,18 @@ type node struct {
 	predicted float64
 }
 
-const DefaultPathMaxLength = 30
 const DefaultPathMaxNodes = 300
 
 type PathOptions struct {
-	MaxLength int
+	MaxNodes    int
+	MinMoveCost float64
+}
+
+func NewPathOptions() PathOptions {
+	opts := PathOptions{}
+	opts.MaxNodes = DefaultPathMaxNodes
+	opts.MinMoveCost = 0.0
+	return opts
 }
 
 type Path struct {
@@ -31,6 +38,7 @@ type Path struct {
 	CurrentStep int
 	open        []*node
 	closed      []*node
+	options     PathOptions
 }
 
 func (p *Path) GetSteps() []tiling.Coord {
@@ -41,24 +49,17 @@ func (p *Path) IsValid() bool {
 	return p.Valid
 }
 
+func (p *Path) GetCost() float64 {
+	return p.Cost
+}
+
 func FindPath(start, end tiling.Coord) Path {
-	options := PathOptions{DefaultPathMaxLength}
-	aPath := FindPathWithOptions(start, end, options)
-	if aPath.IsValid() {
-		logMsg := "Found path: "
-		for _, step := range aPath.GetSteps() {
-			logMsg += step.ToString() + ", "
-		}
-		logger.General(logMsg, nil)
-	} else {
-		logger.General("Found no valid path from "+start.ToString()+" to "+end.ToString(), nil)
-	}
-	return aPath
+	return FindPathWithOptions(start, end, NewPathOptions())
 }
 
 func FindPathWithOptions(start, end tiling.Coord, options PathOptions) Path {
 	aPath := Path{}
-	aPath.MaxLength = options.MaxLength
+	aPath.options = options
 	aPath.Valid = false
 	aPath.Nodes = len(aPath.Path)
 	aPath.Cost = 0.0
@@ -66,13 +67,26 @@ func FindPathWithOptions(start, end tiling.Coord, options PathOptions) Path {
 	aPath.End = end
 	aPath.CurrentStep = 0
 	aPath.findValidPath()
+	//aPath.logPathing()
 	return aPath
+}
+
+func (p *Path) logPathing() {
+	if p.IsValid() {
+		logMsg := "Found path: "
+		for _, step := range p.GetSteps() {
+			logMsg += step.ToString() + ", "
+		}
+		logger.General(logMsg, nil)
+	} else {
+		logger.General("Found no valid path from "+p.Start.ToString()+" to "+p.End.ToString(), nil)
+	}
 }
 
 func (p *Path) findValidPath() {
 	startNode := p.NewNode(p.Start, nil)
 	p.open = append(p.open, startNode)
-	for !p.Valid && len(p.closed) < DefaultPathMaxNodes {
+	for !p.Valid && len(p.closed) < p.options.MaxNodes {
 		bestNode := p.bestOpenNode()
 		if bestNode == nil {
 			break
@@ -144,6 +158,9 @@ func (p *Path) NewNode(location tiling.Coord, parent *node) *node {
 	aNode.location = location
 	aNode.parent = parent
 	aNode.current = getTileCost(location)
+	if aNode.current < p.options.MinMoveCost {
+		aNode.current = p.options.MinMoveCost
+	}
 	if parent != nil {
 		aNode.current += parent.current
 	}
