@@ -26,7 +26,7 @@ func NewPlayer() *Player {
 	aPlayer := &Player{}
 	aPlayer.Init()
 	aPlayer.Unit = NewUnit()
-	aPlayer.Unit.SetSpeed(5)
+	aPlayer.Unit.SetSpeed(10)
 	return aPlayer
 }
 

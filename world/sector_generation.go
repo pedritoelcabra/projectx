@@ -65,7 +65,7 @@ func (g *Grid) TileIsSuitableForSectorCenter(aTile *Tile) bool {
 	for x := aTile.X() - necessarySpace; x <= aTile.X()+necessarySpace; x++ {
 		for y := aTile.Y() - necessarySpace; y <= aTile.Y()+necessarySpace; y++ {
 			nearbyTile := g.Tile(tiling.NewCoord(x, y))
-			if nearbyTile.IsImpassable() {
+			if nearbyTile.IsImpassable() || !nearbyTile.IsLand() {
 				currentImpassableTiles++
 			}
 		}

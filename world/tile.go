@@ -71,6 +71,10 @@ func (t *Tile) IsImpassable() bool {
 	return t.GetF(MovementCost) > 100
 }
 
+func (t *Tile) IsLand() bool {
+	return t.Get(TerrainBase) != utils.BasicWater && t.Get(TerrainBase) != utils.BasicDeepWater
+}
+
 func (t *Tile) Recalculate() {
 	t.SetF(MovementCost, utils.MovementCost(t.Get(TerrainBase)))
 	t.borders = [6]bool{false}
