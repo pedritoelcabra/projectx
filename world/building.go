@@ -39,9 +39,9 @@ func (b *Building) Init() {
 	tile := theWorld.Grid.Tile(b.Location)
 	if tile != nil {
 		tile.SetBuilding(b)
+		b.X = tile.GetF(RenderX)
+		b.Y = tile.GetF(RenderY)
 	}
-	b.X = tile.GetF(RenderX)
-	b.Y = tile.GetF(RenderY)
 }
 
 func (b *Building) DrawSprite(screen *gfx.Screen) {
