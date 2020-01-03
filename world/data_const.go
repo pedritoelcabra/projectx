@@ -16,4 +16,5 @@ const (
 	MinHeight
 	SectorId
 	MovementCost
+	Biome
 )

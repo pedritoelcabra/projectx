@@ -60,6 +60,7 @@ func (w *World) Init() {
 	w.InitEntities()
 	w.renderMode = RenderModeBasic
 	w.initialised = true
+	InitTileRenderer()
 }
 
 func LoadFromSave(data SaveGameData) *World {
@@ -77,6 +78,7 @@ func LoadFromSave(data SaveGameData) *World {
 	w.PlayerUnit.Unit.InitObjects()
 	w.renderMode = RenderModeBasic
 	w.initialised = true
+	InitTileRenderer()
 	return w
 }
 

@@ -8,6 +8,22 @@ const (
 	BasicWater     = 3
 	BasicMountain  = 4
 	BasicDeepWater = 5
+
+	TundraHills     = 11
+	TundraGrass     = 12
+	TundraWater     = 13
+	TundraMountain  = 14
+	TundraDeepWater = 15
+
+	DesertHills     = 21
+	DesertGrass     = 22
+	DesertWater     = 23
+	DesertMountain  = 24
+	DesertDeepWater = 25
+
+	BiomeTemperate = 100
+	BiomeTundra    = 101
+	BiomeDesert    = 102
 	BorderN        = 1000
 	BorderNE       = 1001
 	BorderSE       = 1002
@@ -33,6 +49,26 @@ func MovementCost(terrain int) float64 {
 	case BasicGrass:
 		return 1.0
 	case BasicWater:
+		return 2.0
+	case TundraHills:
+		return 3.0
+	case TundraDeepWater:
+		return 1000.0
+	case TundraMountain:
+		return 1000.0
+	case TundraGrass:
+		return 1.5
+	case TundraWater:
+		return 1.5
+	case DesertHills:
+		return 2.0
+	case DesertDeepWater:
+		return 1000.0
+	case DesertMountain:
+		return 1000.0
+	case DesertGrass:
+		return 1.0
+	case DesertWater:
 		return 2.0
 	}
 	return 0.0

@@ -2,7 +2,6 @@ package world
 
 import (
 	"github.com/hajimehoshi/ebiten"
-	"github.com/pedritoelcabra/projectx/core/logger"
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/world/tiling"
 	"math"
@@ -17,12 +16,13 @@ const (
 
 var lastRenderedChunkCoord = tiling.NewCoord(-999, 999)
 
-type TileRenderer struct {
-	tileRenderSize int
-}
-
 var tilesToRender []*Tile
 var playerLastCoord tiling.Coord
+
+func InitTileRenderer() {
+	playerLastCoord = tiling.NewCoord(-99999, -99999)
+	tilesToRender = []*Tile{}
+}
 
 func RenderTiles(screen *gfx.Screen, world *World, mode TileRenderMode) {
 	LoadTilesToRender(world)
@@ -72,5 +72,4 @@ func LoadTilesToRender(world *World) {
 			tilesToRender = append(tilesToRender, world.Grid.Tile(tiling.NewCoord(x, y)))
 		}
 	}
-	logger.General("Render tiles "+tiling.NewCoord(startX, startY).ToString()+" to "+tiling.NewCoord(endX, endY).ToString(), nil)
 }

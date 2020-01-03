@@ -37,6 +37,16 @@ func SetUpHexTerrainOffsets() {
 	terrainToHex[utils.BasicHills] = 38
 	terrainToHex[utils.BasicGrass] = 51
 	terrainToHex[utils.BasicMountain] = 41
+	terrainToHex[utils.TundraWater] = 62
+	terrainToHex[utils.TundraDeepWater] = 0
+	terrainToHex[utils.TundraHills] = 98
+	terrainToHex[utils.TundraGrass] = 62
+	terrainToHex[utils.TundraMountain] = 96
+	terrainToHex[utils.DesertWater] = 1
+	terrainToHex[utils.DesertDeepWater] = 0
+	terrainToHex[utils.DesertHills] = 4
+	terrainToHex[utils.DesertGrass] = 18
+	terrainToHex[utils.DesertMountain] = 15
 	terrainToHex[utils.BorderN] = 105
 	terrainToHex[utils.BorderNE] = 106
 	terrainToHex[utils.BorderNW] = 107

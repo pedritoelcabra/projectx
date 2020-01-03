@@ -51,28 +51,6 @@ func (g *Grid) Chunk(chunkCoord tiling.Coord) *chunk {
 	return g.Chunks[chunkIndex]
 }
 
-func (t *Tile) InitializeTile() {
-	height := utils.Generator.GetHeight(t.X(), t.Y())
-	t.Set(Height, height)
-	terrain := -1
-	terrain = utils.BasicMountain
-	if height < 300 {
-		terrain = utils.BasicHills
-	}
-	if height < 150 {
-		terrain = utils.BasicGrass
-	}
-	if height < 0 {
-		terrain = utils.BasicWater
-	}
-	if height < -50 {
-		terrain = utils.BasicDeepWater
-	}
-	t.Set(TerrainBase, terrain)
-	t.Set(SectorId, -1)
-	t.Recalculate()
-}
-
 func (g *Grid) chunkIndex(x, y int) int {
 	x += GridOffset
 	y += GridOffset

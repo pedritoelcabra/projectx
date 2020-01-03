@@ -40,6 +40,11 @@ func (n *NoiseGenerator) GetHeight(x, y int) int {
 	return int(height)
 }
 
+func (n *NoiseGenerator) GetBiome(x, y int) int {
+	val := n.ApplyFilter(x, y-10000, 300.0, 1000.0)
+	return int(val)
+}
+
 func (n *NoiseGenerator) ApplyFilter(x, y int, scale float64, intensity float64) float64 {
 	noise := n.p.Noise2D(float64(x)/scale, float64(y)/scale)
 	adjustedNoise := noise * intensity

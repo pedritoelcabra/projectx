@@ -2,6 +2,7 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/world/tiling"
+	"github.com/pedritoelcabra/projectx/world/utils"
 )
 
 func (g *Grid) CreateNewChunk(chunkCoord tiling.Coord) {
@@ -56,4 +57,46 @@ func (g *Grid) GenerateChunk(chunkCoord tiling.Coord) {
 	aChunk.queuedForGeneration = false
 	aChunk.Generated = true
 	//logger.General("Generated chunk: "+chunkCoord.ToString(), nil)
+}
+
+func (t *Tile) InitializeTile() {
+	height := utils.Generator.GetHeight(t.X(), t.Y())
+	biomeValue := utils.Generator.GetBiome(t.X(), t.Y())
+	biome := utils.BiomeTemperate
+	if biomeValue > 250 {
+		biome = utils.BiomeDesert
+	}
+	if biomeValue < -250 {
+		biome = utils.BiomeTundra
+	}
+	t.Set(Biome, biome)
+	t.Set(Height, height)
+	t.Set(SectorId, -1)
+	t.SetTerrain()
+	t.Recalculate()
+}
+
+func (t *Tile) SetTerrain() {
+	height := t.Get(Height)
+	terrain := -1
+	terrain = utils.BasicMountain
+	if height < 300 {
+		terrain = utils.BasicHills
+	}
+	if height < 150 {
+		terrain = utils.BasicGrass
+	}
+	if height < 0 {
+		terrain = utils.BasicWater
+	}
+	if height < -50 {
+		terrain = utils.BasicDeepWater
+	}
+	if t.Get(Biome) == utils.BiomeTundra {
+		terrain += 10
+	}
+	if t.Get(Biome) == utils.BiomeDesert {
+		terrain += 20
+	}
+	t.Set(TerrainBase, terrain)
 }
