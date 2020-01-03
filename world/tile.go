@@ -111,6 +111,11 @@ func DrawSectorBorders(t *Tile) {
 	theWorld.GetScreen().DrawImage(t.borderSprite, op)
 }
 
+func DrawTerrain(t *Tile) {
+	opts := &ebiten.DrawImageOptions{}
+	gfx.DrawHexTerrain(t.GetF(RenderX), t.GetF(RenderY), t.Get(TerrainBase), theWorld.GetScreen(), opts)
+}
+
 func (t *Tile) Neighbours() [6]*Tile {
 	var neighbours = [6]*Tile{}
 	for key, coord := range tiling.NeighbouringHexes(t.coordinates) {
