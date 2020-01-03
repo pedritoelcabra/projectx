@@ -40,6 +40,8 @@ func (b *Building) Init() {
 	if tile != nil {
 		tile.SetBuilding(b)
 	}
+	b.X = tile.GetF(RenderX)
+	b.Y = tile.GetF(RenderY)
 }
 
 func (b *Building) DrawSprite(screen *gfx.Screen) {

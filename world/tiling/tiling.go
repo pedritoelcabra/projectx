@@ -22,7 +22,7 @@ func InitTiling() {
 	Sqrt3 = math.Sqrt(3.0)
 	TileWidth = TileSize * 2
 	TileWidthScale = TileWidth / GfxTileSize
-	TileHeight = math.Floor(TileSize * Sqrt3)
+	TileHeight = TileSize * Sqrt3
 	TileHeightScale = TileHeight / GfxTileSize
 	TileHorizontalSeparation = math.Floor(TileWidth * 0.75)
 }
