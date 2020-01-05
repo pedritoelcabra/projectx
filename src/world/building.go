@@ -2,7 +2,7 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/defs"
-	"github.com/pedritoelcabra/projectx/gfx"
+	"github.com/pedritoelcabra/projectx/src/gfx"
 	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
 )
 

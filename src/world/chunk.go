@@ -2,7 +2,7 @@ package world
 
 import (
 	"github.com/hajimehoshi/ebiten"
-	"github.com/pedritoelcabra/projectx/gfx"
+	"github.com/pedritoelcabra/projectx/src/gfx"
 	container2 "github.com/pedritoelcabra/projectx/src/world/container"
 	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
 )

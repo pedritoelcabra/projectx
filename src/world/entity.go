@@ -1,7 +1,7 @@
 package world
 
 import (
-	"github.com/pedritoelcabra/projectx/gfx"
+	"github.com/pedritoelcabra/projectx/src/gfx"
 )
 
 type EntityKey int

@@ -4,7 +4,7 @@ import (
 	"flag"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/core"
-	"github.com/pedritoelcabra/projectx/gfx"
+	"github.com/pedritoelcabra/projectx/src/gfx"
 	"log"
 	"os"
 	"runtime"

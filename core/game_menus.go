@@ -2,7 +2,7 @@ package core
 
 import (
 	"github.com/pedritoelcabra/projectx/core/file"
-	"github.com/pedritoelcabra/projectx/gfx"
+	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/gui"
 	"github.com/pedritoelcabra/projectx/src/world"
 	"image"
