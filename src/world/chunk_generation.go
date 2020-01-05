@@ -1,6 +1,7 @@
 package world
 
 import (
+	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
 	utils2 "github.com/pedritoelcabra/projectx/src/world/utils"
 )
@@ -108,12 +109,13 @@ func (t *Tile) GenerateVegetation() {
 	if t.IsImpassable() || t.Get(Height) <= 0 {
 		return
 	}
-	bioMass := utils2.Generator.GetBiomass(t.X(), t.Y())
+	bioMassScore := utils2.Generator.GetBiomass(t.X(), t.Y())
+	bioMassScore += randomizer.RandomInt(0, 300)
 	vegName := ""
-	if bioMass > -100 {
+	if bioMassScore > 200 {
 		vegName = "Deciduous Forest Sparse"
 	}
-	if bioMass > 50 {
+	if bioMassScore > 350 {
 		vegName = "Deciduous Forest"
 	}
 	if vegName == "" {
