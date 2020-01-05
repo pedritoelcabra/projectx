@@ -1,7 +1,7 @@
 package world
 
 import (
-	"github.com/pedritoelcabra/projectx/defs"
+	defs2 "github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/logger"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
@@ -25,9 +25,9 @@ func (g *Grid) SpawnSector(aChunk *chunk) {
 	//logger.General("Spawned a "+template.Name+" sector in chunk: "+aChunk.Location.ToString()+" at "+centerCoord.ToString(), nil)
 }
 
-func (g *Grid) ChooseSectorTemplate(location tiling2.Coord) *defs.SectorDef {
-	sectorDefs := defs.SectorDefs()
-	bestDef := &defs.SectorDef{}
+func (g *Grid) ChooseSectorTemplate(location tiling2.Coord) *defs2.SectorDef {
+	sectorDefs := defs2.SectorDefs()
+	bestDef := &defs2.SectorDef{}
 	bestDef = nil
 	bestScore := -1
 	for _, sectorDef := range sectorDefs {

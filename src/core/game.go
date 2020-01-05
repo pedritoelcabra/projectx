@@ -2,7 +2,7 @@ package core
 
 import (
 	"github.com/hajimehoshi/ebiten"
-	"github.com/pedritoelcabra/projectx/defs"
+	defs2 "github.com/pedritoelcabra/projectx/src/core/defs"
 	file2 "github.com/pedritoelcabra/projectx/src/core/file"
 	logger2 "github.com/pedritoelcabra/projectx/src/core/logger"
 	randomizer2 "github.com/pedritoelcabra/projectx/src/core/randomizer"
@@ -41,7 +41,7 @@ func G() *game {
 
 func (g *game) init() {
 	logger2.InitLogger()
-	defs.InitDefs()
+	defs2.InitDefs()
 	g.Screen = gfx.NewScreen()
 	g.Graphics = gfx.NewGraphics()
 	g.InitInput()

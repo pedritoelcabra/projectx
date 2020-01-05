@@ -1,7 +1,7 @@
 package world
 
 import (
-	"github.com/pedritoelcabra/projectx/defs"
+	defs2 "github.com/pedritoelcabra/projectx/src/core/defs"
 	container2 "github.com/pedritoelcabra/projectx/src/world/container"
 	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
 	"strconv"
@@ -15,11 +15,11 @@ type Sector struct {
 	Name     string
 	Center   tiling2.Coord
 	Data     *container2.Container
-	Template *defs.SectorDef
+	Template *defs2.SectorDef
 	Tiles    []tiling2.Coord
 }
 
-func NewSector(location tiling2.Coord, def *defs.SectorDef) *Sector {
+func NewSector(location tiling2.Coord, def *defs2.SectorDef) *Sector {
 	aSector := &Sector{}
 	aSector.Template = def
 	aSector.Data = container2.NewContainer()
