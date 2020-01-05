@@ -7,7 +7,7 @@ import (
 	"github.com/pedritoelcabra/projectx/core/randomizer"
 	"github.com/pedritoelcabra/projectx/defs"
 	"github.com/pedritoelcabra/projectx/gfx"
-	"github.com/pedritoelcabra/projectx/gui"
+	"github.com/pedritoelcabra/projectx/src/gui"
 	"github.com/pedritoelcabra/projectx/src/world"
 	"strconv"
 )
