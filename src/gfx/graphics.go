@@ -9,6 +9,7 @@ func NewGraphics() *Graphics {
 	spriteToKeyMap = make(map[string]SpriteKey)
 	LoadSprites()
 	LoadGfxFolder("buildings")
+	LoadGfxFolder("vegetation")
 	SetUpLpcSpritesOffsets()
 	SetUpHexTerrainOffsets()
 	return aGraphics
