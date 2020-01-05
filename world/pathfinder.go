@@ -157,11 +157,12 @@ func (p *Path) NewNode(location tiling.Coord, parent *node) *node {
 	aNode := &node{}
 	aNode.location = location
 	aNode.parent = parent
-	aNode.current = getTileCost(location)
-	if aNode.current < p.options.MinMoveCost {
-		aNode.current = p.options.MinMoveCost
-	}
+	aNode.current = 0.0
 	if parent != nil {
+		aNode.current = getTileCost(location)
+		if aNode.current < p.options.MinMoveCost {
+			aNode.current = p.options.MinMoveCost
+		}
 		aNode.current += parent.current
 	}
 	aNode.predicted = tiling.HexDistance(location, p.End)

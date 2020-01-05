@@ -29,7 +29,7 @@ func New(x, y, w, h int) *Gui {
 	aGui.box = image.Rect(x, y, w, h)
 	aGui.menus = make(map[string]*Menu)
 
-	img, _, err := ebitenutil.NewImageFromFile("gui/ui.png", ebiten.FilterDefault)
+	img, _, err := ebitenutil.NewImageFromFile("resources/ui.png", ebiten.FilterDefault)
 	if err != nil {
 		log.Fatal(err)
 	}
