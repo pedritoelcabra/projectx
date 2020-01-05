@@ -1,6 +1,7 @@
 {
   "Name": "Deciduous Forest",
   "Weight": 100,
+  "MovementCost": 0.5,
   "Graphics" : [
     "deciduous-summer",
     "deciduous-summer2",

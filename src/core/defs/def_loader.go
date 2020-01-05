@@ -23,9 +23,10 @@ type BuildingDef struct {
 }
 
 type VegetationDef struct {
-	Name     string
-	Weight   int
-	Graphics []string
+	Name         string
+	MovementCost float64
+	Weight       int
+	Graphics     []string
 }
 
 func (v *VegetationDef) GetGraphic() string {

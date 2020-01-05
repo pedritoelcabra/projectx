@@ -85,7 +85,11 @@ func (t *Tile) IsLand() bool {
 }
 
 func (t *Tile) CalculateMovementCost() {
-	t.SetF(MovementCost, utils.MovementCost(t.Get(TerrainBase)))
+	movementCost := utils.MovementCost(t.Get(TerrainBase))
+	if t.vegetation != nil {
+		movementCost += t.vegetation.GetMovementCost()
+	}
+	t.SetF(MovementCost, movementCost)
 }
 
 func (t *Tile) Recalculate() {
@@ -127,6 +131,13 @@ func DrawSectorBorders(t *Tile) {
 func DrawTerrain(t *Tile) {
 	opts := &ebiten.DrawImageOptions{}
 	gfx.DrawHexTerrain(t.GetF(RenderX), t.GetF(RenderY), t.Get(TerrainBase), theWorld.GetScreen(), opts)
+}
+
+func DrawVegetation(t *Tile) {
+	if t.vegetation == nil {
+		return
+	}
+	t.vegetation.Sprite.DrawSprite(theWorld.GetScreen(), t.GetF(RenderDoubleX), t.GetF(RenderDoubleY))
 }
 
 func (t *Tile) Neighbours() [6]*Tile {

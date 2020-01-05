@@ -7,6 +7,8 @@ const (
 	TerrainOverlay
 	RenderX
 	RenderY
+	RenderDoubleX
+	RenderDoubleY
 	CenterX
 	CenterY
 	RenderW

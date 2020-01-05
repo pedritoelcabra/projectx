@@ -6,10 +6,11 @@ import (
 )
 
 type Vegetation struct {
-	Name      string
-	Template  *defs.VegetationDef
-	Sprite    gfx.Sprite `json:"-"`
-	SpriteKey gfx.SpriteKey
+	Name         string
+	MovementCost float64
+	Template     *defs.VegetationDef
+	Sprite       gfx.Sprite `json:"-"`
+	SpriteKey    gfx.SpriteKey
 }
 
 func NewVegetation(name string) *Vegetation {
@@ -24,6 +25,10 @@ func NewVegetation(name string) *Vegetation {
 
 func (v *Vegetation) GetName() string {
 	return v.Name
+}
+
+func (v *Vegetation) GetMovementCost() float64 {
+	return v.MovementCost
 }
 
 func (v *Vegetation) Init() {

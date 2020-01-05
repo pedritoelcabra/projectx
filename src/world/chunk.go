@@ -61,6 +61,10 @@ func (ch *chunk) Preload(location tiling.Coord) {
 			renderY := centerY - tiling.TileHeight/2
 			aTile.SetF(RenderX, renderX)
 			aTile.SetF(RenderY, renderY)
+			renderDoubleX := centerX - tiling.TileWidth
+			renderDoubleY := centerY - tiling.TileHeight
+			aTile.SetF(RenderDoubleX, renderDoubleX)
+			aTile.SetF(RenderDoubleY, renderDoubleY)
 			aTile.SetF(CenterX, centerX)
 			aTile.SetF(CenterY, centerY)
 			ch.tiles[tileIndex] = aTile
