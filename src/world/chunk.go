@@ -9,7 +9,7 @@ import (
 
 type chunk struct {
 	tiles               []*Tile
-	Vegetation          []*Vegetation
+	Vegetation          []string
 	ChunkData           *container.Container
 	Location            tiling.Coord
 	Generated           bool
@@ -70,11 +70,27 @@ func (ch *chunk) Preload(location tiling.Coord) {
 			ch.tiles[tileIndex] = aTile
 		}
 	}
+	if ch.IsGenerated() {
+		for index, tile := range ch.tiles {
+			if ch.Vegetation[index] != "" {
+				tile.SetVegetation(NewVegetation(ch.Vegetation[index]))
+			}
+		}
+	}
 	ch.RunOnAllTiles(func(t *Tile) {
 		t.InitializeTile()
 	})
 	ch.PreloadChunkData()
 	ch.isPreloaded = true
+}
+
+func (ch *chunk) PreSave() {
+	ch.Vegetation = make([]string, ChunkSize*ChunkSize)
+	for index, tile := range ch.tiles {
+		if tile.GetVegetation() != nil {
+			ch.Vegetation[index] = tile.GetVegetation().GetName()
+		}
+	}
 }
 
 func (ch *chunk) PreloadChunkData() {

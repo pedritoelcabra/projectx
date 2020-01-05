@@ -93,6 +93,9 @@ func (w *World) InitEntities() {
 }
 
 func (w *World) GetSaveState() SaveGameData {
+	for _, chunk := range w.Grid.Chunks {
+		chunk.PreSave()
+	}
 	state := SaveGameData{}
 	state.Seed = w.GetSeed()
 	state.Tick = w.GetTick()

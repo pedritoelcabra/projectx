@@ -81,7 +81,6 @@ func (t *Tile) InitializeTile() {
 	t.Set(Height, height)
 	t.Set(SectorId, -1)
 	t.SetTerrain()
-	t.CalculateMovementCost()
 	t.Recalculate()
 }
 
