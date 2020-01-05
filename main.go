@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/hajimehoshi/ebiten"
-	"github.com/pedritoelcabra/projectx/core"
+	"github.com/pedritoelcabra/projectx/src/core"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"log"
 	"os"

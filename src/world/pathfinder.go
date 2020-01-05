@@ -1,7 +1,7 @@
 package world
 
 import (
-	"github.com/pedritoelcabra/projectx/core/logger"
+	"github.com/pedritoelcabra/projectx/src/core/logger"
 	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
 )
 

@@ -2,10 +2,10 @@ package core
 
 import (
 	"github.com/hajimehoshi/ebiten"
-	"github.com/pedritoelcabra/projectx/core/file"
-	"github.com/pedritoelcabra/projectx/core/logger"
-	"github.com/pedritoelcabra/projectx/core/randomizer"
 	"github.com/pedritoelcabra/projectx/defs"
+	file2 "github.com/pedritoelcabra/projectx/src/core/file"
+	logger2 "github.com/pedritoelcabra/projectx/src/core/logger"
+	randomizer2 "github.com/pedritoelcabra/projectx/src/core/randomizer"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/gui"
 	"github.com/pedritoelcabra/projectx/src/world"
@@ -40,7 +40,7 @@ func G() *game {
 }
 
 func (g *game) init() {
-	logger.InitLogger()
+	logger2.InitLogger()
 	defs.InitDefs()
 	g.Screen = gfx.NewScreen()
 	g.Graphics = gfx.NewGraphics()
@@ -48,7 +48,7 @@ func (g *game) init() {
 	g.Gui = gui.New(0, 0, gfx.ScreenWidth, gfx.ScreenHeight)
 	g.InitMenus()
 	g.isPaused = true
-	logger.General("Initialised Game", nil)
+	logger2.General("Initialised Game", nil)
 }
 
 func (g *game) Update(screen *ebiten.Image) error {
@@ -93,7 +93,7 @@ func (g *game) openContextMenu() {
 
 func (g *game) GetLogText() string {
 	aString := ""
-	log := logger.Get(logger.GeneralLog, 6)
+	log := logger2.Get(logger2.GeneralLog, 6)
 	for i := len(log) - 1; i >= 0; i-- {
 		if aString != "" {
 			aString += "\n"
@@ -125,11 +125,11 @@ func (g *game) HasLoadedWorld() bool {
 
 func (g *game) InitializeNewWorld() {
 	g.World = world.NewWorld()
-	g.World.SetSeed(randomizer.NewSeed())
+	g.World.SetSeed(randomizer2.NewSeed())
 	g.World.Init()
 	g.InitMenus()
 	g.UnPause()
-	logger.General("Created a New World with seed "+strconv.Itoa(g.World.GetSeed()), nil)
+	logger2.General("Created a New World with seed "+strconv.Itoa(g.World.GetSeed()), nil)
 }
 
 func (g *game) Pause() {
@@ -147,16 +147,16 @@ func (g *game) UpdatePlayerMovement(dir world.PlayerDirection, value bool) {
 }
 
 func (g *game) QuickSave() {
-	file.SaveToFile(g.World.GetSaveState(), file.DefaultSaveGameName)
+	file2.SaveToFile(g.World.GetSaveState(), file2.DefaultSaveGameName)
 	g.InitMenus()
 	g.UnPause()
-	logger.General("Quick Saved", nil)
+	logger2.General("Quick Saved", nil)
 }
 
 func (g *game) QuickLoad() {
-	dataStructure := file.LoadFromFile(file.DefaultSaveGameName)
+	dataStructure := file2.LoadFromFile(file2.DefaultSaveGameName)
 	g.World = world.LoadFromSave(dataStructure)
 	g.InitMenus()
 	g.UnPause()
-	logger.General("Quick Loaded", nil)
+	logger2.General("Quick Loaded", nil)
 }

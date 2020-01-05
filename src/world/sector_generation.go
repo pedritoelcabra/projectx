@@ -1,9 +1,9 @@
 package world
 
 import (
-	"github.com/pedritoelcabra/projectx/core/logger"
-	"github.com/pedritoelcabra/projectx/core/randomizer"
 	"github.com/pedritoelcabra/projectx/defs"
+	"github.com/pedritoelcabra/projectx/src/core/logger"
+	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
 )
 

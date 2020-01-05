@@ -2,7 +2,7 @@ package world
 
 import (
 	"encoding/json"
-	"github.com/pedritoelcabra/projectx/core/randomizer"
+	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/world/utils"
