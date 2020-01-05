@@ -21,6 +21,16 @@ type BuildingDef struct {
 	Graphic string
 }
 
+type VegetationDef struct {
+	Name     string
+	Weight   int
+	Graphics []string
+}
+
+func VegetationDefs() map[string]*VegetationDef {
+	return vegetationDefs
+}
+
 func BuildingDefs() map[string]*BuildingDef {
 	return buildingDefs
 }
@@ -31,12 +41,39 @@ func SectorDefs() map[string]*SectorDef {
 
 var buildingDefs = make(map[string]*BuildingDef)
 var sectorDefs = make(map[string]*SectorDef)
+var vegetationDefs = make(map[string]*VegetationDef)
 
 func InitDefs() {
 	sectorDefs = make(map[string]*SectorDef)
 	buildingDefs = make(map[string]*BuildingDef)
+	vegetationDefs = make(map[string]*VegetationDef)
 	LoadBuildingDefs()
 	LoadSectorDefs()
+	LoadVegetationDefs()
+}
+
+func LoadVegetationDefs() {
+	directoryPath, _ := filepath.Abs(defFolder + "Vegetation")
+	walkErr := filepath.Walk(directoryPath, func(path string, info os.FileInfo, walkErr error) error {
+		file, err := os.Open(path)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer file.Close()
+		if filepath.Ext(path) != ".json" {
+			return nil
+		}
+		dataStructure := &VegetationDef{}
+		err = json.NewDecoder(file).Decode(dataStructure)
+		if err != nil {
+			log.Fatal(err)
+		}
+		vegetationDefs[dataStructure.Name] = dataStructure
+		return walkErr
+	})
+	if walkErr != nil {
+		log.Fatal(walkErr)
+	}
 }
 
 func LoadBuildingDefs() {
