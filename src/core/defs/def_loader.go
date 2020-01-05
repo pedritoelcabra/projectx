@@ -2,6 +2,7 @@ package defs
 
 import (
 	"encoding/json"
+	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	"log"
 	"os"
 	"path/filepath"
@@ -25,6 +26,10 @@ type VegetationDef struct {
 	Name     string
 	Weight   int
 	Graphics []string
+}
+
+func (v *VegetationDef) GetGraphic() string {
+	return v.Graphics[randomizer.RandomInt(0, len(v.Graphics)-1)]
 }
 
 func VegetationDefs() map[string]*VegetationDef {

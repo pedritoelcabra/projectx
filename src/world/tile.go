@@ -3,18 +3,18 @@ package world
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/gfx"
-	container2 "github.com/pedritoelcabra/projectx/src/world/container"
-	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
-	utils2 "github.com/pedritoelcabra/projectx/src/world/utils"
+	"github.com/pedritoelcabra/projectx/src/world/container"
+	"github.com/pedritoelcabra/projectx/src/world/tiling"
+	"github.com/pedritoelcabra/projectx/src/world/utils"
 )
 
 // Tile is the data contained in any given coordinate in the grid
 type Tile struct {
-	coordinates       tiling2.Coord
-	Data              *container2.Container
+	coordinates       tiling.Coord
+	Data              *container.Container
 	BuildingId        EntityKey
 	building          *Building
-	neighbouringHexes [6]tiling2.Coord
+	neighbouringHexes [6]tiling.Coord
 	borders           [6]bool
 	hasAnyBorders     bool
 	borderSprite      *ebiten.Image
@@ -22,11 +22,11 @@ type Tile struct {
 
 func NewTile() *Tile {
 	aTile := &Tile{}
-	aTile.Data = container2.NewContainer()
+	aTile.Data = container.NewContainer()
 	return aTile
 }
 
-func (t *Tile) GetCoord() tiling2.Coord {
+func (t *Tile) GetCoord() tiling.Coord {
 	return t.coordinates
 }
 
@@ -39,7 +39,7 @@ func (t *Tile) GetBuilding() *Building {
 	return t.building
 }
 
-func (t *Tile) Coord() tiling2.Coord {
+func (t *Tile) Coord() tiling.Coord {
 	return t.coordinates
 }
 
@@ -72,15 +72,15 @@ func (t *Tile) IsImpassable() bool {
 }
 
 func (t *Tile) IsLand() bool {
-	return t.Get(TerrainBase) != utils2.BasicWater && t.Get(TerrainBase) != utils2.BasicDeepWater
+	return t.Get(TerrainBase) != utils.BasicWater && t.Get(TerrainBase) != utils.BasicDeepWater
 }
 
 func (t *Tile) Recalculate() {
-	t.SetF(MovementCost, utils2.MovementCost(t.Get(TerrainBase)))
+	t.SetF(MovementCost, utils.MovementCost(t.Get(TerrainBase)))
 	t.borders = [6]bool{false}
 	t.hasAnyBorders = false
 	if t.Get(SectorId) >= 0 {
-		neighbours := tiling2.NeighbouringHexes(t.coordinates)
+		neighbours := tiling.NeighbouringHexes(t.coordinates)
 		for dir, neighbourCoord := range neighbours {
 			neighbourTile := theWorld.Grid.Tile(neighbourCoord)
 			if neighbourTile.Get(SectorId) != t.Get(SectorId) {
@@ -95,7 +95,7 @@ func (t *Tile) Recalculate() {
 			for dir, hasBorder := range t.borders {
 				if hasBorder {
 					op := &ebiten.DrawImageOptions{}
-					gfx.DrawHexTerrainToImage(0, 0, utils2.DirectionToBorder(dir), t.borderSprite, op)
+					gfx.DrawHexTerrainToImage(0, 0, utils.DirectionToBorder(dir), t.borderSprite, op)
 				}
 			}
 		}
@@ -118,7 +118,7 @@ func DrawTerrain(t *Tile) {
 
 func (t *Tile) Neighbours() [6]*Tile {
 	var neighbours = [6]*Tile{}
-	for key, coord := range tiling2.NeighbouringHexes(t.coordinates) {
+	for key, coord := range tiling.NeighbouringHexes(t.coordinates) {
 		neighbours[key] = theWorld.Grid.Tile(coord)
 	}
 	return neighbours
