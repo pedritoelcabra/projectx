@@ -2,7 +2,7 @@ package core
 
 import (
 	"github.com/hajimehoshi/ebiten"
-	"github.com/pedritoelcabra/projectx/world"
+	"github.com/pedritoelcabra/projectx/src/world"
 )
 
 type listenerFunction func(g *game)

@@ -3,7 +3,7 @@ package world
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/gfx"
-	"github.com/pedritoelcabra/projectx/world/tiling"
+	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
 	"math"
 )
 
@@ -14,13 +14,13 @@ const (
 	RenderModeBasic
 )
 
-var lastRenderedChunkCoord = tiling.NewCoord(-999, 999)
+var lastRenderedChunkCoord = tiling2.NewCoord(-999, 999)
 
 var tilesToRender []*Tile
-var playerLastCoord tiling.Coord
+var playerLastCoord tiling2.Coord
 
 func InitTileRenderer() {
-	playerLastCoord = tiling.NewCoord(-99999, -99999)
+	playerLastCoord = tiling2.NewCoord(-99999, -99999)
 	tilesToRender = []*Tile{}
 }
 
@@ -37,7 +37,7 @@ func CallTileRenderFunction(drawFun func(*Tile)) {
 }
 
 func RenderChunk(x, y int, screen *gfx.Screen, world *World) {
-	chunkCoord := world.Grid.ChunkCoord(tiling.NewCoord(x, y))
+	chunkCoord := world.Grid.ChunkCoord(tiling2.NewCoord(x, y))
 	if lastRenderedChunkCoord != chunkCoord {
 		lastRenderedChunkCoord = chunkCoord
 		aChunk := world.Grid.Chunk(chunkCoord)
@@ -51,25 +51,25 @@ func RenderChunk(x, y int, screen *gfx.Screen, world *World) {
 }
 
 func LoadTilesToRender(world *World) {
-	playerCoord := tiling.NewCoord(tiling.PixelFToTileI(world.PlayerUnit.GetPos()))
+	playerCoord := tiling2.NewCoord(tiling2.PixelFToTileI(world.PlayerUnit.GetPos()))
 	if playerCoord.Equals(playerLastCoord) {
 		return
 	}
 	playerLastCoord = playerCoord
 	tilesToRender = []*Tile{}
 
-	screenTileWidth := int(math.Ceil(float64(gfx.ScreenWidth / tiling.TileHorizontalSeparation)))
-	screenTileHeight := int(math.Ceil(float64(gfx.ScreenHeight / tiling.TileHeight)))
+	screenTileWidth := int(math.Ceil(float64(gfx.ScreenWidth / tiling2.TileHorizontalSeparation)))
+	screenTileHeight := int(math.Ceil(float64(gfx.ScreenHeight / tiling2.TileHeight)))
 	halfScreenTileWidth := int(math.Ceil(float64(screenTileWidth / 2)))
 	halfScreenTileHeight := int(math.Ceil(float64(screenTileHeight / 2)))
-	playerTileX, playerTileY := tiling.PixelFToTileI(world.PlayerUnit.GetPos())
+	playerTileX, playerTileY := tiling2.PixelFToTileI(world.PlayerUnit.GetPos())
 	startX := playerTileX - halfScreenTileWidth - 1
 	endX := playerTileX + halfScreenTileWidth + 1
 	startY := playerTileY - halfScreenTileHeight - 1
 	endY := playerTileY + halfScreenTileHeight + 1
 	for x := startX; x <= endX; x++ {
 		for y := startY; y <= endY; y++ {
-			tilesToRender = append(tilesToRender, world.Grid.Tile(tiling.NewCoord(x, y)))
+			tilesToRender = append(tilesToRender, world.Grid.Tile(tiling2.NewCoord(x, y)))
 		}
 	}
 }

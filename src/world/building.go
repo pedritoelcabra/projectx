@@ -3,7 +3,7 @@ package world
 import (
 	"github.com/pedritoelcabra/projectx/defs"
 	"github.com/pedritoelcabra/projectx/gfx"
-	"github.com/pedritoelcabra/projectx/world/tiling"
+	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
 )
 
 type Building struct {
@@ -12,7 +12,7 @@ type Building struct {
 	Sprite    gfx.Sprite `json:"-"`
 	SpriteKey gfx.SpriteKey
 	Name      string
-	Location  tiling.Coord
+	Location  tiling2.Coord
 	X         float64
 	Y         float64
 	Template  *defs.BuildingDef

@@ -1,18 +1,18 @@
 package world
 
 import (
-	"github.com/pedritoelcabra/projectx/world/tiling"
-	"github.com/pedritoelcabra/projectx/world/utils"
+	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
+	utils2 "github.com/pedritoelcabra/projectx/src/world/utils"
 )
 
-func (g *Grid) CreateNewChunk(chunkCoord tiling.Coord) {
+func (g *Grid) CreateNewChunk(chunkCoord tiling2.Coord) {
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
 	aChunk := NewChunk(chunkCoord)
 	g.Chunks[chunkIndex] = aChunk
 	aChunk.Generated = false
 }
 
-func (g *Grid) ChunkGeneration(playerTile tiling.Coord, tick int) {
+func (g *Grid) ChunkGeneration(playerTile tiling2.Coord, tick int) {
 	g.ProcessChunkGenerationQueue()
 	if tick > 100 && tick%60 > 0 {
 		return
@@ -21,7 +21,7 @@ func (g *Grid) ChunkGeneration(playerTile tiling.Coord, tick int) {
 	for x := playerChunk.X() - 3; x <= playerChunk.X()+3; x++ {
 		for y := playerChunk.Y() - 3; y <= playerChunk.Y()+3; y++ {
 			chunkIndex := g.chunkIndex(x, y)
-			chunkCoord := tiling.NewCoord(x, y)
+			chunkCoord := tiling2.NewCoord(x, y)
 			aChunk, chunkExists := g.Chunks[chunkIndex]
 			if !chunkExists {
 				g.CreateNewChunk(chunkCoord)
@@ -48,7 +48,7 @@ func (g *Grid) ProcessChunkGenerationQueue() {
 	g.GenerateChunk(chunkCoord)
 }
 
-func (g *Grid) GenerateChunk(chunkCoord tiling.Coord) {
+func (g *Grid) GenerateChunk(chunkCoord tiling2.Coord) {
 	aChunk := g.Chunk(chunkCoord)
 	if aChunk.IsGenerated() {
 		return
@@ -60,14 +60,14 @@ func (g *Grid) GenerateChunk(chunkCoord tiling.Coord) {
 }
 
 func (t *Tile) InitializeTile() {
-	height := utils.Generator.GetHeight(t.X(), t.Y())
-	biomeValue := utils.Generator.GetBiome(t.X(), t.Y())
-	biome := utils.BiomeTemperate
+	height := utils2.Generator.GetHeight(t.X(), t.Y())
+	biomeValue := utils2.Generator.GetBiome(t.X(), t.Y())
+	biome := utils2.BiomeTemperate
 	if biomeValue > 250 {
-		biome = utils.BiomeDesert
+		biome = utils2.BiomeDesert
 	}
 	if biomeValue < -250 {
-		biome = utils.BiomeTundra
+		biome = utils2.BiomeTundra
 	}
 	t.Set(Biome, biome)
 	t.Set(Height, height)
@@ -79,23 +79,23 @@ func (t *Tile) InitializeTile() {
 func (t *Tile) SetTerrain() {
 	height := t.Get(Height)
 	terrain := -1
-	terrain = utils.BasicMountain
+	terrain = utils2.BasicMountain
 	if height < 300 {
-		terrain = utils.BasicHills
+		terrain = utils2.BasicHills
 	}
 	if height < 150 {
-		terrain = utils.BasicGrass
+		terrain = utils2.BasicGrass
 	}
 	if height < 0 {
-		terrain = utils.BasicWater
+		terrain = utils2.BasicWater
 	}
 	if height < -50 {
-		terrain = utils.BasicDeepWater
+		terrain = utils2.BasicDeepWater
 	}
-	if t.Get(Biome) == utils.BiomeTundra {
+	if t.Get(Biome) == utils2.BiomeTundra {
 		terrain += 10
 	}
-	if t.Get(Biome) == utils.BiomeDesert {
+	if t.Get(Biome) == utils2.BiomeDesert {
 		terrain += 20
 	}
 	t.Set(TerrainBase, terrain)

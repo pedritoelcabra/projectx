@@ -3,7 +3,7 @@ package file
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/pedritoelcabra/projectx/world"
+	"github.com/pedritoelcabra/projectx/src/world"
 	"io"
 	"log"
 	"os"

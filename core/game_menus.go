@@ -4,7 +4,7 @@ import (
 	"github.com/pedritoelcabra/projectx/core/file"
 	"github.com/pedritoelcabra/projectx/gfx"
 	"github.com/pedritoelcabra/projectx/gui"
-	"github.com/pedritoelcabra/projectx/world"
+	"github.com/pedritoelcabra/projectx/src/world"
 	"image"
 	"image/color"
 	"log"

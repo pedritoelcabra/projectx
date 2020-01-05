@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"github.com/pedritoelcabra/projectx/core/randomizer"
 	"github.com/pedritoelcabra/projectx/gfx"
-	"github.com/pedritoelcabra/projectx/world/tiling"
-	"github.com/pedritoelcabra/projectx/world/utils"
+	"github.com/pedritoelcabra/projectx/src/world/tiling"
+	"github.com/pedritoelcabra/projectx/src/world/utils"
 )
 
 type EntityMap map[EntityKey]Entity

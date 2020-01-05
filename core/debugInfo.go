@@ -3,8 +3,8 @@ package core
 import (
 	"fmt"
 	"github.com/hajimehoshi/ebiten"
-	"github.com/pedritoelcabra/projectx/world"
-	"github.com/pedritoelcabra/projectx/world/tiling"
+	"github.com/pedritoelcabra/projectx/src/world"
+	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"strconv"
 	"time"
 )
