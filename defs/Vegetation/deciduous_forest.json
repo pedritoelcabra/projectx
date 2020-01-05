@@ -1,0 +1,10 @@
+{
+  "Name": "Deciduous Forest",
+  "Weight": 100,
+  "Graphics" : [
+    "deciduous-summer",
+    "deciduous-summer2",
+    "deciduous-summer3",
+    "deciduous-summer4"
+  ]
+}
