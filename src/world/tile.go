@@ -40,6 +40,14 @@ func (t *Tile) GetBuilding() *Building {
 	return t.building
 }
 
+func (t *Tile) SetVegetation(vegetation *Vegetation) {
+	t.vegetation = vegetation
+}
+
+func (t *Tile) GetVegetation() *Vegetation {
+	return t.vegetation
+}
+
 func (t *Tile) Coord() tiling.Coord {
 	return t.coordinates
 }
@@ -76,8 +84,12 @@ func (t *Tile) IsLand() bool {
 	return t.Get(TerrainBase) != utils.BasicWater && t.Get(TerrainBase) != utils.BasicDeepWater
 }
 
-func (t *Tile) Recalculate() {
+func (t *Tile) CalculateMovementCost() {
 	t.SetF(MovementCost, utils.MovementCost(t.Get(TerrainBase)))
+}
+
+func (t *Tile) Recalculate() {
+	t.CalculateMovementCost()
 	t.borders = [6]bool{false}
 	t.hasAnyBorders = false
 	if t.Get(SectorId) >= 0 {

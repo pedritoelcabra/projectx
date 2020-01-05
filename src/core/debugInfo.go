@@ -53,6 +53,10 @@ func (g *game) DebugInfo() string {
 		if building != nil {
 			aString += "\nBuilding: " + building.GetName()
 		}
+		veg := tile.GetVegetation()
+		if veg != nil {
+			aString += "\n" + veg.GetName()
+		}
 		sector := g.World.GetSector(world.SectorKey(tile.Get(world.SectorId)))
 		sectorName := "No mans land"
 		if sector != nil {

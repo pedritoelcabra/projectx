@@ -9,6 +9,7 @@ import (
 
 type chunk struct {
 	tiles               []*Tile
+	Vegetation          []*Vegetation
 	ChunkData           *container.Container
 	Location            tiling.Coord
 	Generated           bool

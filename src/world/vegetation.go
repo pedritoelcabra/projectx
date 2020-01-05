@@ -22,6 +22,10 @@ func NewVegetation(name string) *Vegetation {
 	return aVegetation
 }
 
+func (v *Vegetation) GetName() string {
+	return v.Name
+}
+
 func (v *Vegetation) Init() {
 	v.Sprite = gfx.NewHexSprite(v.SpriteKey)
 }

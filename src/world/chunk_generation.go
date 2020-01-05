@@ -74,6 +74,8 @@ func (t *Tile) InitializeTile() {
 	t.Set(Height, height)
 	t.Set(SectorId, -1)
 	t.SetTerrain()
+	t.CalculateMovementCost()
+	t.GenerateVegetation()
 	t.Recalculate()
 }
 
@@ -100,4 +102,22 @@ func (t *Tile) SetTerrain() {
 		terrain += 20
 	}
 	t.Set(TerrainBase, terrain)
+}
+
+func (t *Tile) GenerateVegetation() {
+	if t.IsImpassable() || t.Get(Height) <= 0 {
+		return
+	}
+	bioMass := utils2.Generator.GetBiomass(t.X(), t.Y())
+	vegName := ""
+	if bioMass > -100 {
+		vegName = "Deciduous Forest Sparse"
+	}
+	if bioMass > 50 {
+		vegName = "Deciduous Forest"
+	}
+	if vegName == "" {
+		return
+	}
+	t.SetVegetation(NewVegetation(vegName))
 }
