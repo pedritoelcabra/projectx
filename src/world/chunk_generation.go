@@ -55,6 +55,12 @@ func (g *Grid) GenerateChunk(chunkCoord tiling.Coord) {
 		return
 	}
 	g.SpawnSector(aChunk)
+	aChunk.RunOnAllTiles(func(t *Tile) {
+		t.GenerateVegetation()
+	})
+	aChunk.RunOnAllTiles(func(t *Tile) {
+		t.Recalculate()
+	})
 	aChunk.queuedForGeneration = false
 	aChunk.Generated = true
 	//logger.General("Generated chunk: "+chunkCoord.ToString(), nil)
@@ -76,7 +82,6 @@ func (t *Tile) InitializeTile() {
 	t.Set(SectorId, -1)
 	t.SetTerrain()
 	t.CalculateMovementCost()
-	t.GenerateVegetation()
 	t.Recalculate()
 }
 
@@ -110,7 +115,7 @@ func (t *Tile) GenerateVegetation() {
 		return
 	}
 	bioMassScore := utils.Generator.GetBiomass(t.X(), t.Y())
-	bioMassScore += randomizer.RandomInt(0, 300)
+	bioMassScore += randomizer.RandomInt(0, 500)
 	vegName := ""
 	if bioMassScore > 200 {
 		vegName = "Deciduous Forest Sparse"
