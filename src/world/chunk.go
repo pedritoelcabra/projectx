@@ -3,14 +3,14 @@ package world
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/gfx"
-	container2 "github.com/pedritoelcabra/projectx/src/world/container"
-	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
+	"github.com/pedritoelcabra/projectx/src/world/container"
+	"github.com/pedritoelcabra/projectx/src/world/tiling"
 )
 
 type chunk struct {
 	tiles               []*Tile
-	ChunkData           *container2.Container
-	Location            tiling2.Coord
+	ChunkData           *container.Container
+	Location            tiling.Coord
 	Generated           bool
 	queuedForGeneration bool
 	isPreloaded         bool
@@ -19,11 +19,11 @@ type chunk struct {
 	SectorId            SectorKey
 }
 
-func NewChunk(location tiling2.Coord) *chunk {
+func NewChunk(location tiling.Coord) *chunk {
 	aChunk := &chunk{}
 	aChunk.isPreloaded = false
 	aChunk.terrainImage = nil
-	aChunk.ChunkData = container2.NewContainer()
+	aChunk.ChunkData = container.NewContainer()
 	aChunk.Preload(location)
 	return aChunk
 }
@@ -36,7 +36,7 @@ func (ch *chunk) SetSector(sector *Sector) {
 	ch.sector = sector
 }
 
-func (ch *chunk) Preload(location tiling2.Coord) {
+func (ch *chunk) Preload(location tiling.Coord) {
 	if ch.isPreloaded {
 		return
 	}
@@ -46,18 +46,18 @@ func (ch *chunk) Preload(location tiling2.Coord) {
 		for y := 0; y < ChunkSize; y++ {
 			tileX := (ch.Location.X() * ChunkSize) + x
 			tileY := (ch.Location.Y() * ChunkSize) + y
-			tileLocation := tiling2.NewCoord(tileX, tileY)
+			tileLocation := tiling.NewCoord(tileX, tileY)
 			tileIndex := ch.tileIndex(tileX, tileY)
 			aTile := NewTile()
 			aTile.coordinates = tileLocation
 
-			centerX := float64(tileX) * tiling2.TileHorizontalSeparation
-			centerY := float64(tileY) * tiling2.TileHeight
+			centerX := float64(tileX) * tiling.TileHorizontalSeparation
+			centerY := float64(tileY) * tiling.TileHeight
 			if x%2 > 0 {
-				centerY += tiling2.TileHeight / 2
+				centerY += tiling.TileHeight / 2
 			}
-			renderX := centerX - tiling2.TileWidth/2
-			renderY := centerY - tiling2.TileHeight/2
+			renderX := centerX - tiling.TileWidth/2
+			renderY := centerY - tiling.TileHeight/2
 			aTile.SetF(RenderX, renderX)
 			aTile.SetF(RenderY, renderY)
 			aTile.SetF(CenterX, centerX)
@@ -106,7 +106,7 @@ func (ch *chunk) RunOnAllTiles(f func(t *Tile)) {
 	}
 }
 
-func (ch *chunk) Tile(tileCoord tiling2.Coord) *Tile {
+func (ch *chunk) Tile(tileCoord tiling.Coord) *Tile {
 	return ch.tiles[ch.tileIndex(tileCoord.X(), tileCoord.Y())]
 }
 
@@ -128,17 +128,17 @@ func (ch *chunk) GenerateImage() {
 	if ch.GetImage() != nil {
 		return
 	}
-	imageWidth := (ChunkSize + 1) * tiling2.TileHorizontalSeparation
-	imageHeight := (ChunkSize + 1) * tiling2.TileHeight
+	imageWidth := (ChunkSize + 1) * tiling.TileHorizontalSeparation
+	imageHeight := (ChunkSize + 1) * tiling.TileHeight
 	ch.terrainImage, _ = ebiten.NewImage(int(imageWidth), int(imageHeight), ebiten.FilterDefault)
 
 	for _, t := range ch.tiles {
 		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Scale(tiling2.TileWidthScale, tiling2.TileHeightScale)
-		xOff := tiling2.TileHorizontalSeparation * float64(ch.Location.X()*ChunkSize)
-		yOff := tiling2.TileHeight * float64(ch.Location.Y()*ChunkSize)
-		localX := t.GetF(RenderX) - xOff + (tiling2.TileWidth / 2)
-		localY := t.GetF(RenderY) - yOff + (tiling2.TileHeight / 2)
+		op.GeoM.Scale(tiling.TileWidthScale, tiling.TileHeightScale)
+		xOff := tiling.TileHorizontalSeparation * float64(ch.Location.X()*ChunkSize)
+		yOff := tiling.TileHeight * float64(ch.Location.Y()*ChunkSize)
+		localX := t.GetF(RenderX) - xOff + (tiling.TileWidth / 2)
+		localY := t.GetF(RenderY) - yOff + (tiling.TileHeight / 2)
 		gfx.DrawHexTerrainToImage(localX, localY, t.Get(TerrainBase), ch.terrainImage, op)
 	}
 }

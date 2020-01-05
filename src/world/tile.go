@@ -14,6 +14,7 @@ type Tile struct {
 	Data              *container.Container
 	BuildingId        EntityKey
 	building          *Building
+	vegetation        *Vegetation
 	neighbouringHexes [6]tiling.Coord
 	borders           [6]bool
 	hasAnyBorders     bool
