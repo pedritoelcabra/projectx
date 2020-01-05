@@ -62,6 +62,7 @@ func (g *Grid) GenerateChunk(chunkCoord tiling2.Coord) {
 func (t *Tile) InitializeTile() {
 	height := utils2.Generator.GetHeight(t.X(), t.Y())
 	biomeValue := utils2.Generator.GetBiome(t.X(), t.Y())
+	biomeValue = 0
 	biome := utils2.BiomeTemperate
 	if biomeValue > 250 {
 		biome = utils2.BiomeDesert
