@@ -1,7 +1,7 @@
 package core
 
 import (
-	file2 "github.com/pedritoelcabra/projectx/src/core/file"
+	"github.com/pedritoelcabra/projectx/src/core/file"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/gui"
 	"github.com/pedritoelcabra/projectx/src/world"
@@ -52,7 +52,7 @@ func (g *game) BuildStartMenu() *gui.Menu {
 		aMenu.AddButton(saveButton)
 	}
 
-	if file2.SaveGameExists(file2.DefaultSaveGameName) {
+	if file.SaveGameExists(file.DefaultSaveGameName) {
 		loadButton := gui.NewButton(buttonSize, "Quick Load (F9)")
 		loadButton.OnPressed = func(b *gui.Button) {
 			g.QuickLoad()
