@@ -55,10 +55,10 @@ func (g *Grid) GenerateChunk(chunkCoord tiling.Coord) {
 	if aChunk.IsGenerated() {
 		return
 	}
-	g.SpawnSector(aChunk)
 	aChunk.RunOnAllTiles(func(t *Tile) {
 		t.GenerateVegetation()
 	})
+	g.SpawnSector(aChunk)
 	aChunk.RunOnAllTiles(func(t *Tile) {
 		t.Recalculate()
 	})

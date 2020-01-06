@@ -1,9 +1,9 @@
 package world
 
 import (
-	defs2 "github.com/pedritoelcabra/projectx/src/core/defs"
-	container2 "github.com/pedritoelcabra/projectx/src/world/container"
-	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
+	"github.com/pedritoelcabra/projectx/src/core/defs"
+	"github.com/pedritoelcabra/projectx/src/world/container"
+	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"strconv"
 )
 
@@ -13,16 +13,16 @@ type Sector struct {
 	Id       SectorKey
 	Size     int
 	Name     string
-	Center   tiling2.Coord
-	Data     *container2.Container
-	Template *defs2.SectorDef
-	Tiles    []tiling2.Coord
+	Center   tiling.Coord
+	Data     *container.Container
+	Template *defs.SectorDef
+	Tiles    []tiling.Coord
 }
 
-func NewSector(location tiling2.Coord, def *defs2.SectorDef) *Sector {
+func NewSector(location tiling.Coord, def *defs.SectorDef) *Sector {
 	aSector := &Sector{}
 	aSector.Template = def
-	aSector.Data = container2.NewContainer()
+	aSector.Data = container.NewContainer()
 	aSector.Center = location
 	aSector.Id = theWorld.AddSector(aSector)
 	aSector.Name = aSector.Template.Name + " " + strconv.Itoa(int(aSector.Id))
@@ -39,7 +39,7 @@ func (s *Sector) GrowSectorToSize(size int) {
 	sizeF := float64(size)
 	for x := s.Center.X() - size; x <= s.Center.X()+size; x++ {
 		for y := s.Center.Y() - size; y <= s.Center.Y()+size; y++ {
-			aCoord := tiling2.NewCoord(x, y)
+			aCoord := tiling.NewCoord(x, y)
 			path := FindPathWithOptions(s.Center, aCoord, options)
 			if path.IsValid() && path.GetCost() <= sizeF {
 				s.AddTile(aCoord)
@@ -48,7 +48,7 @@ func (s *Sector) GrowSectorToSize(size int) {
 	}
 }
 
-func (s *Sector) AddTile(tileCoord tiling2.Coord) {
+func (s *Sector) AddTile(tileCoord tiling.Coord) {
 	for _, existantTiles := range s.Tiles {
 		if existantTiles.Equals(tileCoord) {
 			return
@@ -67,7 +67,7 @@ func (s *Sector) RecalculateTiles() {
 	}
 }
 
-func (s *Sector) GetCenter() tiling2.Coord {
+func (s *Sector) GetCenter() tiling.Coord {
 	return s.Center
 }
 
