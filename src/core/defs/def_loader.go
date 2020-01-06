@@ -3,6 +3,7 @@ package defs
 import (
 	"encoding/json"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
+	"github.com/pedritoelcabra/projectx/src/gfx"
 	"log"
 	"os"
 	"path/filepath"
@@ -33,8 +34,20 @@ func (v *VegetationDef) GetGraphic() string {
 	return v.Graphics[randomizer.RandomInt(0, len(v.Graphics)-1)]
 }
 
-func VegetationDefs() map[string]*VegetationDef {
+func VegetationDefs() map[int]*VegetationDef {
 	return vegetationDefs
+}
+
+func VegetationById(id int) *VegetationDef {
+	return vegetationDefs[id]
+}
+
+func VegetationByName(name string) int {
+	return vegetationNames[name][randomizer.RandomInt(0, len(vegetationNames[name])-1)]
+}
+
+func DrawVegetation(id int, screen *gfx.Screen, x, y float64) {
+	vegetationSprites[id].DrawSprite(screen, x, y)
 }
 
 func BuildingDefs() map[string]*BuildingDef {
@@ -47,12 +60,16 @@ func SectorDefs() map[string]*SectorDef {
 
 var buildingDefs = make(map[string]*BuildingDef)
 var sectorDefs = make(map[string]*SectorDef)
-var vegetationDefs = make(map[string]*VegetationDef)
+var vegetationDefs = make(map[int]*VegetationDef)
+var vegetationNames = make(map[string][]int)
+var vegetationSprites = make(map[int]gfx.Sprite)
 
 func InitDefs() {
 	sectorDefs = make(map[string]*SectorDef)
 	buildingDefs = make(map[string]*BuildingDef)
-	vegetationDefs = make(map[string]*VegetationDef)
+	vegetationDefs = make(map[int]*VegetationDef)
+	vegetationSprites = make(map[int]gfx.Sprite)
+	vegetationNames = make(map[string][]int)
 	LoadBuildingDefs()
 	LoadSectorDefs()
 	LoadVegetationDefs()
@@ -74,7 +91,12 @@ func LoadVegetationDefs() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		vegetationDefs[dataStructure.Name] = dataStructure
+		for _, graphicName := range dataStructure.Graphics {
+			id := len(vegetationDefs)
+			vegetationDefs[id] = dataStructure
+			vegetationSprites[id] = gfx.NewHexSprite(gfx.GetSpriteKey(graphicName))
+			vegetationNames[dataStructure.Name] = append(vegetationNames[dataStructure.Name], id)
+		}
 		return walkErr
 	})
 	if walkErr != nil {

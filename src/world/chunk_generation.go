@@ -1,6 +1,7 @@
 package world
 
 import (
+	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/world/utils"
@@ -125,5 +126,5 @@ func (t *Tile) GenerateVegetation() {
 	if vegName == "" {
 		return
 	}
-	t.SetVegetation(NewVegetation(vegName))
+	t.Set(Flora, defs.VegetationByName(vegName))
 }

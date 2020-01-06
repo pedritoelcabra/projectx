@@ -2,6 +2,7 @@ package world
 
 import (
 	"github.com/hajimehoshi/ebiten"
+	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/world/container"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
@@ -14,7 +15,6 @@ type Tile struct {
 	Data              *container.Container
 	BuildingId        EntityKey
 	building          *Building
-	vegetation        *Vegetation
 	neighbouringHexes [6]tiling.Coord
 	borders           [6]bool
 	hasAnyBorders     bool
@@ -38,14 +38,6 @@ func (t *Tile) SetBuilding(building *Building) {
 
 func (t *Tile) GetBuilding() *Building {
 	return t.building
-}
-
-func (t *Tile) SetVegetation(vegetation *Vegetation) {
-	t.vegetation = vegetation
-}
-
-func (t *Tile) GetVegetation() *Vegetation {
-	return t.vegetation
 }
 
 func (t *Tile) Coord() tiling.Coord {
@@ -86,8 +78,9 @@ func (t *Tile) IsLand() bool {
 
 func (t *Tile) CalculateMovementCost() {
 	movementCost := utils.MovementCost(t.Get(TerrainBase))
-	if t.vegetation != nil {
-		movementCost += t.vegetation.GetMovementCost()
+	flora := t.Get(Flora)
+	if flora != 0 {
+		movementCost += defs.VegetationById(flora).MovementCost
 	}
 	t.SetF(MovementCost, movementCost)
 }
@@ -134,10 +127,9 @@ func DrawTerrain(t *Tile) {
 }
 
 func DrawVegetation(t *Tile) {
-	if t.vegetation == nil {
-		return
+	if t.Get(Flora) != 0 {
+		defs.DrawVegetation(t.Get(Flora), theWorld.GetScreen(), t.GetF(RenderDoubleX), t.GetF(RenderDoubleY))
 	}
-	t.vegetation.Sprite.DrawSprite(theWorld.GetScreen(), t.GetF(RenderDoubleX), t.GetF(RenderDoubleY))
 }
 
 func (t *Tile) Neighbours() [6]*Tile {

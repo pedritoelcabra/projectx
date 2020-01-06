@@ -19,4 +19,5 @@ const (
 	SectorId
 	MovementCost
 	Biome
+	Flora
 )
