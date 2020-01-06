@@ -38,7 +38,7 @@ func (g *game) DebugInfo() string {
 		my += int(cy)
 		mouseCoord := tiling.NewCoord(mx, my)
 		aString += "\nMouse Pos: " + mouseCoord.ToString()
-		mouseTileCoord := tiling.NewCoord(tiling.PixelIToTileI(mx, my))
+		mouseTileCoord := g.MouseTileCoord()
 		aString += "\nMouse Tile: " + mouseTileCoord.ToString()
 		tile := g.World.Grid.Tile(mouseTileCoord)
 		mHeight := tile.Get(world.Height)
@@ -71,4 +71,12 @@ func (g *game) DebugInfo() string {
 	}
 
 	return aString
+}
+
+func (g *game) MouseTileCoord() tiling.Coord {
+	mx, my := ebiten.CursorPosition()
+	cx, cy := g.Screen.GetCameraCoords()
+	mx += int(cx)
+	my += int(cy)
+	return tiling.NewCoord(tiling.PixelIToTileI(mx, my))
 }

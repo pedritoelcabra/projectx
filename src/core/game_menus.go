@@ -112,6 +112,25 @@ func (g *game) BuildContextMenu(x, y int) *gui.Menu {
 
 	buttonSize := image.Rect(0, 0, 100, 25)
 
+	mouseCoord := g.MouseTileCoord()
+	tile := g.World.Grid.Tile(mouseCoord)
+
+	sector := g.World.GetSector(world.SectorKey(tile.Get(world.SectorId)))
+
+	if sector != nil {
+		growButton1 := gui.NewButton(buttonSize, "Grow Sector by 5")
+		growButton1.OnPressed = func(b *gui.Button) {
+			sector.GrowSectorToSize(5, mouseCoord)
+		}
+		aMenu.AddButton(growButton1)
+
+		growButton2 := gui.NewButton(buttonSize, "Grow Sector by 8")
+		growButton2.OnPressed = func(b *gui.Button) {
+			sector.GrowSectorToSize(8, mouseCoord)
+		}
+		aMenu.AddButton(growButton2)
+	}
+
 	aButton := gui.NewButton(buttonSize, "Button 1")
 	aButton.OnPressed = func(b *gui.Button) {
 		g.debugMessage = "Button 1 pressed"

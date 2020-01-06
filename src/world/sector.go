@@ -49,6 +49,7 @@ func (s *Sector) GrowSectorToSize(size int, centerCoord tiling.Coord) {
 			}
 		}
 	}
+	s.RecalculateTiles()
 }
 
 func (s *Sector) AddTile(tileCoord tiling.Coord) {
