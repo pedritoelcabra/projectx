@@ -27,20 +27,23 @@ func NewSector(location tiling.Coord, def *defs.SectorDef) *Sector {
 	aSector.Id = theWorld.AddSector(aSector)
 	aSector.Name = aSector.Template.Name + " " + strconv.Itoa(int(aSector.Id))
 	aSector.AddTile(aSector.Center)
-	aSector.GrowSectorToSize(def.Size)
+	aSector.GrowSectorToSize(def.Size, aSector.Center)
 	aSector.Init()
 	return aSector
 }
 
-func (s *Sector) GrowSectorToSize(size int) {
+func (s *Sector) GrowSectorToSize(size int, centerCoord tiling.Coord) {
 	s.Size = size
 	options := NewPathOptions()
 	options.MinMoveCost = 1.0
 	sizeF := float64(size)
-	for x := s.Center.X() - size; x <= s.Center.X()+size; x++ {
-		for y := s.Center.Y() - size; y <= s.Center.Y()+size; y++ {
+	for x := centerCoord.X() - size; x <= centerCoord.X()+size; x++ {
+		for y := centerCoord.Y() - size; y <= centerCoord.Y()+size; y++ {
 			aCoord := tiling.NewCoord(x, y)
-			path := FindPathWithOptions(s.Center, aCoord, options)
+			if theWorld.Grid.Tile(aCoord).Get(SectorId) >= 0 {
+				continue
+			}
+			path := FindPathWithOptions(centerCoord, aCoord, options)
 			if path.IsValid() && path.GetCost() <= sizeF {
 				s.AddTile(aCoord)
 			}
