@@ -2,8 +2,8 @@
 package world
 
 import (
-	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
-	utils2 "github.com/pedritoelcabra/projectx/src/world/utils"
+	"github.com/pedritoelcabra/projectx/src/world/tiling"
+	"github.com/pedritoelcabra/projectx/src/world/utils"
 	"log"
 )
 
@@ -19,8 +19,8 @@ type ChunkMap map[int]*chunk
 
 type Grid struct {
 	Chunks           ChunkMap
-	chunksToGenerate []tiling2.Coord
-	noise            *utils2.NoiseGenerator
+	chunksToGenerate []tiling.Coord
+	noise            *utils.NoiseGenerator
 }
 
 func New() *Grid {
@@ -31,15 +31,15 @@ func New() *Grid {
 	return aGrid
 }
 
-func (g *Grid) SetNoise(noise *utils2.NoiseGenerator) {
+func (g *Grid) SetNoise(noise *utils.NoiseGenerator) {
 	g.noise = noise
 }
 
-func (g *Grid) Tile(tileCoord tiling2.Coord) *Tile {
+func (g *Grid) Tile(tileCoord tiling.Coord) *Tile {
 	return g.Chunk(g.ChunkCoord(tileCoord)).Tile(tileCoord)
 }
 
-func (g *Grid) Chunk(chunkCoord tiling2.Coord) *chunk {
+func (g *Grid) Chunk(chunkCoord tiling.Coord) *chunk {
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
 	if aChunk, chunkExists := g.Chunks[chunkIndex]; chunkExists {
 		if !aChunk.isPreloaded {
@@ -60,8 +60,8 @@ func (g *Grid) chunkIndex(x, y int) int {
 	return (x * GridSize) + y
 }
 
-func (g *Grid) ChunkCoord(tileCoord tiling2.Coord) tiling2.Coord {
+func (g *Grid) ChunkCoord(tileCoord tiling.Coord) tiling.Coord {
 	x := ((tileCoord.X() + TileOffset) / ChunkSize) - GridOffset
 	y := ((tileCoord.Y() + TileOffset) / ChunkSize) - GridOffset
-	return tiling2.NewCoord(x, y)
+	return tiling.NewCoord(x, y)
 }
