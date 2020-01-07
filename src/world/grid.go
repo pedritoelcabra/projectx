@@ -23,7 +23,7 @@ type Grid struct {
 	noise            *utils.NoiseGenerator
 }
 
-func New() *Grid {
+func NewGrid() *Grid {
 	arraySize := GridSize * GridSize
 	arrayChunks := make(map[int]*chunk, arraySize)
 	aGrid := &Grid{}

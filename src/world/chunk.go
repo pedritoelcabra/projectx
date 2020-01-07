@@ -10,6 +10,7 @@ import (
 type chunk struct {
 	tiles               []*Tile
 	Vegetation          []int
+	Features            [][]int
 	ChunkData           *container.Container
 	Location            tiling.Coord
 	Generated           bool

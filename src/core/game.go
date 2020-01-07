@@ -126,7 +126,7 @@ func (g *game) HasLoadedWorld() bool {
 func (g *game) InitializeNewWorld() {
 	g.World = world.NewWorld()
 	g.World.SetSeed(randomizer.NewSeed())
-	g.World.Init()
+	g.World.InitNewWorld()
 	g.InitMenus()
 	g.UnPause()
 	logger.General("Created a New World with seed "+strconv.Itoa(g.World.GetSeed()), nil)

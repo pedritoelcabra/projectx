@@ -19,7 +19,7 @@ func TestChunkCoord(t *testing.T) {
 		{TileOffset - 32, TileOffset - 32, GridOffset - 1, GridOffset - 1},
 	}
 	for _, c := range cases {
-		grid := New()
+		grid := NewGrid()
 		chunkCoord := grid.ChunkCoord(tiling2.NewCoord(c.tx, c.ty))
 		if chunkCoord.X() != c.cx || chunkCoord.Y() != c.cy {
 			t.Errorf("%d / %d, want %d / %d", chunkCoord.X(), chunkCoord.Y(), c.cx, c.cy)
@@ -40,7 +40,7 @@ func TestChunkIndex(t *testing.T) {
 		{-33, -32, 467468},
 	}
 	for _, c := range cases {
-		grid := New()
+		grid := NewGrid()
 		chunkIndex := grid.chunkIndex(c.cx, c.cy)
 		if chunkIndex != c.ci {
 			t.Errorf("%d, want %d", chunkIndex, c.ci)
@@ -58,7 +58,7 @@ func TestTileCoord(t *testing.T) {
 		{256, 256},
 	}
 	for _, c := range cases {
-		grid := New()
+		grid := NewGrid()
 		aTile := grid.Tile(tiling2.NewCoord(c.x, c.y))
 		if aTile.X() != c.x || aTile.Y() != c.y {
 			t.Errorf("%d / %d, want %d / %d", aTile.X(), aTile.Y(), c.x, c.y)
@@ -68,7 +68,7 @@ func TestTileCoord(t *testing.T) {
 
 func TestTileVariables(t *testing.T) {
 
-	aGrid := New()
+	aGrid := NewGrid()
 
 	aCoord := tiling2.NewCoord(100, 200)
 	bCoord := tiling2.NewCoord(0, 0)

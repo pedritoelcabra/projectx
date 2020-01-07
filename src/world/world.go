@@ -39,6 +39,7 @@ func (w *World) IsInitialized() bool {
 func (w *World) SetSeed(seed int) {
 	w.seed = seed
 	randomizer.SetSeed(seed)
+	utils.Seed(w.seed)
 }
 
 func (w *World) GetSeed() int {
@@ -49,10 +50,9 @@ func (w *World) GetTick() int {
 	return w.tick
 }
 
-func (w *World) Init() {
-	tiling.InitTiling()
-	utils.Seed(w.seed)
-	w.Grid = New()
+func (w *World) InitNewWorld() {
+	w.Grid = NewGrid()
+	w.Init()
 	w.Entities = make(EntityMap)
 	w.Sectors = make(SectorMap)
 	w.PlayerUnit = NewPlayer()
@@ -65,10 +65,9 @@ func (w *World) Init() {
 
 func LoadFromSave(data SaveGameData) *World {
 	w := NewWorld()
-	tiling.InitTiling()
+	w.Init()
 	w.SetSeed(data.Seed)
 	w.tick = data.Tick
-	utils.Seed(w.seed)
 	w.Grid = &data.Grid
 	w.PlayerUnit = &data.Player
 	w.Entities = data.Entities
@@ -80,6 +79,10 @@ func LoadFromSave(data SaveGameData) *World {
 	w.initialised = true
 	InitTileRenderer()
 	return w
+}
+
+func (w *World) Init() {
+	tiling.InitTiling()
 }
 
 func (w *World) InitEntities() {
