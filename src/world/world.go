@@ -50,39 +50,38 @@ func (w *World) GetTick() int {
 	return w.tick
 }
 
-func (w *World) InitNewWorld() {
+func FromSeed(seed int) *World {
+	w := NewWorld()
+	w.SetSeed(seed)
 	w.Grid = NewGrid()
-	w.Init()
-	w.Entities = make(EntityMap)
-	w.Sectors = make(SectorMap)
 	w.PlayerUnit = NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)
-	w.InitEntities()
-	w.renderMode = RenderModeBasic
-	w.initialised = true
-	InitTileRenderer()
+	w.Entities = make(EntityMap)
+	w.Sectors = make(SectorMap)
+	w.Init()
+	return w
 }
 
 func LoadFromSave(data SaveGameData) *World {
 	w := NewWorld()
-	w.Init()
 	w.SetSeed(data.Seed)
-	w.tick = data.Tick
 	w.Grid = &data.Grid
+	w.tick = data.Tick
 	w.PlayerUnit = &data.Player
 	w.Entities = data.Entities
 	w.Sectors = data.Sectors
-	w.InitEntities()
+	w.Init()
 	w.Grid.ChunkGeneration(tiling.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), 0)
 	w.PlayerUnit.Unit.InitObjects()
-	w.renderMode = RenderModeBasic
-	w.initialised = true
-	InitTileRenderer()
 	return w
 }
 
 func (w *World) Init() {
+	w.InitEntities()
 	tiling.InitTiling()
+	w.renderMode = RenderModeBasic
+	w.initialised = true
+	InitTileRenderer()
 }
 
 func (w *World) InitEntities() {
