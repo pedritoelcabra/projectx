@@ -9,8 +9,7 @@ import (
 
 type chunk struct {
 	tiles               []*Tile
-	Vegetation          []int
-	Features            [][]int
+	Features            []map[int]int
 	ChunkData           *container.Container
 	Location            tiling.Coord
 	Generated           bool
@@ -19,6 +18,11 @@ type chunk struct {
 	terrainImage        *ebiten.Image
 	sector              *Sector
 	SectorId            SectorKey
+}
+
+var savableChunkData = []int{
+	Flora,
+	Road,
 }
 
 func NewChunk(location tiling.Coord) *chunk {
@@ -73,8 +77,8 @@ func (ch *chunk) Preload(location tiling.Coord) {
 	}
 	if ch.IsGenerated() {
 		for index, tile := range ch.tiles {
-			if ch.Vegetation[index] != 0 {
-				tile.Set(Flora, ch.Vegetation[index])
+			for _, featureKey := range savableChunkData {
+				tile.Set(featureKey, ch.Features[index][featureKey])
 			}
 		}
 	}
@@ -86,9 +90,15 @@ func (ch *chunk) Preload(location tiling.Coord) {
 }
 
 func (ch *chunk) PreSave() {
-	ch.Vegetation = make([]int, ChunkSize*ChunkSize)
+	if !ch.IsGenerated() {
+		return
+	}
+	ch.Features = make([]map[int]int, ChunkSize*ChunkSize)
 	for index, tile := range ch.tiles {
-		ch.Vegetation[index] = tile.Get(Flora)
+		ch.Features[index] = make(map[int]int)
+		for _, featureKey := range savableChunkData {
+			ch.Features[index][featureKey] = tile.Get(featureKey)
+		}
 	}
 }
 

@@ -20,4 +20,5 @@ const (
 	MovementCost
 	Biome
 	Flora
+	Road
 )
