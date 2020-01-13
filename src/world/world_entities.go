@@ -1,14 +1,14 @@
 package world
 
-type WorldEntities struct {
+type Entities struct {
 	Sectors   SectorMap
 	Factions  FactionMap
 	Buildings BuildingMap
 	Units     UnitMap
 }
 
-func NewWorldEntities() *WorldEntities {
-	aEntities := &WorldEntities{}
+func NewEntities() *Entities {
+	aEntities := &Entities{}
 	aEntities.Sectors = make(SectorMap)
 	aEntities.Factions = make(FactionMap)
 	aEntities.Buildings = make(BuildingMap)

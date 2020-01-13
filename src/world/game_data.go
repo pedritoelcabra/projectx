@@ -5,5 +5,5 @@ type SaveGameData struct {
 	Tick          int
 	Player        Player
 	Grid          Grid
-	WorldEntities *WorldEntities
+	WorldEntities *Entities
 }

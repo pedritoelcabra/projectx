@@ -13,7 +13,6 @@ type UnitMap map[UnitKey]*Unit
 
 type Unit struct {
 	Id         UnitKey
-	ClassName  string
 	Sprite     gfx.Sprite `json:"-"`
 	SpriteName gfx.SpriteKey
 	X          float64
@@ -77,7 +76,6 @@ func (u *Unit) SetSpeed(speed float64) {
 }
 
 func (u *Unit) Init() {
-	u.ClassName = "Unit"
 	u.InitObjects()
 }
 
@@ -122,10 +120,6 @@ func (u *Unit) GetPos() (x, y float64) {
 	return u.X, u.Y
 }
 
-func (u *Unit) GetClassName() string {
-	return u.ClassName
-}
-
 func (u *Unit) Get(key int) int {
 	return u.Data.Get(key)
 }
@@ -143,8 +137,8 @@ func (u *Unit) SetF(key int, value float64) {
 }
 
 func (w *World) AddUnit(unit *Unit) UnitKey {
-	key := UnitKey(len(w.WorldEntities.Units))
-	w.WorldEntities.Units[key] = unit
+	key := UnitKey(len(w.Entities.Units))
+	w.Entities.Units[key] = unit
 	return key
 }
 
@@ -152,5 +146,5 @@ func (w *World) GetUnit(key UnitKey) *Unit {
 	if key < 0 {
 		return nil
 	}
-	return w.WorldEntities.Units[key]
+	return w.Entities.Units[key]
 }
