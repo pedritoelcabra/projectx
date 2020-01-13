@@ -14,7 +14,6 @@ const (
 )
 
 type Player struct {
-	ClassName   string
 	unit        *Unit
 	MovingUp    bool
 	MovingLeft  bool
@@ -33,7 +32,6 @@ func NewPlayer() *Player {
 
 func (p *Player) Init() {
 	p.unit = theWorld.GetUnit(0)
-	p.ClassName = "Player"
 }
 
 func (p *Player) DrawSprite(screen *gfx.Screen) {
