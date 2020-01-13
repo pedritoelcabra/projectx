@@ -40,8 +40,6 @@ func (b *Building) Init() {
 	tile := theWorld.Grid.Tile(b.Location)
 	if tile != nil {
 		tile.SetBuilding(b)
-		b.X = tile.GetF(RenderX)
-		b.Y = tile.GetF(RenderY)
 	}
 }
 

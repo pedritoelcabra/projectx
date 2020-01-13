@@ -13,8 +13,7 @@ import (
 type Tile struct {
 	coordinates       tiling.Coord
 	Data              *container.Container
-	BuildingId        BuildingKey
-	building          *Building
+	Building          BuildingPointer
 	neighbouringHexes [6]tiling.Coord
 	borders           [6]bool
 	hasAnyBorders     bool
@@ -23,6 +22,7 @@ type Tile struct {
 
 func NewTile() *Tile {
 	aTile := &Tile{}
+	aTile.Building = MakeBuildingPointer(-1)
 	aTile.Data = container.NewContainer()
 	return aTile
 }
@@ -32,12 +32,11 @@ func (t *Tile) GetCoord() tiling.Coord {
 }
 
 func (t *Tile) SetBuilding(building *Building) {
-	t.building = building
-	t.BuildingId = building.GetId()
+	t.Building = MakeBuildingPointer(building.GetId())
 }
 
 func (t *Tile) GetBuilding() *Building {
-	return t.building
+	return t.Building.Get()
 }
 
 func (t *Tile) Coord() tiling.Coord {
