@@ -15,7 +15,7 @@ type UnitDef struct {
 type EquipmentItemDef struct {
 	Chance  int
 	Slot    string
-	Options []string
+	Graphic string
 }
 
 func UnitDefs() map[string]*UnitDef {

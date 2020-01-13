@@ -4,16 +4,12 @@
     {
       "Chance": 50,
       "Slot": "Body",
-      "Options": [
-        "Human Body Tanned"
-      ]
+      "Graphic": "Human Body Tanned"
     },
     {
       "Chance": 50,
       "Slot": "Body",
-      "Options": [
-        "Human Body Light"
-      ]
+      "Graphic": "Human Body Light"
     }
   ]
 }
