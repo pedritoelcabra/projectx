@@ -8,8 +8,9 @@ type Faction struct {
 	Name string
 }
 
-func NewFaction() *Faction {
+func NewFaction(name string) *Faction {
 	aFaction := &Faction{}
+	aFaction.Name = name
 	aFaction.Id = theWorld.AddFaction(aFaction)
 	return aFaction
 }

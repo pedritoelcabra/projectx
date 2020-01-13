@@ -5,6 +5,7 @@ import (
 	"github.com/pedritoelcabra/projectx/src/core/logger"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
+	"strconv"
 )
 
 func (g *Grid) SpawnSector(aChunk *chunk) {
@@ -19,7 +20,9 @@ func (g *Grid) SpawnSector(aChunk *chunk) {
 	if template == nil {
 		return
 	}
-	_ = NewSector(centerCoord, template)
+	newSector := NewSector(centerCoord, template)
+	newFaction := NewFaction("Faction " + strconv.Itoa(len(theWorld.Entities.Factions)))
+	newSector.Set(FactionId, int(newFaction.GetId()))
 	tile := g.Tile(centerCoord)
 	tile.Set(Flora, 0)
 	_ = NewBuilding(template.CenterBuilding, tile)

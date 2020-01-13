@@ -53,8 +53,7 @@ func FromSeed(seed int) *World {
 
 	w.PlayerUnit = NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)
-	playerFaction := NewFaction()
-	playerFaction.Name = "Player"
+	playerFaction := NewFaction("Player")
 	w.PlayerUnit.Set(FactionId, int(playerFaction.GetId()))
 
 	w.Init()

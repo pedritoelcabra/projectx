@@ -88,3 +88,19 @@ func (s *Sector) Init() {
 	theWorld.Grid.Chunk(theWorld.Grid.ChunkCoord(s.Center)).SetSector(s)
 	s.RecalculateTiles()
 }
+
+func (s *Sector) Get(key int) int {
+	return s.Data.Get(key)
+}
+
+func (s *Sector) GetF(key int) float64 {
+	return s.Data.GetF(key)
+}
+
+func (s *Sector) Set(key, value int) {
+	s.Data.Set(key, value)
+}
+
+func (s *Sector) SetF(key int, value float64) {
+	s.Data.SetF(key, value)
+}
