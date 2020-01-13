@@ -64,16 +64,3 @@ func (b *Building) GetName() string {
 func (b *Building) GetId() BuildingKey {
 	return b.Id
 }
-
-func (w *World) AddBuilding(building *Building) BuildingKey {
-	key := BuildingKey(len(w.Entities.Buildings))
-	w.Entities.Buildings[key] = building
-	return key
-}
-
-func (w *World) GetBuilding(key BuildingKey) *Building {
-	if key < 0 {
-		return nil
-	}
-	return w.Entities.Buildings[key]
-}

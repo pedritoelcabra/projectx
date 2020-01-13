@@ -8,12 +8,13 @@ import (
 type lpcAnimation int
 
 const (
-	spriteWidth      = 64
-	spriteWidthHalf  = 32
-	spriteHeight     = 64
-	spriteHeightHalf = 32
-	centerXAxis      = 36
-	centerYAxis      = 64
+	spriteWidth          = 64
+	spriteWidthHalf      = 32
+	spriteHeight         = 64
+	spriteHeightHalf     = 32
+	centerXAxis          = 36
+	centerYAxis          = 64
+	DefaultCollisionSize = 32
 )
 
 const (

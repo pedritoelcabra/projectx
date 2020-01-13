@@ -26,6 +26,7 @@ func NewPlayer() *Player {
 	aPlayer := &Player{}
 	aPlayer.Init()
 	aPlayer.unit = NewUnit()
+	aPlayer.unit.Name = "You"
 	aPlayer.unit.SetSpeed(10)
 	return aPlayer
 }
@@ -81,10 +82,6 @@ func (p *Player) SetMovement(direction PlayerDirection, value bool) {
 	case PLAYERRIGHT:
 		p.MovingRight = value
 	}
-}
-
-func (p *Player) GetClassName() string {
-	return p.ClassName
 }
 
 func (p *Player) Get(key int) int {

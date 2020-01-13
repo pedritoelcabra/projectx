@@ -22,12 +22,15 @@ type Unit struct {
 	Moving     bool
 	Speed      float64
 	Data       *container.Container
+	Size       float64
+	Name       string
 }
 
 func NewUnit() *Unit {
 	aUnit := &Unit{}
 	aUnit.Init()
 	aUnit.Speed = 100
+	aUnit.Size = float64(gfx.DefaultCollisionSize)
 	aUnit.Data = container.NewContainer()
 	aUnit.Id = theWorld.AddUnit(aUnit)
 	return aUnit
@@ -75,6 +78,14 @@ func (u *Unit) SetSpeed(speed float64) {
 	u.Speed = speed
 }
 
+func (u *Unit) SetSize(size float64) {
+	u.Size = size
+}
+
+func (u *Unit) CollidesWith(x, y float64) bool {
+	return utils2.CalculateDistance(u.X, u.Y, x, y) < u.Size
+}
+
 func (u *Unit) Init() {
 	u.InitObjects()
 }
@@ -120,6 +131,14 @@ func (u *Unit) GetPos() (x, y float64) {
 	return u.X, u.Y
 }
 
+func (u *Unit) GetName() string {
+	return u.Name
+}
+
+func (u *Unit) GetFaction() *Faction {
+	return theWorld.GetFaction(FactionKey(u.Get(FactionId)))
+}
+
 func (u *Unit) Get(key int) int {
 	return u.Data.Get(key)
 }
@@ -134,17 +153,4 @@ func (u *Unit) Set(key, value int) {
 
 func (u *Unit) SetF(key int, value float64) {
 	u.Data.SetF(key, value)
-}
-
-func (w *World) AddUnit(unit *Unit) UnitKey {
-	key := UnitKey(len(w.Entities.Units))
-	w.Entities.Units[key] = unit
-	return key
-}
-
-func (w *World) GetUnit(key UnitKey) *Unit {
-	if key < 0 {
-		return nil
-	}
-	return w.Entities.Units[key]
 }

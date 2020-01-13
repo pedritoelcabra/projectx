@@ -65,6 +65,14 @@ func (g *game) DebugInfo() string {
 		}
 		aString += "\nSector: " + sectorName
 
+		unitsAtLocation := g.World.UnitsCollidingWith(float64(mouseCoord.X()), float64(mouseCoord.Y()))
+		for _, unit := range unitsAtLocation {
+			aString += "\n" + unit.GetName()
+			playerFaction := unit.GetFaction()
+			if playerFaction != nil {
+				aString += " (" + playerFaction.GetName() + ")"
+			}
+		}
 	}
 	if g.debugMessage != "" {
 		aString += "\n" + g.debugMessage
