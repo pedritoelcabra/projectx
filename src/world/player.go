@@ -83,6 +83,22 @@ func (p *Player) SetMovement(direction PlayerDirection, value bool) {
 	}
 }
 
-func (b *Player) GetClassName() string {
-	return b.ClassName
+func (p *Player) GetClassName() string {
+	return p.ClassName
+}
+
+func (p *Player) Get(key int) int {
+	return p.Unit.Get(key)
+}
+
+func (p *Player) GetF(key int) float64 {
+	return p.Unit.GetF(key)
+}
+
+func (p *Player) Set(key, value int) {
+	p.Unit.Set(key, value)
+}
+
+func (p *Player) SetF(key int, value float64) {
+	p.Unit.SetF(key, value)
 }

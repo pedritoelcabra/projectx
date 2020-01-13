@@ -2,6 +2,7 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/src/gfx"
+	"github.com/pedritoelcabra/projectx/src/world/container"
 	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
 	utils2 "github.com/pedritoelcabra/projectx/src/world/utils"
 	"math"
@@ -17,6 +18,15 @@ type Unit struct {
 	DestY      float64
 	Moving     bool
 	Speed      float64
+	Data       *container.Container
+}
+
+func NewUnit() *Unit {
+	aUnit := &Unit{}
+	aUnit.Init()
+	aUnit.Speed = 100
+	aUnit.Data = container.NewContainer()
+	return aUnit
 }
 
 func (u *Unit) DrawSprite(screen *gfx.Screen) {
@@ -59,13 +69,6 @@ func (u *Unit) CheckOrientation() {
 
 func (u *Unit) SetSpeed(speed float64) {
 	u.Speed = speed
-}
-
-func NewUnit() *Unit {
-	aUnit := &Unit{}
-	aUnit.Init()
-	aUnit.Speed = 100
-	return aUnit
 }
 
 func (u *Unit) Init() {
@@ -114,6 +117,22 @@ func (u *Unit) GetPos() (x, y float64) {
 	return u.X, u.Y
 }
 
-func (b *Unit) GetClassName() string {
-	return b.ClassName
+func (u *Unit) GetClassName() string {
+	return u.ClassName
+}
+
+func (u *Unit) Get(key int) int {
+	return u.Data.Get(key)
+}
+
+func (u *Unit) GetF(key int) float64 {
+	return u.Data.GetF(key)
+}
+
+func (u *Unit) Set(key, value int) {
+	u.Data.Set(key, value)
+}
+
+func (u *Unit) SetF(key int, value float64) {
+	u.Data.SetF(key, value)
 }

@@ -11,3 +11,7 @@ func NewFaction() *Faction {
 	aFaction.Id = theWorld.AddFaction(aFaction)
 	return aFaction
 }
+
+func (f *Faction) GetId() FactionKey {
+	return f.Id
+}

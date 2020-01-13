@@ -56,10 +56,15 @@ func FromSeed(seed int) *World {
 	w := NewWorld()
 	w.SetSeed(seed)
 	w.Grid = NewGrid()
-	w.PlayerUnit = NewPlayer()
-	w.PlayerUnit.SetPosition(400, 400)
 	w.Entities = make(EntityMap)
 	w.Sectors = make(SectorMap)
+	w.Factions = make(FactionMap)
+
+	w.PlayerUnit = NewPlayer()
+	w.PlayerUnit.SetPosition(400, 400)
+	playerFaction := NewFaction()
+	w.PlayerUnit.Set(FactionId, int(playerFaction.GetId()))
+
 	w.Init()
 	return w
 }

@@ -21,4 +21,5 @@ const (
 	Biome
 	Flora
 	Road
+	FactionId
 )
