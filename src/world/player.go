@@ -24,7 +24,7 @@ type Player struct {
 func NewPlayer() *Player {
 	aPlayer := &Player{}
 	aPlayer.Init()
-	aPlayer.unit = NewUnit()
+	aPlayer.unit = NewUnitOld()
 	aPlayer.unit.Name = "You"
 	aPlayer.unit.SetSpeed(10)
 	return aPlayer

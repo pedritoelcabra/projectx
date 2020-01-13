@@ -131,22 +131,12 @@ func (g *game) BuildContextMenu(x, y int) *gui.Menu {
 		aMenu.AddButton(growButton2)
 	}
 
-	aButton := gui.NewButton(buttonSize, "Button 1")
-	aButton.OnPressed = func(b *gui.Button) {
-		g.debugMessage = "Button 1 pressed"
-	}
-	bButton := gui.NewButton(buttonSize, "Button 2")
-	bButton.OnPressed = func(b *gui.Button) {
-		g.debugMessage = "Button 2 pressed"
-	}
-	cButton := gui.NewButton(buttonSize, "Button 3")
-	cButton.OnPressed = func(b *gui.Button) {
-		g.debugMessage = "Button 3 pressed"
+	unitButton := gui.NewButton(buttonSize, "Add Peasant")
+	unitButton.OnPressed = func(b *gui.Button) {
+		world.NewUnit("Peasant", g.MousePosCoord())
 	}
 
-	aMenu.AddButton(aButton)
-	aMenu.AddButton(bButton)
-	aMenu.AddButton(cButton)
+	aMenu.AddButton(unitButton)
 
 	aMenu.SetTopPadding(y)
 	aMenu.SetLeftPadding(x)

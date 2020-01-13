@@ -88,3 +88,11 @@ func (g *game) MouseTileCoord() tiling.Coord {
 	my += int(cy)
 	return tiling.NewCoord(tiling.PixelIToTileI(mx, my))
 }
+
+func (g *game) MousePosCoord() tiling.Coord {
+	mx, my := ebiten.CursorPosition()
+	cx, cy := g.Screen.GetCameraCoords()
+	mx += int(cx)
+	my += int(cy)
+	return tiling.NewCoord(mx, my)
+}

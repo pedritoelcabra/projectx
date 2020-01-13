@@ -1,10 +1,11 @@
 package world
 
 import (
+	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/world/container"
-	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
-	utils2 "github.com/pedritoelcabra/projectx/src/world/utils"
+	"github.com/pedritoelcabra/projectx/src/world/tiling"
+	"github.com/pedritoelcabra/projectx/src/world/utils"
 	"math"
 )
 
@@ -26,8 +27,22 @@ type Unit struct {
 	Name       string
 }
 
-func NewUnit() *Unit {
+func NewUnitOld() *Unit {
 	aUnit := &Unit{}
+	aUnit.Init()
+	aUnit.Speed = 100
+	aUnit.Size = float64(gfx.DefaultCollisionSize)
+	aUnit.Data = container.NewContainer()
+	aUnit.Id = theWorld.AddUnit(aUnit)
+	return aUnit
+}
+
+func NewUnit(templateName string, location tiling.Coord) *Unit {
+	template := defs.UnitDefs()[templateName]
+	aUnit := &Unit{}
+	aUnit.Name = template.Name
+	aUnit.X = float64(location.X())
+	aUnit.Y = float64(location.Y())
 	aUnit.Init()
 	aUnit.Speed = 100
 	aUnit.Size = float64(gfx.DefaultCollisionSize)
@@ -83,29 +98,25 @@ func (u *Unit) SetSize(size float64) {
 }
 
 func (u *Unit) CollidesWith(x, y float64) bool {
-	return utils2.CalculateDistance(u.X, u.Y, x, y) < u.Size
+	return utils.CalculateDistance(u.X, u.Y, x, y) < u.Size
 }
 
 func (u *Unit) Init() {
-	u.InitObjects()
-}
-
-func (u *Unit) InitObjects() {
 	u.SpriteName = gfx.BodyMaleLight
 	u.Sprite = gfx.NewLpcSprite(u.SpriteName)
 }
 
 func (u *Unit) Update(tick int, grid *Grid) {
 	if u.Moving {
-		oldCoord := tiling2.PixelFToTileC(u.GetPos())
+		oldCoord := tiling.PixelFToTileC(u.GetPos())
 		oldTile := grid.Tile(oldCoord)
 		movementCost := oldTile.GetF(MovementCost)
 		if movementCost == 0 {
 			movementCost = 1.0
 		}
 		movementSpeed := u.Speed / movementCost
-		newX, newY := utils2.AdvanceAlongLine(u.X, u.Y, u.DestX, u.DestY, movementSpeed)
-		newCoord := tiling2.PixelFToTileC(newX, newY)
+		newX, newY := utils.AdvanceAlongLine(u.X, u.Y, u.DestX, u.DestY, movementSpeed)
+		newCoord := tiling.PixelFToTileC(newX, newY)
 		canMove := true
 		if oldCoord != newCoord {
 			newTile := grid.Tile(newCoord)

@@ -38,6 +38,22 @@ func (c Coord) Y() int {
 	return c.CY
 }
 
+func (c Coord) XY() (int, int) {
+	return c.CX, c.CY
+}
+
+func (c Coord) XF() float64 {
+	return float64(c.CX)
+}
+
+func (c Coord) YF() float64 {
+	return float64(c.CY)
+}
+
+func (c Coord) XYF() (float64, float64) {
+	return c.XF(), c.YF()
+}
+
 func (c Coord) ToString() string {
 	return strconv.Itoa(c.CX) + "/" + strconv.Itoa(c.CY)
 }

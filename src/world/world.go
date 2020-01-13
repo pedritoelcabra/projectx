@@ -69,7 +69,6 @@ func LoadFromSave(data SaveGameData) *World {
 	w.Entities = data.WorldEntities
 	w.Init()
 	w.Grid.ChunkGeneration(tiling.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), 0)
-	w.PlayerUnit.unit.InitObjects()
 	return w
 }
 
@@ -83,8 +82,8 @@ func (w *World) Init() {
 
 func (w *World) InitEntities() {
 	w.PlayerUnit.Init()
-	for _, entity := range w.Entities.Units {
-		entity.Init()
+	for _, unit := range w.Entities.Units {
+		unit.Init()
 	}
 	for _, building := range w.Entities.Buildings {
 		building.Init()
