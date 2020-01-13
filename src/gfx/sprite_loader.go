@@ -29,7 +29,8 @@ func LoadSprites() {
 
 func SpritePaths() map[SpriteKey]string {
 	return map[SpriteKey]string{
-		BodyMaleLight: "resources/Universal-LPC-spritesheet/body/male/light.png",
-		HexTerrain1:   "resources/tiles/wesnoth1.png",
+		BodyMaleLight:  "resources/Universal-LPC-spritesheet/body/male/light.png",
+		BodyMaleTanned: "resources/Universal-LPC-spritesheet/body/male/tanned.png",
+		HexTerrain1:    "resources/tiles/wesnoth1.png",
 	}
 }

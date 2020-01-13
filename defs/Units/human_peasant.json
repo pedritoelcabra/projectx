@@ -1,4 +1,12 @@
 {
   "Name": "Peasant",
-  "Graphic": "human_house_1"
+  "Equipments": [
+    {
+      "Chance": 100,
+      "Slot": "Body",
+      "Options": [
+        "Human Body"
+      ]
+    }
+  ]
 }
