@@ -8,14 +8,11 @@ import (
 	"github.com/pedritoelcabra/projectx/src/world/utils"
 )
 
-type EntityMap map[EntityKey]Entity
-type SectorMap map[SectorKey]*Sector
-type FactionMap map[FactionKey]*Faction
-
 type World struct {
 	Entities    EntityMap
 	Sectors     SectorMap
 	Factions    FactionMap
+	Buildings   BuildingMap
 	PlayerUnit  *Player
 	Grid        *Grid
 	initialised bool

@@ -1,6 +1,7 @@
 package world
 
 type FactionKey int
+type FactionMap map[FactionKey]*Faction
 
 type Faction struct {
 	Id FactionKey

@@ -5,6 +5,7 @@ import (
 )
 
 type EntityKey int
+type EntityMap map[EntityKey]Entity
 
 type Entity interface {
 	DrawSprite(screen *gfx.Screen)

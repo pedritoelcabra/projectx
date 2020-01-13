@@ -6,6 +6,9 @@ import (
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
 )
 
+type BuildingKey int
+type BuildingMap map[BuildingKey]*Building
+
 type Building struct {
 	Id        EntityKey
 	ClassName string

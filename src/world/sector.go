@@ -8,6 +8,7 @@ import (
 )
 
 type SectorKey int
+type SectorMap map[SectorKey]*Sector
 
 type Sector struct {
 	Id       SectorKey
