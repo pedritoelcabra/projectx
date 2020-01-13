@@ -90,8 +90,8 @@ func (s *Sector) Init() {
 }
 
 func (w *World) AddSector(sector *Sector) SectorKey {
-	key := SectorKey(len(w.Sectors))
-	w.Sectors[key] = sector
+	key := SectorKey(len(w.WorldEntities.Sectors))
+	w.WorldEntities.Sectors[key] = sector
 	return key
 }
 
@@ -99,5 +99,5 @@ func (w *World) GetSector(key SectorKey) *Sector {
 	if key < 0 {
 		return nil
 	}
-	return w.Sectors[key]
+	return w.WorldEntities.Sectors[key]
 }

@@ -18,8 +18,8 @@ func (f *Faction) GetId() FactionKey {
 }
 
 func (w *World) AddFaction(sector *Faction) FactionKey {
-	key := FactionKey(len(w.Factions))
-	w.Factions[key] = sector
+	key := FactionKey(len(w.WorldEntities.Factions))
+	w.WorldEntities.Factions[key] = sector
 	return key
 }
 
@@ -27,5 +27,5 @@ func (w *World) GetFaction(key FactionKey) *Faction {
 	if key < 0 {
 		return nil
 	}
-	return w.Factions[key]
+	return w.WorldEntities.Factions[key]
 }

@@ -9,17 +9,14 @@ import (
 )
 
 type World struct {
-	Entities    EntityMap
-	Sectors     SectorMap
-	Factions    FactionMap
-	Buildings   BuildingMap
-	PlayerUnit  *Player
-	Grid        *Grid
-	initialised bool
-	seed        int
-	tick        int
-	renderMode  TileRenderMode
-	screen      *gfx.Screen
+	WorldEntities *WorldEntities
+	PlayerUnit    *Player
+	Grid          *Grid
+	initialised   bool
+	seed          int
+	tick          int
+	renderMode    TileRenderMode
+	screen        *gfx.Screen
 }
 
 var theWorld = &World{}
@@ -53,9 +50,7 @@ func FromSeed(seed int) *World {
 	w := NewWorld()
 	w.SetSeed(seed)
 	w.Grid = NewGrid()
-	w.Entities = make(EntityMap)
-	w.Sectors = make(SectorMap)
-	w.Factions = make(FactionMap)
+	w.WorldEntities = NewWorldEntities()
 
 	w.PlayerUnit = NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)
@@ -72,9 +67,7 @@ func LoadFromSave(data SaveGameData) *World {
 	w.Grid = &data.Grid
 	w.tick = data.Tick
 	w.PlayerUnit = &data.Player
-	w.Entities = data.Entities
-	w.Sectors = data.Sectors
-	w.Factions = data.Factions
+	w.WorldEntities = data.WorldEntities
 	w.Init()
 	w.Grid.ChunkGeneration(tiling.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), 0)
 	w.PlayerUnit.Unit.InitObjects()
@@ -91,10 +84,10 @@ func (w *World) Init() {
 
 func (w *World) InitEntities() {
 	w.PlayerUnit.Init()
-	for _, entity := range w.Entities {
+	for _, entity := range w.WorldEntities.Entities {
 		entity.Init()
 	}
-	for _, sector := range w.Sectors {
+	for _, sector := range w.WorldEntities.Sectors {
 		sector.Init()
 	}
 }
@@ -108,20 +101,18 @@ func (w *World) GetSaveState() SaveGameData {
 	state.Tick = w.GetTick()
 	state.Player = *w.PlayerUnit
 	state.Grid = *w.Grid
-	state.Entities = w.Entities
-	state.Sectors = w.Sectors
-	state.Factions = w.Factions
+	state.WorldEntities = w.WorldEntities
 	return state
 }
 
 func (w *World) AddEntity(entity Entity) EntityKey {
-	key := EntityKey(len(w.Entities))
-	w.Entities[key] = entity
+	key := EntityKey(len(w.WorldEntities.Entities))
+	w.WorldEntities.Entities[key] = entity
 	return key
 }
 
 func (w *World) GetEntity(key EntityKey) Entity {
-	return w.Entities[key]
+	return w.WorldEntities.Entities[key]
 }
 
 func (w *World) Draw(screen *gfx.Screen) {
@@ -134,12 +125,12 @@ func (w *World) Draw(screen *gfx.Screen) {
 }
 
 func (w *World) DrawEntities(screen *gfx.Screen) {
-	for _, e := range w.Entities {
+	for _, e := range w.WorldEntities.Entities {
 		if e.GetClassName() != "Building" {
 			e.DrawSprite(screen)
 		}
 	}
-	for _, e := range w.Entities {
+	for _, e := range w.WorldEntities.Entities {
 		if e.GetClassName() == "Building" {
 			e.DrawSprite(screen)
 		}
@@ -153,7 +144,7 @@ func (w *World) Update() {
 	}
 	w.Grid.ChunkGeneration(tiling.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), w.tick)
 	w.PlayerUnit.Update(w.tick, w.Grid)
-	for _, e := range w.Entities {
+	for _, e := range w.WorldEntities.Entities {
 		e.Update(w.tick, w.Grid)
 	}
 	w.tick++
