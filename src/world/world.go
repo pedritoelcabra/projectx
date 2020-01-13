@@ -77,6 +77,7 @@ func LoadFromSave(data SaveGameData) *World {
 	w.PlayerUnit = &data.Player
 	w.Entities = data.Entities
 	w.Sectors = data.Sectors
+	w.Factions = data.Factions
 	w.Init()
 	w.Grid.ChunkGeneration(tiling.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), 0)
 	w.PlayerUnit.Unit.InitObjects()
@@ -112,6 +113,7 @@ func (w *World) GetSaveState() SaveGameData {
 	state.Grid = *w.Grid
 	state.Entities = w.Entities
 	state.Sectors = w.Sectors
+	state.Factions = w.Factions
 	return state
 }
 

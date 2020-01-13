@@ -7,4 +7,5 @@ type SaveGameData struct {
 	Grid     Grid
 	Entities EntityMap
 	Sectors  SectorMap
+	Factions FactionMap
 }
