@@ -10,10 +10,12 @@ import (
 
 type EntityMap map[EntityKey]Entity
 type SectorMap map[SectorKey]*Sector
+type FactionMap map[FactionKey]*Faction
 
 type World struct {
 	Entities    EntityMap
 	Sectors     SectorMap
+	Factions    FactionMap
 	PlayerUnit  *Player
 	Grid        *Grid
 	initialised bool
@@ -129,6 +131,19 @@ func (w *World) GetSector(key SectorKey) *Sector {
 		return nil
 	}
 	return w.Sectors[key]
+}
+
+func (w *World) AddFaction(sector *Faction) FactionKey {
+	key := FactionKey(len(w.Factions))
+	w.Factions[key] = sector
+	return key
+}
+
+func (w *World) GetFaction(key FactionKey) *Faction {
+	if key < 0 {
+		return nil
+	}
+	return w.Factions[key]
 }
 
 func (w *World) Draw(screen *gfx.Screen) {
