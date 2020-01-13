@@ -1,7 +1,6 @@
 package world
 
 import (
-	"encoding/json"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
@@ -108,16 +107,6 @@ func (w *World) GetSaveState() SaveGameData {
 	return state
 }
 
-func (w *World) AddEntity(entity Entity) EntityKey {
-	key := EntityKey(len(w.WorldEntities.Entities))
-	w.WorldEntities.Entities[key] = entity
-	return key
-}
-
-func (w *World) GetEntity(key EntityKey) Entity {
-	return w.WorldEntities.Entities[key]
-}
-
 func (w *World) Draw(screen *gfx.Screen) {
 	if !w.initialised {
 		return
@@ -155,39 +144,4 @@ func (w *World) SetRenderMode(mode TileRenderMode) {
 
 func (w *World) GetScreen() *gfx.Screen {
 	return w.screen
-}
-
-// UnmarshalJSON sets *m to a copy of data.
-func (e *EntityMap) UnmarshalJSON(data []byte) error {
-	aMap := make(EntityMap)
-
-	var entities map[EntityKey]*json.RawMessage
-	if err := json.Unmarshal(data, &entities); err != nil {
-		return err
-	}
-
-	for index, entity := range entities {
-		err, parsedEntity := UnMarshalEntity(entity)
-		if err == nil {
-			aMap[index] = parsedEntity
-		}
-	}
-	*e = aMap
-	return nil
-}
-
-func UnMarshalEntity(rawString *json.RawMessage) (error, Entity) {
-	entityTypes := make(map[string]Entity)
-	entityTypes["Player"] = &Player{}
-	entityTypes["Building"] = &Building{}
-	entityTypes["Unit"] = &Unit{}
-
-	for className, entity := range entityTypes {
-		err := json.Unmarshal(*rawString, entity)
-		if err == nil && entity.GetClassName() == className {
-			return nil, entity
-		}
-	}
-	err := &json.UnmarshalTypeError{}
-	return err, nil
 }
