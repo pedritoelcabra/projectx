@@ -8,7 +8,11 @@ import (
 	"math"
 )
 
+type UnitKey int
+type UnitMap map[UnitKey]*Unit
+
 type Unit struct {
+	Id         UnitKey
 	ClassName  string
 	Sprite     gfx.Sprite `json:"-"`
 	SpriteName gfx.SpriteKey
@@ -26,6 +30,7 @@ func NewUnit() *Unit {
 	aUnit.Init()
 	aUnit.Speed = 100
 	aUnit.Data = container.NewContainer()
+	aUnit.Id = theWorld.AddUnit(aUnit)
 	return aUnit
 }
 
@@ -135,4 +140,17 @@ func (u *Unit) Set(key, value int) {
 
 func (u *Unit) SetF(key int, value float64) {
 	u.Data.SetF(key, value)
+}
+
+func (w *World) AddUnit(unit *Unit) UnitKey {
+	key := UnitKey(len(w.WorldEntities.Units))
+	w.WorldEntities.Units[key] = unit
+	return key
+}
+
+func (w *World) GetUnit(key UnitKey) *Unit {
+	if key < 0 {
+		return nil
+	}
+	return w.WorldEntities.Units[key]
 }

@@ -15,7 +15,7 @@ const (
 
 type Player struct {
 	ClassName   string
-	Unit        *Unit
+	unit        *Unit
 	MovingUp    bool
 	MovingLeft  bool
 	MovingDown  bool
@@ -25,31 +25,31 @@ type Player struct {
 func NewPlayer() *Player {
 	aPlayer := &Player{}
 	aPlayer.Init()
-	aPlayer.Unit = NewUnit()
-	aPlayer.Unit.SetSpeed(10)
+	aPlayer.unit = NewUnit()
+	aPlayer.unit.SetSpeed(10)
 	return aPlayer
 }
 
 func (p *Player) Init() {
+	p.unit = theWorld.GetUnit(0)
 	p.ClassName = "Player"
 }
 
 func (p *Player) DrawSprite(screen *gfx.Screen) {
-	p.Unit.DrawSprite(screen)
+	p.unit.DrawSprite(screen)
 }
 
 func (p *Player) SetPosition(x, y float64) {
-	p.Unit.SetPosition(x, y)
+	p.unit.SetPosition(x, y)
 }
 
 func (p *Player) Update(tick int, grid *Grid) {
 	p.UpdateDestination()
-	p.Unit.Update(tick, grid)
 }
 
 func (p *Player) UpdateDestination() {
-	destX := p.Unit.X
-	destY := p.Unit.Y
+	destX := p.unit.X
+	destY := p.unit.Y
 	displacement := float64(1000)
 	if p.MovingUp && !p.MovingDown {
 		destY -= displacement
@@ -63,11 +63,11 @@ func (p *Player) UpdateDestination() {
 	if p.MovingRight && !p.MovingLeft {
 		destX += displacement
 	}
-	p.Unit.SetDestination(destX, destY)
+	p.unit.SetDestination(destX, destY)
 }
 
 func (p *Player) GetPos() (x, y float64) {
-	return p.Unit.GetPos()
+	return p.unit.GetPos()
 }
 
 func (p *Player) SetMovement(direction PlayerDirection, value bool) {
@@ -88,17 +88,17 @@ func (p *Player) GetClassName() string {
 }
 
 func (p *Player) Get(key int) int {
-	return p.Unit.Get(key)
+	return p.unit.Get(key)
 }
 
 func (p *Player) GetF(key int) float64 {
-	return p.Unit.GetF(key)
+	return p.unit.GetF(key)
 }
 
 func (p *Player) Set(key, value int) {
-	p.Unit.Set(key, value)
+	p.unit.Set(key, value)
 }
 
 func (p *Player) SetF(key int, value float64) {
-	p.Unit.SetF(key, value)
+	p.unit.SetF(key, value)
 }

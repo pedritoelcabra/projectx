@@ -70,7 +70,7 @@ func LoadFromSave(data SaveGameData) *World {
 	w.WorldEntities = data.WorldEntities
 	w.Init()
 	w.Grid.ChunkGeneration(tiling.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), 0)
-	w.PlayerUnit.Unit.InitObjects()
+	w.PlayerUnit.unit.InitObjects()
 	return w
 }
 
@@ -84,7 +84,7 @@ func (w *World) Init() {
 
 func (w *World) InitEntities() {
 	w.PlayerUnit.Init()
-	for _, entity := range w.WorldEntities.Entities {
+	for _, entity := range w.WorldEntities.Units {
 		entity.Init()
 	}
 	for _, building := range w.WorldEntities.Buildings {
@@ -128,13 +128,10 @@ func (w *World) Draw(screen *gfx.Screen) {
 }
 
 func (w *World) DrawEntities(screen *gfx.Screen) {
-
-	for _, e := range w.WorldEntities.Entities {
-		if e.GetClassName() != "Building" {
-			e.DrawSprite(screen)
-		}
-	}
 	for _, e := range w.WorldEntities.Buildings {
+		e.DrawSprite(screen)
+	}
+	for _, e := range w.WorldEntities.Units {
 		e.DrawSprite(screen)
 	}
 	w.PlayerUnit.DrawSprite(screen)
@@ -146,7 +143,7 @@ func (w *World) Update() {
 	}
 	w.Grid.ChunkGeneration(tiling.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), w.tick)
 	w.PlayerUnit.Update(w.tick, w.Grid)
-	for _, e := range w.WorldEntities.Entities {
+	for _, e := range w.WorldEntities.Units {
 		e.Update(w.tick, w.Grid)
 	}
 	w.tick++

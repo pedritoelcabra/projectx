@@ -71,9 +71,9 @@ func (b *Building) GetId() BuildingKey {
 	return b.Id
 }
 
-func (w *World) AddBuilding(sector *Building) BuildingKey {
+func (w *World) AddBuilding(building *Building) BuildingKey {
 	key := BuildingKey(len(w.WorldEntities.Buildings))
-	w.WorldEntities.Buildings[key] = sector
+	w.WorldEntities.Buildings[key] = building
 	return key
 }
 
