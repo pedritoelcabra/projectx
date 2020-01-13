@@ -87,3 +87,16 @@ func (s *Sector) Init() {
 	theWorld.Grid.Chunk(theWorld.Grid.ChunkCoord(s.Center)).SetSector(s)
 	s.RecalculateTiles()
 }
+
+func (w *World) AddSector(sector *Sector) SectorKey {
+	key := SectorKey(len(w.Sectors))
+	w.Sectors[key] = sector
+	return key
+}
+
+func (w *World) GetSector(key SectorKey) *Sector {
+	if key < 0 {
+		return nil
+	}
+	return w.Sectors[key]
+}

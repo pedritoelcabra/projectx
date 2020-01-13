@@ -125,32 +125,6 @@ func (w *World) GetEntity(key EntityKey) Entity {
 	return w.Entities[key]
 }
 
-func (w *World) AddSector(sector *Sector) SectorKey {
-	key := SectorKey(len(w.Sectors))
-	w.Sectors[key] = sector
-	return key
-}
-
-func (w *World) GetSector(key SectorKey) *Sector {
-	if key < 0 {
-		return nil
-	}
-	return w.Sectors[key]
-}
-
-func (w *World) AddFaction(sector *Faction) FactionKey {
-	key := FactionKey(len(w.Factions))
-	w.Factions[key] = sector
-	return key
-}
-
-func (w *World) GetFaction(key FactionKey) *Faction {
-	if key < 0 {
-		return nil
-	}
-	return w.Factions[key]
-}
-
 func (w *World) Draw(screen *gfx.Screen) {
 	if !w.initialised {
 		return
