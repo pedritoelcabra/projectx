@@ -8,8 +8,8 @@ import (
 )
 
 type EquipmentDef struct {
-	Name    string
-	Graphic string
+	Name     string
+	Graphics string
 }
 
 func EquipmentDefs() map[string]*EquipmentDef {

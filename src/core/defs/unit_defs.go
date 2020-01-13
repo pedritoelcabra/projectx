@@ -8,8 +8,14 @@ import (
 )
 
 type UnitDef struct {
-	Name    string
-	Graphic string
+	Name       string
+	Equipments []EquipmentItemDef
+}
+
+type EquipmentItemDef struct {
+	Chance  int
+	Slot    string
+	Options []string
 }
 
 func UnitDefs() map[string]*UnitDef {
