@@ -13,7 +13,7 @@ import (
 type Tile struct {
 	coordinates       tiling.Coord
 	Data              *container.Container
-	BuildingId        EntityKey
+	BuildingId        BuildingKey
 	building          *Building
 	neighbouringHexes [6]tiling.Coord
 	borders           [6]bool

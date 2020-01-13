@@ -10,7 +10,7 @@ type BuildingKey int
 type BuildingMap map[BuildingKey]*Building
 
 type Building struct {
-	Id        EntityKey
+	Id        BuildingKey
 	ClassName string
 	Sprite    gfx.Sprite `json:"-"`
 	SpriteKey gfx.SpriteKey
@@ -31,7 +31,7 @@ func NewBuilding(name string, location *Tile) *Building {
 	aBuilding.Location = location.GetCoord()
 	aBuilding.X = location.GetF(RenderX)
 	aBuilding.Y = location.GetF(RenderY)
-	aBuilding.Id = theWorld.AddEntity(aBuilding)
+	aBuilding.Id = theWorld.AddBuilding(aBuilding)
 	location.SetBuilding(aBuilding)
 	return aBuilding
 }
@@ -67,6 +67,19 @@ func (b *Building) GetName() string {
 	return b.Name
 }
 
-func (b *Building) GetId() EntityKey {
+func (b *Building) GetId() BuildingKey {
 	return b.Id
+}
+
+func (w *World) AddBuilding(sector *Building) BuildingKey {
+	key := BuildingKey(len(w.WorldEntities.Buildings))
+	w.WorldEntities.Buildings[key] = sector
+	return key
+}
+
+func (w *World) GetBuilding(key BuildingKey) *Building {
+	if key < 0 {
+		return nil
+	}
+	return w.WorldEntities.Buildings[key]
 }

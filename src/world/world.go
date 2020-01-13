@@ -87,6 +87,9 @@ func (w *World) InitEntities() {
 	for _, entity := range w.WorldEntities.Entities {
 		entity.Init()
 	}
+	for _, building := range w.WorldEntities.Buildings {
+		building.Init()
+	}
 	for _, sector := range w.WorldEntities.Sectors {
 		sector.Init()
 	}
@@ -125,15 +128,14 @@ func (w *World) Draw(screen *gfx.Screen) {
 }
 
 func (w *World) DrawEntities(screen *gfx.Screen) {
+
 	for _, e := range w.WorldEntities.Entities {
 		if e.GetClassName() != "Building" {
 			e.DrawSprite(screen)
 		}
 	}
-	for _, e := range w.WorldEntities.Entities {
-		if e.GetClassName() == "Building" {
-			e.DrawSprite(screen)
-		}
+	for _, e := range w.WorldEntities.Buildings {
+		e.DrawSprite(screen)
 	}
 	w.PlayerUnit.DrawSprite(screen)
 }
