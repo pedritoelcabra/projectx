@@ -55,6 +55,11 @@ func (u *Unit) DrawSprite(screen *gfx.Screen) {
 	u.Sprite.DrawSprite(screen, u.X, u.Y)
 }
 
+func (u *Unit) ShouldDraw() bool {
+
+	return true
+}
+
 func (u *Unit) SetPosition(x, y float64) {
 	u.X = x
 	u.Y = y
@@ -140,6 +145,14 @@ func (u *Unit) CheckIfMoving() {
 
 func (u *Unit) GetPos() (x, y float64) {
 	return u.X, u.Y
+}
+
+func (u *Unit) GetX() float64 {
+	return u.X
+}
+
+func (u *Unit) GetY() float64 {
+	return u.Y
 }
 
 func (u *Unit) GetName() string {

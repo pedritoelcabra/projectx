@@ -22,4 +22,8 @@ const (
 	Flora
 	Road
 	FactionId
+	Tick
+	Initialized
+	Seed
+	RenderMode
 )

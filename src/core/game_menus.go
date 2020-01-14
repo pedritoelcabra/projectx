@@ -132,8 +132,9 @@ func (g *game) BuildContextMenu(x, y int) *gui.Menu {
 	}
 
 	unitButton := gui.NewButton(buttonSize, "Add Peasant")
+	clickedCoord := g.MousePosCoord()
 	unitButton.OnPressed = func(b *gui.Button) {
-		world.NewUnit("Peasant", g.MousePosCoord())
+		world.NewUnit("Peasant", clickedCoord)
 	}
 
 	aMenu.AddButton(unitButton)

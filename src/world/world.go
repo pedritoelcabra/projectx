@@ -3,18 +3,20 @@ package world
 import (
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	"github.com/pedritoelcabra/projectx/src/gfx"
+	"github.com/pedritoelcabra/projectx/src/world/container"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/world/utils"
+	"sort"
 )
 
 type World struct {
 	Entities    *Entities
 	PlayerUnit  *Player
 	Grid        *Grid
+	Data        *container.Container
 	initialised bool
 	seed        int
 	tick        int
-	renderMode  TileRenderMode
 	screen      *gfx.Screen
 }
 
@@ -47,6 +49,7 @@ func (w *World) GetTick() int {
 
 func FromSeed(seed int) *World {
 	w := NewWorld()
+	w.Data = container.NewContainer()
 	w.SetSeed(seed)
 	w.Grid = NewGrid()
 	w.Entities = NewEntities()
@@ -62,6 +65,7 @@ func FromSeed(seed int) *World {
 
 func LoadFromSave(data SaveGameData) *World {
 	w := NewWorld()
+	w.Data = data.Data
 	w.SetSeed(data.Seed)
 	w.Grid = &data.Grid
 	w.tick = data.Tick
@@ -72,10 +76,24 @@ func LoadFromSave(data SaveGameData) *World {
 	return w
 }
 
+func (w *World) GetSaveState() SaveGameData {
+	for _, chunk := range w.Grid.Chunks {
+		chunk.PreSave()
+	}
+	state := SaveGameData{}
+	state.Data = w.Data
+	state.Seed = w.GetSeed()
+	state.Tick = w.GetTick()
+	state.Player = *w.PlayerUnit
+	state.Grid = *w.Grid
+	state.WorldEntities = w.Entities
+	return state
+}
+
 func (w *World) Init() {
 	w.InitEntities()
 	tiling.InitTiling()
-	w.renderMode = RenderModeBasic
+	w.Data.Set(RenderMode, int(RenderModeBasic))
 	w.initialised = true
 	InitTileRenderer()
 }
@@ -93,36 +111,44 @@ func (w *World) InitEntities() {
 	}
 }
 
-func (w *World) GetSaveState() SaveGameData {
-	for _, chunk := range w.Grid.Chunks {
-		chunk.PreSave()
-	}
-	state := SaveGameData{}
-	state.Seed = w.GetSeed()
-	state.Tick = w.GetTick()
-	state.Player = *w.PlayerUnit
-	state.Grid = *w.Grid
-	state.WorldEntities = w.Entities
-	return state
-}
-
 func (w *World) Draw(screen *gfx.Screen) {
 	if !w.initialised {
 		return
 	}
 	w.screen = screen
-	RenderTiles(screen, w, w.renderMode)
+	RenderTiles(screen, w, w.GetRenderMode())
 	w.DrawEntities(screen)
+}
+
+func (w *World) GetRenderMode() TileRenderMode {
+	return TileRenderMode(w.Data.Get(RenderMode))
+}
+
+func (w *World) SetRenderMode(mode TileRenderMode) {
+	w.Data.Set(RenderMode, int(mode))
 }
 
 func (w *World) DrawEntities(screen *gfx.Screen) {
 	for _, e := range w.Entities.Buildings {
 		e.DrawSprite(screen)
 	}
-	for _, e := range w.Entities.Units {
+	for key, e := range w.DrawableUnits() {
 		e.DrawSprite(screen)
+		_ = key
 	}
-	w.PlayerUnit.DrawSprite(screen)
+}
+
+func (w *World) DrawableUnits() []*Unit {
+	var drawableUnits []*Unit
+	for _, e := range w.Entities.Units {
+		if e.ShouldDraw() {
+			drawableUnits = append(drawableUnits, e)
+		}
+	}
+	sort.SliceStable(drawableUnits, func(i, j int) bool {
+		return drawableUnits[i].GetY() < drawableUnits[j].GetY()
+	})
+	return drawableUnits
 }
 
 func (w *World) Update() {
@@ -135,10 +161,6 @@ func (w *World) Update() {
 		e.Update(w.tick, w.Grid)
 	}
 	w.tick++
-}
-
-func (w *World) SetRenderMode(mode TileRenderMode) {
-	w.renderMode = mode
 }
 
 func (w *World) GetScreen() *gfx.Screen {
