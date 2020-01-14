@@ -69,6 +69,14 @@ func (p *Player) GetPos() (x, y float64) {
 	return p.unit.GetPos()
 }
 
+func (p *Player) GetX() float64 {
+	return p.unit.GetX()
+}
+
+func (p *Player) GetY() float64 {
+	return p.unit.GetY()
+}
+
 func (p *Player) SetMovement(direction PlayerDirection, value bool) {
 	switch direction {
 	case PLAYERUP:

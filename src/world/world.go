@@ -144,6 +144,7 @@ func (w *World) DrawableUnits() []*Unit {
 	sort.SliceStable(drawableUnits, func(i, j int) bool {
 		return drawableUnits[i].GetY() < drawableUnits[j].GetY()
 	})
+	w.Data.Set(CurrentDrawnEntities, len(drawableUnits))
 	return drawableUnits
 }
 

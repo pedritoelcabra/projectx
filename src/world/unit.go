@@ -56,8 +56,7 @@ func (u *Unit) DrawSprite(screen *gfx.Screen) {
 }
 
 func (u *Unit) ShouldDraw() bool {
-
-	return true
+	return EntityShouldDraw(u.GetX(), u.GetY())
 }
 
 func (u *Unit) SetPosition(x, y float64) {

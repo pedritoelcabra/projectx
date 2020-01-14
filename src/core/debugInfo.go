@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/world"
@@ -27,9 +26,9 @@ func (g *game) DebugInfo() string {
 	if g.HasLoadedWorld() {
 		aString += "\nTick: " + strconv.Itoa(g.World.GetTick())
 
-		pX, pY := g.World.PlayerUnit.GetPos()
+		//pX, pY := g.World.PlayerUnit.GetPos()
 		//playerCoord := tiling.NewCoord(int(pX), int(pY))
-		playerTileCoord := tiling.NewCoord(tiling.PixelIToTileI(int(pX), int(pY)))
+		//playerTileCoord := tiling.NewCoord(tiling.PixelIToTileI(int(pX), int(pY)))
 		//aString += "\nPlayer Pos: " + playerCoord.ToString()
 		//aString += "\nPlayer Tile: " + playerTileCoord.ToString()
 		mx, my := ebiten.CursorPosition()
@@ -45,9 +44,11 @@ func (g *game) DebugInfo() string {
 		aString += "\nMouse Tile Height: " + strconv.Itoa(mHeight)
 		aString += "\nMouse Tile Chunk: " + g.World.Grid.ChunkCoord(mouseTileCoord).ToString()
 
-		playerMouseDist := tiling.HexDistance(playerTileCoord, mouseTileCoord)
-		aString += "\nMouse distance to player: " + fmt.Sprintf("%f", playerMouseDist)
+		//playerMouseDist := tiling.HexDistance(playerTileCoord, mouseTileCoord)
+		//aString += "\nMouse distance to player: " + fmt.Sprintf("%f", playerMouseDist)
 
+		drawEntityCount := g.World.Data.Get(world.CurrentDrawnEntities)
+		aString += "\nCurrently drawing " + strconv.Itoa(drawEntityCount) + " units"
 		aString += "\n-----"
 
 		building := tile.GetBuilding()

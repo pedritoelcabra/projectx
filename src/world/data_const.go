@@ -26,4 +26,5 @@ const (
 	Initialized
 	Seed
 	RenderMode
+	CurrentDrawnEntities
 )

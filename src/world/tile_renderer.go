@@ -74,3 +74,23 @@ func LoadTilesToRender(world *World) {
 		}
 	}
 }
+
+func EntityShouldDraw(x, y float64) bool {
+	return x > MinRenderX() && x < MaxRenderX() && y > MinRenderY() && y < MaxRenderY()
+}
+
+func MinRenderX() float64 {
+	return theWorld.PlayerUnit.GetX() - float64(gfx.ScreenWidth)
+}
+
+func MinRenderY() float64 {
+	return theWorld.PlayerUnit.GetY() - float64(gfx.ScreenHeight)
+}
+
+func MaxRenderX() float64 {
+	return theWorld.PlayerUnit.GetX() + float64(gfx.ScreenWidth)
+}
+
+func MaxRenderY() float64 {
+	return theWorld.PlayerUnit.GetY() + float64(gfx.ScreenHeight)
+}
