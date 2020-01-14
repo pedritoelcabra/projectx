@@ -43,6 +43,18 @@ func (b *Building) Init() {
 	}
 }
 
+func (b *Building) ShouldDraw() bool {
+	return EntityShouldDraw(b.GetX(), b.GetY())
+}
+
+func (b *Building) GetX() float64 {
+	return b.X
+}
+
+func (b *Building) GetY() float64 {
+	return b.Y
+}
+
 func (b *Building) DrawSprite(screen *gfx.Screen) {
 	b.Sprite.DrawSprite(screen, b.X, b.Y)
 }

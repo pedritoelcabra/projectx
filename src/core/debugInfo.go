@@ -47,8 +47,9 @@ func (g *game) DebugInfo() string {
 		//playerMouseDist := tiling.HexDistance(playerTileCoord, mouseTileCoord)
 		//aString += "\nMouse distance to player: " + fmt.Sprintf("%f", playerMouseDist)
 
-		drawEntityCount := g.World.Data.Get(world.CurrentDrawnEntities)
-		aString += "\nCurrently drawing " + strconv.Itoa(drawEntityCount) + " units"
+		drawUnitCount := g.World.Data.Get(world.CurrentDrawnUnits)
+		drawBuildingCount := g.World.Data.Get(world.CurrentDrawnBuildings)
+		aString += "\nDrawing " + strconv.Itoa(drawUnitCount) + " units, " + strconv.Itoa(drawBuildingCount) + " buildings"
 		aString += "\n-----"
 
 		building := tile.GetBuilding()

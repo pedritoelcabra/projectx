@@ -125,13 +125,24 @@ func (w *World) SetRenderMode(mode TileRenderMode) {
 }
 
 func (w *World) DrawEntities(screen *gfx.Screen) {
-	for _, e := range w.Entities.Buildings {
+	for _, e := range w.DrawableBuildings() {
 		e.DrawSprite(screen)
 	}
 	for key, e := range w.DrawableUnits() {
 		e.DrawSprite(screen)
 		_ = key
 	}
+}
+
+func (w *World) DrawableBuildings() []*Building {
+	var buildings []*Building
+	for _, e := range w.Entities.Buildings {
+		if e.ShouldDraw() {
+			buildings = append(buildings, e)
+		}
+	}
+	w.Data.Set(CurrentDrawnBuildings, len(buildings))
+	return buildings
 }
 
 func (w *World) DrawableUnits() []*Unit {
@@ -144,7 +155,7 @@ func (w *World) DrawableUnits() []*Unit {
 	sort.SliceStable(drawableUnits, func(i, j int) bool {
 		return drawableUnits[i].GetY() < drawableUnits[j].GetY()
 	})
-	w.Data.Set(CurrentDrawnEntities, len(drawableUnits))
+	w.Data.Set(CurrentDrawnUnits, len(drawableUnits))
 	return drawableUnits
 }
 
