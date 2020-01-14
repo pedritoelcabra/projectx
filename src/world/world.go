@@ -10,46 +10,43 @@ import (
 )
 
 type World struct {
-	Entities    *Entities
-	PlayerUnit  *Player
-	Grid        *Grid
-	Data        *container.Container
-	initialised bool
-	seed        int
-	tick        int
-	screen      *gfx.Screen
+	Entities   *Entities
+	PlayerUnit *Player
+	Grid       *Grid
+	Data       *container.Container
+	screen     *gfx.Screen
 }
 
 var theWorld = &World{}
 
 func NewWorld() *World {
 	aWorld := &World{}
-	aWorld.tick = 0
 	theWorld = aWorld
 	return aWorld
 }
 
 func (w *World) IsInitialized() bool {
-	return w.initialised
+	return w.Data.Get(Initialized) == 1
 }
 
 func (w *World) SetSeed(seed int) {
-	w.seed = seed
+	w.Data.Set(Seed, seed)
 	randomizer.SetSeed(seed)
-	utils.Seed(w.seed)
+	utils.Seed(seed)
 }
 
 func (w *World) GetSeed() int {
-	return w.seed
+	return w.Data.Get(Seed)
 }
 
 func (w *World) GetTick() int {
-	return w.tick
+	return w.Data.Get(Tick)
 }
 
 func FromSeed(seed int) *World {
 	w := NewWorld()
 	w.Data = container.NewContainer()
+	w.Data.Set(Tick, 0)
 	w.SetSeed(seed)
 	w.Grid = NewGrid()
 	w.Entities = NewEntities()
@@ -68,7 +65,6 @@ func LoadFromSave(data SaveGameData) *World {
 	w.Data = data.Data
 	w.SetSeed(data.Seed)
 	w.Grid = &data.Grid
-	w.tick = data.Tick
 	w.PlayerUnit = &data.Player
 	w.Entities = data.WorldEntities
 	w.Init()
@@ -94,7 +90,7 @@ func (w *World) Init() {
 	w.InitEntities()
 	tiling.InitTiling()
 	w.Data.Set(RenderMode, int(RenderModeBasic))
-	w.initialised = true
+	w.Data.Set(Initialized, 1)
 	InitTileRenderer()
 }
 
@@ -112,7 +108,7 @@ func (w *World) InitEntities() {
 }
 
 func (w *World) Draw(screen *gfx.Screen) {
-	if !w.initialised {
+	if !w.IsInitialized() {
 		return
 	}
 	w.screen = screen
@@ -152,15 +148,15 @@ func (w *World) DrawableUnits() []*Unit {
 }
 
 func (w *World) Update() {
-	if !w.initialised {
+	if !w.IsInitialized() {
 		return
 	}
-	w.Grid.ChunkGeneration(tiling.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), w.tick)
-	w.PlayerUnit.Update(w.tick, w.Grid)
+	w.Grid.ChunkGeneration(tiling.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), w.GetTick())
+	w.PlayerUnit.Update(w.GetTick(), w.Grid)
 	for _, e := range w.Entities.Units {
-		e.Update(w.tick, w.Grid)
+		e.Update(w.GetTick(), w.Grid)
 	}
-	w.tick++
+	w.Data.Set(Tick, w.Data.Get(Tick)+1)
 }
 
 func (w *World) GetScreen() *gfx.Screen {
