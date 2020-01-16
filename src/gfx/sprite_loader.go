@@ -58,6 +58,8 @@ func LPCSpriteFolders() map[string]string {
 	lpc := make(map[string]string)
 	folders := []string{
 		"body/male/",
+		"legs/pants/male/",
+		"torso/shirts/longsleeve/male/",
 	}
 	for _, folderName := range folders {
 		lpc[folderName] = baseLpcFolder + folderName

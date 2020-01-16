@@ -25,6 +25,16 @@
       "Chance": 20,
       "Slot": "Body",
       "Graphic": "body/male/dark2"
+    },
+    {
+      "Chance": 100,
+      "Slot": "Torso",
+      "Graphic": "torso/shirts/longsleeve/male/brown_longsleeve"
+    },
+    {
+      "Chance": 100,
+      "Slot": "Legs",
+      "Graphic": "legs/pants/male/red_pants_male"
     }
   ]
 }
