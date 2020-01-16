@@ -9,8 +9,6 @@ import (
 	"strings"
 )
 
-var lpcSprites = make(map[string]SpriteKey)
-
 func LoadSprites() {
 	for key, path := range SpritePaths() {
 		img, _, err := ebitenutil.NewImageFromFile(path, ebiten.FilterDefault)
@@ -19,7 +17,6 @@ func LoadSprites() {
 		}
 		AddImageToKey(img, key)
 	}
-	lpcSprites = make(map[string]SpriteKey)
 	for folderName, folderPath := range LPCSpriteFolders() {
 		directoryPath, _ := filepath.Abs(folderPath)
 		walkErr := filepath.Walk(directoryPath, func(path string, info os.FileInfo, walkErr error) error {
@@ -40,8 +37,8 @@ func LoadSprites() {
 			}
 			img, _, err := ebitenutil.NewImageFromFile(path, ebiten.FilterDefault)
 			_, fileName := filepath.Split(path)
-			key := AddImage(img)
-			lpcSprites[(folderName + strings.Replace(fileName, ".png", "", -1))] = key
+			name := folderName + strings.Replace(fileName, ".png", "", -1)
+			AddLpcImage(img, name)
 			return walkErr
 		})
 		if walkErr != nil {

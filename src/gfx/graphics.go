@@ -4,6 +4,7 @@ import "github.com/hajimehoshi/ebiten"
 
 type Graphics struct {
 	images        map[SpriteKey]*ebiten.Image
+	lpcSpriteKeys map[string]SpriteKey
 	imageKeyCount SpriteKey
 }
 
@@ -12,8 +13,8 @@ var graphics = &Graphics{}
 func NewGraphics() *Graphics {
 	graphics = &Graphics{}
 	graphics.images = make(map[SpriteKey]*ebiten.Image)
+	graphics.lpcSpriteKeys = make(map[string]SpriteKey)
 	graphics.imageKeyCount = 10000
-	spriteToKeyMap = make(map[string]SpriteKey)
 	LoadSprites()
 	LoadGfxFolder("buildings")
 	LoadGfxFolder("vegetation")
@@ -28,6 +29,12 @@ func AddImage(image *ebiten.Image) SpriteKey {
 	return graphics.imageKeyCount
 }
 
+func AddLpcImage(image *ebiten.Image, name string) SpriteKey {
+	key := AddImage(image)
+	graphics.lpcSpriteKeys[name] = key
+	return key
+}
+
 func AddImageToKey(image *ebiten.Image, key SpriteKey) {
 	graphics.images[key] = image
 }
@@ -37,7 +44,7 @@ func GetImage(key SpriteKey) *ebiten.Image {
 }
 
 func GetLpcKey(name string) SpriteKey {
-	return lpcSprites[name]
+	return graphics.lpcSpriteKeys[name]
 }
 
 func GetLpcComposite(composite []SpriteKey) SpriteKey {
