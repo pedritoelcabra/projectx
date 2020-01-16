@@ -2,6 +2,7 @@ package gfx
 
 import (
 	"github.com/hajimehoshi/ebiten"
+	"log"
 	"strconv"
 )
 
@@ -44,6 +45,9 @@ func AddImageToKey(image *ebiten.Image, key SpriteKey) {
 }
 
 func GetImage(key SpriteKey) *ebiten.Image {
+	if _, ok := graphics.images[key]; !ok {
+		log.Fatal("Could not find Sprite by key: " + strconv.Itoa(int(key)))
+	}
 	return graphics.images[key]
 }
 
@@ -79,4 +83,12 @@ func BuildLpcComposite(composite []SpriteKey) SpriteKey {
 		baseImage.DrawImage(GetImage(composite[i]), op)
 	}
 	return AddLpcImage(baseImage, GetCompositeKey(composite))
+}
+
+func LpcCompositeSlotOrder() []string {
+	return []string{
+		"Body",
+		"Torso",
+		"Legs",
+	}
 }

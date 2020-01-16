@@ -109,9 +109,10 @@ func (u *Unit) Init() {
 
 func (u *Unit) SetGraphics() {
 	var spriteComposite []gfx.SpriteKey
-	for slot, graphicName := range u.Graphics {
-		spriteComposite = append(spriteComposite, gfx.GetLpcKey(graphicName))
-		_ = slot
+	for _, slotName := range gfx.LpcCompositeSlotOrder() {
+		if slotValue, ok := u.Graphics[slotName]; ok {
+			spriteComposite = append(spriteComposite, gfx.GetLpcKey(slotValue))
+		}
 	}
 	u.spriteKey = gfx.GetLpcComposite(spriteComposite)
 	u.Sprite = gfx.NewLpcSprite(u.spriteKey)
