@@ -52,10 +52,31 @@ func GetLpcKey(name string) SpriteKey {
 }
 
 func GetLpcComposite(composite []SpriteKey) SpriteKey {
+	lpcKey := GetLpcKey(GetCompositeKey(composite))
+	if lpcKey == 0 {
+		return BuildLpcComposite(composite)
+	}
+	return lpcKey
+}
+
+func GetCompositeKey(composite []SpriteKey) string {
 	compositeKey := ""
 	for i := 0; i < len(composite); i++ {
 		compositeKey += strconv.Itoa(int(composite[i]))
 	}
-	lpcKey := GetLpcKey(compositeKey)
-	return lpcKey
+	return compositeKey
+}
+
+func BuildLpcComposite(composite []SpriteKey) SpriteKey {
+	if len(composite) == 0 {
+		return 0
+	}
+	firstImage := GetImage(composite[0])
+	width, height := firstImage.Size()
+	baseImage, _ := ebiten.NewImage(width, height, ebiten.FilterDefault)
+	for i := 0; i < len(composite); i++ {
+		op := &ebiten.DrawImageOptions{}
+		baseImage.DrawImage(GetImage(composite[i]), op)
+	}
+	return AddLpcImage(baseImage, GetCompositeKey(composite))
 }
