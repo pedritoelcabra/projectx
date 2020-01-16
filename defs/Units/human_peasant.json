@@ -2,9 +2,29 @@
   "Name": "Peasant",
   "Equipments": [
     {
-      "Chance": 100,
+      "Chance": 20,
+      "Slot": "Body",
+      "Graphic": "body/male/light"
+    },
+    {
+      "Chance": 20,
       "Slot": "Body",
       "Graphic": "body/male/tanned"
+    },
+    {
+      "Chance": 20,
+      "Slot": "Body",
+      "Graphic": "body/male/tanned2"
+    },
+    {
+      "Chance": 20,
+      "Slot": "Body",
+      "Graphic": "body/male/dark"
+    },
+    {
+      "Chance": 20,
+      "Slot": "Body",
+      "Graphic": "body/male/dark2"
     }
   ]
 }

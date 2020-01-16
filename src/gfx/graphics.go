@@ -1,6 +1,9 @@
 package gfx
 
-import "github.com/hajimehoshi/ebiten"
+import (
+	"github.com/hajimehoshi/ebiten"
+	"strconv"
+)
 
 type Graphics struct {
 	images        map[SpriteKey]*ebiten.Image
@@ -32,6 +35,7 @@ func AddImage(image *ebiten.Image) SpriteKey {
 func AddLpcImage(image *ebiten.Image, name string) SpriteKey {
 	key := AddImage(image)
 	graphics.lpcSpriteKeys[name] = key
+	graphics.lpcSpriteKeys[strconv.Itoa(int(key))] = key
 	return key
 }
 
@@ -48,5 +52,10 @@ func GetLpcKey(name string) SpriteKey {
 }
 
 func GetLpcComposite(composite []SpriteKey) SpriteKey {
-	return composite[0]
+	compositeKey := ""
+	for i := 0; i < len(composite); i++ {
+		compositeKey += strconv.Itoa(int(composite[i]))
+	}
+	lpcKey := GetLpcKey(compositeKey)
+	return lpcKey
 }

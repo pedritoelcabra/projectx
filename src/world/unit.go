@@ -49,13 +49,6 @@ func NewUnit(templateName string, location tiling.Coord) *Unit {
 	return aUnit
 }
 
-func (u *Unit) SetEquipmentGraphics(defs *defs.UnitDef) {
-	u.Graphics = make(map[string]string)
-	for _, def := range defs.Equipments {
-		u.Graphics[def.Slot] = def.Graphic
-	}
-}
-
 func (u *Unit) DrawSprite(screen *gfx.Screen) {
 	u.Sprite.DrawSprite(screen, u.X, u.Y)
 }
@@ -122,6 +115,16 @@ func (u *Unit) SetGraphics() {
 	}
 	u.spriteKey = gfx.GetLpcComposite(spriteComposite)
 	u.Sprite = gfx.NewLpcSprite(u.spriteKey)
+}
+
+func (u *Unit) SetEquipmentGraphics(unitDefinition *defs.UnitDef) {
+	u.Graphics = make(map[string]string)
+	for _, def := range unitDefinition.Equipments {
+		if _, ok := u.Graphics[def.Slot]; ok {
+			continue
+		}
+		u.Graphics[def.Slot] = defs.ResolveGraphicChance(unitDefinition.Equipments, def.Slot)
+	}
 }
 
 func (u *Unit) Update(tick int, grid *Grid) {

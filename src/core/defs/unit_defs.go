@@ -2,6 +2,7 @@ package defs
 
 import (
 	"encoding/json"
+	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"log"
 	"os"
@@ -18,6 +19,28 @@ type EquipmentItemDef struct {
 	Slot       string
 	Graphic    string
 	GraphicKey gfx.SpriteKey
+}
+
+func ResolveGraphicChance(equipments []EquipmentItemDef, slot string) string {
+	totalPoints := 0
+	for _, def := range equipments {
+		if def.Slot != slot {
+			continue
+		}
+		totalPoints += def.Chance
+	}
+	selected := randomizer.RandomInt(0, totalPoints)
+	for _, def := range equipments {
+		if def.Slot != slot {
+			continue
+		}
+		if selected < def.Chance {
+			return def.Graphic
+		}
+		selected -= def.Chance
+	}
+	log.Fatal("Unable to select random Equipment for slot " + slot)
+	return ""
 }
 
 func UnitDefs() map[string]*UnitDef {
