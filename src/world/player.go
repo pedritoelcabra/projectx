@@ -2,6 +2,7 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/src/gfx"
+	"github.com/pedritoelcabra/projectx/src/world/tiling"
 )
 
 type PlayerDirection int
@@ -24,7 +25,7 @@ type Player struct {
 func NewPlayer() *Player {
 	aPlayer := &Player{}
 	aPlayer.Init()
-	aPlayer.unit = NewUnitOld()
+	aPlayer.unit = NewUnit("Player", tiling.NewCoord(0, 0))
 	aPlayer.unit.Name = "You"
 	aPlayer.unit.SetSpeed(10)
 	return aPlayer

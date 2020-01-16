@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 var spriteMap = make(map[SpriteKey]*ebiten.Image)
@@ -19,15 +20,22 @@ func GetSprite(key SpriteKey) *ebiten.Image {
 	return spriteMap[key]
 }
 
+func GetLpcKey(name string) SpriteKey {
+	return lpcSprites[name]
+}
+
+func GetLpcComposite(composite []SpriteKey) SpriteKey {
+	return composite[0]
+}
+
 func LoadSprites() {
 	spriteMap = make(map[SpriteKey]*ebiten.Image)
-	for _, path := range SpritePaths() {
+	for key, path := range SpritePaths() {
 		img, _, err := ebitenutil.NewImageFromFile(path, ebiten.FilterDefault)
 		if err != nil {
 			log.Fatal(err)
 		}
-		key := len(spriteMap)
-		spriteMap[SpriteKey(key)] = img
+		spriteMap[key] = img
 	}
 	lpcSprites = make(map[string]SpriteKey)
 	for folderName, folderPath := range LPCSpriteFolders() {
@@ -48,11 +56,11 @@ func LoadSprites() {
 			if filepath.Ext(path) != ".png" {
 				return nil
 			}
+			spriteKeyCount++
 			img, _, err := ebitenutil.NewImageFromFile(path, ebiten.FilterDefault)
 			_, fileName := filepath.Split(path)
-			key := SpriteKey(len(spriteMap))
-			spriteMap[key] = img
-			lpcSprites[(folderName + fileName)] = key
+			spriteMap[SpriteKey(spriteKeyCount)] = img
+			lpcSprites[(folderName + strings.Replace(fileName, ".png", "", -1))] = SpriteKey(spriteKeyCount)
 			return walkErr
 		})
 		if walkErr != nil {
@@ -63,9 +71,7 @@ func LoadSprites() {
 
 func SpritePaths() map[SpriteKey]string {
 	return map[SpriteKey]string{
-		BodyMaleLight:  "resources/Universal-LPC-spritesheet/body/male/light.png",
-		BodyMaleTanned: "resources/Universal-LPC-spritesheet/body/male/tanned.png",
-		HexTerrain1:    "resources/tiles/wesnoth1.png",
+		HexTerrain1: "resources/tiles/wesnoth1.png",
 	}
 }
 

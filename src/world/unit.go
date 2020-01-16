@@ -1,11 +1,13 @@
 package world
 
 import (
+	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/world/container"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/world/utils"
+	"log"
 	"math"
 )
 
@@ -13,42 +15,45 @@ type UnitKey int
 type UnitMap map[UnitKey]*Unit
 
 type Unit struct {
-	Id         UnitKey
-	Sprite     gfx.Sprite `json:"-"`
-	SpriteName gfx.SpriteKey
-	X          float64
-	Y          float64
-	DestX      float64
-	DestY      float64
-	Moving     bool
-	Speed      float64
-	Data       *container.Container
-	Size       float64
-	Name       string
-}
-
-func NewUnitOld() *Unit {
-	aUnit := &Unit{}
-	aUnit.Init()
-	aUnit.Speed = 100
-	aUnit.Size = float64(gfx.DefaultCollisionSize)
-	aUnit.Data = container.NewContainer()
-	aUnit.Id = theWorld.AddUnit(aUnit)
-	return aUnit
+	Id        UnitKey
+	Sprite    gfx.Sprite `json:"-"`
+	Unit      *ebiten.Image
+	spriteKey gfx.SpriteKey
+	Graphics  map[string]string
+	X         float64
+	Y         float64
+	DestX     float64
+	DestY     float64
+	Moving    bool
+	Speed     float64
+	Data      *container.Container
+	Size      float64
+	Name      string
 }
 
 func NewUnit(templateName string, location tiling.Coord) *Unit {
 	template := defs.UnitDefs()[templateName]
+	if template == nil {
+		log.Fatal("Invalid Unit Template: " + templateName)
+	}
 	aUnit := &Unit{}
 	aUnit.Name = template.Name
 	aUnit.X = float64(location.X())
 	aUnit.Y = float64(location.Y())
+	aUnit.SetEquipmentGraphics(template)
 	aUnit.Init()
 	aUnit.Speed = 100
 	aUnit.Size = float64(gfx.DefaultCollisionSize)
 	aUnit.Data = container.NewContainer()
 	aUnit.Id = theWorld.AddUnit(aUnit)
 	return aUnit
+}
+
+func (u *Unit) SetEquipmentGraphics(defs *defs.UnitDef) {
+	u.Graphics = make(map[string]string)
+	for _, def := range defs.Equipments {
+		u.Graphics[def.Slot] = def.Graphic
+	}
 }
 
 func (u *Unit) DrawSprite(screen *gfx.Screen) {
@@ -106,8 +111,17 @@ func (u *Unit) CollidesWith(x, y float64) bool {
 }
 
 func (u *Unit) Init() {
-	u.SpriteName = gfx.BodyMaleLight
-	u.Sprite = gfx.NewLpcSprite(u.SpriteName)
+	u.SetGraphics()
+}
+
+func (u *Unit) SetGraphics() {
+	var spriteComposite []gfx.SpriteKey
+	for slot, graphicName := range u.Graphics {
+		spriteComposite = append(spriteComposite, gfx.GetLpcKey(graphicName))
+		_ = slot
+	}
+	u.spriteKey = gfx.GetLpcComposite(spriteComposite)
+	u.Sprite = gfx.NewLpcSprite(u.spriteKey)
 }
 
 func (u *Unit) Update(tick int, grid *Grid) {
