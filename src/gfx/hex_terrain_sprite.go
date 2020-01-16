@@ -57,10 +57,10 @@ func SetUpHexTerrainOffsets() {
 
 func DrawHexTerrain(x, y float64, terrain int, screen *Screen, op *ebiten.DrawImageOptions) {
 	op.GeoM.Translate(x, y)
-	screen.DrawImage(GetSprite(HexTerrain1).SubImage(hexTerrainTypeMap[terrainToHex[terrain]]).(*ebiten.Image), op)
+	screen.DrawImage(GetImage(HexTerrain1).SubImage(hexTerrainTypeMap[terrainToHex[terrain]]).(*ebiten.Image), op)
 }
 
 func DrawHexTerrainToImage(x, y float64, terrain int, image *ebiten.Image, op *ebiten.DrawImageOptions) {
 	op.GeoM.Translate(x, y)
-	image.DrawImage(GetSprite(HexTerrain1).SubImage(hexTerrainTypeMap[terrainToHex[terrain]]).(*ebiten.Image), op)
+	image.DrawImage(GetImage(HexTerrain1).SubImage(hexTerrainTypeMap[terrainToHex[terrain]]).(*ebiten.Image), op)
 }

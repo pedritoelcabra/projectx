@@ -75,7 +75,7 @@ func (s *LpcSprite) DrawSprite(screen *Screen, x, y float64) {
 }
 
 func (s *LpcSprite) getFrame() *ebiten.Image {
-	return GetSprite(s.key).SubImage(s.getRect()).(*ebiten.Image)
+	return GetImage(s.key).SubImage(s.getRect()).(*ebiten.Image)
 }
 
 func (s *LpcSprite) getRect() image.Rectangle {
