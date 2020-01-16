@@ -2,6 +2,7 @@ package defs
 
 import (
 	"encoding/json"
+	"github.com/pedritoelcabra/projectx/src/gfx"
 	"log"
 	"os"
 	"path/filepath"
@@ -13,9 +14,10 @@ type UnitDef struct {
 }
 
 type EquipmentItemDef struct {
-	Chance  int
-	Slot    string
-	Graphic string
+	Chance     int
+	Slot       string
+	Graphic    string
+	GraphicKey gfx.SpriteKey
 }
 
 func UnitDefs() map[string]*UnitDef {
