@@ -1,6 +1,12 @@
 package gfx
 
 type spriteFacing int
+type SpriteKey int
+
+const (
+	_ SpriteKey = iota
+	HexTerrain1
+)
 
 const (
 	FaceUp spriteFacing = iota
