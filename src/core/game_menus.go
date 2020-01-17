@@ -136,8 +136,13 @@ func (g *game) BuildContextMenu(x, y int) *gui.Menu {
 	unitButton.OnPressed = func(b *gui.Button) {
 		world.NewUnit("Peasant", clickedCoord)
 	}
-
 	aMenu.AddButton(unitButton)
+
+	unitButton2 := gui.NewButton(buttonSize, "Add Wolf")
+	unitButton2.OnPressed = func(b *gui.Button) {
+		world.NewUnit("Wolf", clickedCoord)
+	}
+	aMenu.AddButton(unitButton2)
 
 	aMenu.SetTopPadding(y)
 	aMenu.SetLeftPadding(x)

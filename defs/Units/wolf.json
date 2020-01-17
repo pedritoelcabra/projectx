@@ -1,0 +1,10 @@
+{
+  "Name": "Wolf",
+  "Equipments": [
+    {
+      "Chance": 100,
+      "Slot": "Body",
+      "Graphic": "body/male/wolf"
+    }
+  ]
+}
