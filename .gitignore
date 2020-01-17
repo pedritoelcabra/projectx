@@ -2,9 +2,6 @@
 .git/*
 projectx
 projectx.exe
-resources/Universal-LPC-spritesheet/**
-resources/Universal-LPC-spritesheet
-
 */*.pxs
 */*.prof
 *.txt
