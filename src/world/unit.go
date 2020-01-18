@@ -27,6 +27,7 @@ type Unit struct {
 	Size       float64
 	Name       string
 	Attributes *Attributes
+	Brain      *Brain
 }
 
 func NewUnit(templateName string, location tiling.Coord) *Unit {
@@ -40,8 +41,9 @@ func NewUnit(templateName string, location tiling.Coord) *Unit {
 	aUnit.Y = float64(location.Y())
 	aUnit.Attributes = NewAttributes(template.Attributes)
 	aUnit.SetEquipmentGraphics(template)
-	aUnit.Init()
 	aUnit.Size = float64(gfx.DefaultCollisionSize)
+	aUnit.Brain = NewBrain()
+	aUnit.Init()
 	aUnit.Id = theWorld.AddUnit(aUnit)
 	return aUnit
 }
@@ -98,6 +100,7 @@ func (u *Unit) CollidesWith(x, y float64) bool {
 
 func (u *Unit) Init() {
 	u.SetGraphics()
+	u.Brain.SetOwner(u)
 }
 
 func (u *Unit) SetGraphics() {
@@ -122,6 +125,7 @@ func (u *Unit) SetEquipmentGraphics(unitDefinition *defs.UnitDef) {
 }
 
 func (u *Unit) Update(tick int, grid *Grid) {
+	u.Brain.ProcessState()
 	if u.Moving {
 		oldCoord := tiling.PixelFToTileC(u.GetPos())
 		oldTile := grid.Tile(oldCoord)

@@ -38,6 +38,7 @@
     }
   ],
   "Attributes" : {
-    "Speed" : 100
+    "Speed" : 100,
+    "UpdateFrequency" : 60
   }
 }

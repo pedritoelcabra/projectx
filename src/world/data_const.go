@@ -31,4 +31,5 @@ const (
 
 	Vision
 	Speed
+	UpdateFrequency
 )

@@ -8,6 +8,7 @@
     }
   ],
   "Attributes" : {
-    "Speed" : 20
+    "Speed" : 20,
+    "UpdateFrequency" : 0
   }
 }
