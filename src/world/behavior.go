@@ -1,6 +1,7 @@
 package world
 
 import (
+	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	"log"
 	"strconv"
 )
@@ -30,6 +31,9 @@ const (
 )
 
 func (b *Brain) ProcessState() {
+	if b.owner.IsBusy() {
+		return
+	}
 	if b.owner.GetF(UpdateFrequency) == 0.0 {
 		return
 	}
@@ -58,7 +62,12 @@ func (b *Brain) ProcessState() {
 }
 
 func (b *Brain) Idle() {
-
+	x := int(b.owner.GetX())
+	y := int(b.owner.GetY())
+	reach := 10 * int(b.owner.GetF(Speed))
+	newX := randomizer.RandomInt(x-reach, x+reach)
+	newY := randomizer.RandomInt(y-reach, y+reach)
+	b.owner.SetDestination(float64(newX), float64(newY))
 }
 
 func (b *Brain) Chase() {

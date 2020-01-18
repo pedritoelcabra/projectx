@@ -59,8 +59,6 @@ func (u *Unit) ShouldDraw() bool {
 func (u *Unit) SetPosition(x, y float64) {
 	u.X = x
 	u.Y = y
-	u.DestX = x
-	u.DestY = y
 	u.CheckIfMoving()
 }
 
@@ -124,6 +122,13 @@ func (u *Unit) SetEquipmentGraphics(unitDefinition *defs.UnitDef) {
 	}
 }
 
+func (u *Unit) IsBusy() bool {
+	if u.Moving {
+		return true
+	}
+	return false
+}
+
 func (u *Unit) Update(tick int, grid *Grid) {
 	u.Brain.ProcessState()
 	if u.Moving {
@@ -141,6 +146,7 @@ func (u *Unit) Update(tick int, grid *Grid) {
 			newTile := grid.Tile(newCoord)
 			if newTile.IsImpassable() {
 				canMove = false
+				u.StopMovement()
 			}
 		}
 		if canMove {
@@ -154,6 +160,12 @@ func (u *Unit) CheckIfMoving() {
 		u.Moving = true
 		return
 	}
+	u.Moving = false
+}
+
+func (u *Unit) StopMovement() {
+	u.DestY = u.X
+	u.DestY = u.Y
 	u.Moving = false
 }
 
