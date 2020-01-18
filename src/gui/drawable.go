@@ -2,10 +2,7 @@ package gui
 
 import (
 	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/text"
-	"golang.org/x/image/font"
 	"image"
-	"strings"
 )
 
 type drawable interface {
@@ -135,49 +132,9 @@ func (b *Button) draw(gui *Gui, box image.Rectangle) {
 }
 
 func (t *TextBox) draw(gui *Gui, box image.Rectangle) {
-	offsetDrawBox(&t.drawBox, &box, &t.box)
-	w := t.getWidth()
-	h := t.getHeight()
-	if t.contentBuf == nil {
-		t.contentBuf, _ = ebiten.NewImage(w, h, ebiten.FilterDefault)
+	if !t.hasDrawnText {
+		t.BuildTextBoxImage(gui, box)
 	}
-
-	t.contentBuf.Clear()
-
-	maxWidth := 0
-	maxHeight := 0
-	for i, line := range strings.Split(t.text, "\n") {
-		x := 0
-		y := 0 + i*lineHeight + lineHeight - (lineHeight-gui.uiFontMHeight)/2
-		if y < -lineHeight {
-			continue
-		}
-
-		currentBounds, _ := font.BoundString(gui.uiFont, line)
-		currentWidth := currentBounds.Max.X.Ceil()
-		currentHeight := -currentBounds.Min.Y.Ceil()
-
-		if currentHeight > maxHeight {
-			maxHeight = currentHeight
-		}
-		if currentWidth > maxWidth {
-			maxWidth = currentWidth
-		}
-
-		text.Draw(t.contentBuf, line, gui.uiFont, x, y, t.fontColor)
-	}
-
-	if t.vCenter && maxHeight < h {
-		t.drawBox.Min.Y += (h - maxHeight) / 2
-	}
-
-	if t.hCenter && maxWidth < w {
-		t.drawBox.Min.X += (w - maxWidth) / 2
-	}
-
-	t.drawBox.Min.X += t.leftPadding
-	t.drawBox.Min.Y += t.topPadding
-
 	op := &ebiten.DrawImageOptions{}
 	gui.drawImage(t.contentBuf, t.drawBox, op)
 }

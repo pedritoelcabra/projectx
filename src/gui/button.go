@@ -45,12 +45,12 @@ func NewButton(box image.Rectangle, text string) *Button {
 	aButton := &Button{}
 	aButton.text = text
 	aButton.box = box
-	aButton.textBoxImg = &TextBox{}
-	aButton.textBoxImg.text = text
-	aButton.textBoxImg.box = box
+	aButton.textBoxImg = NewTextBox()
+	aButton.textBoxImg.SetText(text)
+	aButton.textBoxImg.SetBox(box)
 	aButton.textBoxImg.vCenter = true
 	aButton.textBoxImg.hCenter = true
-	aButton.textBoxImg.fontColor = color.Black
+	aButton.textBoxImg.SetColor(color.Black)
 	aButton.buttonImage = imageTypeButton
 	return aButton
 }
