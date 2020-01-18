@@ -27,7 +27,6 @@ func NewPlayer() *Player {
 	aPlayer.Init()
 	aPlayer.unit = NewUnit("Player", tiling.NewCoord(0, 0))
 	aPlayer.unit.Name = "You"
-	aPlayer.unit.SetSpeed(10)
 	return aPlayer
 }
 
@@ -95,14 +94,6 @@ func (p *Player) Get(key int) int {
 	return p.unit.Get(key)
 }
 
-func (p *Player) GetF(key int) float64 {
-	return p.unit.GetF(key)
-}
-
 func (p *Player) Set(key, value int) {
 	p.unit.Set(key, value)
-}
-
-func (p *Player) SetF(key int, value float64) {
-	p.unit.SetF(key, value)
 }

@@ -36,5 +36,8 @@
       "Slot": "Legs",
       "Graphic": "legs/pants/male/red_pants_male"
     }
-  ]
+  ],
+  "Attributes" : {
+    "Speed" : 100
+  }
 }

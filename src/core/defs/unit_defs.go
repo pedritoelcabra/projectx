@@ -12,6 +12,7 @@ import (
 type UnitDef struct {
 	Name       string
 	Equipments []EquipmentItemDef
+	Attributes map[string]int
 }
 
 type EquipmentItemDef struct {
@@ -19,6 +20,7 @@ type EquipmentItemDef struct {
 	Slot       string
 	Graphic    string
 	GraphicKey gfx.SpriteKey
+	Attributes map[string]int
 }
 
 func ResolveGraphicChance(equipments []EquipmentItemDef, slot string) string {

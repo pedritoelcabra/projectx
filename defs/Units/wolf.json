@@ -6,5 +6,8 @@
       "Slot": "Body",
       "Graphic": "body/male/wolf"
     }
-  ]
+  ],
+  "Attributes" : {
+    "Speed" : 100
+  }
 }

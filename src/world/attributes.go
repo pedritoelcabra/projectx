@@ -5,30 +5,28 @@ import (
 	"log"
 )
 
-const (
-	Vision AttributeKey = iota
-	Speed
-)
-
-type AttributeKey int
-
 type AttributeMap map[string]int
 
 type Attributes struct {
-	Data container.Container
+	Data *container.Container
 }
 
 func NewAttributes(initialValues AttributeMap) *Attributes {
 	anAttributes := &Attributes{}
+	anAttributes.Data = container.NewContainer()
 	anAttributes.SetValues(initialValues)
 	return anAttributes
 }
 
-func (a *Attributes) Set(key AttributeKey, value int) {
+func (a *Attributes) Set(key int, value int) {
 	a.Data.Set(int(key), value)
 }
 
-func (a *Attributes) Get(key AttributeKey) int {
+func (a *Attributes) Apply(key int, value int) {
+	a.Data.Set(int(key), value+a.Data.Get(int(key)))
+}
+
+func (a *Attributes) Get(key int) int {
 	return a.Data.Get(int(key))
 }
 
@@ -38,7 +36,13 @@ func (a *Attributes) SetValues(values AttributeMap) {
 	}
 }
 
-func GetAttributeKey(name string) AttributeKey {
+func (a *Attributes) ApplyValues(values AttributeMap) {
+	for key, value := range values {
+		a.Apply(GetAttributeKey(key), value)
+	}
+}
+
+func GetAttributeKey(name string) int {
 	switch name {
 	case "Vision":
 		return Vision

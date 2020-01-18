@@ -28,4 +28,7 @@ const (
 	RenderMode
 	CurrentDrawnUnits
 	CurrentDrawnBuildings
+
+	Vision
+	Speed
 )
