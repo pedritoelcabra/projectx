@@ -89,11 +89,3 @@ func (p *Player) SetMovement(direction PlayerDirection, value bool) {
 		p.MovingRight = value
 	}
 }
-
-func (p *Player) Get(key int) int {
-	return p.unit.Get(key)
-}
-
-func (p *Player) Set(key, value int) {
-	p.unit.Set(key, value)
-}

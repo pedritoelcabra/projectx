@@ -54,7 +54,7 @@ func FromSeed(seed int) *World {
 	w.PlayerUnit = NewPlayer()
 	w.PlayerUnit.SetPosition(400, 400)
 	playerFaction := NewFaction("Player")
-	w.PlayerUnit.Set(FactionId, int(playerFaction.GetId()))
+	w.PlayerUnit.unit.SetFaction(playerFaction)
 
 	w.Init()
 	return w

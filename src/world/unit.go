@@ -24,7 +24,6 @@ type Unit struct {
 	DestX      float64
 	DestY      float64
 	Moving     bool
-	Speed      float64
 	Size       float64
 	Name       string
 	Attributes *Attributes
@@ -130,8 +129,7 @@ func (u *Unit) Update(tick int, grid *Grid) {
 		if movementCost == 0 {
 			movementCost = 1.0
 		}
-		unitSpeed := u.Get(Speed)
-		movementSpeed := float64(unitSpeed) / movementCost
+		movementSpeed := u.GetF(Speed) / movementCost
 		newX, newY := utils.AdvanceAlongLine(u.X, u.Y, u.DestX, u.DestY, movementSpeed)
 		newCoord := tiling.PixelFToTileC(newX, newY)
 		canMove := true
@@ -175,10 +173,22 @@ func (u *Unit) GetFaction() *Faction {
 	return theWorld.GetFaction(FactionKey(u.Get(FactionId)))
 }
 
+func (u *Unit) SetFaction(faction *Faction) {
+	u.Set(FactionId, int(faction.GetId()))
+}
+
 func (u *Unit) Get(key int) int {
 	return u.Attributes.Get(int(key))
 }
 
+func (u *Unit) GetF(key int) float64 {
+	return u.Attributes.GetF(key)
+}
+
 func (u *Unit) Set(key, value int) {
 	u.Attributes.Set(key, value)
+}
+
+func (u *Unit) SetF(key int, value float64) {
+	u.Attributes.SetF(key, value)
 }

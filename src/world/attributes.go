@@ -22,6 +22,10 @@ func (a *Attributes) Set(key int, value int) {
 	a.Data.Set(int(key), value)
 }
 
+func (a *Attributes) SetF(key int, value float64) {
+	a.Data.SetF(key, value)
+}
+
 func (a *Attributes) Apply(key int, value int) {
 	a.Data.Set(int(key), value+a.Data.Get(int(key)))
 }
@@ -30,9 +34,13 @@ func (a *Attributes) Get(key int) int {
 	return a.Data.Get(int(key))
 }
 
+func (a *Attributes) GetF(key int) float64 {
+	return a.Data.GetF(key)
+}
+
 func (a *Attributes) SetValues(values AttributeMap) {
 	for key, value := range values {
-		a.Set(GetAttributeKey(key), value)
+		a.SetF(GetAttributeKey(key), float64(value))
 	}
 }
 
