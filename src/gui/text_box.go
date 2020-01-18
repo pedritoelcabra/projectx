@@ -46,6 +46,9 @@ func (t *TextBox) SetColor(color color.Gray16) {
 }
 
 func (t *TextBox) SetText(text string) {
+	if text == t.text {
+		return
+	}
 	t.text = text
 	t.hasDrawnText = false
 }
