@@ -39,6 +39,7 @@
   ],
   "Attributes" : {
     "Speed" : 5,
+    "Vision" : 200,
     "UpdateFrequency" : 60
   }
 }

@@ -99,6 +99,7 @@ func (u *Unit) CollidesWith(x, y float64) bool {
 func (u *Unit) Init() {
 	u.SetGraphics()
 	u.Brain.SetOwner(u)
+	u.Brain.Init()
 }
 
 func (u *Unit) SetGraphics() {

@@ -174,3 +174,7 @@ func (w *World) Update() {
 func (w *World) GetScreen() *gfx.Screen {
 	return w.screen
 }
+
+func (w *World) GetUnits() UnitMap {
+	return w.Entities.Units
+}

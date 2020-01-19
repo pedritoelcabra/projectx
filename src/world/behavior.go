@@ -1,7 +1,9 @@
 package world
 
 import (
+	"github.com/pedritoelcabra/projectx/src/core/logger"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
+	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"log"
 	"strconv"
 )
@@ -11,13 +13,14 @@ type Brain struct {
 	Type         int
 	CurrentState int
 	LastUpdated  int
-	Target       UnitKey
+	TargetKey    UnitKey
+	target       *Unit
 }
 
 func NewBrain() *Brain {
 	aBrain := &Brain{}
 	aBrain.CurrentState = Idle
-	aBrain.Target = 0
+	aBrain.TargetKey = 0
 	aBrain.LastUpdated = 0
 	return aBrain
 }
@@ -44,6 +47,7 @@ func (b *Brain) ProcessState() {
 		return
 	}
 	b.LastUpdated = theWorld.GetTick()
+	b.ResolveState()
 	switch b.CurrentState {
 	case Idle:
 		b.Idle()
@@ -51,17 +55,17 @@ func (b *Brain) ProcessState() {
 	case Chase:
 		b.Chase()
 		return
-	case Flee:
-		b.Flee()
-		return
 	case Attack:
 		b.Attack()
 		return
-	case Patrol:
-		b.Patrol()
-		return
 	}
 	log.Fatal("Unknown state: " + strconv.Itoa(b.CurrentState))
+}
+
+func (b *Brain) Init() {
+	if b.TargetKey >= 0 && b.target == nil {
+		b.target = theWorld.GetUnit(b.TargetKey)
+	}
 }
 
 func (b *Brain) Idle() {
@@ -76,22 +80,61 @@ func (b *Brain) Idle() {
 	b.owner.SetDestination(float64(newX), float64(newY))
 }
 
-func (b *Brain) Chase() {
-
+func (b *Brain) ResolveState() {
+	nearestEnemy := b.HasEnemyNearby()
+	if nearestEnemy >= 0 {
+		b.CurrentState = Chase
+		b.TargetKey = nearestEnemy
+		b.target = theWorld.GetUnit(nearestEnemy)
+		return
+	}
+	b.CurrentState = Idle
 }
 
-func (b *Brain) Flee() {
-
+func (b *Brain) Chase() {
+	logger.General("Chasing "+theWorld.GetUnit(b.TargetKey).GetName(), nil)
+	if !b.DistanceWithinVision(b.DistanceToUnit(b.target)) {
+		logger.General("Lost target "+theWorld.GetUnit(b.TargetKey).GetName(), nil)
+		b.target = nil
+		b.TargetKey = -1
+		b.CurrentState = Idle
+		b.LastUpdated = 0
+		return
+	}
+	b.owner.SetDestination(b.target.GetX(), b.target.GetY())
 }
 
 func (b *Brain) Attack() {
 
 }
 
-func (b *Brain) Patrol() {
-
-}
-
 func (b *Brain) SetOwner(unit *Unit) {
 	b.owner = unit
+}
+
+func (b *Brain) HasEnemyNearby() UnitKey {
+	closestEnemy := UnitKey(-1)
+	closestDistance := 999999
+	for key, unit := range theWorld.GetUnits() {
+		if key == b.owner.Id {
+			continue
+		}
+		thisDistance := b.DistanceToUnit(unit)
+		if !b.DistanceWithinVision(thisDistance) {
+			continue
+		}
+		if thisDistance < closestDistance {
+			closestDistance = thisDistance
+		}
+		closestEnemy = key
+	}
+	return closestEnemy
+}
+
+func (b *Brain) DistanceToUnit(u *Unit) int {
+	return tiling.NewCoordF(b.owner.GetPos()).ChebyshevDist(tiling.NewCoordF(u.GetPos()))
+}
+
+func (b *Brain) DistanceWithinVision(distance int) bool {
+	return distance < int(b.owner.GetF(Vision))
 }
