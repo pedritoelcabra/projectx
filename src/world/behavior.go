@@ -28,6 +28,9 @@ const (
 	Flee
 	Attack
 	Patrol
+
+	IdleMoveDistance = 10
+	IdleMoveChance   = 25
 )
 
 func (b *Brain) ProcessState() {
@@ -62,9 +65,12 @@ func (b *Brain) ProcessState() {
 }
 
 func (b *Brain) Idle() {
+	if !randomizer.PercentageRoll(25) {
+		return
+	}
 	x := int(b.owner.GetX())
 	y := int(b.owner.GetY())
-	reach := 10 * int(b.owner.GetF(Speed))
+	reach := IdleMoveDistance * int(b.owner.GetF(Speed))
 	newX := randomizer.RandomInt(x-reach, x+reach)
 	newY := randomizer.RandomInt(y-reach, y+reach)
 	b.owner.SetDestination(float64(newX), float64(newY))
