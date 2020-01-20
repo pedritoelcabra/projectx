@@ -187,6 +187,9 @@ func (b *Brain) HasEnemyNearby() UnitKey {
 		if !b.DistanceWithinVision(thisDistance) {
 			continue
 		}
+		if !b.owner.GetFaction().IsHostileTowards(unit.GetFaction()) {
+			continue
+		}
 		if thisDistance < closestDistance {
 			closestDistance = thisDistance
 		}
