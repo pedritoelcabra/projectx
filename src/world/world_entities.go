@@ -1,5 +1,7 @@
 package world
 
+import "log"
+
 type Entities struct {
 	Sectors   SectorMap
 	Factions  FactionMap
@@ -66,6 +68,16 @@ func (w *World) GetFaction(key FactionKey) *Faction {
 		return nil
 	}
 	return w.Entities.Factions[key]
+}
+
+func (w *World) GetFactionByName(name string) *Faction {
+	for _, faction := range w.Entities.Factions {
+		if faction.GetName() == name {
+			return faction
+		}
+	}
+	log.Fatal("Invalid faction with name " + name)
+	return nil
 }
 
 func (w *World) UnitsCollidingWith(x, y float64) UnitMap {

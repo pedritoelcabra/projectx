@@ -9,6 +9,8 @@
   ],
   "Attributes" : {
     "Speed" : 8,
-    "Vision" : 400
+    "Vision" : 400,
+    "Size" : 32,
+    "AttackRange" : 64
   }
 }

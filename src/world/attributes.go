@@ -56,6 +56,10 @@ func GetAttributeKey(name string) int {
 		return Vision
 	case "Speed":
 		return Speed
+	case "Size":
+		return Size
+	case "AttackRange":
+		return AttackRange
 	}
 	log.Fatal("Invalid attribute: " + name)
 	return 0

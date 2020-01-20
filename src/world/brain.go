@@ -5,6 +5,7 @@ import (
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
+	"github.com/pedritoelcabra/projectx/src/world/utils"
 	"log"
 	"strconv"
 )
@@ -42,13 +43,15 @@ const (
 )
 
 func (b *Brain) ProcessState() {
+	if b.BusyTime > 0 {
+		b.BusyTime--
+	}
 	if !b.NeedsUpdating() {
 		return
 	}
 	b.SetUpdateFrequency()
-	logger.General("Updating unit "+strconv.Itoa(int(b.owner.Id))+" on tick "+strconv.Itoa(theWorld.GetTick()), nil)
+	//logger.General("Updating unit "+strconv.Itoa(int(b.owner.Id))+" on tick "+strconv.Itoa(theWorld.GetTick()), nil)
 	b.LastUpdated = theWorld.GetTick()
-	b.ResolveState()
 	switch b.CurrentState {
 	case Idle:
 		b.Idle()
@@ -94,15 +97,37 @@ func (b *Brain) Init() {
 }
 
 func (b *Brain) Idle() {
+	b.ResolveState()
+	if b.CurrentState != Idle {
+		b.ForceUpdate()
+		return
+	}
+	if b.BusyTime > 0 {
+		return
+	}
 	if !randomizer.PercentageRoll(25) {
 		return
 	}
+	b.BusyTime = 100
 	x := int(b.owner.GetX())
 	y := int(b.owner.GetY())
 	reach := IdleMoveDistance * int(b.owner.GetF(Speed))
 	newX := randomizer.RandomInt(x-reach, x+reach)
 	newY := randomizer.RandomInt(y-reach, y+reach)
 	b.owner.SetDestination(float64(newX), float64(newY))
+}
+
+func (b *Brain) ForceUpdate() {
+	b.LastUpdated = 0
+	b.BusyTime = 0
+}
+
+func (b *Brain) ResetState() {
+	b.target = nil
+	b.TargetKey = -1
+	b.CurrentState = Idle
+	b.LastUpdated = 0
+	b.ResolveState()
 }
 
 func (b *Brain) ResolveState() {
@@ -117,20 +142,34 @@ func (b *Brain) ResolveState() {
 }
 
 func (b *Brain) Chase() {
-	logger.General("Chasing "+theWorld.GetUnit(b.TargetKey).GetName(), nil)
-	if !b.DistanceWithinVision(b.DistanceToUnit(b.target)) {
+	distance := b.DistanceToUnit(b.target)
+	logger.General("Chasing "+theWorld.GetUnit(b.TargetKey).GetName()+" distance "+strconv.Itoa(distance), nil)
+	if !b.DistanceWithinVision(distance) {
 		logger.General("Lost target "+theWorld.GetUnit(b.TargetKey).GetName(), nil)
-		b.target = nil
-		b.TargetKey = -1
-		b.CurrentState = Idle
-		b.LastUpdated = 0
+		b.ResetState()
 		return
 	}
-	b.owner.SetDestination(b.target.GetX(), b.target.GetY())
+	if b.DistanceWithinAttackRange(distance) {
+		b.CurrentState = Attack
+		b.ForceUpdate()
+		return
+	}
+	b.owner.SetDestination(b.PositionToAttackTarget())
+}
+
+func (b *Brain) PositionToAttackTarget() (x, y float64) {
+	return utils.AdvanceAlongLine(b.target.GetX(), b.target.GetY(), b.owner.GetX(), b.owner.GetY(), b.owner.GetF(AttackRange)-2.0)
 }
 
 func (b *Brain) Attack() {
-
+	logger.General("Attacking "+theWorld.GetUnit(b.TargetKey).GetName(), nil)
+	distance := b.DistanceToUnit(b.target)
+	if !b.DistanceWithinAttackRange(distance) {
+		b.CurrentState = Chase
+		b.ForceUpdate()
+		return
+	}
+	b.owner.StopMovement()
 }
 
 func (b *Brain) SetOwner(unit *Unit) {
@@ -162,4 +201,9 @@ func (b *Brain) DistanceToUnit(u *Unit) int {
 
 func (b *Brain) DistanceWithinVision(distance int) bool {
 	return distance < int(b.owner.GetF(Vision))
+}
+
+func (b *Brain) DistanceWithinAttackRange(distance int) bool {
+	attackRange := int(b.owner.GetF(AttackRange))
+	return distance <= attackRange
 }

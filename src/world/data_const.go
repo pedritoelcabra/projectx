@@ -31,4 +31,6 @@ const (
 
 	Vision
 	Speed
+	Size
+	AttackRange
 )

@@ -41,7 +41,6 @@ func NewUnit(templateName string, location tiling.Coord) *Unit {
 	aUnit.Y = float64(location.Y())
 	aUnit.Attributes = NewAttributes(template.Attributes)
 	aUnit.SetEquipmentGraphics(template)
-	aUnit.Size = float64(gfx.DefaultCollisionSize)
 	aUnit.Brain = NewBrain()
 	aUnit.Init()
 	aUnit.Id = theWorld.AddUnit(aUnit)
@@ -92,12 +91,8 @@ func (u *Unit) CheckOrientation() {
 	u.Sprite.SetFacing(gfx.FaceDown)
 }
 
-func (u *Unit) SetSize(size float64) {
-	u.Size = size
-}
-
 func (u *Unit) CollidesWith(x, y float64) bool {
-	return utils.CalculateDistance(u.X, u.Y, x, y) < u.Size
+	return utils.CalculateDistance(u.X, u.Y, x, y) < u.GetF(Size)
 }
 
 func (u *Unit) Init() {

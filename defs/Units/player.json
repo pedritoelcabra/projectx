@@ -8,6 +8,8 @@
     }
   ],
   "Attributes" : {
-    "Speed" : 20
+    "Speed" : 20,
+    "Size" : 32,
+    "AttackRange" : 32
   }
 }

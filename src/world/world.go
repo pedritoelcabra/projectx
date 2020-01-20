@@ -55,6 +55,8 @@ func FromSeed(seed int) *World {
 	w.PlayerUnit.SetPosition(400, 400)
 	playerFaction := NewFaction("Player")
 	w.PlayerUnit.unit.SetFaction(playerFaction)
+	animals := NewFaction("Wild Animals")
+	animals.DefaultRelation = -100
 
 	w.Init()
 	return w
