@@ -9,7 +9,6 @@
   ],
   "Attributes" : {
     "Speed" : 8,
-    "UpdateFrequency" : 60,
     "Vision" : 400
   }
 }

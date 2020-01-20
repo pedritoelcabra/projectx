@@ -48,6 +48,10 @@ func NewUnit(templateName string, location tiling.Coord) *Unit {
 	return aUnit
 }
 
+func (u *Unit) IsPlayer() bool {
+	return u.Id == 0
+}
+
 func (u *Unit) DrawSprite(screen *gfx.Screen) {
 	u.Sprite.DrawSprite(screen, u.X, u.Y)
 }
@@ -121,13 +125,6 @@ func (u *Unit) SetEquipmentGraphics(unitDefinition *defs.UnitDef) {
 		}
 		u.Graphics[def.Slot] = defs.ResolveGraphicChance(unitDefinition.Equipments, def.Slot)
 	}
-}
-
-func (u *Unit) IsBusy() bool {
-	if u.Moving {
-		return true
-	}
-	return false
 }
 
 func (u *Unit) Update(tick int, grid *Grid) {

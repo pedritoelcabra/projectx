@@ -3,18 +3,21 @@ package world
 import (
 	"github.com/pedritoelcabra/projectx/src/core/logger"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
+	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"log"
 	"strconv"
 )
 
 type Brain struct {
-	owner        *Unit
-	Type         int
-	CurrentState int
-	LastUpdated  int
-	TargetKey    UnitKey
-	target       *Unit
+	owner           *Unit
+	Type            int
+	CurrentState    int
+	LastUpdated     int
+	TargetKey       UnitKey
+	BusyTime        int
+	UpdateFrequency int
+	target          *Unit
 }
 
 func NewBrain() *Brain {
@@ -22,6 +25,8 @@ func NewBrain() *Brain {
 	aBrain.CurrentState = Idle
 	aBrain.TargetKey = 0
 	aBrain.LastUpdated = 0
+	aBrain.BusyTime = 0
+	aBrain.UpdateFrequency = 1
 	return aBrain
 }
 
@@ -37,15 +42,11 @@ const (
 )
 
 func (b *Brain) ProcessState() {
-	if b.owner.IsBusy() {
+	if !b.NeedsUpdating() {
 		return
 	}
-	if b.owner.GetF(UpdateFrequency) == 0.0 {
-		return
-	}
-	if b.LastUpdated+int(b.owner.GetF(UpdateFrequency)) > theWorld.GetTick() {
-		return
-	}
+	b.SetUpdateFrequency()
+	logger.General("Updating unit "+strconv.Itoa(int(b.owner.Id))+" on tick "+strconv.Itoa(theWorld.GetTick()), nil)
 	b.LastUpdated = theWorld.GetTick()
 	b.ResolveState()
 	switch b.CurrentState {
@@ -60,6 +61,30 @@ func (b *Brain) ProcessState() {
 		return
 	}
 	log.Fatal("Unknown state: " + strconv.Itoa(b.CurrentState))
+}
+
+func (b *Brain) SetUpdateFrequency() {
+	distanceToPlayer := b.DistanceToUnit(theWorld.PlayerUnit.unit)
+	if distanceToPlayer <= gfx.ScreenWidth {
+		b.UpdateFrequency = 10
+		return
+	}
+	if distanceToPlayer <= 5*gfx.ScreenWidth {
+		b.UpdateFrequency = 60
+		return
+	}
+	b.UpdateFrequency = 300
+
+}
+
+func (b *Brain) NeedsUpdating() bool {
+	if b.owner.IsPlayer() {
+		return false
+	}
+	if b.LastUpdated+int(b.UpdateFrequency) > theWorld.GetTick() {
+		return false
+	}
+	return true
 }
 
 func (b *Brain) Init() {

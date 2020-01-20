@@ -56,8 +56,6 @@ func GetAttributeKey(name string) int {
 		return Vision
 	case "Speed":
 		return Speed
-	case "UpdateFrequency":
-		return UpdateFrequency
 	}
 	log.Fatal("Invalid attribute: " + name)
 	return 0
