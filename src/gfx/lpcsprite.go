@@ -2,10 +2,14 @@ package gfx
 
 import (
 	"github.com/hajimehoshi/ebiten"
+	"github.com/pedritoelcabra/projectx/src/world/utils"
 	"image"
+	"log"
+	"strconv"
 )
 
 type lpcAnimation int
+type lpcTween int
 
 const (
 	spriteWidth          = 64
@@ -18,6 +22,15 @@ const (
 )
 
 const (
+	AttackAnimationTween lpcTween = iota
+)
+
+const (
+	AttackAnimationForward  float64 = 3.0
+	AttackAnimationBackward         = 2.0
+)
+
+const (
 	Casting lpcAnimation = iota
 	Thrusting
 	Walking
@@ -25,6 +38,54 @@ const (
 	Shooting
 	Dying
 )
+
+type Tween struct {
+	TweenType lpcTween
+	X         float64
+	Y         float64
+	Progress  int
+	Speed     int
+}
+
+func NewAttackAnimation(x, y float64, speed int) *Tween {
+	aTween := &Tween{}
+	aTween.TweenType = AttackAnimationTween
+	aTween.X = x
+	aTween.Y = y
+	aTween.Speed = speed
+	aTween.Progress = 0
+	return aTween
+}
+
+func (t *Tween) apply() (x, y float64, ended bool) {
+	if t.TweenType == AttackAnimationTween {
+		return t.ApplyAttackAnimation()
+	}
+	log.Fatal("Executing invalid tween: " + strconv.Itoa(int(t.TweenType)))
+	return 0.0, 0.0, true
+}
+
+func (t *Tween) ApplyAttackAnimation() (x, y float64, ended bool) {
+	t.Progress++
+	ended = false
+	x, y = 0.0, 0.0
+	endFrame := t.Speed / 2
+	goFrameEnd := t.Speed / 6
+	if goFrameEnd == 0 || endFrame == 0 {
+		return 0.0, 0.0, true
+	}
+	if t.Progress >= endFrame {
+		return 0.0, 0.0, true
+	}
+	if t.Progress < goFrameEnd {
+		progress := AttackAnimationForward * float64(t.Progress)
+		x, y = utils.AdvanceAlongLine(0, 0, t.X, t.Y, progress)
+	} else {
+		progress := AttackAnimationBackward * float64(t.Progress-goFrameEnd)
+		x, y = utils.AdvanceAlongLine(t.X, t.Y, 0, 0, progress)
+	}
+	return x, y, false
+}
 
 var animationLength = map[lpcAnimation]int{
 	Casting:   7,
@@ -42,6 +103,7 @@ type LpcSprite struct {
 	facing    spriteFacing
 	animation lpcAnimation
 	frame     int
+	tween     *Tween
 }
 
 func SetUpLpcSpritesOffsets() {
@@ -70,7 +132,15 @@ func NewLpcSprite(key SpriteKey) *LpcSprite {
 
 func (s *LpcSprite) DrawSprite(screen *Screen, x, y float64) {
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM = ebiten.TranslateGeo(x-centerXAxis, y-centerYAxis)
+	tweenX, tweenY := 0.0, 0.0
+	if s.tween != nil {
+		ended := false
+		tweenX, tweenY, ended = s.tween.apply()
+		if ended {
+			s.tween = nil
+		}
+	}
+	op.GeoM = ebiten.TranslateGeo(x-centerXAxis+tweenX, y-centerYAxis+tweenY)
 	screen.DrawImage(s.getFrame(), op)
 }
 
@@ -85,4 +155,8 @@ func (s *LpcSprite) getRect() image.Rectangle {
 
 func (s *LpcSprite) SetFacing(direction spriteFacing) {
 	s.facing = direction
+}
+
+func (s *LpcSprite) QueueAttackAnimation(x, y float64, speed int) {
+	s.tween = NewAttackAnimation(x, y, speed)
 }

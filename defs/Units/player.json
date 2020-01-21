@@ -10,6 +10,9 @@
   "Attributes" : {
     "Speed" : 20,
     "Size" : 32,
-    "AttackRange" : 32
+    "AttackRange" : 32,
+    "AttackSpeed" : 60,
+    "AttackDamage" : 10,
+    "HitPoints" : 100
   }
 }

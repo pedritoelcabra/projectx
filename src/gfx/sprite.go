@@ -18,4 +18,5 @@ const (
 type Sprite interface {
 	DrawSprite(*Screen, float64, float64)
 	SetFacing(direction spriteFacing)
+	QueueAttackAnimation(x, y float64, speed int)
 }

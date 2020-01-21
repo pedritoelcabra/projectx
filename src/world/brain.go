@@ -45,6 +45,7 @@ const (
 func (b *Brain) ProcessState() {
 	if b.BusyTime > 0 {
 		b.BusyTime--
+		return
 	}
 	if !b.NeedsUpdating() {
 		return
@@ -100,9 +101,6 @@ func (b *Brain) Idle() {
 	b.ResolveState()
 	if b.CurrentState != Idle {
 		b.ForceUpdate()
-		return
-	}
-	if b.BusyTime > 0 {
 		return
 	}
 	if !randomizer.PercentageRoll(25) {
@@ -162,14 +160,23 @@ func (b *Brain) PositionToAttackTarget() (x, y float64) {
 }
 
 func (b *Brain) Attack() {
-	logger.General("Attacking "+theWorld.GetUnit(b.TargetKey).GetName(), nil)
 	distance := b.DistanceToUnit(b.target)
 	if !b.DistanceWithinAttackRange(distance) {
 		b.CurrentState = Chase
 		b.ForceUpdate()
 		return
 	}
+	b.PerformAttackOn(b.target)
+}
+
+func (b *Brain) PerformAttackOn(target *Unit) {
 	b.owner.StopMovement()
+	attackSpeed := int(b.owner.GetF(AttackSpeed))
+	b.BusyTime = attackSpeed
+	b.LastUpdated = 0
+	x, y := target.GetPos()
+	b.owner.QueueAttackAnimation(x, y, attackSpeed)
+	logger.General("Attacking "+target.GetName(), nil)
 }
 
 func (b *Brain) SetOwner(unit *Unit) {

@@ -63,3 +63,7 @@ func (h *HexSprite) DrawSprite(screen *Screen, x, y float64) {
 func (h *HexSprite) SetFacing(direction spriteFacing) {
 
 }
+
+func (h *HexSprite) QueueAttackAnimation(x, y float64, speed int) {
+
+}

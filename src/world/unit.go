@@ -166,6 +166,10 @@ func (u *Unit) GetPos() (x, y float64) {
 	return u.X, u.Y
 }
 
+func (u *Unit) QueueAttackAnimation(x, y float64, speed int) {
+	u.Sprite.QueueAttackAnimation((x-u.GetX())/2, (y-u.GetY())/2, speed)
+}
+
 func (u *Unit) GetX() float64 {
 	return u.X
 }

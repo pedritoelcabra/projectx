@@ -33,4 +33,7 @@ const (
 	Speed
 	Size
 	AttackRange
+	AttackDamage
+	AttackSpeed
+	HitPoints
 )
