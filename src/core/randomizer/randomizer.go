@@ -32,7 +32,7 @@ func RandomInt(min, max int) int {
 		offsetResult := RandomInt(min+offset, max+offset)
 		return min + offsetResult
 	}
-	randomInt := Randomizer.rand.Intn(max)
+	randomInt := Randomizer.rand.Intn(max - min)
 	return min + randomInt
 }
 
