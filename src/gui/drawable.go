@@ -112,12 +112,32 @@ func (m *Menu) draw(gui *Gui, box image.Rectangle) {
 	drawSpace.Min.Y += m.topPadding
 	drawSpace.Min.X += m.leftPadding
 	drawSpace.Min.X += m.centeredOffset(box)
+	currentBatchMaxDimension := 0
 	for _, component := range m.components {
+		width := component.getWidth()
+		height := component.getHeight()
+		if m.horizontalMenu {
+			if drawSpace.Min.X+width >= box.Max.X {
+				drawSpace.Min.X = box.Min.X + m.leftPadding + m.centeredOffset(box)
+				drawSpace.Min.Y += currentBatchMaxDimension
+			}
+			if currentBatchMaxDimension < height {
+				currentBatchMaxDimension = height
+			}
+		} else {
+			if drawSpace.Min.Y+height >= box.Max.Y {
+				drawSpace.Min.Y = box.Min.Y + m.topPadding
+				drawSpace.Min.Y += currentBatchMaxDimension
+			}
+			if currentBatchMaxDimension < width {
+				currentBatchMaxDimension = width
+			}
+		}
 		component.draw(gui, drawSpace)
 		if m.horizontalMenu {
-			drawSpace.Min.X += component.getWidth()
+			drawSpace.Min.X += width
 		} else {
-			drawSpace.Min.Y += component.getHeight()
+			drawSpace.Min.Y += height
 		}
 	}
 }

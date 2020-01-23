@@ -2,12 +2,14 @@ package core
 
 import (
 	"github.com/pedritoelcabra/projectx/src/core/file"
+	"github.com/pedritoelcabra/projectx/src/core/logger"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/gui"
 	"github.com/pedritoelcabra/projectx/src/world"
 	"image"
 	"image/color"
 	"log"
+	"strconv"
 )
 
 const (
@@ -116,16 +118,26 @@ func (g *game) BuildLog() *gui.Menu {
 
 func (g *game) BuildBuildings() *gui.Menu {
 	buildingMenu := gui.NewMenu(g.Gui)
+	buildingMenu.SetHorizontalMenu(true)
 
 	titleSize := 100
 	aBox := gui.NewTextBox()
-	aBox.SetBox(image.Rect(0, 0, gfx.ScreenWidth, titleSize))
+	aBox.SetBox(image.Rect(0, 0, gfx.ScreenWidth/2, titleSize))
 	aBox.SetColor(color.White)
 	aBox.SetText("Buildings")
 	aBox.SetTextSize(gui.FontSize24)
 	aBox.SetHCentered(true)
-
 	buildingMenu.AddTextBox(aBox)
+
+	buttonSize := image.Rect(0, 0, 100, 100)
+	for i := 0; i < 30; i++ {
+		buildingName := "Building" + strconv.Itoa(i)
+		buildingButton := gui.NewButton(buttonSize, buildingName)
+		buildingButton.OnPressed = func(b *gui.Button) {
+			logger.General(buildingName+" selected", nil)
+		}
+		buildingMenu.AddButton(buildingButton)
+	}
 
 	buildingMenu.SetDisabled(true)
 	return buildingMenu
