@@ -41,6 +41,14 @@ func (t *TextBox) SetTopPadding(value int) {
 	t.topPadding = value
 }
 
+func (t *TextBox) SetHCentered(centered bool) {
+	t.hCenter = centered
+}
+
+func (t *TextBox) SetVCentered(centered bool) {
+	t.vCenter = centered
+}
+
 func (t *TextBox) SetColor(color color.Gray16) {
 	t.fontColor = color
 }

@@ -114,9 +114,9 @@ func (g *game) TogglePause() {
 
 func (g *game) UnPause() {
 	g.isPaused = false
-	g.Gui.SetDisabled("start", true)
-	g.Gui.SetDisabled("context", true)
-	g.Gui.SetDisabled("game", false)
+	g.Gui.SetDisabled(StartMenu, true)
+	g.Gui.SetDisabled(ContextMenu, true)
+	g.Gui.SetDisabled(InGameMenu, false)
 }
 
 func (g *game) HasLoadedWorld() bool {
@@ -132,9 +132,10 @@ func (g *game) InitializeNewWorld() {
 
 func (g *game) Pause() {
 	g.isPaused = true
-	g.Gui.SetDisabled("context", true)
-	g.Gui.SetDisabled("game", true)
-	g.Gui.SetDisabled("start", false)
+	g.Gui.SetDisabled(ContextMenu, true)
+	g.Gui.SetDisabled(InGameMenu, true)
+	g.Gui.SetDisabled(BuildingMenu, true)
+	g.Gui.SetDisabled(StartMenu, false)
 }
 
 func (g *game) UpdatePlayerMovement(dir world.PlayerDirection, value bool) {

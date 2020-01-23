@@ -10,11 +10,21 @@ import (
 	"log"
 )
 
+const (
+	StartMenu    string = "start"
+	DebugMenu    string = "debug"
+	InGameMenu   string = "game"
+	LogMenu      string = "log"
+	BuildingMenu string = "building"
+	ContextMenu  string = "context"
+)
+
 func (g *game) InitMenus() {
-	g.Gui.AddMenu("start", g.BuildStartMenu())
-	g.Gui.AddMenu("debug", g.BuildDebugMenu())
-	g.Gui.AddMenu("game", g.BuildInGameMenu())
-	g.Gui.AddMenu("log", g.BuildLog())
+	g.Gui.AddMenu(StartMenu, g.BuildStartMenu())
+	g.Gui.AddMenu(DebugMenu, g.BuildDebugMenu())
+	g.Gui.AddMenu(InGameMenu, g.BuildInGameMenu())
+	g.Gui.AddMenu(LogMenu, g.BuildLog())
+	g.Gui.AddMenu(BuildingMenu, g.BuildBuildings())
 }
 
 func (g *game) BuildStartMenu() *gui.Menu {
@@ -104,6 +114,22 @@ func (g *game) BuildLog() *gui.Menu {
 	return logMenu
 }
 
+func (g *game) BuildBuildings() *gui.Menu {
+	buildingMenu := gui.NewMenu(g.Gui)
+
+	titleSize := 100
+	aBox := gui.NewTextBox()
+	aBox.SetBox(image.Rect(0, 0, gfx.ScreenWidth, titleSize))
+	aBox.SetColor(color.White)
+	aBox.SetText("Buildings")
+	aBox.SetHCentered(true)
+
+	buildingMenu.AddTextBox(aBox)
+
+	buildingMenu.SetDisabled(true)
+	return buildingMenu
+}
+
 func (g *game) BuildContextMenu(x, y int) *gui.Menu {
 	aMenu := gui.NewMenu(g.Gui)
 	if g.isPaused {
@@ -165,17 +191,11 @@ func (g *game) BuildInGameMenu() *gui.Menu {
 	}
 	aMenu.AddButton(mainMenuButton)
 
-	aButton := gui.NewButton(buttonSize, "Height Map")
+	aButton := gui.NewButton(buttonSize, "Buildings")
 	aButton.OnPressed = func(b *gui.Button) {
-		g.World.SetRenderMode(world.RenderModeHeight)
+		g.Gui.ToggleDisabled(BuildingMenu)
 	}
 	aMenu.AddButton(aButton)
-
-	bButton := gui.NewButton(buttonSize, "Basic Terrain")
-	bButton.OnPressed = func(b *gui.Button) {
-		g.World.SetRenderMode(world.RenderModeBasic)
-	}
-	aMenu.AddButton(bButton)
 
 	aMenu.SetDisabled(true)
 
