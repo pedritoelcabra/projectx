@@ -122,7 +122,7 @@ func (g *game) BuildBuildings() *gui.Menu {
 
 	titleSize := 100
 	aBox := gui.NewTextBox()
-	aBox.SetBox(image.Rect(0, 0, gfx.ScreenWidth/2, titleSize))
+	aBox.SetBox(image.Rect(0, 0, gfx.ScreenWidth, titleSize))
 	aBox.SetColor(color.White)
 	aBox.SetText("Buildings")
 	aBox.SetTextSize(gui.FontSize24)
@@ -130,8 +130,8 @@ func (g *game) BuildBuildings() *gui.Menu {
 	buildingMenu.AddTextBox(aBox)
 
 	buttonSize := image.Rect(0, 0, 100, 100)
-	for i := 0; i < 30; i++ {
-		buildingName := "Building" + strconv.Itoa(i)
+	for i := 1; i < 30; i++ {
+		buildingName := "Building " + strconv.Itoa(i)
 		buildingButton := gui.NewButton(buttonSize, buildingName)
 		buildingButton.OnPressed = func(b *gui.Button) {
 			logger.General(buildingName+" selected", nil)

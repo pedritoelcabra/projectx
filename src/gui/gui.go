@@ -17,6 +17,7 @@ const (
 type FontSize int
 type FontMap map[FontSize]font.Face
 type FontMinHeights map[FontSize]int
+type MenuMap map[string]*Menu
 
 const (
 	FontSize8  FontSize = 8
@@ -30,8 +31,9 @@ const (
 )
 
 type Gui struct {
-	box   image.Rectangle
-	menus map[string]*Menu
+	box      image.Rectangle
+	menus    MenuMap
+	menuKeys []string
 
 	uiImage       *ebiten.Image
 	screen        *ebiten.Image
@@ -42,7 +44,8 @@ type Gui struct {
 func New(x, y, w, h int) *Gui {
 	aGui := &Gui{}
 	aGui.box = image.Rect(x, y, w, h)
-	aGui.menus = make(map[string]*Menu)
+	aGui.menus = make(MenuMap)
+	aGui.menuKeys = []string{}
 
 	img, _, err := ebitenutil.NewImageFromFile("resources/ui.png", ebiten.FilterDefault)
 	if err != nil {
@@ -85,6 +88,7 @@ func (g *Gui) ToggleDebug() {
 
 func (g *Gui) AddMenu(key string, menu *Menu) {
 	g.menus[key] = menu
+	g.menuKeys = append(g.menuKeys, key)
 }
 
 func (g *Gui) GetMenu(key string) *Menu {
@@ -122,8 +126,8 @@ func (g *Gui) Update() {
 
 func (g *Gui) Draw(screen *ebiten.Image) {
 	g.screen = screen
-	for _, menu := range g.menus {
-		menu.draw(g, g.box)
+	for _, menuKey := range g.menuKeys {
+		g.menus[menuKey].draw(g, g.box)
 	}
 }
 
