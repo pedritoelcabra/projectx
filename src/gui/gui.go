@@ -14,14 +14,29 @@ const (
 	lineHeight = 16
 )
 
+type FontSize int
+type FontMap map[FontSize]font.Face
+type FontMinHeights map[FontSize]int
+
+const (
+	FontSize8  FontSize = 8
+	FontSize12          = 12
+	FontSize16          = 16
+	FontSize20          = 20
+	FontSize24          = 24
+	FontSize28          = 28
+	FontSize36          = 36
+	FontSize48          = 48
+)
+
 type Gui struct {
 	box   image.Rectangle
 	menus map[string]*Menu
 
 	uiImage       *ebiten.Image
 	screen        *ebiten.Image
-	uiFont        font.Face
-	uiFontMHeight int
+	uiFonts       FontMap
+	uiFontHeights FontMinHeights
 }
 
 func New(x, y, w, h int) *Gui {
@@ -35,20 +50,32 @@ func New(x, y, w, h int) *Gui {
 	}
 	aGui.uiImage = img
 
+	aGui.uiFonts = make(FontMap)
+	aGui.uiFontHeights = make(FontMinHeights)
+	aGui.LoadFontSize(FontSize8)
+	aGui.LoadFontSize(FontSize12)
+	aGui.LoadFontSize(FontSize16)
+	aGui.LoadFontSize(FontSize20)
+	aGui.LoadFontSize(FontSize24)
+	aGui.LoadFontSize(FontSize28)
+	aGui.LoadFontSize(FontSize36)
+	aGui.LoadFontSize(FontSize48)
+	return aGui
+}
+
+func (g *Gui) LoadFontSize(size FontSize) {
 	tt, err := truetype.Parse(goregular.TTF)
 	if err != nil {
 		log.Fatal(err)
 	}
-	aGui.uiFont = truetype.NewFace(tt, &truetype.Options{
-		Size:    12,
+	g.uiFonts[size] = truetype.NewFace(tt, &truetype.Options{
+		Size:    float64(size),
 		DPI:     72,
 		Hinting: font.HintingFull,
 	})
 
-	b, _, _ := aGui.uiFont.GlyphBounds('M')
-	aGui.uiFontMHeight = (b.Max.Y - b.Min.Y).Ceil()
-
-	return aGui
+	b, _, _ := g.uiFonts[size].GlyphBounds('M')
+	g.uiFontHeights[size] = (b.Max.Y - b.Min.Y).Ceil()
 }
 
 func (g *Gui) ToggleDebug() {

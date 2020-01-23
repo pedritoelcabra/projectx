@@ -122,6 +122,7 @@ func (g *game) BuildBuildings() *gui.Menu {
 	aBox.SetBox(image.Rect(0, 0, gfx.ScreenWidth, titleSize))
 	aBox.SetColor(color.White)
 	aBox.SetText("Buildings")
+	aBox.SetTextSize(gui.FontSize24)
 	aBox.SetHCentered(true)
 
 	buildingMenu.AddTextBox(aBox)

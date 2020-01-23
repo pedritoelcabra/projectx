@@ -13,6 +13,7 @@ type TextBox struct {
 	box          image.Rectangle
 	drawBox      image.Rectangle
 	text         string
+	textSize     FontSize
 	hasDrawnText bool
 	contentBuf   *ebiten.Image
 	vCenter      bool
@@ -25,6 +26,7 @@ type TextBox struct {
 
 func NewTextBox() *TextBox {
 	aTextBox := &TextBox{}
+	aTextBox.textSize = FontSize12
 	aTextBox.hasDrawnText = false
 	return aTextBox
 }
@@ -61,6 +63,10 @@ func (t *TextBox) SetText(text string) {
 	t.hasDrawnText = false
 }
 
+func (t *TextBox) SetTextSize(size int) {
+	t.textSize = FontSize(size)
+}
+
 func (t *TextBox) BuildTextBoxImage(gui *Gui, box image.Rectangle) {
 
 	offsetDrawBox(&t.drawBox, &box, &t.box)
@@ -76,12 +82,12 @@ func (t *TextBox) BuildTextBoxImage(gui *Gui, box image.Rectangle) {
 	maxHeight := 0
 	for i, line := range strings.Split(t.text, "\n") {
 		x := 0
-		y := 0 + i*lineHeight + lineHeight - (lineHeight-gui.uiFontMHeight)/2
+		y := 0 + i*lineHeight + lineHeight - (lineHeight-gui.uiFontHeights[t.textSize])/2
 		if y < -lineHeight {
 			continue
 		}
 
-		currentBounds, _ := font.BoundString(gui.uiFont, line)
+		currentBounds, _ := font.BoundString(gui.uiFonts[t.textSize], line)
 		currentWidth := currentBounds.Max.X.Ceil()
 		currentHeight := -currentBounds.Min.Y.Ceil()
 
@@ -92,7 +98,7 @@ func (t *TextBox) BuildTextBoxImage(gui *Gui, box image.Rectangle) {
 			maxWidth = currentWidth
 		}
 
-		text.Draw(t.contentBuf, line, gui.uiFont, x, y, t.fontColor)
+		text.Draw(t.contentBuf, line, gui.uiFonts[t.textSize], x, y, t.fontColor)
 	}
 
 	if t.vCenter && maxHeight < h {
