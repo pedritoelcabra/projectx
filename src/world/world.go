@@ -6,6 +6,7 @@ import (
 	"github.com/pedritoelcabra/projectx/src/world/container"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/world/utils"
+	"log"
 	"sort"
 )
 
@@ -50,15 +51,9 @@ func FromSeed(seed int) *World {
 	w.SetSeed(seed)
 	w.Grid = NewGrid()
 	w.Entities = NewEntities()
-
 	w.PlayerUnit = NewPlayer()
-	w.PlayerUnit.SetPosition(400, 400)
-	playerFaction := NewFaction("Player")
-	w.PlayerUnit.unit.SetFaction(playerFaction)
-	animals := NewFaction("Wild Animals")
-	animals.DefaultRelation = -100
-
 	w.Init()
+	w.WorldGeneration()
 	return w
 }
 
@@ -86,6 +81,29 @@ func (w *World) GetSaveState() SaveGameData {
 	state.Grid = *w.Grid
 	state.WorldEntities = w.Entities
 	return state
+}
+
+func (w *World) WorldGeneration() {
+	playerFaction := NewFaction("Player")
+	w.PlayerUnit.unit.SetFaction(playerFaction)
+	animals := NewFaction("Wild Animals")
+	animals.DefaultRelation = -100
+
+	playerCoord := tiling.NewCoord(0, 0)
+	for i := 0; i < 100; i++ {
+		if i == 99 {
+			log.Fatal("Exceeded 100 iterations in World Gen")
+		}
+		w.Grid.ChunkGeneration(playerCoord, 0)
+		firstSector := w.GetSector(0)
+		if firstSector != nil {
+			i = 100
+			firstSector.Set(FactionId, int(playerFaction.Id))
+			firstSector.SetName("Idleville")
+			sectorCenterTile := w.Grid.Tile(firstSector.GetCenter())
+			w.PlayerUnit.SetPosition(sectorCenterTile.GetF(RenderX), sectorCenterTile.GetF(RenderY)+100)
+		}
+	}
 }
 
 func (w *World) Init() {

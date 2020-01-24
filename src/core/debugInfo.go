@@ -63,7 +63,8 @@ func (g *game) DebugInfo() string {
 		sector := g.World.GetSector(world.SectorKey(tile.Get(world.SectorId)))
 		sectorName := "No mans land"
 		if sector != nil {
-			sectorName = sector.GetName() + " owned by " + g.World.GetFaction(world.FactionKey(sector.Get(world.FactionId))).GetName()
+			factionName := g.World.GetFaction(world.FactionKey(sector.Get(world.FactionId))).GetName()
+			sectorName = sector.GetName() + " (" + factionName + ")"
 		}
 		aString += "\nSector: " + sectorName
 

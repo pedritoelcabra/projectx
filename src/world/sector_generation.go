@@ -1,10 +1,10 @@
 package world
 
 import (
-	defs2 "github.com/pedritoelcabra/projectx/src/core/defs"
+	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/logger"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
-	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
+	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"strconv"
 )
 
@@ -29,14 +29,17 @@ func (g *Grid) SpawnSector(aChunk *chunk) {
 	//logger.General("Spawned a "+template.Name+" sector in chunk: "+aChunk.Location.ToString()+" at "+centerCoord.ToString(), nil)
 }
 
-func (g *Grid) ChooseSectorTemplate(location tiling2.Coord) *defs2.SectorDef {
-	sectorDefs := defs2.SectorDefs()
-	bestDef := &defs2.SectorDef{}
+func (g *Grid) ChooseSectorTemplate(location tiling.Coord) *defs.SectorDef {
+	sectorDefs := defs.SectorDefs()
+	bestDef := &defs.SectorDef{}
 	bestDef = nil
 	bestScore := -1
 	for _, sectorDef := range sectorDefs {
 		score := sectorDef.Weight
 		score *= randomizer.RandomInt(0, 100)
+		if theWorld.GetTick() == 0 && sectorDef.Name == "Player Village" {
+			return sectorDef
+		}
 		if score > bestScore {
 			bestDef = sectorDef
 			bestScore = score
@@ -45,7 +48,7 @@ func (g *Grid) ChooseSectorTemplate(location tiling2.Coord) *defs2.SectorDef {
 	return bestDef
 }
 
-func (g *Grid) SuitableSectorCenter(aChunk *chunk) (tiling2.Coord, bool) {
+func (g *Grid) SuitableSectorCenter(aChunk *chunk) (tiling.Coord, bool) {
 	minX := aChunk.FirstTile().X() + 5
 	maxX := aChunk.FirstTile().X() + ChunkSize - 5
 	minY := aChunk.FirstTile().Y() + 5
@@ -53,7 +56,7 @@ func (g *Grid) SuitableSectorCenter(aChunk *chunk) (tiling2.Coord, bool) {
 	for attempts := 0; attempts <= 10; attempts++ {
 		randomX := randomizer.RandomInt(minX, maxX)
 		randomY := randomizer.RandomInt(minY, maxY)
-		aTile := g.Tile(tiling2.NewCoord(randomX, randomY))
+		aTile := g.Tile(tiling.NewCoord(randomX, randomY))
 		if g.TileIsSuitableForSectorCenter(aTile) {
 			return aTile.coordinates, true
 		}
@@ -68,7 +71,7 @@ func (g *Grid) TileIsSuitableForSectorCenter(aTile *Tile) bool {
 	currentImpassableTiles := 0
 	for x := aTile.X() - necessarySpace; x <= aTile.X()+necessarySpace; x++ {
 		for y := aTile.Y() - necessarySpace; y <= aTile.Y()+necessarySpace; y++ {
-			nearbyTile := g.Tile(tiling2.NewCoord(x, y))
+			nearbyTile := g.Tile(tiling.NewCoord(x, y))
 			if nearbyTile.IsImpassable() || !nearbyTile.IsLand() {
 				currentImpassableTiles++
 			}
@@ -85,7 +88,7 @@ func (g *Grid) ShouldSpawnSector(aChunk *chunk) bool {
 	radiusToCheck := 3
 	for x := aChunk.Location.X() - radiusToCheck; x <= aChunk.Location.X()+radiusToCheck; x++ {
 		for y := aChunk.Location.Y() - radiusToCheck; y <= aChunk.Location.Y()+radiusToCheck; y++ {
-			bChunk := g.Chunk(tiling2.NewCoord(x, y))
+			bChunk := g.Chunk(tiling.NewCoord(x, y))
 			if bChunk.GetSector() == nil {
 				continue
 			}

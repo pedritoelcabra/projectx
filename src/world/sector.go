@@ -104,3 +104,7 @@ func (s *Sector) Set(key, value int) {
 func (s *Sector) SetF(key int, value float64) {
 	s.Data.SetF(key, value)
 }
+
+func (s *Sector) SetName(name string) {
+	s.Name = name
+}
