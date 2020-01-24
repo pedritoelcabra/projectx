@@ -1,6 +1,7 @@
 package core
 
 import (
+	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/file"
 	"github.com/pedritoelcabra/projectx/src/core/logger"
 	"github.com/pedritoelcabra/projectx/src/gfx"
@@ -9,7 +10,6 @@ import (
 	"image"
 	"image/color"
 	"log"
-	"strconv"
 )
 
 const (
@@ -130,8 +130,8 @@ func (g *game) BuildBuildings() *gui.Menu {
 	buildingMenu.AddTextBox(aBox)
 
 	buttonSize := image.Rect(0, 0, 100, 100)
-	for i := 1; i < 30; i++ {
-		buildingName := "Building " + strconv.Itoa(i)
+	for _, def := range defs.BuildingDefs() {
+		buildingName := def.Name
 		buildingButton := gui.NewButton(buttonSize, buildingName)
 		buildingButton.OnPressed = func(b *gui.Button) {
 			logger.General(buildingName+" selected", nil)
