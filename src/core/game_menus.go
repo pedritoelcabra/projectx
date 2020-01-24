@@ -136,6 +136,8 @@ func (g *game) BuildBuildings() *gui.Menu {
 		buildingButton.OnPressed = func(b *gui.Button) {
 			logger.General(buildingName+" selected", nil)
 		}
+		buildingButton.SetImage(gfx.GetImage(gfx.GetSpriteKey(def.Graphic)))
+		buildingButton.SetVCentered(false)
 		buildingMenu.AddButton(buildingButton)
 	}
 

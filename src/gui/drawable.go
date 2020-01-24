@@ -148,6 +148,10 @@ func (b *Button) draw(gui *Gui, box image.Rectangle) {
 	}
 	offsetDrawBox(&b.drawBox, &box, &b.box)
 	gui.draw(b.drawBox, imageSrcRects[b.buttonImage])
+	if b.itemImage != nil {
+		op := &ebiten.DrawImageOptions{}
+		gui.drawImage(b.itemImage, b.drawBox, op)
+	}
 	b.textBoxImg.draw(gui, box)
 }
 

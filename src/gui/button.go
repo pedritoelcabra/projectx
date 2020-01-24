@@ -35,6 +35,7 @@ type Button struct {
 	drawBox     image.Rectangle
 	text        string
 	textBoxImg  *TextBox
+	itemImage   *ebiten.Image
 	mouseDown   bool
 	disabled    bool
 	OnPressed   func(b *Button)
@@ -57,6 +58,18 @@ func NewButton(box image.Rectangle, text string) *Button {
 
 func (b *Button) SetDisabled(value bool) {
 	b.disabled = value
+}
+
+func (b *Button) SetImage(sprite *ebiten.Image) {
+	b.itemImage = sprite
+}
+
+func (b *Button) SetHCentered(centered bool) {
+	b.textBoxImg.hCenter = centered
+}
+
+func (b *Button) SetVCentered(centered bool) {
+	b.textBoxImg.vCenter = centered
 }
 
 func (b *Button) GetDisabled() bool {
