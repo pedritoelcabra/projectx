@@ -41,7 +41,7 @@ func DirectionToBorder(dir int) int {
 func MovementCost(terrain int) float64 {
 	switch terrain {
 	case BasicHills:
-		return 2.0
+		return 1.8
 	case BasicDeepWater:
 		return 1000.0
 	case BasicMountain:

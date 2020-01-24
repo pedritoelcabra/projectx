@@ -2,8 +2,11 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/src/core/defs"
+	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	"github.com/pedritoelcabra/projectx/src/world/container"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
+	"log"
+	"math"
 	"strconv"
 )
 
@@ -29,8 +32,62 @@ func NewSector(location tiling.Coord, def *defs.SectorDef) *Sector {
 	aSector.Name = aSector.Template.Name + " " + strconv.Itoa(int(aSector.Id))
 	aSector.AddTile(aSector.Center)
 	aSector.GrowSectorToSize(def.Size, aSector.Center)
+	aSector.SpawnBuildings()
 	aSector.Init()
 	return aSector
+}
+
+func (s *Sector) SpawnBuildings() {
+	NewBuilding(s.Template.CenterBuilding, theWorld.Grid.Tile(s.Center))
+	for name, chance := range s.Template.Buildings {
+		firstSpawned := false
+		for remainingChance := chance; remainingChance > 0; {
+			spawn := false
+			def := defs.GetBuildingDef(name)
+			if def == nil {
+				log.Fatal("Invalid building name: " + name)
+			}
+			if !firstSpawned && remainingChance >= 100 {
+				remainingChance -= 100
+				spawn = true
+				firstSpawned = true
+			}
+			if !spawn {
+				thisChance := 50
+				if remainingChance < 50 {
+					thisChance = remainingChance
+				}
+				remainingChance -= thisChance
+				spawn = randomizer.PercentageRoll(thisChance)
+			}
+			if spawn {
+				s.AttemptSpawnBuilding(def)
+			}
+		}
+	}
+}
+
+func (s *Sector) AttemptSpawnBuilding(def *defs.BuildingDef) {
+	bestScore := -1000
+	bestLocation := tiling.NewCoord(0, 0)
+	for _, tileCoord := range s.Tiles {
+		tile := theWorld.Grid.Tile(tileCoord)
+		if tile.IsImpassable() || !tile.IsLand() {
+			continue
+		}
+		if tile.GetBuilding() != nil {
+			continue
+		}
+		score := randomizer.RandomInt(0, 20)
+		score -= tile.GetCoord().ChebyshevDist(s.GetCenter())
+		if score > bestScore {
+			bestScore = score
+			bestLocation = tileCoord
+		}
+	}
+	if bestScore > -1000 {
+		NewBuilding(def.Name, theWorld.Grid.Tile(bestLocation))
+	}
 }
 
 func (s *Sector) GrowSectorToSize(size int, centerCoord tiling.Coord) {
@@ -45,7 +102,7 @@ func (s *Sector) GrowSectorToSize(size int, centerCoord tiling.Coord) {
 				continue
 			}
 			path := FindPathWithOptions(centerCoord, aCoord, options)
-			if path.IsValid() && path.GetCost() <= sizeF {
+			if path.IsValid() && math.Floor(path.GetCost()) <= sizeF {
 				s.AddTile(aCoord)
 			}
 		}

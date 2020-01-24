@@ -10,6 +10,7 @@ import (
 type SectorDef struct {
 	Name           string
 	CenterBuilding string
+	Buildings      map[string]int
 	Weight         int
 	Size           int
 }

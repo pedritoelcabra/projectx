@@ -25,7 +25,6 @@ func (g *Grid) SpawnSector(aChunk *chunk) {
 	newSector.Set(FactionId, int(newFaction.GetId()))
 	tile := g.Tile(centerCoord)
 	tile.Set(Flora, 0)
-	_ = NewBuilding(template.CenterBuilding, tile)
 	//logger.General("Spawned a "+template.Name+" sector in chunk: "+aChunk.Location.ToString()+" at "+centerCoord.ToString(), nil)
 }
 

@@ -16,6 +16,10 @@ func BuildingDefs() map[string]*BuildingDef {
 	return buildingDefs
 }
 
+func GetBuildingDef(name string) *BuildingDef {
+	return buildingDefs[name]
+}
+
 var buildingDefs = make(map[string]*BuildingDef)
 
 func LoadBuildingDefs() {

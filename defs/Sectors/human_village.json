@@ -1,6 +1,10 @@
 {
   "Name": "Village",
   "CenterBuilding": "Stone House",
+  "Buildings": {
+    "Stone House": 50,
+    "Small House": 250
+  },
   "Weight": 70,
   "Size": 6
 }
