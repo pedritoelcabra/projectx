@@ -145,8 +145,9 @@ func (w *World) SetRenderMode(mode TileRenderMode) {
 }
 
 func (w *World) DrawEntities(screen *gfx.Screen) {
-	for _, e := range w.DrawableBuildings() {
-		e.DrawSprite(screen)
+	drawableBuildings := w.DrawableBuildings()
+	for i := 0; i < len(drawableBuildings); i++ {
+		drawableBuildings[i].DrawSprite(screen)
 	}
 	for key, e := range w.DrawableUnits() {
 		e.DrawSprite(screen)
@@ -156,9 +157,10 @@ func (w *World) DrawEntities(screen *gfx.Screen) {
 
 func (w *World) DrawableBuildings() []*Building {
 	var buildings []*Building
-	for _, e := range w.Entities.Buildings {
-		if e.ShouldDraw() {
-			buildings = append(buildings, e)
+	for i := 0; i < len(w.Entities.Buildings); i++ {
+		building := w.Entities.Buildings[BuildingKey(i)]
+		if building.ShouldDraw() {
+			buildings = append(buildings, building)
 		}
 	}
 	w.Data.Set(CurrentDrawnBuildings, len(buildings))
