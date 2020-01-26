@@ -65,7 +65,7 @@ func LoadFromSave(data SaveGameData) *World {
 	w.PlayerUnit = &data.Player
 	w.Entities = data.WorldEntities
 	w.Init()
-	w.Grid.ChunkGeneration(tiling.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), 0)
+	w.Grid.ChunkGeneration()
 	return w
 }
 
@@ -89,12 +89,11 @@ func (w *World) WorldGeneration() {
 	animals := NewFaction("Wild Animals")
 	animals.DefaultRelation = -100
 
-	playerCoord := tiling.NewCoord(0, 0)
 	for i := 0; i < 100; i++ {
 		if i == 99 {
 			log.Fatal("Exceeded 100 iterations in World Gen")
 		}
-		w.Grid.ChunkGeneration(playerCoord, 0)
+		w.Grid.ChunkGeneration()
 		firstSector := w.GetSector(0)
 		if firstSector != nil {
 			i = 100
@@ -185,10 +184,10 @@ func (w *World) Update() {
 	if !w.IsInitialized() {
 		return
 	}
-	w.Grid.ChunkGeneration(tiling.NewCoord(tiling.PixelFToTileI(w.PlayerUnit.GetPos())), w.GetTick())
-	w.PlayerUnit.Update(w.GetTick(), w.Grid)
+	w.Grid.ChunkGeneration()
+	w.PlayerUnit.Update()
 	for _, e := range w.Entities.Units {
-		e.Update(w.GetTick(), w.Grid)
+		e.Update()
 	}
 	w.Data.Set(Tick, w.Data.Get(Tick)+1)
 }

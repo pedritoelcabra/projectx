@@ -42,7 +42,7 @@ func (p *Player) SetPosition(x, y float64) {
 	p.unit.SetPosition(x, y)
 }
 
-func (p *Player) Update(tick int, grid *Grid) {
+func (p *Player) Update() {
 	p.UpdateDestination()
 }
 

@@ -14,12 +14,12 @@ func (g *Grid) CreateNewChunk(chunkCoord tiling.Coord) {
 	aChunk.Generated = false
 }
 
-func (g *Grid) ChunkGeneration(playerTile tiling.Coord, tick int) {
+func (g *Grid) ChunkGeneration() {
 	g.ProcessChunkGenerationQueue()
-	if tick > 100 && tick%60 > 0 {
+	if theWorld.GetTick() > 100 && theWorld.GetTick()%60 > 0 {
 		return
 	}
-	playerChunk := g.ChunkCoord(playerTile)
+	playerChunk := g.ChunkCoord(tiling.NewCoord(tiling.PixelFToTileI(theWorld.PlayerUnit.GetPos())))
 	for x := playerChunk.X() - 3; x <= playerChunk.X()+3; x++ {
 		for y := playerChunk.Y() - 3; y <= playerChunk.Y()+3; y++ {
 			chunkIndex := g.chunkIndex(x, y)

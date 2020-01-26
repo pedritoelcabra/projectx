@@ -122,11 +122,11 @@ func (u *Unit) SetEquipmentGraphics(unitDefinition *defs.UnitDef) {
 	}
 }
 
-func (u *Unit) Update(tick int, grid *Grid) {
+func (u *Unit) Update() {
 	u.Brain.ProcessState()
 	if u.Moving {
 		oldCoord := tiling.PixelFToTileC(u.GetPos())
-		oldTile := grid.Tile(oldCoord)
+		oldTile := theWorld.Grid.Tile(oldCoord)
 		movementCost := oldTile.GetF(MovementCost)
 		if movementCost == 0 {
 			movementCost = 1.0
@@ -136,7 +136,7 @@ func (u *Unit) Update(tick int, grid *Grid) {
 		newCoord := tiling.PixelFToTileC(newX, newY)
 		canMove := true
 		if oldCoord != newCoord {
-			newTile := grid.Tile(newCoord)
+			newTile := theWorld.Grid.Tile(newCoord)
 			if newTile.IsImpassable() {
 				canMove = false
 				u.StopMovement()
