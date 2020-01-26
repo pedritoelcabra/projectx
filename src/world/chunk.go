@@ -2,6 +2,9 @@ package world
 
 import (
 	"github.com/hajimehoshi/ebiten"
+	"github.com/pedritoelcabra/projectx/src/core/defs"
+	"github.com/pedritoelcabra/projectx/src/core/logger"
+	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/world/container"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
@@ -18,6 +21,8 @@ type Chunk struct {
 	terrainImage        *ebiten.Image
 	sector              *Sector
 	SectorId            SectorKey
+	units               UnitArray
+	unitsLastUpdated    int
 }
 
 var savableChunkData = []int{
@@ -29,6 +34,8 @@ func NewChunk(location tiling.Coord) *Chunk {
 	aChunk := &Chunk{}
 	aChunk.isPreloaded = false
 	aChunk.terrainImage = nil
+	aChunk.units = UnitArray{}
+	aChunk.unitsLastUpdated = 0
 	aChunk.ChunkData = container.NewContainer()
 	aChunk.Preload(location)
 	return aChunk
@@ -46,7 +53,7 @@ func (ch *Chunk) Preload(location tiling.Coord) {
 	if ch.isPreloaded {
 		return
 	}
-	ch.tiles = make([]*Tile, ChunkSize*ChunkSize)
+	ch.tiles = make([]*Tile, ChunkSizeSquare)
 	ch.Location = location
 	for x := 0; x < ChunkSize; x++ {
 		for y := 0; y < ChunkSize; y++ {
@@ -181,7 +188,60 @@ func (ch *Chunk) GenerateNPCs() {
 	if !ch.IsGenerated() {
 		return
 	}
+	if !ch.ShouldSpawnNPCs() {
+		return
+	}
+	spawnTile := ch.GetRandomTile()
+	if !ch.IsValidNPCSpawnTile(spawnTile) {
+		return
+	}
+	def := ch.ChooseRandomNPCsTemplate()
+	npc := NewUnit(def.Name, tiling.NewCoordF(spawnTile.GetRenderPos()))
+	npc.SetFaction(DefaultMonsterFaction())
+	logger.General("Generated a "+def.Name+" at "+spawnTile.GetCoord().ToString(), nil)
+}
 
+func (ch *Chunk) ChooseRandomNPCsTemplate() *defs.UnitDef {
+	return defs.GetUnitDef("Wolf")
+}
+
+func (ch *Chunk) IsValidNPCSpawnTile(tile *Tile) bool {
+	if EntityShouldDraw(tile.GetRenderPos()) {
+		return false
+	}
+	if tile.HasSector() {
+		return false
+	}
+	if !tile.IsLand() || tile.IsImpassable() {
+		return false
+	}
+	return true
+}
+
+func (ch *Chunk) GetRandomTile() *Tile {
+	return ch.tiles[randomizer.RandomInt(0, ChunkSizeSquare-1)]
+}
+
+func (ch *Chunk) ShouldSpawnNPCs() bool {
+	maxAmountOfNPCs := 1
+	return len(ch.GetUnits()) <= maxAmountOfNPCs
+}
+
+func (ch *Chunk) RegisterUnit(unit *Unit) {
+	ch.CheckUnitArray()
+	ch.units = append(ch.units, unit)
+}
+
+func (ch *Chunk) GetUnits() UnitArray {
+	ch.CheckUnitArray()
+	return ch.units
+}
+
+func (ch *Chunk) CheckUnitArray() {
+	if ch.unitsLastUpdated != theWorld.GetTick() {
+		ch.units = UnitArray{}
+		ch.unitsLastUpdated = theWorld.GetTick()
+	}
 }
 
 func ChunksAroundTile(tile tiling.Coord, radius int) []*Chunk {

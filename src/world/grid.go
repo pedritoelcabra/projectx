@@ -8,11 +8,12 @@ import (
 )
 
 const (
-	ChunkSize  = 32
-	GridSize   = 1000
-	GridOffset = 500
-	GridTiles  = 32000
-	TileOffset = 16000
+	ChunkSize       = 32
+	ChunkSizeSquare = ChunkSize * ChunkSize
+	GridSize        = 1000
+	GridOffset      = 500
+	GridTiles       = 32000
+	TileOffset      = 16000
 )
 
 type ChunkMap map[int]*Chunk

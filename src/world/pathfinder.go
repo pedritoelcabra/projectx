@@ -119,7 +119,7 @@ func (p *Path) ProcessNewNode(parent *node) {
 		}
 		newNode := p.NewNode(tile.GetCoord(), parent)
 		p.open = append(p.open, newNode)
-		if tile.Coord().Equals(p.End) {
+		if tile.GetCoord().Equals(p.End) {
 			p.closed = append(p.closed, newNode)
 			p.Valid = true
 			p.MaxLength = len(p.closed)

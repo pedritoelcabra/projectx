@@ -8,6 +8,10 @@ const (
 	RelationFriendly int = 30
 )
 
+const (
+	DefaultMonsterFactionName string = "Monsters"
+)
+
 type Faction struct {
 	Id              FactionKey
 	Name            string
@@ -58,4 +62,8 @@ func RelationIsHostile(level int) bool {
 
 func RelationIsFriendly(level int) bool {
 	return level >= RelationFriendly
+}
+
+func DefaultMonsterFaction() *Faction {
+	return theWorld.GetFactionByName(DefaultMonsterFactionName)
 }

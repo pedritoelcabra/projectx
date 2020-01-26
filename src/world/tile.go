@@ -31,16 +31,16 @@ func (t *Tile) GetCoord() tiling.Coord {
 	return t.coordinates
 }
 
+func (t *Tile) GetRenderPos() (x, y float64) {
+	return t.GetF(RenderX), t.GetF(RenderY)
+}
+
 func (t *Tile) SetBuilding(building *Building) {
 	t.Building = MakeBuildingPointer(building.GetId())
 }
 
 func (t *Tile) GetBuilding() *Building {
 	return t.Building.Get()
-}
-
-func (t *Tile) Coord() tiling.Coord {
-	return t.coordinates
 }
 
 func (t *Tile) X() int {
@@ -88,7 +88,7 @@ func (t *Tile) Recalculate() {
 	t.CalculateMovementCost()
 	t.borders = [6]bool{false}
 	t.hasAnyBorders = false
-	if t.Get(SectorId) >= 0 {
+	if t.HasSector() {
 		neighbours := tiling.NeighbouringHexes(t.coordinates)
 		for dir, neighbourCoord := range neighbours {
 			neighbourTile := theWorld.Grid.Tile(neighbourCoord)
@@ -137,4 +137,8 @@ func (t *Tile) Neighbours() [6]*Tile {
 		neighbours[key] = theWorld.Grid.Tile(coord)
 	}
 	return neighbours
+}
+
+func (t *Tile) HasSector() bool {
+	return t.Get(SectorId) >= 0
 }

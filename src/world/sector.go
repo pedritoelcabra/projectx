@@ -98,7 +98,7 @@ func (s *Sector) GrowSectorToSize(size int, centerCoord tiling.Coord) {
 	for x := centerCoord.X() - size; x <= centerCoord.X()+size; x++ {
 		for y := centerCoord.Y() - size; y <= centerCoord.Y()+size; y++ {
 			aCoord := tiling.NewCoord(x, y)
-			if theWorld.Grid.Tile(aCoord).Get(SectorId) >= 0 {
+			if theWorld.Grid.Tile(aCoord).HasSector() {
 				continue
 			}
 			path := FindPathWithOptions(centerCoord, aCoord, options)

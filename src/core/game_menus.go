@@ -181,7 +181,7 @@ func (g *game) BuildContextMenu(x, y int) *gui.Menu {
 
 	unitButton2 := gui.NewButton(buttonSize, "Add Wolf")
 	unitButton2.OnPressed = func(b *gui.Button) {
-		world.NewUnit("Wolf", clickedCoord).Set(world.FactionId, int(g.World.GetFactionByName("Wild Animals").Id))
+		world.NewUnit("Wolf", clickedCoord).SetFaction(world.DefaultMonsterFaction())
 	}
 	aMenu.AddButton(unitButton2)
 

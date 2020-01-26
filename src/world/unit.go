@@ -12,6 +12,7 @@ import (
 
 type UnitKey int
 type UnitMap map[UnitKey]*Unit
+type UnitArray []*Unit
 
 type Unit struct {
 	Id         UnitKey
@@ -125,7 +126,7 @@ func (u *Unit) SetEquipmentGraphics(unitDefinition *defs.UnitDef) {
 func (u *Unit) Update() {
 	u.Brain.ProcessState()
 	if u.Moving {
-		oldCoord := tiling.PixelFToTileC(u.GetPos())
+		oldCoord := u.GetTileCoord()
 		oldTile := theWorld.Grid.Tile(oldCoord)
 		movementCost := oldTile.GetF(MovementCost)
 		if movementCost == 0 {
@@ -164,6 +165,10 @@ func (u *Unit) StopMovement() {
 
 func (u *Unit) GetPos() (x, y float64) {
 	return u.X, u.Y
+}
+
+func (u *Unit) GetTileCoord() tiling.Coord {
+	return tiling.PixelFToTileC(u.GetPos())
 }
 
 func (u *Unit) QueueAttackAnimation(x, y float64, speed int) {

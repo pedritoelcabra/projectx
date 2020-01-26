@@ -95,8 +95,8 @@ func (w *World) GetSaveState() SaveGameData {
 func (w *World) WorldGeneration() {
 	playerFaction := NewFaction("Player")
 	w.PlayerUnit.unit.SetFaction(playerFaction)
-	animals := NewFaction("Wild Animals")
-	animals.DefaultRelation = -100
+	monsters := NewFaction(DefaultMonsterFactionName)
+	monsters.DefaultRelation = -100
 
 	for i := 0; i < 100; i++ {
 		if i == 99 {
@@ -193,6 +193,7 @@ func (w *World) Update() {
 	if !w.IsInitialized() {
 		return
 	}
+	w.RegisterUnitsWithSectors()
 	w.Grid.ChunkGeneration()
 	w.PlayerUnit.Update()
 	for _, e := range w.Entities.Units {
@@ -200,6 +201,15 @@ func (w *World) Update() {
 	}
 	w.Grid.Update()
 	w.Data.Set(Tick, w.Data.Get(Tick)+1)
+}
+
+func (w *World) RegisterUnitsWithSectors() {
+	if !w.IsTock() {
+		return
+	}
+	for _, unit := range w.Entities.Units {
+		w.Grid.Chunk(w.Grid.ChunkCoord(unit.GetTileCoord())).RegisterUnit(unit)
+	}
 }
 
 func (w *World) GetScreen() *gfx.Screen {

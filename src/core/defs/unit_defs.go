@@ -49,6 +49,10 @@ func UnitDefs() map[string]*UnitDef {
 	return unitDefs
 }
 
+func GetUnitDef(name string) *UnitDef {
+	return unitDefs[name]
+}
+
 var unitDefs = make(map[string]*UnitDef)
 
 func LoadUnitDefs() {
