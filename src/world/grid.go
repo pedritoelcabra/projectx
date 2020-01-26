@@ -65,3 +65,9 @@ func (g *Grid) ChunkCoord(tileCoord tiling.Coord) tiling.Coord {
 	y := ((tileCoord.Y() + TileOffset) / ChunkSize) - GridOffset
 	return tiling.NewCoord(x, y)
 }
+
+func (g *Grid) Update() {
+	if !theWorld.IsTock() {
+		return
+	}
+}

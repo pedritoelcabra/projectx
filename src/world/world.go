@@ -44,6 +44,15 @@ func (w *World) GetTick() int {
 	return w.Data.Get(Tick)
 }
 
+func (w *World) GetTock() int {
+	return w.GetTick() / 60
+}
+
+func (w *World) IsTock() bool {
+	rest := w.GetTick() % 60
+	return rest == 0
+}
+
 func FromSeed(seed int) *World {
 	w := NewWorld()
 	w.Data = container.NewContainer()
@@ -189,6 +198,7 @@ func (w *World) Update() {
 	for _, e := range w.Entities.Units {
 		e.Update()
 	}
+	w.Grid.Update()
 	w.Data.Set(Tick, w.Data.Get(Tick)+1)
 }
 

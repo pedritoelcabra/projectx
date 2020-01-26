@@ -23,6 +23,7 @@ const (
 	Road
 	FactionId
 	Tick
+	Tock
 	Initialized
 	Seed
 	RenderMode
