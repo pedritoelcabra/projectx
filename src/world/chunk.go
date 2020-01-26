@@ -177,6 +177,13 @@ func (ch *Chunk) FirstTile() *Tile {
 	return ch.tiles[0]
 }
 
+func (ch *Chunk) GenerateNPCs() {
+	if !ch.IsGenerated() {
+		return
+	}
+
+}
+
 func ChunksAroundTile(tile tiling.Coord, radius int) []*Chunk {
 	var chunks []*Chunk
 	chunkCoord := theWorld.Grid.ChunkCoord(tile)
