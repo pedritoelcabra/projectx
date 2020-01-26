@@ -7,7 +7,7 @@ import (
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
 )
 
-type chunk struct {
+type Chunk struct {
 	tiles               []*Tile
 	Features            []map[int]int
 	ChunkData           *container.Container
@@ -25,8 +25,8 @@ var savableChunkData = []int{
 	Road,
 }
 
-func NewChunk(location tiling.Coord) *chunk {
-	aChunk := &chunk{}
+func NewChunk(location tiling.Coord) *Chunk {
+	aChunk := &Chunk{}
 	aChunk.isPreloaded = false
 	aChunk.terrainImage = nil
 	aChunk.ChunkData = container.NewContainer()
@@ -34,15 +34,15 @@ func NewChunk(location tiling.Coord) *chunk {
 	return aChunk
 }
 
-func (ch *chunk) GetSector() *Sector {
+func (ch *Chunk) GetSector() *Sector {
 	return ch.sector
 }
 
-func (ch *chunk) SetSector(sector *Sector) {
+func (ch *Chunk) SetSector(sector *Sector) {
 	ch.sector = sector
 }
 
-func (ch *chunk) Preload(location tiling.Coord) {
+func (ch *Chunk) Preload(location tiling.Coord) {
 	if ch.isPreloaded {
 		return
 	}
@@ -89,7 +89,7 @@ func (ch *chunk) Preload(location tiling.Coord) {
 	ch.isPreloaded = true
 }
 
-func (ch *chunk) PreSave() {
+func (ch *Chunk) PreSave() {
 	if !ch.IsGenerated() {
 		return
 	}
@@ -102,7 +102,7 @@ func (ch *chunk) PreSave() {
 	}
 }
 
-func (ch *chunk) PreloadChunkData() {
+func (ch *Chunk) PreloadChunkData() {
 	totalHeight := 0
 	maxHeight := 0
 	minHeight := 0
@@ -122,39 +122,39 @@ func (ch *chunk) PreloadChunkData() {
 	ch.ChunkData.Set(MinHeight, minHeight)
 }
 
-func (ch *chunk) IsGenerated() bool {
+func (ch *Chunk) IsGenerated() bool {
 	return ch.Generated
 }
 
-func (ch *chunk) IsQueueForGeneration() bool {
+func (ch *Chunk) IsQueueForGeneration() bool {
 	return ch.queuedForGeneration
 }
 
-func (ch *chunk) RunOnAllTiles(f func(t *Tile)) {
+func (ch *Chunk) RunOnAllTiles(f func(t *Tile)) {
 	for _, c := range ch.tiles {
 		f(c)
 	}
 }
 
-func (ch *chunk) Tile(tileCoord tiling.Coord) *Tile {
+func (ch *Chunk) Tile(tileCoord tiling.Coord) *Tile {
 	return ch.tiles[ch.tileIndex(tileCoord.X(), tileCoord.Y())]
 }
 
-func (ch *chunk) tileIndex(x, y int) int {
+func (ch *Chunk) tileIndex(x, y int) int {
 	x -= ch.Location.X() * ChunkSize
 	y -= ch.Location.Y() * ChunkSize
 	return (x * ChunkSize) + y
 }
 
-func (ch *chunk) SetImage(image *ebiten.Image) {
+func (ch *Chunk) SetImage(image *ebiten.Image) {
 	ch.terrainImage = image
 }
 
-func (ch *chunk) GetImage() *ebiten.Image {
+func (ch *Chunk) GetImage() *ebiten.Image {
 	return ch.terrainImage
 }
 
-func (ch *chunk) GenerateImage() {
+func (ch *Chunk) GenerateImage() {
 	if ch.GetImage() != nil {
 		return
 	}
@@ -173,6 +173,6 @@ func (ch *chunk) GenerateImage() {
 	}
 }
 
-func (ch *chunk) FirstTile() *Tile {
+func (ch *Chunk) FirstTile() *Tile {
 	return ch.tiles[0]
 }

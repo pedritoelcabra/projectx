@@ -36,7 +36,7 @@ func (g *Grid) ChunkGeneration() {
 	}
 }
 
-func (g *Grid) QueueChunkForGeneration(aChunk *chunk) {
+func (g *Grid) QueueChunkForGeneration(aChunk *Chunk) {
 	g.chunksToGenerate = append(g.chunksToGenerate, aChunk.Location)
 	aChunk.queuedForGeneration = true
 }
@@ -64,7 +64,7 @@ func (g *Grid) GenerateChunk(chunkCoord tiling.Coord) {
 	})
 	aChunk.queuedForGeneration = false
 	aChunk.Generated = true
-	//logger.General("Generated chunk: "+chunkCoord.ToString(), nil)
+	//logger.General("Generated Chunk: "+chunkCoord.ToString(), nil)
 }
 
 func (t *Tile) InitializeTile() {

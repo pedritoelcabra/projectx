@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-func (g *Grid) SpawnSector(aChunk *chunk) {
+func (g *Grid) SpawnSector(aChunk *Chunk) {
 	if !g.ShouldSpawnSector(aChunk) {
 		return
 	}
@@ -25,7 +25,7 @@ func (g *Grid) SpawnSector(aChunk *chunk) {
 	newSector.Set(FactionId, int(newFaction.GetId()))
 	tile := g.Tile(centerCoord)
 	tile.Set(Flora, 0)
-	//logger.General("Spawned a "+template.Name+" sector in chunk: "+aChunk.Location.ToString()+" at "+centerCoord.ToString(), nil)
+	//logger.General("Spawned a "+template.Name+" sector in Chunk: "+aChunk.Location.ToString()+" at "+centerCoord.ToString(), nil)
 }
 
 func (g *Grid) ChooseSectorTemplate(location tiling.Coord) *defs.SectorDef {
@@ -47,7 +47,7 @@ func (g *Grid) ChooseSectorTemplate(location tiling.Coord) *defs.SectorDef {
 	return bestDef
 }
 
-func (g *Grid) SuitableSectorCenter(aChunk *chunk) (tiling.Coord, bool) {
+func (g *Grid) SuitableSectorCenter(aChunk *Chunk) (tiling.Coord, bool) {
 	minX := aChunk.FirstTile().X() + 5
 	maxX := aChunk.FirstTile().X() + ChunkSize - 5
 	minY := aChunk.FirstTile().Y() + 5
@@ -60,7 +60,7 @@ func (g *Grid) SuitableSectorCenter(aChunk *chunk) (tiling.Coord, bool) {
 			return aTile.coordinates, true
 		}
 	}
-	logger.General("Failed to find a suitable center for sector in chunk: "+aChunk.Location.ToString(), nil)
+	logger.General("Failed to find a suitable center for sector in Chunk: "+aChunk.Location.ToString(), nil)
 	return aChunk.FirstTile().coordinates, false
 }
 
@@ -79,7 +79,7 @@ func (g *Grid) TileIsSuitableForSectorCenter(aTile *Tile) bool {
 	return currentImpassableTiles <= maxImpassableTiles
 }
 
-func (g *Grid) ShouldSpawnSector(aChunk *chunk) bool {
+func (g *Grid) ShouldSpawnSector(aChunk *Chunk) bool {
 	nearbySectorCount := 0
 	if aChunk.ChunkData.Get(AvgHeight) < 0 {
 		return false

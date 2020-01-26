@@ -15,7 +15,7 @@ const (
 	TileOffset = 16000
 )
 
-type ChunkMap map[int]*chunk
+type ChunkMap map[int]*Chunk
 
 type Grid struct {
 	Chunks           ChunkMap
@@ -25,7 +25,7 @@ type Grid struct {
 
 func NewGrid() *Grid {
 	arraySize := GridSize * GridSize
-	arrayChunks := make(map[int]*chunk, arraySize)
+	arrayChunks := make(map[int]*Chunk, arraySize)
 	aGrid := &Grid{}
 	aGrid.Chunks = arrayChunks
 	return aGrid
@@ -39,7 +39,7 @@ func (g *Grid) Tile(tileCoord tiling.Coord) *Tile {
 	return g.Chunk(g.ChunkCoord(tileCoord)).Tile(tileCoord)
 }
 
-func (g *Grid) Chunk(chunkCoord tiling.Coord) *chunk {
+func (g *Grid) Chunk(chunkCoord tiling.Coord) *Chunk {
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
 	if aChunk, chunkExists := g.Chunks[chunkIndex]; chunkExists {
 		if !aChunk.isPreloaded {
@@ -55,7 +55,7 @@ func (g *Grid) chunkIndex(x, y int) int {
 	x += GridOffset
 	y += GridOffset
 	if x < 0 || x >= GridSize || y < 0 || y >= GridSize {
-		log.Fatalf("Grid.Tile() requested invalid chunk %d / %d", x, y)
+		log.Fatalf("Grid.Tile() requested invalid Chunk %d / %d", x, y)
 	}
 	return (x * GridSize) + y
 }
