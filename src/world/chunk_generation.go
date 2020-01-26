@@ -22,13 +22,7 @@ func (g *Grid) ChunkGeneration() {
 	playerChunk := g.ChunkCoord(tiling.NewCoord(tiling.PixelFToTileI(theWorld.PlayerUnit.GetPos())))
 	for x := playerChunk.X() - 3; x <= playerChunk.X()+3; x++ {
 		for y := playerChunk.Y() - 3; y <= playerChunk.Y()+3; y++ {
-			chunkIndex := g.chunkIndex(x, y)
-			chunkCoord := tiling.NewCoord(x, y)
-			aChunk, chunkExists := g.Chunks[chunkIndex]
-			if !chunkExists {
-				g.CreateNewChunk(chunkCoord)
-				continue
-			}
+			aChunk := g.Chunk(tiling.NewCoord(x, y))
 			if !aChunk.Generated && !aChunk.queuedForGeneration {
 				g.QueueChunkForGeneration(aChunk)
 			}
