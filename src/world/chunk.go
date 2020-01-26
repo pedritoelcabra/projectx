@@ -176,3 +176,18 @@ func (ch *Chunk) GenerateImage() {
 func (ch *Chunk) FirstTile() *Tile {
 	return ch.tiles[0]
 }
+
+func ChunksAroundTile(tile tiling.Coord, radius int) []*Chunk {
+	var chunks []*Chunk
+	chunkCoord := theWorld.Grid.ChunkCoord(tile)
+	for x := chunkCoord.X() - 3; x <= chunkCoord.X()+3; x++ {
+		for y := chunkCoord.Y() - 3; y <= chunkCoord.Y()+3; y++ {
+			chunks = append(chunks, theWorld.Grid.Chunk(tiling.NewCoord(x, y)))
+		}
+	}
+	return chunks
+}
+
+func ChunksAroundPlayer(radius int) []*Chunk {
+	return ChunksAroundTile(tiling.NewCoord(tiling.PixelFToTileI(theWorld.PlayerUnit.GetPos())), radius)
+}

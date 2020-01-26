@@ -16,16 +16,12 @@ func (g *Grid) CreateNewChunk(chunkCoord tiling.Coord) {
 
 func (g *Grid) ChunkGeneration() {
 	g.ProcessChunkGenerationQueue()
-	if theWorld.GetTick() > 100 && theWorld.IsTock() {
+	if theWorld.GetTick() > 100 && !theWorld.IsTock() {
 		return
 	}
-	playerChunk := g.ChunkCoord(tiling.NewCoord(tiling.PixelFToTileI(theWorld.PlayerUnit.GetPos())))
-	for x := playerChunk.X() - 3; x <= playerChunk.X()+3; x++ {
-		for y := playerChunk.Y() - 3; y <= playerChunk.Y()+3; y++ {
-			aChunk := g.Chunk(tiling.NewCoord(x, y))
-			if !aChunk.Generated && !aChunk.queuedForGeneration {
-				g.QueueChunkForGeneration(aChunk)
-			}
+	for _, chunk := range ChunksAroundPlayer(3) {
+		if !chunk.Generated && !chunk.queuedForGeneration {
+			g.QueueChunkForGeneration(chunk)
 		}
 	}
 }
