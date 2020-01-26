@@ -5,6 +5,13 @@
 
 ##### 1. Explorable, dynamically generated world
 
+- [x] Dynamically generated, seamless and boundless world
+- [x] Player can explore anywhere
+- [x] Movement costs
+- [x] Seas
+- [x] Mountains
+- [x] Forests
+- [x] Sectors (settlements) have borders which expand with further buildings
 - [ ] Wild animals / monsters
   - Need spawning in empty sectors
   - Add bears, orcs, trolls (maybe 5-6 total)
@@ -39,6 +46,8 @@
 
 ##### 3. General player interactions
 
+- [x] Factions & Faction relations
+- [x] Units chase and attack hostiles
 - [ ] Basic combat
   - Add health to units
   - Attacks
