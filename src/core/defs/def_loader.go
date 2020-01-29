@@ -7,4 +7,5 @@ func InitDefs() {
 	LoadSectorDefs()
 	LoadVegetationDefs()
 	LoadUnitDefs()
+	LoadFactionDefs()
 }

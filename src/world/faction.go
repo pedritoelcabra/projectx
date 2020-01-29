@@ -1,5 +1,7 @@
 package world
 
+import "github.com/pedritoelcabra/projectx/src/core/defs"
+
 type FactionKey int
 type FactionMap map[FactionKey]*Faction
 
@@ -25,6 +27,11 @@ func NewFaction(name string) *Faction {
 	aFaction.Id = theWorld.AddFaction(aFaction)
 	aFaction.Relations = make(map[FactionKey]int)
 	aFaction.DefaultRelation = 0
+	def := defs.GetFactionDef(name)
+	if def != nil {
+		aFaction.DefaultRelation = def.DefaultRelation
+		aFaction.Name = def.Name
+	}
 	return aFaction
 }
 
