@@ -1,6 +1,7 @@
 package world
 
 import (
+	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/world/container"
@@ -60,6 +61,7 @@ func FromSeed(seed int) *World {
 	w.SetSeed(seed)
 	w.Grid = NewGrid()
 	w.Entities = NewEntities()
+	w.LoadInitialFactions()
 	w.PlayerUnit = NewPlayer()
 	w.Init()
 	w.WorldGeneration()
@@ -76,6 +78,12 @@ func LoadFromSave(data SaveGameData) *World {
 	w.Init()
 	w.Grid.ChunkGeneration()
 	return w
+}
+
+func (w *World) LoadInitialFactions() {
+	for _, faction := range defs.FactionDefs() {
+		NewFaction(faction.Name)
+	}
 }
 
 func (w *World) GetSaveState() SaveGameData {
@@ -95,8 +103,6 @@ func (w *World) GetSaveState() SaveGameData {
 func (w *World) WorldGeneration() {
 	playerFaction := NewFaction("Player")
 	w.PlayerUnit.unit.SetFaction(playerFaction)
-	monsters := NewFaction(DefaultMonsterFactionName)
-	monsters.DefaultRelation = -100
 
 	for i := 0; i < 100; i++ {
 		if i == 99 {

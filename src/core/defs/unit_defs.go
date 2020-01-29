@@ -11,6 +11,7 @@ import (
 
 type UnitDef struct {
 	Name       string
+	Faction    string
 	Equipments []EquipmentItemDef
 	Attributes map[string]int
 }

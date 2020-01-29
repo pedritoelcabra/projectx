@@ -196,8 +196,7 @@ func (ch *Chunk) GenerateNPCs() {
 		return
 	}
 	def := ch.ChooseRandomNPCsTemplate()
-	npc := NewUnit(def.Name, tiling.NewCoordF(spawnTile.GetRenderPos()))
-	npc.SetFaction(DefaultMonsterFaction())
+	NewUnit(def.Name, tiling.NewCoordF(spawnTile.GetRenderPos()))
 	logger.General("Generated a "+def.Name+" at "+spawnTile.GetCoord().ToString(), nil)
 }
 
