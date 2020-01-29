@@ -12,7 +12,7 @@
 - [x] Mountains
 - [x] Forests
 - [x] Sectors (settlements) have borders which expand with further buildings
-- [ ] Wild animals / monsters
+- [x] Wild animals / monsters
   - Need spawning in empty sectors
   - Add bears, orcs, trolls (maybe 5-6 total)
 - [ ] Monster lairs
