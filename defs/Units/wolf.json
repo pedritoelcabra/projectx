@@ -1,5 +1,6 @@
 {
   "Name": "Wolf",
+  "Faction": "Wild Carnivores",
   "Equipments": [
     {
       "Chance": 100,

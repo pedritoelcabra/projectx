@@ -1,0 +1,20 @@
+{
+  "Name": "Skeleton",
+  "Faction": "Undead",
+  "Equipments": [
+    {
+      "Chance": 100,
+      "Slot": "Body",
+      "Graphic": "body/male/skeleton"
+    }
+  ],
+  "Attributes" : {
+    "Speed" : 7,
+    "Vision" : 400,
+    "Size" : 32,
+    "AttackRange" : 64,
+    "AttackSpeed" : 20,
+    "AttackDamage" : 20,
+    "HitPoints" : 80
+  }
+}

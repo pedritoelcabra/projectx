@@ -1,0 +1,20 @@
+{
+  "Name": "Orc",
+  "Faction": "Orcs",
+  "Equipments": [
+    {
+      "Chance": 100,
+      "Slot": "Body",
+      "Graphic": "body/male/orc"
+    }
+  ],
+  "Attributes" : {
+    "Speed" : 5,
+    "Vision" : 300,
+    "Size" : 32,
+    "AttackRange" : 64,
+    "AttackSpeed" : 20,
+    "AttackDamage" : 30,
+    "HitPoints" : 100
+  }
+}
