@@ -196,12 +196,30 @@ func (ch *Chunk) GenerateNPCs() {
 		return
 	}
 	def := ch.ChooseRandomNPCsTemplate()
+	if def == nil {
+		return
+	}
 	NewUnit(def.Name, tiling.NewCoordF(spawnTile.GetRenderPos()))
 	logger.General("Generated a "+def.Name+" at "+spawnTile.GetCoord().ToString(), nil)
 }
 
 func (ch *Chunk) ChooseRandomNPCsTemplate() *defs.UnitDef {
-	return defs.GetUnitDef("Wolf")
+	bestScore := -1
+	bestDef := &defs.UnitDef{}
+	for _, unit := range defs.UnitDefs() {
+		if !unit.SpawnsWild {
+			continue
+		}
+		thisScore := randomizer.RandomInt(0, 100)
+		if thisScore > bestScore {
+			bestScore = thisScore
+			bestDef = unit
+		}
+	}
+	if bestScore < 0 {
+		return nil
+	}
+	return bestDef
 }
 
 func (ch *Chunk) IsValidNPCSpawnTile(tile *Tile) bool {

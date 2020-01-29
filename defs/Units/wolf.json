@@ -1,6 +1,7 @@
 {
   "Name": "Wolf",
   "Faction": "Wild Carnivores",
+  "SpawnsWild": true,
   "Equipments": [
     {
       "Chance": 100,

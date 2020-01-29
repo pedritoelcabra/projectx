@@ -37,4 +37,5 @@ const (
 	AttackDamage
 	AttackSpeed
 	HitPoints
+	SpawnsWild
 )

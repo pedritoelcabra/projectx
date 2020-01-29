@@ -66,6 +66,8 @@ func GetAttributeKey(name string) int {
 		return AttackSpeed
 	case "HitPoints":
 		return HitPoints
+	case "SpawnsWild":
+		return SpawnsWild
 	}
 	log.Fatal("Invalid attribute: " + name)
 	return 0

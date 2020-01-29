@@ -1,6 +1,7 @@
 {
   "Name": "Skeleton",
   "Faction": "Undead",
+  "SpawnsWild": true,
   "Equipments": [
     {
       "Chance": 100,

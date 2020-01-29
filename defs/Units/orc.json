@@ -1,6 +1,7 @@
 {
   "Name": "Orc",
   "Faction": "Orcs",
+  "SpawnsWild": true,
   "Equipments": [
     {
       "Chance": 100,
