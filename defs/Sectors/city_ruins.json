@@ -1,0 +1,9 @@
+{
+  "Name": "City Ruins",
+  "CenterBuilding": "City Ruin",
+  "Weight": 100,
+  "Buildings": {
+    "City Ruin": 150
+  },
+  "Size": 3
+}

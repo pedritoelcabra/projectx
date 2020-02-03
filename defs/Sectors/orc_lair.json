@@ -1,0 +1,9 @@
+{
+  "Name": "Orc Lair",
+  "CenterBuilding": "Orc House",
+  "Weight": 100,
+  "Buildings": {
+    "Orc House": 250
+  },
+  "Size": 3
+}
