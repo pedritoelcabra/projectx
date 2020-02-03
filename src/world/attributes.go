@@ -64,8 +64,8 @@ func GetAttributeKey(name string) int {
 		return AttackDamage
 	case "AttackSpeed":
 		return AttackSpeed
-	case "HitPoints":
-		return HitPoints
+	case "MaxHitPoints":
+		return MaxHitPoints
 	case "SpawnsWild":
 		return SpawnsWild
 	}

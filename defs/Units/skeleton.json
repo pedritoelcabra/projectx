@@ -16,6 +16,6 @@
     "AttackRange" : 64,
     "AttackSpeed" : 20,
     "AttackDamage" : 20,
-    "HitPoints" : 80
+    "MaxHitPoints" : 80
   }
 }

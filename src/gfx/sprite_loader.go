@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+const gfxFolder = "resources/"
+
 func LoadSprites() {
 	for key, path := range SpritePaths() {
 		img, _, err := ebitenutil.NewImageFromFile(path, ebiten.FilterDefault)
@@ -65,4 +67,9 @@ func LPCSpriteFolders() map[string]string {
 		lpc[folderName] = baseLpcFolder + folderName
 	}
 	return lpc
+}
+
+func GetAbsoluteGfxPath(path string) string {
+	fullPath, _ := filepath.Abs(gfxFolder + path)
+	return fullPath
 }

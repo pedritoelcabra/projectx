@@ -57,6 +57,7 @@ func (u *Unit) IsPlayer() bool {
 
 func (u *Unit) DrawSprite(screen *gfx.Screen) {
 	u.Sprite.DrawSprite(screen, u.X, u.Y)
+	gfx.DrawHealthBar(u, screen)
 }
 
 func (u *Unit) ShouldDraw() bool {
@@ -212,4 +213,12 @@ func (u *Unit) Set(key, value int) {
 
 func (u *Unit) SetF(key int, value float64) {
 	u.Attributes.SetF(key, value)
+}
+
+func (u *Unit) GetHealth() float64 {
+	return u.GetF(HitPoints)
+}
+
+func (u *Unit) GetMaxHealth() float64 {
+	return u.GetF(MaxHitPoints)
 }

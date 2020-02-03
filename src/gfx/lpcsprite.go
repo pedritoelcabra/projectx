@@ -16,7 +16,7 @@ const (
 	spriteWidthHalf      = 32
 	spriteHeight         = 64
 	spriteHeightHalf     = 32
-	centerXAxis          = 36
+	centerXAxis          = 32
 	centerYAxis          = 64
 	DefaultCollisionSize = 32
 )

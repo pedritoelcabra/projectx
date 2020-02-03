@@ -12,10 +12,8 @@ import (
 var spriteToKeyMap = make(map[string]SpriteKey)
 var spriteKeyCount = 10000
 
-const gfxFolder = "resources/"
-
 func LoadGfxFolder(folderName string) {
-	directoryPath, _ := filepath.Abs(gfxFolder + folderName)
+	directoryPath := GetAbsoluteGfxPath(folderName)
 	walkErr := filepath.Walk(directoryPath, func(path string, info os.FileInfo, walkErr error) error {
 		file, err := os.Open(path)
 		if err != nil {

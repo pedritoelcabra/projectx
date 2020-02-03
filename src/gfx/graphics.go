@@ -19,6 +19,7 @@ func NewGraphics() *Graphics {
 	graphics.images = make(map[SpriteKey]*ebiten.Image)
 	graphics.lpcSpriteKeys = make(map[string]SpriteKey)
 	graphics.imageKeyCount = 10000
+	InitHealthBar()
 	LoadSprites()
 	LoadGfxFolder("buildings")
 	LoadGfxFolder("vegetation")
