@@ -13,11 +13,7 @@
 - [x] Forests
 - [x] Sectors (settlements) have borders which expand with further buildings
 - [x] Wild animals / monsters
-  - Need spawning in empty sectors
-  - Add bears, orcs, trolls (maybe 5-6 total)
-- [ ] Monster lairs
-  - Sectors belonging to monsters with a few buildings
-  - Bandit camps
+- [x] Monster lairs
 - [ ] Villages and cities
   - Add roads
   - Add a few more buildings to neutral sectors
