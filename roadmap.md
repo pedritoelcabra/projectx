@@ -44,10 +44,7 @@
 
 - [x] Factions & Faction relations
 - [x] Units chase and attack hostiles
-- [ ] Basic combat
-  - Add health to units
-  - Attacks
-  - Death
+- [x] Basic combat
 - [ ] Follower recruitment
   - Can recruit friendlies as followers
   - Followers will run out of enthusiasm after a while
