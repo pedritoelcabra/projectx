@@ -30,6 +30,7 @@ type Unit struct {
 	Name       string
 	Attributes *Attributes
 	Brain      *Brain
+	Alive      bool
 }
 
 func NewUnit(templateName string, location tiling.Coord) *Unit {
@@ -38,11 +39,12 @@ func NewUnit(templateName string, location tiling.Coord) *Unit {
 		log.Fatal("Invalid Unit Template: " + templateName)
 	}
 	aUnit := &Unit{}
+	aUnit.Alive = true
 	aUnit.Name = template.Name
 	aUnit.X = float64(location.X())
 	aUnit.Y = float64(location.Y())
 	aUnit.Attributes = NewAttributes(template.Attributes)
-	aUnit.SetF(HitPoints, aUnit.GetF(MaxHitPoints))
+	aUnit.SetToMaxHealth()
 	aUnit.SetEquipmentGraphics(template)
 	aUnit.Brain = NewBrain()
 	aUnit.Init()
@@ -57,12 +59,19 @@ func (u *Unit) IsPlayer() bool {
 	return u.Id == 0
 }
 
+func (u *Unit) IsAlive() bool {
+	return u.Alive
+}
+
 func (u *Unit) DrawSprite(screen *gfx.Screen) {
 	u.Sprite.DrawSprite(screen, u.X, u.Y)
 	gfx.DrawHealthBar(u, screen)
 }
 
 func (u *Unit) ShouldDraw() bool {
+	if !u.IsAlive() {
+		return false
+	}
 	return EntityShouldDraw(u.GetX(), u.GetY())
 }
 
@@ -130,6 +139,9 @@ func (u *Unit) SetEquipmentGraphics(unitDefinition *defs.UnitDef) {
 }
 
 func (u *Unit) Update() {
+	if !u.IsAlive() {
+		return
+	}
 	u.Brain.ProcessState()
 	if u.Moving {
 		oldCoord := u.GetTileCoord()
@@ -193,6 +205,14 @@ func (u *Unit) PerformAttackOn(target *Unit) {
 
 func (u *Unit) ReceiveAttack(attack *Attack) {
 	u.Attributes.ApplyF(HitPoints, -attack.Damage)
+	if u.GetHealth() <= 0 {
+		u.Alive = false
+		logger.General(u.GetName()+" died", nil)
+	}
+}
+
+func (u *Unit) SetToMaxHealth() {
+	u.SetF(HitPoints, u.GetF(MaxHitPoints))
 }
 
 func (u *Unit) GetX() float64 {

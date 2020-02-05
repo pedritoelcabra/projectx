@@ -140,6 +140,10 @@ func (b *Brain) ResolveState() {
 }
 
 func (b *Brain) Chase() {
+	if !b.target.IsAlive() {
+		b.ResetState()
+		return
+	}
 	distance := b.DistanceToUnit(b.target)
 	logger.General("Chasing "+theWorld.GetUnit(b.TargetKey).GetName()+" distance "+strconv.Itoa(distance), nil)
 	if !b.DistanceWithinVision(distance) {
@@ -160,6 +164,10 @@ func (b *Brain) PositionToAttackTarget() (x, y float64) {
 }
 
 func (b *Brain) Attack() {
+	if !b.target.IsAlive() {
+		b.ResetState()
+		return
+	}
 	distance := b.DistanceToUnit(b.target)
 	if !b.DistanceWithinAttackRange(distance) {
 		b.CurrentState = StateChase

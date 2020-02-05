@@ -1,8 +1,10 @@
 package world
 
 import (
+	"github.com/pedritoelcabra/projectx/src/core/logger"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
+	"strconv"
 )
 
 type PlayerDirection int
@@ -15,11 +17,12 @@ const (
 )
 
 type Player struct {
-	unit        *Unit
-	MovingUp    bool
-	MovingLeft  bool
-	MovingDown  bool
-	MovingRight bool
+	unit            *Unit
+	MovingUp        bool
+	MovingLeft      bool
+	MovingDown      bool
+	MovingRight     bool
+	RespawnCooldown int
 }
 
 func NewPlayer() *Player {
@@ -43,7 +46,30 @@ func (p *Player) SetPosition(x, y float64) {
 }
 
 func (p *Player) Update() {
-	p.UpdateDestination()
+	p.CheckForPlayerDeath()
+	if p.unit.IsAlive() {
+		p.UpdateDestination()
+	}
+}
+
+func (p *Player) CheckForPlayerDeath() {
+	if p.unit.IsAlive() {
+		return
+	}
+	if p.RespawnCooldown < 0 {
+		p.RespawnCooldown = 180
+	}
+	if p.RespawnCooldown >= 0 {
+		p.RespawnCooldown--
+		if (p.RespawnCooldown % 10) == 0 {
+			logger.General("Respawning in "+strconv.Itoa(p.RespawnCooldown), nil)
+		}
+	}
+	if p.RespawnCooldown == 0 {
+		p.unit.Alive = true
+		p.unit.SetToMaxHealth()
+		p.RespawnCooldown = -1
+	}
 }
 
 func (p *Player) UpdateDestination() {
