@@ -26,8 +26,8 @@ func (a *Attributes) SetF(key int, value float64) {
 	a.Data.SetF(key, value)
 }
 
-func (a *Attributes) Apply(key int, value int) {
-	a.Data.Set(int(key), value+a.Data.Get(int(key)))
+func (a *Attributes) ApplyF(key int, value float64) {
+	a.Data.SetF(int(key), value+a.Data.GetF(int(key)))
 }
 
 func (a *Attributes) Get(key int) int {
@@ -44,9 +44,9 @@ func (a *Attributes) SetValues(values AttributeMap) {
 	}
 }
 
-func (a *Attributes) ApplyValues(values AttributeMap) {
+func (a *Attributes) ApplyValuesF(values AttributeMap) {
 	for key, value := range values {
-		a.Apply(GetAttributeKey(key), value)
+		a.ApplyF(GetAttributeKey(key), float64(value))
 	}
 }
 

@@ -23,7 +23,7 @@ type Brain struct {
 
 func NewBrain() *Brain {
 	aBrain := &Brain{}
-	aBrain.CurrentState = Idle
+	aBrain.CurrentState = StateIdle
 	aBrain.TargetKey = 0
 	aBrain.LastUpdated = 0
 	aBrain.BusyTime = 0
@@ -32,11 +32,11 @@ func NewBrain() *Brain {
 }
 
 const (
-	Idle = iota
-	Chase
-	Flee
-	Attack
-	Patrol
+	StateIdle = iota
+	StateChase
+	StateFlee
+	StateAttack
+	StatePatrol
 
 	IdleMoveDistance = 10
 	IdleMoveChance   = 25
@@ -54,13 +54,13 @@ func (b *Brain) ProcessState() {
 	//logger.General("Updating unit "+strconv.Itoa(int(b.owner.Id))+" on tick "+strconv.Itoa(theWorld.GetTick()), nil)
 	b.LastUpdated = theWorld.GetTick()
 	switch b.CurrentState {
-	case Idle:
+	case StateIdle:
 		b.Idle()
 		return
-	case Chase:
+	case StateChase:
 		b.Chase()
 		return
-	case Attack:
+	case StateAttack:
 		b.Attack()
 		return
 	}
@@ -99,7 +99,7 @@ func (b *Brain) Init() {
 
 func (b *Brain) Idle() {
 	b.ResolveState()
-	if b.CurrentState != Idle {
+	if b.CurrentState != StateIdle {
 		b.ForceUpdate()
 		return
 	}
@@ -123,7 +123,7 @@ func (b *Brain) ForceUpdate() {
 func (b *Brain) ResetState() {
 	b.target = nil
 	b.TargetKey = -1
-	b.CurrentState = Idle
+	b.CurrentState = StateIdle
 	b.LastUpdated = 0
 	b.ResolveState()
 }
@@ -131,12 +131,12 @@ func (b *Brain) ResetState() {
 func (b *Brain) ResolveState() {
 	nearestEnemy := b.HasEnemyNearby()
 	if nearestEnemy >= 0 {
-		b.CurrentState = Chase
+		b.CurrentState = StateChase
 		b.TargetKey = nearestEnemy
 		b.target = theWorld.GetUnit(nearestEnemy)
 		return
 	}
-	b.CurrentState = Idle
+	b.CurrentState = StateIdle
 }
 
 func (b *Brain) Chase() {
@@ -148,7 +148,7 @@ func (b *Brain) Chase() {
 		return
 	}
 	if b.DistanceWithinAttackRange(distance) {
-		b.CurrentState = Attack
+		b.CurrentState = StateAttack
 		b.ForceUpdate()
 		return
 	}
@@ -162,7 +162,7 @@ func (b *Brain) PositionToAttackTarget() (x, y float64) {
 func (b *Brain) Attack() {
 	distance := b.DistanceToUnit(b.target)
 	if !b.DistanceWithinAttackRange(distance) {
-		b.CurrentState = Chase
+		b.CurrentState = StateChase
 		b.ForceUpdate()
 		return
 	}
@@ -170,13 +170,12 @@ func (b *Brain) Attack() {
 }
 
 func (b *Brain) PerformAttackOn(target *Unit) {
-	b.owner.StopMovement()
-	attackSpeed := int(b.owner.GetF(AttackSpeed))
+	attackSpeed := int(6000 / b.owner.GetF(AttackSpeed))
 	b.BusyTime = attackSpeed
 	b.LastUpdated = 0
+	b.owner.PerformAttackOn(target)
 	x, y := target.GetPos()
 	b.owner.QueueAttackAnimation(x, y, attackSpeed)
-	logger.General("Attacking "+target.GetName(), nil)
 }
 
 func (b *Brain) SetOwner(unit *Unit) {

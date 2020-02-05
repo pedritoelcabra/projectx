@@ -3,6 +3,7 @@ package world
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/core/defs"
+	"github.com/pedritoelcabra/projectx/src/core/logger"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/world/utils"
@@ -41,6 +42,7 @@ func NewUnit(templateName string, location tiling.Coord) *Unit {
 	aUnit.X = float64(location.X())
 	aUnit.Y = float64(location.Y())
 	aUnit.Attributes = NewAttributes(template.Attributes)
+	aUnit.SetF(HitPoints, aUnit.GetF(MaxHitPoints))
 	aUnit.SetEquipmentGraphics(template)
 	aUnit.Brain = NewBrain()
 	aUnit.Init()
@@ -177,6 +179,20 @@ func (u *Unit) GetTileCoord() tiling.Coord {
 
 func (u *Unit) QueueAttackAnimation(x, y float64, speed int) {
 	u.Sprite.QueueAttackAnimation((x-u.GetX())/2, (y-u.GetY())/2, speed)
+}
+
+func (u *Unit) PerformAttackOn(target *Unit) {
+	u.StopMovement()
+	logger.General("Attacking "+target.GetName(), nil)
+	attack := NewAttack()
+	attack.Damage = u.GetF(AttackDamage)
+	attack.Attacker = u
+	attack.Defender = target
+	target.ReceiveAttack(attack)
+}
+
+func (u *Unit) ReceiveAttack(attack *Attack) {
+	u.Attributes.ApplyF(HitPoints, -attack.Damage)
 }
 
 func (u *Unit) GetX() float64 {
