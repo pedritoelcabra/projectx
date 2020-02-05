@@ -3,6 +3,7 @@ package gfx
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
+	"image"
 	"log"
 )
 
@@ -35,5 +36,7 @@ func DrawHealthBar(owner HealthBarOwner, screen *Screen) {
 	drawX := owner.GetX() - HealthBarHalfWidth
 	drawY := owner.GetY() - HexTileSize
 	op.GeoM = ebiten.TranslateGeo(drawX, drawY)
-	screen.DrawImage(healthBarImg, op)
+	width := (HealthBarWidth / owner.GetMaxHealth()) * owner.GetHealth()
+	drawRect := image.Rect(0, 0, int(width), int(HealthBarHeight))
+	screen.DrawImage(healthBarImg.SubImage(drawRect).(*ebiten.Image), op)
 }
