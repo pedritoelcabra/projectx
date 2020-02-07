@@ -45,6 +45,14 @@ func (p *Player) SetPosition(x, y float64) {
 	p.unit.SetPosition(x, y)
 }
 
+func (p *Player) MoveToHomeSector() {
+	sector := theWorld.GetSector(SectorKey(p.unit.GetF(HomeSector)))
+	if sector != nil {
+		sectorCenterTile := theWorld.Grid.Tile(sector.GetCenter())
+		p.unit.SetPosition(sectorCenterTile.GetF(RenderX), sectorCenterTile.GetF(RenderY)+100)
+	}
+}
+
 func (p *Player) Update() {
 	p.CheckForPlayerDeath()
 	if p.unit.IsAlive() {
@@ -68,6 +76,7 @@ func (p *Player) CheckForPlayerDeath() {
 	if p.RespawnCooldown == 0 {
 		p.unit.Alive = true
 		p.unit.SetToMaxHealth()
+		p.MoveToHomeSector()
 		p.RespawnCooldown = -1
 	}
 }

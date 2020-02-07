@@ -114,8 +114,8 @@ func (w *World) WorldGeneration() {
 			i = 100
 			firstSector.Set(FactionId, int(playerFaction.Id))
 			firstSector.SetName("Idleville")
-			sectorCenterTile := w.Grid.Tile(firstSector.GetCenter())
-			w.PlayerUnit.SetPosition(sectorCenterTile.GetF(RenderX), sectorCenterTile.GetF(RenderY)+100)
+			w.PlayerUnit.unit.SetF(HomeSector, 0.0)
+			w.PlayerUnit.MoveToHomeSector()
 		}
 	}
 }

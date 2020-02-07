@@ -40,4 +40,5 @@ const (
 	MaxHitPoints
 	SpawnsWild
 	BusyTime
+	HomeSector
 )
