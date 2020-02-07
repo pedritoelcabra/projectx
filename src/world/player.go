@@ -23,6 +23,7 @@ type Player struct {
 	MovingDown      bool
 	MovingRight     bool
 	RespawnCooldown int
+	isAttacking     bool
 }
 
 func NewPlayer() *Player {
@@ -45,6 +46,14 @@ func (p *Player) SetPosition(x, y float64) {
 	p.unit.SetPosition(x, y)
 }
 
+func (p *Player) StartAttack() {
+	p.isAttacking = true
+}
+
+func (p *Player) StopAttack() {
+	p.isAttacking = false
+}
+
 func (p *Player) MoveToHomeSector() {
 	sector := theWorld.GetSector(SectorKey(p.unit.GetF(HomeSector)))
 	if sector != nil {
@@ -55,8 +64,25 @@ func (p *Player) MoveToHomeSector() {
 
 func (p *Player) Update() {
 	p.CheckForPlayerDeath()
-	if p.unit.IsAlive() {
-		p.UpdateDestination()
+	if !p.unit.IsAlive() {
+		return
+	}
+	p.HandleAttack()
+	p.UpdateDestination()
+}
+
+func (p *Player) HandleAttack() {
+	if !p.isAttacking {
+		return
+	}
+	if p.unit.IsBusy() {
+		return
+	}
+	closestEnemy := theWorld.GetUnit(p.unit.ClosestVisibleEnemy())
+	if closestEnemy != nil {
+		if p.unit.DistanceWithinAttackRange(p.unit.DistanceToUnit(closestEnemy)) {
+			p.unit.PerformAttackOn(closestEnemy)
+		}
 	}
 }
 

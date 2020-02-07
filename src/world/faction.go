@@ -47,12 +47,20 @@ func (f *Faction) GetRelation(f2 *Faction) int {
 	if rel, ok := f.Relations[f2.Id]; ok {
 		return rel
 	}
-	startRelation := f.DefaultRelation
-	if f.Id == f2.Id {
-		startRelation = 100
+	lowestRelation := f.DefaultRelation
+	if f2.DefaultRelation < lowestRelation {
+		lowestRelation = f2.DefaultRelation
 	}
-	f.Relations[f2.Id] = startRelation
-	return startRelation
+	if f.Id == f2.Id {
+		lowestRelation = 100
+	}
+	f.SetRelation(f2, lowestRelation)
+	f2.SetRelation(f, lowestRelation)
+	return lowestRelation
+}
+
+func (f *Faction) SetRelation(f2 *Faction, value int) {
+	f.Relations[f2.Id] = value
 }
 
 func (f *Faction) IsHostileTowards(f2 *Faction) bool {

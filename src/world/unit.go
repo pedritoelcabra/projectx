@@ -275,3 +275,38 @@ func (u *Unit) GetHealth() float64 {
 func (u *Unit) GetMaxHealth() float64 {
 	return u.GetF(MaxHitPoints)
 }
+
+func (u *Unit) ClosestVisibleEnemy() UnitKey {
+	closestEnemy := UnitKey(-1)
+	closestDistance := 999999
+	for key, unit := range theWorld.GetUnits() {
+		if key == u.Id {
+			continue
+		}
+		thisDistance := u.DistanceToUnit(unit)
+		if !u.DistanceWithinVision(thisDistance) {
+			continue
+		}
+		if !u.GetFaction().IsHostileTowards(unit.GetFaction()) {
+			continue
+		}
+		if thisDistance < closestDistance {
+			closestDistance = thisDistance
+			closestEnemy = key
+		}
+	}
+	return closestEnemy
+}
+
+func (u *Unit) DistanceToUnit(t *Unit) int {
+	return tiling.NewCoordF(u.GetPos()).ChebyshevDist(tiling.NewCoordF(t.GetPos()))
+}
+
+func (u *Unit) DistanceWithinVision(distance int) bool {
+	return distance < int(u.GetF(Vision))
+}
+
+func (u *Unit) DistanceWithinAttackRange(distance int) bool {
+	attackRange := int(u.GetF(AttackRange))
+	return distance <= attackRange
+}

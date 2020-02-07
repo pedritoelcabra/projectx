@@ -4,7 +4,6 @@ import (
 	"github.com/pedritoelcabra/projectx/src/core/logger"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	"github.com/pedritoelcabra/projectx/src/gfx"
-	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/world/utils"
 	"log"
 	"strconv"
@@ -65,7 +64,7 @@ func (b *Brain) ProcessState() {
 }
 
 func (b *Brain) SetUpdateFrequency() {
-	distanceToPlayer := b.DistanceToUnit(theWorld.PlayerUnit.unit)
+	distanceToPlayer := b.owner.DistanceToUnit(theWorld.PlayerUnit.unit)
 	if distanceToPlayer <= gfx.ScreenWidth {
 		b.UpdateFrequency = 10
 		return
@@ -124,7 +123,7 @@ func (b *Brain) ResetState() {
 }
 
 func (b *Brain) ResolveState() {
-	nearestEnemy := b.HasEnemyNearby()
+	nearestEnemy := b.owner.ClosestVisibleEnemy()
 	if nearestEnemy >= 0 {
 		b.CurrentState = StateChase
 		b.TargetKey = nearestEnemy
@@ -139,14 +138,14 @@ func (b *Brain) Chase() {
 		b.ResetState()
 		return
 	}
-	distance := b.DistanceToUnit(b.target)
+	distance := b.owner.DistanceToUnit(b.target)
 	logger.General("Chasing "+theWorld.GetUnit(b.TargetKey).GetName()+" distance "+strconv.Itoa(distance), nil)
-	if !b.DistanceWithinVision(distance) {
+	if !b.owner.DistanceWithinVision(distance) {
 		logger.General("Lost target "+theWorld.GetUnit(b.TargetKey).GetName(), nil)
 		b.ResetState()
 		return
 	}
-	if b.DistanceWithinAttackRange(distance) {
+	if b.owner.DistanceWithinAttackRange(distance) {
 		b.CurrentState = StateAttack
 		b.ForceUpdate()
 		return
@@ -163,8 +162,8 @@ func (b *Brain) Attack() {
 		b.ResetState()
 		return
 	}
-	distance := b.DistanceToUnit(b.target)
-	if !b.DistanceWithinAttackRange(distance) {
+	distance := b.owner.DistanceToUnit(b.target)
+	if !b.owner.DistanceWithinAttackRange(distance) {
 		b.CurrentState = StateChase
 		b.ForceUpdate()
 		return
@@ -179,39 +178,4 @@ func (b *Brain) PerformAttackOn(target *Unit) {
 
 func (b *Brain) SetOwner(unit *Unit) {
 	b.owner = unit
-}
-
-func (b *Brain) HasEnemyNearby() UnitKey {
-	closestEnemy := UnitKey(-1)
-	closestDistance := 999999
-	for key, unit := range theWorld.GetUnits() {
-		if key == b.owner.Id {
-			continue
-		}
-		thisDistance := b.DistanceToUnit(unit)
-		if !b.DistanceWithinVision(thisDistance) {
-			continue
-		}
-		if !b.owner.GetFaction().IsHostileTowards(unit.GetFaction()) {
-			continue
-		}
-		if thisDistance < closestDistance {
-			closestDistance = thisDistance
-		}
-		closestEnemy = key
-	}
-	return closestEnemy
-}
-
-func (b *Brain) DistanceToUnit(u *Unit) int {
-	return tiling.NewCoordF(b.owner.GetPos()).ChebyshevDist(tiling.NewCoordF(u.GetPos()))
-}
-
-func (b *Brain) DistanceWithinVision(distance int) bool {
-	return distance < int(b.owner.GetF(Vision))
-}
-
-func (b *Brain) DistanceWithinAttackRange(distance int) bool {
-	attackRange := int(b.owner.GetF(AttackRange))
-	return distance <= attackRange
 }

@@ -145,4 +145,10 @@ func (g *game) InitInput() {
 	g.Input.AddListener("F9Press", "quickLoad", func(g *game) {
 		g.QuickLoad()
 	})
+	g.Input.AddListener("SpacePress", "startPlayerAttack", func(g *game) {
+		g.World.PlayerUnit.StartAttack()
+	})
+	g.Input.AddListener("SpaceRelease", "stopPlayerAttack", func(g *game) {
+		g.World.PlayerUnit.StartAttack()
+	})
 }

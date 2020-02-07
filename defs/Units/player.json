@@ -11,6 +11,7 @@
   "Attributes" : {
     "Speed" : 20,
     "Size" : 32,
+    "Vision" : 90000,
     "AttackRange" : 32,
     "AttackSpeed" : 60,
     "AttackDamage" : 10,
