@@ -16,7 +16,6 @@ type Brain struct {
 	CurrentState    int
 	LastUpdated     int
 	TargetKey       UnitKey
-	BusyTime        int
 	UpdateFrequency int
 	target          *Unit
 }
@@ -26,7 +25,6 @@ func NewBrain() *Brain {
 	aBrain.CurrentState = StateIdle
 	aBrain.TargetKey = 0
 	aBrain.LastUpdated = 0
-	aBrain.BusyTime = 0
 	aBrain.UpdateFrequency = 1
 	return aBrain
 }
@@ -43,8 +41,7 @@ const (
 )
 
 func (b *Brain) ProcessState() {
-	if b.BusyTime > 0 {
-		b.BusyTime--
+	if b.owner.IsBusy() {
 		return
 	}
 	if !b.NeedsUpdating() {
@@ -106,7 +103,6 @@ func (b *Brain) Idle() {
 	if !randomizer.PercentageRoll(25) {
 		return
 	}
-	b.BusyTime = 100
 	x := int(b.owner.GetX())
 	y := int(b.owner.GetY())
 	reach := IdleMoveDistance * int(b.owner.GetF(Speed))
@@ -117,7 +113,6 @@ func (b *Brain) Idle() {
 
 func (b *Brain) ForceUpdate() {
 	b.LastUpdated = 0
-	b.BusyTime = 0
 }
 
 func (b *Brain) ResetState() {
@@ -178,12 +173,8 @@ func (b *Brain) Attack() {
 }
 
 func (b *Brain) PerformAttackOn(target *Unit) {
-	attackSpeed := int(6000 / b.owner.GetF(AttackSpeed))
-	b.BusyTime = attackSpeed
-	b.LastUpdated = 0
+	b.LastUpdated = theWorld.GetTick()
 	b.owner.PerformAttackOn(target)
-	x, y := target.GetPos()
-	b.owner.QueueAttackAnimation(x, y, attackSpeed)
 }
 
 func (b *Brain) SetOwner(unit *Unit) {

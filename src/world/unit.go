@@ -45,6 +45,7 @@ func NewUnit(templateName string, location tiling.Coord) *Unit {
 	aUnit.Y = float64(location.Y())
 	aUnit.Attributes = NewAttributes(template.Attributes)
 	aUnit.SetToMaxHealth()
+	aUnit.SetF(BusyTime, 0.0)
 	aUnit.SetEquipmentGraphics(template)
 	aUnit.Brain = NewBrain()
 	aUnit.Init()
@@ -61,6 +62,10 @@ func (u *Unit) IsPlayer() bool {
 
 func (u *Unit) IsAlive() bool {
 	return u.Alive
+}
+
+func (u *Unit) IsBusy() bool {
+	return u.GetF(BusyTime) > 0.0
 }
 
 func (u *Unit) DrawSprite(screen *gfx.Screen) {
@@ -142,6 +147,7 @@ func (u *Unit) Update() {
 	if !u.IsAlive() {
 		return
 	}
+	u.SetF(BusyTime, u.GetF(BusyTime)-1.0)
 	u.Brain.ProcessState()
 	if u.Moving {
 		oldCoord := u.GetTileCoord()
@@ -193,7 +199,18 @@ func (u *Unit) QueueAttackAnimation(x, y float64, speed int) {
 	u.Sprite.QueueAttackAnimation((x-u.GetX())/2, (y-u.GetY())/2, speed)
 }
 
+func (u *Unit) GetAttackCoolDown() float64 {
+	return 6000 / u.GetF(AttackSpeed)
+}
+
 func (u *Unit) PerformAttackOn(target *Unit) {
+	if u.IsBusy() {
+		return
+	}
+	attackSpeed := u.GetAttackCoolDown()
+	u.SetF(BusyTime, attackSpeed)
+	x, y := target.GetPos()
+	u.QueueAttackAnimation(x, y, int(attackSpeed))
 	u.StopMovement()
 	logger.General("Attacking "+target.GetName(), nil)
 	attack := NewAttack()

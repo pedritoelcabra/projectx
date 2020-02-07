@@ -39,4 +39,5 @@ const (
 	HitPoints
 	MaxHitPoints
 	SpawnsWild
+	BusyTime
 )
