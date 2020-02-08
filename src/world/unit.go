@@ -90,22 +90,21 @@ func (u *Unit) SetDestination(x, y float64) {
 	u.DestX = x
 	u.DestY = y
 	u.CheckIfMoving()
-	u.CheckOrientation()
+	if u.Moving {
+		u.OrientateTowardsPoint(u.DestX, u.DestY)
+	}
 }
 
-func (u *Unit) CheckOrientation() {
-	if !u.Moving {
-		return
-	}
-	if math.Abs(u.X-u.DestX)+1 > math.Abs(u.Y-u.DestY) {
-		if u.X > u.DestX {
+func (u *Unit) OrientateTowardsPoint(x, y float64) {
+	if math.Abs(u.X-x)+1 > math.Abs(u.Y-y) {
+		if u.X > x {
 			u.Sprite.SetFacing(gfx.FaceLeft)
 			return
 		}
 		u.Sprite.SetFacing(gfx.FaceRight)
 		return
 	}
-	if u.Y > u.DestY {
+	if u.Y > y {
 		u.Sprite.SetFacing(gfx.FaceUp)
 		return
 	}
@@ -197,6 +196,7 @@ func (u *Unit) GetTileCoord() tiling.Coord {
 
 func (u *Unit) QueueAttackAnimation(x, y float64, speed int) {
 	u.Sprite.QueueAttackAnimation((x-u.GetX())/2, (y-u.GetY())/2, speed)
+	u.OrientateTowardsPoint(x, y)
 }
 
 func (u *Unit) GetAttackCoolDown() float64 {
@@ -212,7 +212,7 @@ func (u *Unit) PerformAttackOn(target *Unit) {
 	x, y := target.GetPos()
 	u.QueueAttackAnimation(x, y, int(attackSpeed))
 	u.StopMovement()
-	logger.General("Attacking "+target.GetName(), nil)
+	//logger.General("Attacking "+target.GetName(), nil)
 	attack := NewAttack()
 	attack.Damage = u.GetF(AttackDamage)
 	attack.Attacker = u
@@ -280,6 +280,9 @@ func (u *Unit) ClosestVisibleEnemy() UnitKey {
 	closestEnemy := UnitKey(-1)
 	closestDistance := 999999
 	for key, unit := range theWorld.GetUnits() {
+		if !unit.IsAlive() {
+			continue
+		}
 		if key == u.Id {
 			continue
 		}

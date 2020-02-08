@@ -1,7 +1,6 @@
 package world
 
 import (
-	"github.com/pedritoelcabra/projectx/src/core/logger"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/world/utils"
@@ -139,9 +138,9 @@ func (b *Brain) Chase() {
 		return
 	}
 	distance := b.owner.DistanceToUnit(b.target)
-	logger.General("Chasing "+theWorld.GetUnit(b.TargetKey).GetName()+" distance "+strconv.Itoa(distance), nil)
+	//logger.General("Chasing "+theWorld.GetUnit(b.TargetKey).GetName()+" distance "+strconv.Itoa(distance), nil)
 	if !b.owner.DistanceWithinVision(distance) {
-		logger.General("Lost target "+theWorld.GetUnit(b.TargetKey).GetName(), nil)
+		//logger.General("Lost target "+theWorld.GetUnit(b.TargetKey).GetName(), nil)
 		b.ResetState()
 		return
 	}
