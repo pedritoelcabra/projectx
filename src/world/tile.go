@@ -142,3 +142,7 @@ func (t *Tile) Neighbours() [6]*Tile {
 func (t *Tile) HasSector() bool {
 	return t.Get(SectorId) >= 0
 }
+
+func (t *Tile) GetSector() *Sector {
+	return theWorld.GetSector(SectorKey(t.Get(SectorId)))
+}

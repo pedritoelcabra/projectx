@@ -3,12 +3,10 @@ package world
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/core/defs"
-	"github.com/pedritoelcabra/projectx/src/core/logger"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/world/utils"
 	"log"
-	"math"
 )
 
 type UnitKey int
@@ -46,6 +44,7 @@ func NewUnit(templateName string, location tiling.Coord) *Unit {
 	aUnit.Attributes = NewAttributes(template.Attributes)
 	aUnit.SetToMaxHealth()
 	aUnit.SetF(BusyTime, 0.0)
+	aUnit.SetF(LastCombatAction, 0.0)
 	aUnit.SetEquipmentGraphics(template)
 	aUnit.Brain = NewBrain()
 	aUnit.Init()
@@ -80,41 +79,6 @@ func (u *Unit) ShouldDraw() bool {
 	return EntityShouldDraw(u.GetX(), u.GetY())
 }
 
-func (u *Unit) SetPosition(x, y float64) {
-	u.X = x
-	u.Y = y
-	u.CheckIfMoving()
-}
-
-func (u *Unit) SetDestination(x, y float64) {
-	u.DestX = x
-	u.DestY = y
-	u.CheckIfMoving()
-	if u.Moving {
-		u.OrientateTowardsPoint(u.DestX, u.DestY)
-	}
-}
-
-func (u *Unit) OrientateTowardsPoint(x, y float64) {
-	if math.Abs(u.X-x)+1 > math.Abs(u.Y-y) {
-		if u.X > x {
-			u.Sprite.SetFacing(gfx.FaceLeft)
-			return
-		}
-		u.Sprite.SetFacing(gfx.FaceRight)
-		return
-	}
-	if u.Y > y {
-		u.Sprite.SetFacing(gfx.FaceUp)
-		return
-	}
-	u.Sprite.SetFacing(gfx.FaceDown)
-}
-
-func (u *Unit) CollidesWith(x, y float64) bool {
-	return utils.CalculateDistance(u.X, u.Y, x, y) < u.GetF(Size)
-}
-
 func (u *Unit) Init() {
 	u.SetGraphics()
 	u.Brain.SetOwner(u)
@@ -147,6 +111,7 @@ func (u *Unit) Update() {
 		return
 	}
 	u.SetF(BusyTime, u.GetF(BusyTime)-1.0)
+	u.PassiveHeal()
 	u.Brain.ProcessState()
 	if u.Moving {
 		oldCoord := u.GetTileCoord()
@@ -170,66 +135,6 @@ func (u *Unit) Update() {
 			u.SetPosition(newX, newY)
 		}
 	}
-}
-
-func (u *Unit) CheckIfMoving() {
-	if u.DestY != u.Y || u.DestX != u.X {
-		u.Moving = true
-		return
-	}
-	u.Moving = false
-}
-
-func (u *Unit) StopMovement() {
-	u.DestY = u.X
-	u.DestY = u.Y
-	u.Moving = false
-}
-
-func (u *Unit) GetPos() (x, y float64) {
-	return u.X, u.Y
-}
-
-func (u *Unit) GetTileCoord() tiling.Coord {
-	return tiling.PixelFToTileC(u.GetPos())
-}
-
-func (u *Unit) QueueAttackAnimation(x, y float64, speed int) {
-	u.Sprite.QueueAttackAnimation((x-u.GetX())/2, (y-u.GetY())/2, speed)
-	u.OrientateTowardsPoint(x, y)
-}
-
-func (u *Unit) GetAttackCoolDown() float64 {
-	return 6000 / u.GetF(AttackSpeed)
-}
-
-func (u *Unit) PerformAttackOn(target *Unit) {
-	if u.IsBusy() {
-		return
-	}
-	attackSpeed := u.GetAttackCoolDown()
-	u.SetF(BusyTime, attackSpeed)
-	x, y := target.GetPos()
-	u.QueueAttackAnimation(x, y, int(attackSpeed))
-	u.StopMovement()
-	//logger.General("Attacking "+target.GetName(), nil)
-	attack := NewAttack()
-	attack.Damage = u.GetF(AttackDamage)
-	attack.Attacker = u
-	attack.Defender = target
-	target.ReceiveAttack(attack)
-}
-
-func (u *Unit) ReceiveAttack(attack *Attack) {
-	u.Attributes.ApplyF(HitPoints, -attack.Damage)
-	if u.GetHealth() <= 0 {
-		u.Alive = false
-		logger.General(u.GetName()+" died", nil)
-	}
-}
-
-func (u *Unit) SetToMaxHealth() {
-	u.SetF(HitPoints, u.GetF(MaxHitPoints))
 }
 
 func (u *Unit) GetX() float64 {
@@ -270,46 +175,4 @@ func (u *Unit) SetF(key int, value float64) {
 
 func (u *Unit) GetHealth() float64 {
 	return u.GetF(HitPoints)
-}
-
-func (u *Unit) GetMaxHealth() float64 {
-	return u.GetF(MaxHitPoints)
-}
-
-func (u *Unit) ClosestVisibleEnemy() UnitKey {
-	closestEnemy := UnitKey(-1)
-	closestDistance := 999999
-	for key, unit := range theWorld.GetUnits() {
-		if !unit.IsAlive() {
-			continue
-		}
-		if key == u.Id {
-			continue
-		}
-		thisDistance := u.DistanceToUnit(unit)
-		if !u.DistanceWithinVision(thisDistance) {
-			continue
-		}
-		if !u.GetFaction().IsHostileTowards(unit.GetFaction()) {
-			continue
-		}
-		if thisDistance < closestDistance {
-			closestDistance = thisDistance
-			closestEnemy = key
-		}
-	}
-	return closestEnemy
-}
-
-func (u *Unit) DistanceToUnit(t *Unit) int {
-	return tiling.NewCoordF(u.GetPos()).ChebyshevDist(tiling.NewCoordF(t.GetPos()))
-}
-
-func (u *Unit) DistanceWithinVision(distance int) bool {
-	return distance < int(u.GetF(Vision))
-}
-
-func (u *Unit) DistanceWithinAttackRange(distance int) bool {
-	attackRange := int(u.GetF(AttackRange))
-	return distance <= attackRange
 }

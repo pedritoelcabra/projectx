@@ -165,3 +165,7 @@ func (s *Sector) SetF(key int, value float64) {
 func (s *Sector) SetName(name string) {
 	s.Name = name
 }
+
+func (s *Sector) GetFaction() *Faction {
+	return theWorld.GetFaction(FactionKey(s.Get(FactionId)))
+}

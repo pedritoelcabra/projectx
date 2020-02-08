@@ -41,4 +41,6 @@ const (
 	SpawnsWild
 	BusyTime
 	HomeSector
+	LastCombatAction
+	PassiveHealthCooldown = 300
 )
