@@ -13,9 +13,9 @@
     "Speed" : 8,
     "Vision" : 400,
     "Size" : 32,
-    "AttackRange" : 64,
-    "AttackSpeed" : 90,
-    "AttackDamage" : 10,
+    "AttackRange" : 32,
+    "AttackSpeed" : 180,
+    "AttackDamage" : 5,
     "MaxHitPoints" : 50
   }
 }

@@ -57,7 +57,7 @@ func (u *Unit) PassiveHeal() {
 	if currentSectorFaction == nil || currentSectorFaction.GetId() != FactionKey(u.Get(FactionId)) {
 		return
 	}
-	u.Attributes.ApplyF(HitPoints, u.GetF(HitPoints)/600)
+	u.Attributes.ApplyF(HitPoints, u.GetF(HitPoints)/100)
 	if u.GetHealth() > u.GetMaxHealth() {
 		u.SetToMaxHealth()
 	}

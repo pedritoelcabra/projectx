@@ -49,9 +49,9 @@ func (p *Player) SetPosition(x, y float64) {
 	p.unit.SetPosition(x, y)
 }
 
-func (p *Player) SetAttackPoint(x, y float64) {
-	p.attackX = x
-	p.attackY = y
+func (p *Player) SetAttackPoint(x, y int) {
+	p.attackX = float64(x)
+	p.attackY = float64(y)
 }
 
 func (p *Player) MoveToHomeSector() {
@@ -83,6 +83,9 @@ func (p *Player) HandleAttack() {
 	playerFaction := p.unit.GetFaction()
 	for key, unit := range theWorld.GetUnits() {
 		if key == p.unit.GetId() {
+			continue
+		}
+		if !unit.IsAlive() {
 			continue
 		}
 		if !p.unit.DistanceWithinAttackRange(p.unit.DistanceToUnit(unit)) {

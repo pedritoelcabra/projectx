@@ -39,6 +39,7 @@ func (i *Input) Update() {
 	}
 	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
 		i.leftMouseDown = true
+		ProjectX.HandleAttackClick()
 	} else {
 		if i.leftMouseDown {
 			i.TriggerCallbacks("LeftClick")

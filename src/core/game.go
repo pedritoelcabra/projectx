@@ -145,6 +145,13 @@ func (g *game) UpdatePlayerMovement(dir world.PlayerDirection, value bool) {
 	g.World.PlayerUnit.SetMovement(dir, value)
 }
 
+func (g *game) HandleAttackClick() {
+	if g.World == nil || !g.World.IsInitialized() || g.isPaused {
+		return
+	}
+	g.World.PlayerUnit.SetAttackPoint(g.MousePosCoord().XY())
+}
+
 func (g *game) QuickSave() {
 	file.SaveToFile(g.World.GetSaveState(), file.DefaultSaveGameName)
 	g.InitMenus()
