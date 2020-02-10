@@ -23,6 +23,8 @@ type Player struct {
 	MovingDown      bool
 	MovingRight     bool
 	RespawnCooldown int
+	attackX         float64
+	attackY         float64
 }
 
 func NewPlayer() *Player {
@@ -30,6 +32,8 @@ func NewPlayer() *Player {
 	aPlayer.Init()
 	aPlayer.unit = NewUnit("Player", tiling.NewCoord(0, 0))
 	aPlayer.unit.Name = "You"
+	aPlayer.attackX = 0.0
+	aPlayer.attackX = 0.0
 	return aPlayer
 }
 
@@ -43,6 +47,11 @@ func (p *Player) DrawSprite(screen *gfx.Screen) {
 
 func (p *Player) SetPosition(x, y float64) {
 	p.unit.SetPosition(x, y)
+}
+
+func (p *Player) SetAttackPoint(x, y float64) {
+	p.attackX = x
+	p.attackY = y
 }
 
 func (p *Player) MoveToHomeSector() {
@@ -63,14 +72,36 @@ func (p *Player) Update() {
 }
 
 func (p *Player) HandleAttack() {
+	if p.attackX == 0.0 {
+		return
+	}
 	if p.unit.IsBusy() {
 		return
 	}
-	closestEnemy := theWorld.GetUnit(p.unit.ClosestVisibleEnemy())
-	if closestEnemy != nil {
-		if p.unit.DistanceWithinAttackRange(p.unit.DistanceToUnit(closestEnemy)) {
-			p.unit.PerformAttackOn(closestEnemy)
+	bestEnemy := UnitKey(-1)
+	bestDistance := 99999
+	playerFaction := p.unit.GetFaction()
+	for key, unit := range theWorld.GetUnits() {
+		if key == p.unit.GetId() {
+			continue
 		}
+		if !p.unit.DistanceWithinAttackRange(p.unit.DistanceToUnit(unit)) {
+			continue
+		}
+		if !playerFaction.IsHostileTowards(unit.GetFaction()) {
+			continue
+		}
+		distance := p.unit.DistanceToUnit(unit)
+		if distance < bestDistance {
+			bestDistance = distance
+			bestEnemy = unit.GetId()
+		}
+	}
+	p.attackX = 0.0
+	p.attackY = 0.0
+	closestEnemy := theWorld.GetUnit(bestEnemy)
+	if closestEnemy != nil {
+		p.unit.PerformAttackOn(closestEnemy)
 	}
 }
 

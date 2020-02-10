@@ -176,3 +176,7 @@ func (u *Unit) SetF(key int, value float64) {
 func (u *Unit) GetHealth() float64 {
 	return u.GetF(HitPoints)
 }
+
+func (u *Unit) GetId() UnitKey {
+	return u.Id
+}

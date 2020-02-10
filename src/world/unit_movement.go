@@ -61,7 +61,11 @@ func (u *Unit) GetTileCoord() tiling.Coord {
 }
 
 func (u *Unit) DistanceToUnit(t *Unit) int {
-	return tiling.NewCoordF(u.GetPos()).ChebyshevDist(tiling.NewCoordF(t.GetPos()))
+	return u.DistanceToPoint(t.GetPos())
+}
+
+func (u *Unit) DistanceToPoint(x, y float64) int {
+	return tiling.NewCoordF(u.GetPos()).ChebyshevDist(tiling.NewCoordF(x, y))
 }
 
 func (u *Unit) DistanceWithinVision(distance int) bool {
