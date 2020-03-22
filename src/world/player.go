@@ -18,6 +18,7 @@ const (
 
 type Player struct {
 	unit            *Unit
+	LastTileCoord   tiling.Coord
 	MovingUp        bool
 	MovingLeft      bool
 	MovingDown      bool
@@ -62,6 +63,14 @@ func (p *Player) MoveToHomeSector() {
 	}
 }
 
+func (p *Player) IsInOwnedSector() bool {
+	return p.unit.IsInOwnedSector()
+}
+
+func (p *Player) GetTileCoord() tiling.Coord {
+	return p.unit.GetTileCoord()
+}
+
 func (p *Player) Update() {
 	p.CheckForPlayerDeath()
 	if !p.unit.IsAlive() {
@@ -69,6 +78,7 @@ func (p *Player) Update() {
 	}
 	p.HandleAttack()
 	p.UpdateDestination()
+	p.LastTileCoord = p.GetTileCoord()
 }
 
 func (p *Player) HandleAttack() {

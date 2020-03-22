@@ -29,6 +29,14 @@ func (g *game) InitMenus() {
 	g.Gui.AddMenu(BuildingMenu, g.BuildBuildings())
 }
 
+func (g *game) RebuildInGameMenu() {
+	if g.Gui.GetMenu(InGameMenu).IsDisabled() {
+		return
+	}
+	g.Gui.AddMenu(InGameMenu, g.BuildInGameMenu())
+	g.Gui.GetMenu(InGameMenu).SetDisabled(false)
+}
+
 func (g *game) BuildStartMenu() *gui.Menu {
 	aMenu := gui.NewMenu(g.Gui)
 	aMenu.SetHCentered(true)
@@ -206,11 +214,17 @@ func (g *game) BuildInGameMenu() *gui.Menu {
 	}
 	aMenu.AddButton(mainMenuButton)
 
-	aButton := gui.NewButton(buttonSize, "Buildings")
-	aButton.OnPressed = func(b *gui.Button) {
-		g.Gui.ToggleDisabled(BuildingMenu)
+	if g.World != nil && g.World.PlayerUnit.IsInOwnedSector() {
+		aButton := gui.NewButton(buttonSize, "Buildings")
+		aButton.OnPressed = func(b *gui.Button) {
+			g.Gui.ToggleDisabled(BuildingMenu)
+		}
+		aMenu.AddButton(aButton)
+	} else {
+		if g.Gui.GetMenu(BuildingMenu) != nil {
+			g.Gui.GetMenu(BuildingMenu).SetDisabled(true)
+		}
 	}
-	aMenu.AddButton(aButton)
 
 	aMenu.SetDisabled(true)
 

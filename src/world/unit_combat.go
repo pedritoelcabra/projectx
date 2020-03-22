@@ -49,18 +49,25 @@ func (u *Unit) PassiveHeal() {
 	if theWorld.GetTick()-int(u.GetF(LastCombatAction)) < PassiveHealthCooldown {
 		return
 	}
-	currentSector := theWorld.Grid.Tile(u.GetTileCoord()).GetSector()
-	if currentSector == nil {
-		return
-	}
-	currentSectorFaction := currentSector.GetFaction()
-	if currentSectorFaction == nil || currentSectorFaction.GetId() != FactionKey(u.Get(FactionId)) {
+	if !u.IsInOwnedSector() {
 		return
 	}
 	u.Attributes.ApplyF(HitPoints, u.GetF(HitPoints)/100)
 	if u.GetHealth() > u.GetMaxHealth() {
 		u.SetToMaxHealth()
 	}
+}
+
+func (u *Unit) IsInOwnedSector() bool {
+	currentSector := theWorld.Grid.Tile(u.GetTileCoord()).GetSector()
+	if currentSector == nil {
+		return false
+	}
+	currentSectorFaction := currentSector.GetFaction()
+	if currentSectorFaction == nil || currentSectorFaction.GetId() != FactionKey(u.Get(FactionId)) {
+		return false
+	}
+	return true
 }
 
 func (u *Unit) GetMaxHealth() float64 {

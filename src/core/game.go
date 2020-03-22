@@ -59,6 +59,7 @@ func (g *game) Update(screen *ebiten.Image) error {
 
 	if !g.isPaused {
 		g.World.Update()
+		g.UpdateMenus()
 		g.Screen.SetCameraCoords(g.World.PlayerUnit.GetPos())
 	}
 
@@ -71,6 +72,14 @@ func (g *game) Update(screen *ebiten.Image) error {
 	}
 
 	return nil
+}
+
+func (g *game) UpdateMenus() {
+	lastCoord := g.World.PlayerUnit.LastTileCoord
+	thisCoord := g.World.PlayerUnit.GetTileCoord()
+	if !lastCoord.Equals(thisCoord) {
+		g.RebuildInGameMenu()
+	}
 }
 
 func (g *game) openContextMenu() {

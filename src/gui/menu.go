@@ -25,6 +25,10 @@ func (m *Menu) SetDisabled(value bool) {
 	m.disabled = value
 }
 
+func (m *Menu) IsDisabled() bool {
+	return m.disabled
+}
+
 func (m *Menu) ToggleDisabled() {
 	m.disabled = !m.disabled
 }
