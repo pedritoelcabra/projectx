@@ -146,4 +146,7 @@ func (g *game) InitInput() {
 	g.Input.AddListener("F9Press", "quickLoad", func(g *game) {
 		g.QuickLoad()
 	})
+	g.Input.AddListener("F1Press", "toggleDebug", func(g *game) {
+		g.Gui.ToggleDebug()
+	})
 }
