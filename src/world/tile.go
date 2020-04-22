@@ -146,3 +146,11 @@ func (t *Tile) HasSector() bool {
 func (t *Tile) GetSector() *Sector {
 	return theWorld.GetSector(SectorKey(t.Get(SectorId)))
 }
+
+func (t *Tile) GetSectorId() SectorKey {
+	sector := t.GetSector()
+	if sector == nil {
+		return -1
+	}
+	return sector.Id
+}

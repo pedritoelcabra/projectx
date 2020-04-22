@@ -18,7 +18,8 @@ const (
 
 type Player struct {
 	unit            *Unit
-	LastTileCoord   tiling.Coord
+	sectorUpdate    bool
+	sectorUpdateKey SectorKey
 	MovingUp        bool
 	MovingLeft      bool
 	MovingDown      bool
@@ -78,7 +79,29 @@ func (p *Player) Update() {
 	}
 	p.HandleAttack()
 	p.UpdateDestination()
-	p.LastTileCoord = p.GetTileCoord()
+	p.SetSectorUpdate()
+}
+
+func (p *Player) SetSectorUpdate() {
+	if !theWorld.IsTock() {
+		return
+	}
+	if p.sectorUpdate {
+		return
+	}
+	oldSector := p.sectorUpdateKey
+	p.sectorUpdateKey = p.unit.GetTile().GetSectorId()
+	if p.sectorUpdateKey != oldSector {
+		p.sectorUpdate = true
+	}
+}
+
+func (p *Player) GetSectorUpdate() bool {
+	if !p.sectorUpdate {
+		return false
+	}
+	p.sectorUpdate = false
+	return true
 }
 
 func (p *Player) HandleAttack() {

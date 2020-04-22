@@ -60,6 +60,10 @@ func (u *Unit) GetTileCoord() tiling.Coord {
 	return tiling.PixelFToTileC(u.GetPos())
 }
 
+func (u *Unit) GetTile() *Tile {
+	return theWorld.Grid.Tile(u.GetTileCoord())
+}
+
 func (u *Unit) DistanceToUnit(t *Unit) int {
 	return u.DistanceToPoint(t.GetPos())
 }

@@ -75,9 +75,7 @@ func (g *game) Update(screen *ebiten.Image) error {
 }
 
 func (g *game) UpdateMenus() {
-	lastCoord := g.World.PlayerUnit.LastTileCoord
-	thisCoord := g.World.PlayerUnit.GetTileCoord()
-	if !lastCoord.Equals(thisCoord) {
+	if g.World.PlayerUnit.GetSectorUpdate() {
 		g.RebuildInGameMenu()
 	}
 }
