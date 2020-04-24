@@ -23,9 +23,20 @@ func (g *Grid) SpawnSector(aChunk *Chunk) {
 	newSector := NewSector(centerCoord, template)
 	newFaction := NewFaction("Faction " + strconv.Itoa(len(theWorld.Entities.Factions)))
 	newSector.Set(FactionId, int(newFaction.GetId()))
+	newSector.CalculateNearbySectors()
 	tile := g.Tile(centerCoord)
 	tile.Set(Flora, 0)
 	//logger.General("Spawned a "+template.Name+" sector in Chunk: "+aChunk.Location.ToString()+" at "+centerCoord.ToString(), nil)
+}
+
+func (s *Sector) CalculateNearbySectors() {
+	for _, sector := range theWorld.Entities.Sectors {
+		distance := sector.Center.ChebyshevDist(s.Center)
+		if distance > 100 {
+			continue
+		}
+		ConnectSectors(s, sector)
+	}
 }
 
 func (g *Grid) ChooseSectorTemplate(location tiling.Coord) *defs.SectorDef {

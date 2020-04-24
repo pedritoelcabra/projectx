@@ -12,19 +12,22 @@ import (
 
 type SectorKey int
 type SectorMap map[SectorKey]*Sector
+type ConnectionMap map[SectorKey]SectorConnection
 
 type Sector struct {
-	Id       SectorKey
-	Size     int
-	Name     string
-	Center   tiling.Coord
-	Data     *container.Container
-	Template *defs.SectorDef
-	Tiles    []tiling.Coord
+	Id            SectorKey
+	Size          int
+	Name          string
+	Center        tiling.Coord
+	Data          *container.Container
+	Template      *defs.SectorDef
+	Tiles         []tiling.Coord
+	NearbySectors ConnectionMap
 }
 
 func NewSector(location tiling.Coord, def *defs.SectorDef) *Sector {
 	aSector := &Sector{}
+	aSector.NearbySectors = make(ConnectionMap)
 	aSector.Template = def
 	aSector.Data = container.NewContainer()
 	aSector.Center = location
@@ -35,6 +38,18 @@ func NewSector(location tiling.Coord, def *defs.SectorDef) *Sector {
 	aSector.SpawnBuildings()
 	aSector.Init()
 	return aSector
+}
+
+func (s *Sector) AddNearbySector(sector SectorKey, connection SectorConnection) {
+	s.NearbySectors[sector] = connection
+}
+
+func (s *Sector) GetNearbySectors() ConnectionMap {
+	return s.NearbySectors
+}
+
+func (s *Sector) GetNearbySector(key SectorKey) SectorConnection {
+	return s.NearbySectors[key]
 }
 
 func (s *Sector) SpawnBuildings() {
