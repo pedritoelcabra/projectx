@@ -19,6 +19,7 @@ const (
 	LogMenu      string = "log"
 	BuildingMenu string = "building"
 	ContextMenu  string = "context"
+	EntityMenu   string = "entity"
 )
 
 func (g *game) InitMenus() {
@@ -27,6 +28,7 @@ func (g *game) InitMenus() {
 	g.Gui.AddMenu(InGameMenu, g.BuildInGameMenu())
 	g.Gui.AddMenu(LogMenu, g.BuildLog())
 	g.Gui.AddMenu(BuildingMenu, g.BuildBuildings())
+	g.Gui.AddMenu(EntityMenu, g.BuildEntityMenu())
 }
 
 func (g *game) RebuildInGameMenu() {
@@ -122,6 +124,12 @@ func (g *game) BuildLog() *gui.Menu {
 	logMenu.AddTextBox(aBox)
 
 	return logMenu
+}
+
+func (g *game) BuildEntityMenu() *gui.Menu {
+	menu := gui.NewMenu(g.Gui)
+	menu.SetDisabled(true)
+	return menu
 }
 
 func (g *game) BuildBuildings() *gui.Menu {
