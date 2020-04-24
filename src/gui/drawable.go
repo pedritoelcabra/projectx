@@ -112,7 +112,15 @@ func (m *Menu) draw(gui *Gui, box image.Rectangle) {
 	drawSpace.Min.Y += m.topPadding
 	drawSpace.Min.X += m.leftPadding
 	drawSpace.Min.X += m.centeredOffset(box)
+	drawSpace.Max.X -= m.rightPadding
+	drawSpace.Max.Y -= m.bottomPadding
 	currentBatchMaxDimension := 0
+	if m.hasBG {
+		bg, _ := ebiten.NewImage(drawSpace.Dx(), drawSpace.Dy(), ebiten.FilterNearest)
+		_ = bg.Fill(m.background)
+		opts := &ebiten.DrawImageOptions{}
+		gui.drawImage(bg, drawSpace, opts)
+	}
 	for _, component := range m.components {
 		width := component.getWidth()
 		height := component.getHeight()

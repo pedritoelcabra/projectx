@@ -87,6 +87,18 @@ func (g *game) InitInput() {
 		g.Gui.SetDisabled("context", true)
 	})
 	g.Input.AddListener("EscapePress", "toggleMenu", func(g *game) {
+		if !g.Gui.GetMenu("context").IsDisabled() {
+			g.Gui.SetDisabled("context", true)
+			return
+		}
+		if !g.Gui.GetMenu("building").IsDisabled() {
+			g.Gui.SetDisabled("building", true)
+			return
+		}
+		if !g.Gui.GetMenu("entity").IsDisabled() {
+			g.Gui.SetDisabled("entity", true)
+			return
+		}
 		g.TogglePause()
 	})
 	g.Input.AddListener("LeftPress", "updatePlayer", func(g *game) {

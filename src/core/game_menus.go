@@ -129,12 +129,14 @@ func (g *game) BuildLog() *gui.Menu {
 func (g *game) BuildEntityMenu() *gui.Menu {
 	menu := gui.NewMenu(g.Gui)
 	menu.SetDisabled(true)
+	menu.SetBG(color.Black)
 	return menu
 }
 
 func (g *game) BuildBuildings() *gui.Menu {
 	buildingMenu := gui.NewMenu(g.Gui)
 	buildingMenu.SetHorizontalMenu(true)
+	buildingMenu.SetBG(color.Black)
 
 	titleSize := 100
 	aBox := gui.NewTextBox()
@@ -171,6 +173,14 @@ func (g *game) BuildContextMenu(x, y int) *gui.Menu {
 
 	mouseCoord := g.MouseTileCoord()
 	tile := g.World.Grid.Tile(mouseCoord)
+	building := tile.Building.Get()
+	if building != nil {
+		buildingButton := gui.NewButton(buttonSize, building.GetName())
+		buildingButton.OnPressed = func(b *gui.Button) {
+			g.ShowBuildingEntity(building)
+		}
+		aMenu.AddButton(buildingButton)
+	}
 
 	sector := g.World.GetSector(world.SectorKey(tile.Get(world.SectorId)))
 

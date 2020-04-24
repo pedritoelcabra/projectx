@@ -1,16 +1,28 @@
 package gui
 
-import "image"
+import (
+	"image"
+	"image/color"
+)
 
 type Menu struct {
 	gui            *Gui
 	components     []drawable
 	box            image.Rectangle
+	background     color.Gray16
+	hasBG          bool
 	hCentered      bool
 	topPadding     int
 	leftPadding    int
+	rightPadding   int
+	bottomPadding  int
 	horizontalMenu bool
 	disabled       bool
+}
+
+func (m *Menu) SetBG(bg color.Gray16) {
+	m.background = bg
+	m.hasBG = true
 }
 
 func (m *Menu) SetHCentered(centered bool) {
@@ -19,6 +31,18 @@ func (m *Menu) SetHCentered(centered bool) {
 
 func (m *Menu) SetTopPadding(padding int) {
 	m.topPadding = padding
+}
+
+func (m *Menu) SetBottomPadding(padding int) {
+	m.bottomPadding = padding
+}
+
+func (m *Menu) SetLeftPadding(padding int) {
+	m.leftPadding = padding
+}
+
+func (m *Menu) SetRightPadding(padding int) {
+	m.rightPadding = padding
 }
 
 func (m *Menu) SetDisabled(value bool) {
@@ -35,10 +59,6 @@ func (m *Menu) ToggleDisabled() {
 
 func (m *Menu) SetHorizontalMenu(value bool) {
 	m.horizontalMenu = value
-}
-
-func (m *Menu) SetLeftPadding(padding int) {
-	m.leftPadding = padding
 }
 
 func (m *Menu) centeredOffset(box image.Rectangle) int {
