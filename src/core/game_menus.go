@@ -170,7 +170,7 @@ func (g *game) BuildContextMenu(x, y int) *gui.Menu {
 	if building != nil {
 		buildingButton := gui.NewButton(buttonSize, building.GetName())
 		buildingButton.OnPressed = func(b *gui.Button) {
-			g.ShowBuildingEntity(building)
+			g.ShowEntity(building)
 		}
 		aMenu.AddButton(buildingButton)
 	}

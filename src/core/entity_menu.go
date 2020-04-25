@@ -3,7 +3,6 @@ package core
 import (
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/gui"
-	"github.com/pedritoelcabra/projectx/src/world"
 	"image"
 	"image/color"
 )
@@ -15,6 +14,10 @@ const (
 	TitleSize               = 36
 )
 
+type Entity interface {
+	GetName() string
+}
+
 func (g *game) BuildEntityMenu() *gui.Menu {
 	menu := gui.NewMenu(g.Gui)
 	menu.SetDisabled(true)
@@ -25,30 +28,21 @@ func (g *game) BuildEntityMenu() *gui.Menu {
 func (g *game) OpenEntityMenu(x, y int) {
 	clickedUnit := g.World.ClosestUnitWithinRadius(x, y, ClickableDistance)
 	if clickedUnit != nil {
-		g.ShowUnitEntity(clickedUnit)
+		g.ShowEntity(clickedUnit)
 		return
 	}
 	mouseCoord := g.MouseTileCoord()
 	tile := g.World.Grid.Tile(mouseCoord)
 	building := tile.Building.Get()
 	if building != nil {
-		g.ShowBuildingEntity(building)
+		g.ShowEntity(building)
 	}
 }
 
-func (g *game) ShowUnitEntity(unit *world.Unit) {
+func (g *game) ShowEntity(entity Entity) {
 	menu := g.BuildEntityMenu()
 	menu.SetDisabled(false)
-	AddEntityTitle(menu, unit.GetName())
-	menu.SetLeftPadding(gfx.ScreenWidth - EntityMenuWidth)
-	menu.SetBottomPadding(EntityMenuBottomPadding)
-	g.Gui.AddMenu(EntityMenu, menu)
-}
-
-func (g *game) ShowBuildingEntity(building *world.Building) {
-	menu := g.BuildEntityMenu()
-	menu.SetDisabled(false)
-	AddEntityTitle(menu, building.GetName())
+	AddEntityTitle(menu, entity.GetName())
 	menu.SetLeftPadding(gfx.ScreenWidth - EntityMenuWidth)
 	menu.SetBottomPadding(EntityMenuBottomPadding)
 	g.Gui.AddMenu(EntityMenu, menu)
