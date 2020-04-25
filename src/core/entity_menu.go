@@ -20,6 +20,7 @@ const (
 type Entity interface {
 	GetName() string
 	GetFaction() *world.Faction
+	GetDescription() string
 }
 
 func (g *game) BuildEntityMenu() *gui.Menu {
@@ -47,7 +48,9 @@ func (g *game) ShowEntity(entity Entity) {
 	menu := g.BuildEntityMenu()
 	menu.SetDisabled(false)
 	AddEntityTitle(menu, entity.GetName())
-	AddEntityText(menu, "Faction: "+entity.GetFaction().GetName())
+	text := "Faction: " + entity.GetFaction().GetName()
+	text += "\n" + entity.GetDescription()
+	AddEntityText(menu, text)
 	menu.SetLeftPadding(gfx.ScreenWidth - EntityMenuWidth)
 	menu.SetBottomPadding(EntityMenuBottomPadding)
 	g.Gui.AddMenu(EntityMenu, menu)

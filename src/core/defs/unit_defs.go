@@ -10,11 +10,12 @@ import (
 )
 
 type UnitDef struct {
-	Name       string
-	Faction    string
-	SpawnsWild bool
-	Equipments []EquipmentItemDef
-	Attributes map[string]int
+	Name        string
+	Faction     string
+	Description string
+	SpawnsWild  bool
+	Equipments  []EquipmentItemDef
+	Attributes  map[string]int
 }
 
 type EquipmentItemDef struct {

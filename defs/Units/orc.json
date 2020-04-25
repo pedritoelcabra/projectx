@@ -1,5 +1,6 @@
 {
   "Name": "Orc",
+  "Description": "description",
   "Faction": "Orcs",
   "SpawnsWild": true,
   "Equipments": [

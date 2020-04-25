@@ -29,6 +29,7 @@ type Unit struct {
 	Attributes *Attributes
 	Brain      *Brain
 	Alive      bool
+	Template   *defs.UnitDef
 }
 
 func NewUnit(templateName string, location tiling.Coord) *Unit {
@@ -37,6 +38,7 @@ func NewUnit(templateName string, location tiling.Coord) *Unit {
 		log.Fatal("Invalid Unit Template: " + templateName)
 	}
 	aUnit := &Unit{}
+	aUnit.Template = template
 	aUnit.Alive = true
 	aUnit.Name = template.Name
 	aUnit.X = float64(location.X())
@@ -179,4 +181,8 @@ func (u *Unit) GetHealth() float64 {
 
 func (u *Unit) GetId() UnitKey {
 	return u.Id
+}
+
+func (u *Unit) GetDescription() string {
+	return u.Template.Description
 }

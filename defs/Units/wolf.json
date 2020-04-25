@@ -1,5 +1,6 @@
 {
   "Name": "Wolf",
+  "Description": "description",
   "Faction": "Wild Carnivores",
   "SpawnsWild": true,
   "Equipments": [

@@ -8,8 +8,9 @@ import (
 )
 
 type BuildingDef struct {
-	Name    string
-	Graphic string
+	Name        string
+	Description string
+	Graphic     string
 }
 
 func BuildingDefs() map[string]*BuildingDef {

@@ -86,3 +86,7 @@ func (b *Building) GetFaction() *Faction {
 func (b *Building) GetTile() *Tile {
 	return theWorld.Grid.Tile(b.Location)
 }
+
+func (b *Building) GetDescription() string {
+	return b.Template.Description
+}
