@@ -76,11 +76,12 @@ func (t *TextBox) BuildTextBoxImage(gui *Gui, box image.Rectangle) {
 		t.contentBuf, _ = ebiten.NewImage(w, h, ebiten.FilterDefault)
 	}
 
-	t.contentBuf.Clear()
+	_ = t.contentBuf.Clear()
+	splitText := t.InsertLineBreaks(gui.uiFonts[t.textSize])
 
 	maxWidth := 0
 	maxHeight := 0
-	for i, line := range strings.Split(t.text, "\n") {
+	for i, line := range strings.Split(splitText, "\n") {
 		x := 0
 		y := 0 + i*lineHeight + lineHeight - (lineHeight-gui.uiFontHeights[t.textSize])/2
 		if y < -lineHeight {
@@ -112,4 +113,33 @@ func (t *TextBox) BuildTextBoxImage(gui *Gui, box image.Rectangle) {
 	t.drawBox.Min.X += t.leftPadding
 	t.drawBox.Min.Y += t.topPadding
 	t.hasDrawnText = true
+}
+
+func (t *TextBox) InsertLineBreaks(face font.Face) string {
+	width := t.getWidth()
+	splitted := ""
+	for _, line := range strings.Split(t.text, "\n") {
+		recomposedLine := ""
+		if splitted != "" {
+			splitted += "\n"
+		}
+		for _, word := range strings.Split(line, " ") {
+			recomposedLinePlus := recomposedLine
+			if recomposedLinePlus != "" {
+				recomposedLinePlus += " "
+			}
+			recomposedLinePlus += word
+			currentBounds, _ := font.BoundString(face, recomposedLinePlus)
+			currentWidth := currentBounds.Max.X.Ceil()
+			if currentWidth < width {
+				recomposedLine = recomposedLinePlus
+				continue
+			}
+			splitted += recomposedLine
+			splitted += "\n"
+			recomposedLine = word
+		}
+		splitted += recomposedLine
+	}
+	return splitted
 }
