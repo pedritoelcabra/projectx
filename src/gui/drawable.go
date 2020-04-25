@@ -135,7 +135,7 @@ func (m *Menu) draw(gui *Gui, box image.Rectangle) {
 		} else {
 			if drawSpace.Min.Y+height >= box.Max.Y {
 				drawSpace.Min.Y = box.Min.Y + m.topPadding
-				drawSpace.Min.Y += currentBatchMaxDimension
+				drawSpace.Min.X += currentBatchMaxDimension
 			}
 			if currentBatchMaxDimension < width {
 				currentBatchMaxDimension = width

@@ -74,3 +74,15 @@ func (b *Building) GetName() string {
 func (b *Building) GetId() BuildingKey {
 	return b.Id
 }
+
+func (b *Building) GetSector() *Sector {
+	return b.GetTile().GetSector()
+}
+
+func (b *Building) GetFaction() *Faction {
+	return b.GetSector().GetFaction()
+}
+
+func (b *Building) GetTile() *Tile {
+	return theWorld.Grid.Tile(b.Location)
+}
