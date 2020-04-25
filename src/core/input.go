@@ -80,14 +80,15 @@ func (i *Input) TriggerCallbacks(key string) {
 
 func (g *game) InitInput() {
 	g.Input = NewInput()
-	g.Input.AddListener("RightClick", "openContext", func(g *game) {
+	g.Input.AddListener("RightClick", "rightClick", func(g *game) {
 		g.Gui.AddMenu("context", g.BuildContextMenu(ebiten.CursorPosition()))
 	})
-	g.Input.AddListener("LeftClick", "closeContext", func(g *game) {
+	g.Input.AddListener("LeftClick", "leftClick", func(g *game) {
 		g.Gui.SetDisabled("context", true)
+		g.OpenEntityMenu(g.MousePosCoord().XY())
 	})
 	g.Input.AddListener("EscapePress", "toggleMenu", func(g *game) {
-		if !g.Gui.GetMenu("context").IsDisabled() {
+		if g.Gui.GetMenu("context") != nil && !g.Gui.GetMenu("context").IsDisabled() {
 			g.Gui.SetDisabled("context", true)
 			return
 		}

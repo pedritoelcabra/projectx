@@ -169,6 +169,25 @@ func (w *World) DrawEntities(screen *gfx.Screen) {
 	}
 }
 
+func (w *World) ClosestUnitWithinRadius(x, y, radius int) *Unit {
+	var bestUnit *Unit
+	bestDist := 9999
+	for _, u := range w.Entities.Units {
+		if !u.IsAlive() {
+			continue
+		}
+		ux := utils.AbsInt(int(u.GetX()) - x)
+		uy := utils.AbsInt(int(u.GetY()) - y)
+		thisDist := utils.MaxInt(uy, ux)
+		if thisDist > radius || thisDist > bestDist {
+			continue
+		}
+		bestDist = thisDist
+		bestUnit = u
+	}
+	return bestUnit
+}
+
 func (w *World) DrawableBuildings() []*Building {
 	var buildings []*Building
 	for i := 0; i < len(w.Entities.Buildings); i++ {
