@@ -5,6 +5,7 @@ import (
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 	"image"
 	"log"
+	"strconv"
 )
 
 const (
@@ -20,6 +21,10 @@ type HealthBarOwner interface {
 	GetMaxHealth() float64
 	GetX() float64
 	GetY() float64
+}
+
+func HealthString(owner HealthBarOwner) string {
+	return strconv.Itoa(int(owner.GetHealth())) + "/" + strconv.Itoa(int(owner.GetMaxHealth()))
 }
 
 func InitHealthBar() {

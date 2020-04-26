@@ -21,6 +21,7 @@ type Entity interface {
 	GetName() string
 	GetFaction() *world.Faction
 	GetDescription() string
+	GetStats() string
 }
 
 func (g *game) BuildEntityMenu() *gui.Menu {
@@ -47,31 +48,39 @@ func (g *game) OpenEntityMenu(x, y int) {
 func (g *game) ShowEntity(entity Entity) {
 	menu := g.BuildEntityMenu()
 	menu.SetDisabled(false)
-	AddEntityTitle(menu, entity.GetName())
-	text := "Faction: " + entity.GetFaction().GetName()
-	text += "\n" + entity.GetDescription()
-	AddEntityText(menu, text)
+	AddEntityTitle(menu, entity)
+	AddEntityText(menu, entity)
 	menu.SetLeftPadding(gfx.ScreenWidth - EntityMenuWidth)
 	menu.SetBottomPadding(EntityMenuBottomPadding)
 	g.Gui.AddMenu(EntityMenu, menu)
 }
 
-func AddEntityText(menu *gui.Menu, text string) {
+func GetEntityText(entity Entity) string {
+	text := "Faction: " + entity.GetFaction().GetName()
+	text += "\n" + entity.GetDescription()
+	text += "\n" + entity.GetStats()
+	return text
+}
+
+func AddEntityText(menu *gui.Menu, entity Entity) {
 	aBox := gui.NewTextBox()
 	aBox.SetBox(image.Rect(0, 0, EntityMenuWidth, EntityMenuBodyHeight))
 	aBox.SetColor(color.White)
-	aBox.SetText(text)
+	aBox.SetText(GetEntityText(entity))
 	aBox.SetTextSize(gui.FontSize12)
 	aBox.SetHCentered(false)
 	aBox.SetLeftPadding(10)
+	aBox.OnUpdate = func(t *gui.TextBox) {
+		t.SetText(GetEntityText(entity))
+	}
 	menu.AddTextBox(aBox)
 }
 
-func AddEntityTitle(menu *gui.Menu, text string) {
+func AddEntityTitle(menu *gui.Menu, entity Entity) {
 	aBox := gui.NewTextBox()
 	aBox.SetBox(image.Rect(0, 0, EntityMenuWidth, EntityMenuTitleHeight))
 	aBox.SetColor(color.White)
-	aBox.SetText(text)
+	aBox.SetText(entity.GetName())
 	aBox.SetTextSize(gui.FontSize20)
 	aBox.SetHCentered(true)
 	aBox.SetTopPadding(30)

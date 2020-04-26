@@ -186,3 +186,9 @@ func (u *Unit) GetId() UnitKey {
 func (u *Unit) GetDescription() string {
 	return u.Template.Description
 }
+
+func (u *Unit) GetStats() string {
+	stats := ""
+	stats += "Health: " + gfx.HealthString(u)
+	return stats
+}
