@@ -4,6 +4,7 @@ import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/text"
 	"golang.org/x/image/font"
+	"golang.org/x/image/math/fixed"
 	"image"
 	"image/color"
 	"strings"
@@ -77,7 +78,7 @@ func (t *TextBox) BuildTextBoxImage(gui *Gui, box image.Rectangle) {
 	}
 
 	_ = t.contentBuf.Clear()
-	splitText := t.InsertLineBreaks(gui.uiFonts[t.textSize])
+	splitText := t.InsertLineBreaks(gui)
 
 	maxWidth := 0
 	maxHeight := 0
@@ -88,7 +89,7 @@ func (t *TextBox) BuildTextBoxImage(gui *Gui, box image.Rectangle) {
 			continue
 		}
 
-		currentBounds, _ := font.BoundString(gui.uiFonts[t.textSize], line)
+		currentBounds := t.EstimateStringBounds(gui.uiFonts[t.textSize], line)
 		currentWidth := currentBounds.Max.X.Ceil()
 		currentHeight := -currentBounds.Min.Y.Ceil()
 
@@ -115,7 +116,8 @@ func (t *TextBox) BuildTextBoxImage(gui *Gui, box image.Rectangle) {
 	t.hasDrawnText = true
 }
 
-func (t *TextBox) InsertLineBreaks(face font.Face) string {
+func (t *TextBox) InsertLineBreaks(gui *Gui) string {
+	face := gui.uiFonts[t.textSize]
 	width := t.getWidth()
 	splitted := ""
 	for _, line := range strings.Split(t.text, "\n") {
@@ -129,7 +131,7 @@ func (t *TextBox) InsertLineBreaks(face font.Face) string {
 				recomposedLinePlus += " "
 			}
 			recomposedLinePlus += word
-			currentBounds, _ := font.BoundString(face, recomposedLinePlus)
+			currentBounds := t.EstimateStringBounds(face, recomposedLinePlus)
 			currentWidth := currentBounds.Max.X.Ceil()
 			if currentWidth < width {
 				recomposedLine = recomposedLinePlus
@@ -142,4 +144,22 @@ func (t *TextBox) InsertLineBreaks(face font.Face) string {
 		splitted += recomposedLine
 	}
 	return splitted
+}
+
+func (t *TextBox) EstimateStringBounds(f font.Face, s string) fixed.Rectangle26_6 {
+	//bounds, _ := font.BoundString(f, s)
+	fontMaxH := f.Metrics().Height.Ceil()
+	//minX := bounds.Min.X.Ceil()
+	//minY := bounds.Min.Y.Ceil()
+	//maxX := bounds.Max.X.Ceil()
+	//maxY := bounds.Max.Y.Ceil()
+	eminX := 0
+	eminY := -int(float64(fontMaxH) * 0.8)
+	emaxX := int((float64(fontMaxH) * 0.55) * float64(len(s)))
+	emaxY := 0
+	//aRect := fixed.R(minX, minY, maxX, maxY)
+	eaRect := fixed.R(eminX, eminY, emaxX, emaxY)
+	//_ = aRect
+	_ = fontMaxH
+	return eaRect
 }
