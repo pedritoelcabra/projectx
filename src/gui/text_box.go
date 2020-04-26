@@ -155,7 +155,7 @@ func (t *TextBox) EstimateStringBounds(f font.Face, s string) fixed.Rectangle26_
 	//maxY := bounds.Max.Y.Ceil()
 	eminX := 0
 	eminY := -int(float64(fontMaxH) * 0.8)
-	emaxX := int((float64(fontMaxH) * 0.55) * float64(len(s)))
+	emaxX := int((float64(fontMaxH) * 0.50) * float64(len(s)))
 	emaxY := 0
 	//aRect := fixed.R(minX, minY, maxX, maxY)
 	eaRect := fixed.R(eminX, eminY, emaxX, emaxY)
