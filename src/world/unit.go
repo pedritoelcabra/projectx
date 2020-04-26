@@ -179,6 +179,10 @@ func (u *Unit) GetHealth() float64 {
 	return u.GetF(HitPoints)
 }
 
+func (u *Unit) GetMovementSpeed() float64 {
+	return u.GetF(Speed)
+}
+
 func (u *Unit) GetId() UnitKey {
 	return u.Id
 }
@@ -191,6 +195,7 @@ func (u *Unit) GetStats() string {
 	stats := ""
 	stats += "Health: " + gfx.HealthString(u)
 	stats += "\nDamage: " + utils.NumberFormat(u.GetF(AttackDamage))
-	stats += " / " + utils.NumberFormat(60/u.GetAttackCoolDown()) + "s"
+	stats += "\nAttack Speed: " + utils.NumberFormat(60/u.GetAttackCoolDown())
+	stats += "\nMovement Speed: " + utils.NumberFormat(u.GetMovementSpeed())
 	return stats
 }
