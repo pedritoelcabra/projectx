@@ -1,5 +1,7 @@
 package utils
 
+import "fmt"
+
 func AbsInt(x int) int {
 	if x > 0 {
 		return x
@@ -19,4 +21,8 @@ func MinInt(x, y int) int {
 		return x
 	}
 	return y
+}
+
+func NumberFormat(f float64) string {
+	return fmt.Sprintf("%.2f", f)
 }

@@ -190,5 +190,7 @@ func (u *Unit) GetDescription() string {
 func (u *Unit) GetStats() string {
 	stats := ""
 	stats += "Health: " + gfx.HealthString(u)
+	stats += "\nDamage: " + utils.NumberFormat(u.GetF(AttackDamage))
+	stats += " / " + utils.NumberFormat(60/u.GetAttackCoolDown()) + "s"
 	return stats
 }

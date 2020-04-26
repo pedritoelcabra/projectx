@@ -32,6 +32,9 @@ func (g *game) BuildEntityMenu() *gui.Menu {
 }
 
 func (g *game) OpenEntityMenu(x, y int) {
+	if g.isPaused {
+		return
+	}
 	clickedUnit := g.World.ClosestUnitWithinRadius(x, y, ClickableDistance)
 	if clickedUnit != nil {
 		g.ShowEntity(clickedUnit)
