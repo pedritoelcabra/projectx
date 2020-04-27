@@ -6,25 +6,15 @@ import (
 	"github.com/pedritoelcabra/projectx/src/world"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"strconv"
-	"time"
 )
 
-var lastSecond = 0
-var lastFramesDrawn = 0
-var lastFPS = 0
-
 func (g *game) DebugInfo() string {
-	second := int(time.Now().Unix())
-	if lastSecond != second {
-		lastSecond = second
-		lastFPS = g.framesDrawn - lastFramesDrawn
-		lastFramesDrawn = g.framesDrawn
-	}
 	aString := ""
-	aString += "\nFPS: " + strconv.Itoa(lastFPS)
-	aString += "\nFrame: " + strconv.Itoa(g.framesDrawn)
+	aString += "\nFPS: " + strconv.Itoa(int(ebiten.CurrentFPS()))
+	aString += "\nTPS: " + strconv.Itoa(int(ebiten.CurrentTPS()))
+	//aString += "\nFrame: " + strconv.Itoa(g.framesDrawn)
 	if g.HasLoadedWorld() {
-		aString += "\nTick: " + strconv.Itoa(g.World.GetTick())
+		//aString += "\nTick: " + strconv.Itoa(g.World.GetTick())
 
 		//pX, pY := g.World.PlayerUnit.GetPos()
 		//playerCoord := tiling.NewCoord(int(pX), int(pY))
