@@ -38,6 +38,23 @@ const (
 	IdleMoveChance   = 25
 )
 
+func (b *Brain) GetOccupationString() string {
+	if b.CurrentState == StateIdle {
+		return "Idling..."
+	}
+	description := ""
+	if b.CurrentState == StateChase {
+		description = "Chasing"
+	}
+	if b.CurrentState == StateAttack {
+		description = "Attacking"
+	}
+	if b.target != nil {
+		description += " " + b.target.GetName()
+	}
+	return description
+}
+
 func (b *Brain) ProcessState() {
 	if b.owner.IsBusy() {
 		return

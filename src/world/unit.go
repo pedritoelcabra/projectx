@@ -192,8 +192,8 @@ func (u *Unit) GetDescription() string {
 }
 
 func (u *Unit) GetStats() string {
-	stats := ""
-	stats += "Health: " + gfx.HealthString(u)
+	stats := u.Brain.GetOccupationString()
+	stats += "\nHealth: " + gfx.HealthString(u)
 	stats += "\nDamage: " + utils.NumberFormat(u.GetF(AttackDamage))
 	stats += "\nAttack Speed: " + utils.NumberFormat(60/u.GetAttackCoolDown())
 	stats += "\nMovement Speed: " + utils.NumberFormat(u.GetMovementSpeed())
