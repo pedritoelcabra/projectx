@@ -69,6 +69,7 @@ func (g *game) Update(screen *ebiten.Image) error {
 		if !g.isPaused {
 			g.World.Draw(g.Screen)
 		}
+		g.PlacementManager.Draw(g.Screen)
 		g.Gui.Draw(screen)
 		g.framesDrawn++
 	}
