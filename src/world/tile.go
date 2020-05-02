@@ -147,6 +147,18 @@ func (t *Tile) GetSector() *Sector {
 	return theWorld.GetSector(SectorKey(t.Get(SectorId)))
 }
 
+func (t *Tile) GetFaction() *Faction {
+	return theWorld.GetFaction(FactionKey(t.Get(FactionId)))
+}
+
+func (t *Tile) OwnedByPlayer() bool {
+	sector := t.GetSector()
+	if sector == nil {
+		return false
+	}
+	return sector.GetFaction().Id == theWorld.PlayerUnit.GetFaction().Id
+}
+
 func (t *Tile) GetSectorId() SectorKey {
 	sector := t.GetSector()
 	if sector == nil {

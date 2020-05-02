@@ -193,6 +193,10 @@ func (p *Player) GetY() float64 {
 	return p.unit.GetY()
 }
 
+func (p *Player) GetFaction() *Faction {
+	return p.unit.GetFaction()
+}
+
 func (p *Player) SetMovement(direction PlayerDirection, value bool) {
 	switch direction {
 	case PLAYERUP:
