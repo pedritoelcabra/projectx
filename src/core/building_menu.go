@@ -45,5 +45,5 @@ func (g *game) SelectBuilding(building *defs.BuildingDef) {
 	logger.General(buildingName+" selected", nil)
 	g.Gui.SetDisabled(BuildingMenu, true)
 	g.ShowEntity(building)
-	g.selectedBuilding = building
+	g.PlacementManager.SetBuilding(building)
 }

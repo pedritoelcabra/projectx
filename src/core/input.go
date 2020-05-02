@@ -81,8 +81,8 @@ func (i *Input) TriggerCallbacks(key string) {
 func (g *game) InitInput() {
 	g.Input = NewInput()
 	g.Input.AddListener("RightClick", "rightClick", func(g *game) {
-		if g.selectedBuilding != nil {
-			g.selectedBuilding = nil
+		if g.PlacementManager.HasBuilding() {
+			g.PlacementManager.UnSetBuilding()
 			g.Gui.SetDisabled(EntityMenu, true)
 		}
 		g.Gui.AddMenu(ContextMenu, g.BuildContextMenu(ebiten.CursorPosition()))
@@ -102,7 +102,7 @@ func (g *game) InitInput() {
 		}
 		if !g.Gui.GetMenu(EntityMenu).IsDisabled() {
 			g.Gui.SetDisabled(EntityMenu, true)
-			g.selectedBuilding = nil
+			g.PlacementManager.UnSetBuilding()
 			return
 		}
 		g.TogglePause()

@@ -18,7 +18,7 @@ type game struct {
 	World            *world.World
 	Graphics         *gfx.Graphics
 	Screen           *gfx.Screen
-	selectedBuilding *defs.BuildingDef
+	PlacementManager *PlacementManager
 	framesDrawn      int
 	isPaused         bool
 	rightMouseDown   bool
@@ -42,6 +42,7 @@ func G() *game {
 
 func (g *game) init() {
 	logger.InitLogger()
+	g.PlacementManager = NewPlacementManager()
 	g.Screen = gfx.NewScreen()
 	g.Graphics = gfx.NewGraphics()
 	defs.InitDefs()
