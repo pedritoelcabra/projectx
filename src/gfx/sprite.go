@@ -1,5 +1,7 @@
 package gfx
 
+import "github.com/hajimehoshi/ebiten"
+
 type spriteFacing int
 type SpriteKey int
 
@@ -17,6 +19,7 @@ const (
 
 type Sprite interface {
 	DrawSprite(*Screen, float64, float64)
+	DrawSpriteWithOptions(screen *Screen, x, y float64, op *ebiten.DrawImageOptions)
 	SetFacing(direction spriteFacing)
 	QueueAttackAnimation(x, y float64, speed int)
 }

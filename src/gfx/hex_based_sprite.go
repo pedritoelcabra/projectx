@@ -54,6 +54,10 @@ func NewHexSprite(key SpriteKey) *HexSprite {
 
 func (h *HexSprite) DrawSprite(screen *Screen, x, y float64) {
 	op := &ebiten.DrawImageOptions{}
+	h.DrawSpriteWithOptions(screen, x, y, op)
+}
+
+func (h *HexSprite) DrawSpriteWithOptions(screen *Screen, x, y float64, op *ebiten.DrawImageOptions) {
 	op.GeoM = ebiten.TranslateGeo(x, y)
 	screen.DrawImage(GetImage(h.key), op)
 }

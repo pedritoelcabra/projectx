@@ -132,6 +132,10 @@ func NewLpcSprite(key SpriteKey) *LpcSprite {
 
 func (s *LpcSprite) DrawSprite(screen *Screen, x, y float64) {
 	op := &ebiten.DrawImageOptions{}
+	s.DrawSpriteWithOptions(screen, x, y, op)
+}
+
+func (s *LpcSprite) DrawSpriteWithOptions(screen *Screen, x, y float64, op *ebiten.DrawImageOptions) {
 	tweenX, tweenY := 0.0, 0.0
 	if s.tween != nil {
 		ended := false
