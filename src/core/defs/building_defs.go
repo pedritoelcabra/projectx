@@ -13,6 +13,18 @@ type BuildingDef struct {
 	Graphic     string
 }
 
+func (def *BuildingDef) GetName() string {
+	return def.Name
+}
+
+func (def *BuildingDef) GetDescription() string {
+	return def.Description
+}
+
+func (def *BuildingDef) GetStats() string {
+	return ""
+}
+
 func BuildingDefs() map[string]*BuildingDef {
 	return buildingDefs
 }

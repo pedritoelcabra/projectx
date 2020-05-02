@@ -3,7 +3,6 @@ package core
 import (
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/gui"
-	"github.com/pedritoelcabra/projectx/src/world"
 	"image"
 	"image/color"
 )
@@ -19,7 +18,6 @@ const (
 
 type Entity interface {
 	GetName() string
-	GetFaction() *world.Faction
 	GetDescription() string
 	GetStats() string
 }
@@ -59,8 +57,7 @@ func (g *game) ShowEntity(entity Entity) {
 }
 
 func GetEntityText(entity Entity) string {
-	text := "Faction: " + entity.GetFaction().GetName()
-	text += "\n" + entity.GetDescription()
+	text := "\n" + entity.GetDescription()
 	text += "\n" + entity.GetStats()
 	return text
 }

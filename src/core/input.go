@@ -81,23 +81,28 @@ func (i *Input) TriggerCallbacks(key string) {
 func (g *game) InitInput() {
 	g.Input = NewInput()
 	g.Input.AddListener("RightClick", "rightClick", func(g *game) {
-		g.Gui.AddMenu("context", g.BuildContextMenu(ebiten.CursorPosition()))
+		if g.selectedBuilding != nil {
+			g.selectedBuilding = nil
+			g.Gui.SetDisabled(EntityMenu, true)
+		}
+		g.Gui.AddMenu(ContextMenu, g.BuildContextMenu(ebiten.CursorPosition()))
 	})
 	g.Input.AddListener("LeftClick", "leftClick", func(g *game) {
-		g.Gui.SetDisabled("context", true)
+		g.Gui.SetDisabled(ContextMenu, true)
 		g.OpenEntityMenu(g.MousePosCoord().XY())
 	})
 	g.Input.AddListener("EscapePress", "toggleMenu", func(g *game) {
-		if g.Gui.GetMenu("context") != nil && !g.Gui.GetMenu("context").IsDisabled() {
-			g.Gui.SetDisabled("context", true)
+		if g.Gui.GetMenu(ContextMenu) != nil && !g.Gui.GetMenu("context").IsDisabled() {
+			g.Gui.SetDisabled(ContextMenu, true)
 			return
 		}
-		if !g.Gui.GetMenu("building").IsDisabled() {
-			g.Gui.SetDisabled("building", true)
+		if !g.Gui.GetMenu(BuildingMenu).IsDisabled() {
+			g.Gui.SetDisabled(BuildingMenu, true)
 			return
 		}
-		if !g.Gui.GetMenu("entity").IsDisabled() {
-			g.Gui.SetDisabled("entity", true)
+		if !g.Gui.GetMenu(EntityMenu).IsDisabled() {
+			g.Gui.SetDisabled(EntityMenu, true)
+			g.selectedBuilding = nil
 			return
 		}
 		g.TogglePause()

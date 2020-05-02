@@ -88,7 +88,9 @@ func (b *Building) GetTile() *Tile {
 }
 
 func (b *Building) GetDescription() string {
-	return b.Template.Description
+	stats := "Faction: " + b.GetFaction().GetName()
+	stats += "\n" + b.Template.Description
+	return stats
 }
 
 func (b *Building) GetStats() string {

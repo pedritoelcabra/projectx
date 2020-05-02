@@ -1,7 +1,5 @@
 package world
 
-import "github.com/pedritoelcabra/projectx/src/core/logger"
-
 func (u *Unit) GetAttackCoolDown() float64 {
 	return 6000 / u.GetF(AttackSpeed)
 }
@@ -29,7 +27,7 @@ func (u *Unit) ReceiveAttack(attack *Attack) {
 	u.Attributes.ApplyF(HitPoints, -attack.Damage)
 	if u.GetHealth() <= 0 {
 		u.Alive = false
-		logger.General(u.GetName()+" died", nil)
+		//logger.General(u.GetName()+" died", nil)
 	}
 }
 

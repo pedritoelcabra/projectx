@@ -13,15 +13,16 @@ import (
 )
 
 type game struct {
-	Gui            *gui.Gui
-	Input          *Input
-	World          *world.World
-	Graphics       *gfx.Graphics
-	Screen         *gfx.Screen
-	framesDrawn    int
-	isPaused       bool
-	rightMouseDown bool
-	debugMessage   string
+	Gui              *gui.Gui
+	Input            *Input
+	World            *world.World
+	Graphics         *gfx.Graphics
+	Screen           *gfx.Screen
+	selectedBuilding *defs.BuildingDef
+	framesDrawn      int
+	isPaused         bool
+	rightMouseDown   bool
+	debugMessage     string
 }
 
 var ProjectX *game

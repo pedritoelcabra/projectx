@@ -3,7 +3,6 @@ package world
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/core/defs"
-	"github.com/pedritoelcabra/projectx/src/core/logger"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/world/container"
@@ -200,7 +199,7 @@ func (ch *Chunk) GenerateNPCs() {
 		return
 	}
 	NewUnit(def.Name, tiling.NewCoordF(spawnTile.GetRenderPos()))
-	logger.General("Generated a "+def.Name+" at "+spawnTile.GetCoord().ToString(), nil)
+	//logger.General("Generated a "+def.Name+" at "+spawnTile.GetCoord().ToString(), nil)
 }
 
 func (ch *Chunk) ChooseRandomNPCsTemplate() *defs.UnitDef {
