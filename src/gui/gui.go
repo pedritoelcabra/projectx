@@ -88,6 +88,11 @@ func (g *Gui) ToggleDebug() {
 
 func (g *Gui) AddMenu(key string, menu *Menu) {
 	g.menus[key] = menu
+	for i := 0; i < len(g.menuKeys); i++ {
+		if g.menuKeys[i] == key {
+			return
+		}
+	}
 	g.menuKeys = append(g.menuKeys, key)
 }
 
