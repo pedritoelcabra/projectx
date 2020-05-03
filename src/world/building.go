@@ -9,6 +9,7 @@ import (
 
 type BuildingKey int
 type BuildingMap map[BuildingKey]*Building
+type UnitList []UnitPointer
 
 type Building struct {
 	Id         BuildingKey
@@ -19,7 +20,7 @@ type Building struct {
 	X          float64
 	Y          float64
 	Template   *defs.BuildingDef
-	Units      []UnitPointer
+	Units      UnitList
 	Attributes *Attributes
 }
 
@@ -121,6 +122,21 @@ func (b *Building) UpdateUnitSpawn() {
 	if b.UnitSpawnIsComplete() {
 		b.SpawnUnit()
 	}
+}
+
+func (b *Building) CheckForDeceasedUnits() {
+	var aliveUnits = UnitList{}
+	for _, unitPointer := range b.Units {
+		unit := unitPointer.Get()
+		if unit == nil {
+			continue
+		}
+		if !unit.IsAlive() {
+			continue
+		}
+		aliveUnits = append(aliveUnits, unitPointer)
+	}
+	b.Units = aliveUnits
 }
 
 func (b *Building) SpawnUnit() {

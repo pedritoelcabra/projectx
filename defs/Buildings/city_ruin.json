@@ -2,9 +2,9 @@
   "Name": "City Ruin",
   "Description": "description",
   "Graphic": "human-city-ruin3",
-  "Unit": "",
-  "UnitLimit": 0,
-  "UnitTimer": 0,
+  "Unit": "Skeleton",
+  "UnitLimit": 2,
+  "UnitTimer": 120,
   "ConstructionGraphic": "construction",
   "ConstructionWork": 100
 }

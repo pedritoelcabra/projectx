@@ -2,9 +2,9 @@
   "Name": "Wolf Cave",
   "Description": "description",
   "Graphic": "cave",
-  "Unit": "",
-  "UnitLimit": 0,
-  "UnitTimer": 0,
+  "Unit": "Wolf",
+  "UnitLimit": 4,
+  "UnitTimer": 30,
   "ConstructionGraphic": "construction",
   "ConstructionWork": 100
 }

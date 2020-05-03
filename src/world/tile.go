@@ -22,7 +22,7 @@ type Tile struct {
 
 func NewTile() *Tile {
 	aTile := &Tile{}
-	aTile.Building = MakeBuildingPointer(-1)
+	aTile.Building = MakeEmptyBuildingPointer()
 	aTile.Data = container.NewContainer()
 	return aTile
 }

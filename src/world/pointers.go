@@ -12,6 +12,10 @@ func MakeBuildingPointer(key BuildingKey) BuildingPointer {
 	return aPointer
 }
 
+func MakeEmptyBuildingPointer() BuildingPointer {
+	return MakeBuildingPointer(-1)
+}
+
 func (bp *BuildingPointer) Get() *Building {
 	if bp.Id < 0 {
 		return nil

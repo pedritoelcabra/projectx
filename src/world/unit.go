@@ -14,22 +14,23 @@ type UnitMap map[UnitKey]*Unit
 type UnitArray []*Unit
 
 type Unit struct {
-	Id         UnitKey
-	Sprite     gfx.Sprite `json:"-"`
-	Unit       *ebiten.Image
-	spriteKey  gfx.SpriteKey
-	Graphics   map[string]string
-	X          float64
-	Y          float64
-	DestX      float64
-	DestY      float64
-	Moving     bool
-	Size       float64
-	Name       string
-	Attributes *Attributes
-	Brain      *Brain
-	Alive      bool
-	Template   *defs.UnitDef
+	Id           UnitKey
+	Sprite       gfx.Sprite `json:"-"`
+	Unit         *ebiten.Image
+	spriteKey    gfx.SpriteKey
+	Graphics     map[string]string
+	X            float64
+	Y            float64
+	DestX        float64
+	DestY        float64
+	Moving       bool
+	Size         float64
+	Name         string
+	Attributes   *Attributes
+	Brain        *Brain
+	Alive        bool
+	Template     *defs.UnitDef
+	HomeBuilding BuildingPointer
 }
 
 func NewUnit(templateName string, location tiling.Coord) *Unit {
@@ -38,6 +39,7 @@ func NewUnit(templateName string, location tiling.Coord) *Unit {
 		log.Fatal("Invalid Unit Template: " + templateName)
 	}
 	aUnit := &Unit{}
+	aUnit.HomeBuilding = MakeEmptyBuildingPointer()
 	aUnit.Template = template
 	aUnit.Alive = true
 	aUnit.Name = template.Name
@@ -193,6 +195,14 @@ func (u *Unit) GetDescription() string {
 
 func (u *Unit) GetPointer() UnitPointer {
 	return MakeUnitPointer(u.GetId())
+}
+
+func (u *Unit) GetHome() *Building {
+	return u.HomeBuilding.Get()
+}
+
+func (u *Unit) SetHome(building *Building) {
+	u.HomeBuilding = building.GetPointer()
 }
 
 func (u *Unit) GetStats() string {

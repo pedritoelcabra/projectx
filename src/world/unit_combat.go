@@ -26,8 +26,16 @@ func (u *Unit) ReceiveAttack(attack *Attack) {
 	u.SetF(LastCombatAction, float64(theWorld.GetTick()))
 	u.Attributes.ApplyF(HitPoints, -attack.Damage)
 	if u.GetHealth() <= 0 {
-		u.Alive = false
-		//logger.General(u.GetName()+" died", nil)
+		u.Die()
+	}
+}
+
+func (u *Unit) Die() {
+	u.Alive = false
+	//logger.General(u.GetName()+" died", nil)
+	home := u.GetHome()
+	if home != nil {
+		home.CheckForDeceasedUnits()
 	}
 }
 
