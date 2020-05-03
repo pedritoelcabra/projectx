@@ -137,5 +137,8 @@ func (b *Building) GetDescription() string {
 func (b *Building) GetStats() string {
 	stats := ""
 	return stats
-	return stats
+}
+
+func (b *Building) GetPointer() BuildingPointer {
+	return MakeBuildingPointer(b.GetId())
 }

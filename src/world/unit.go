@@ -191,6 +191,10 @@ func (u *Unit) GetDescription() string {
 	return u.Template.Description
 }
 
+func (u *Unit) GetPointer() UnitPointer {
+	return MakeUnitPointer(u.GetId())
+}
+
 func (u *Unit) GetStats() string {
 	stats := "Faction: " + u.GetFaction().GetName()
 	stats += "\n" + u.Brain.GetOccupationString()

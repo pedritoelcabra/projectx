@@ -36,7 +36,7 @@ func (t *Tile) GetRenderPos() (x, y float64) {
 }
 
 func (t *Tile) SetBuilding(building *Building) {
-	t.Building = MakeBuildingPointer(building.GetId())
+	t.Building = building.GetPointer()
 }
 
 func (t *Tile) GetBuilding() *Building {
