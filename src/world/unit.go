@@ -201,6 +201,10 @@ func (u *Unit) SetHome(building *Building) {
 	u.HomeBuilding = building.GetPointer()
 }
 
+func (u *Unit) CanWork() bool {
+	return u.Template.Worker > 0
+}
+
 func (u *Unit) GetStats() string {
 	stats := "Faction: " + u.GetFaction().GetName()
 

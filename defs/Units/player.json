@@ -2,6 +2,7 @@
   "Name": "Player",
   "Description": "This is you! A strong, handsome, young person. Or something.",
   "Faction": "",
+  "Worker": 0,
   "Equipments": [
     {
       "Chance": 100,

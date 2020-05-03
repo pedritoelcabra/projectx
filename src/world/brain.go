@@ -16,6 +16,7 @@ type Brain struct {
 	TargetKey       UnitKey
 	UpdateFrequency int
 	target          *Unit
+	WorkTarget      BuildingPointer
 }
 
 func NewBrain() *Brain {
@@ -28,19 +29,24 @@ func NewBrain() *Brain {
 }
 
 const (
+	IdleMoveDistance = 10
+	IdleMoveChance   = 25
+)
+const (
 	StateIdle = iota
 	StateChase
 	StateFlee
 	StateAttack
 	StatePatrol
-
-	IdleMoveDistance = 10
-	IdleMoveChance   = 25
+	StateWork
 )
 
 func (b *Brain) GetOccupationString() string {
 	if b.CurrentState == StateIdle {
 		return "Idling..."
+	}
+	if b.CurrentState == StateWork {
+		return "Working hard"
 	}
 	description := ""
 	if b.CurrentState == StateChase {
@@ -74,6 +80,9 @@ func (b *Brain) ProcessState() {
 		return
 	case StateAttack:
 		b.Attack()
+		return
+	case StateWork:
+		b.Work()
 		return
 	}
 	log.Fatal("Unknown state: " + strconv.Itoa(b.CurrentState))
@@ -115,7 +124,7 @@ func (b *Brain) Idle() {
 		b.ForceUpdate()
 		return
 	}
-	if !randomizer.PercentageRoll(25) {
+	if !randomizer.PercentageRoll(10) {
 		return
 	}
 	x := int(b.owner.GetX())
@@ -124,6 +133,20 @@ func (b *Brain) Idle() {
 	newX := randomizer.RandomInt(x-reach, x+reach)
 	newY := randomizer.RandomInt(y-reach, y+reach)
 	b.owner.SetDestination(float64(newX), float64(newY))
+}
+
+func (b *Brain) Work() {
+	b.ResolveState()
+	if b.CurrentState != StateWork {
+		b.ForceUpdate()
+		return
+	}
+	target := b.WorkTarget.Get()
+	if target == nil {
+		b.ForceUpdate()
+		return
+	}
+	b.owner.SetDestination(target.GetX(), target.GetY())
 }
 
 func (b *Brain) ForceUpdate() {
@@ -145,6 +168,17 @@ func (b *Brain) ResolveState() {
 		b.TargetKey = nearestEnemy
 		b.target = theWorld.GetUnit(nearestEnemy)
 		return
+	}
+	if b.owner.CanWork() {
+		sector := b.owner.GetTile().GetSector()
+		if sector != nil {
+			workTarget := sector.GetEmptyWorkPlace()
+			if workTarget != nil {
+				b.WorkTarget = workTarget.GetPointer()
+				b.CurrentState = StateWork
+				return
+			}
+		}
 	}
 	b.CurrentState = StateIdle
 }

@@ -3,6 +3,7 @@
   "Description": "description",
   "Faction": "Wild Carnivores",
   "SpawnsWild": true,
+  "Worker": 0,
   "Equipments": [
     {
       "Chance": 100,

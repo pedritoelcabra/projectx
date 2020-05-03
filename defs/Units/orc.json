@@ -3,6 +3,7 @@
   "Description": "description",
   "Faction": "Orcs",
   "SpawnsWild": true,
+  "Worker": 0,
   "Equipments": [
     {
       "Chance": 100,
@@ -12,7 +13,7 @@
   ],
   "Attributes" : {
     "Speed" : 5,
-    "Vision" : 300,
+    "Vision" : 100,
     "Size" : 32,
     "AttackRange" : 32,
     "AttackSpeed" : 60,

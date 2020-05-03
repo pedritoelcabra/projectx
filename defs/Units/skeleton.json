@@ -3,6 +3,7 @@
   "Description": "description",
   "Faction": "Undead",
   "SpawnsWild": true,
+  "Worker": 0,
   "Equipments": [
     {
       "Chance": 100,
@@ -12,7 +13,7 @@
   ],
   "Attributes" : {
     "Speed" : 7,
-    "Vision" : 400,
+    "Vision" : 300,
     "Size" : 32,
     "AttackRange" : 32,
     "AttackSpeed" : 120,

@@ -2,6 +2,7 @@
   "Name": "Marcus",
   "Description": "This is your brother Marcus",
   "Faction": "Player",
+  "Worker": 1,
   "Equipments": [
     {
       "Chance": 100,

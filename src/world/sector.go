@@ -13,6 +13,7 @@ import (
 type SectorKey int
 type SectorMap map[SectorKey]*Sector
 type ConnectionMap map[SectorKey]SectorConnection
+type BuildingList []BuildingPointer
 
 type Sector struct {
 	Id            SectorKey
@@ -185,4 +186,18 @@ func (s *Sector) SetName(name string) {
 
 func (s *Sector) GetFaction() *Faction {
 	return theWorld.GetFaction(FactionKey(s.Get(FactionId)))
+}
+
+func (s *Sector) GetEmptyWorkPlace() *Building {
+	for _, tileCoord := range s.Tiles {
+		tile := theWorld.Grid.Tile(tileCoord)
+		building := tile.GetBuilding()
+		if building == nil {
+			continue
+		}
+		if building.HasWorkSlot() {
+			return building
+		}
+	}
+	return nil
 }

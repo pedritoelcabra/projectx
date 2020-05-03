@@ -228,3 +228,10 @@ func (b *Building) Set(key, value int) {
 func (b *Building) SetF(key int, value float64) {
 	b.Attributes.SetF(key, value)
 }
+
+func (b *Building) HasWorkSlot() bool {
+	if !b.ConstructionIsComplete() {
+		return true
+	}
+	return false
+}

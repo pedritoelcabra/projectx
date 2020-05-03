@@ -14,6 +14,7 @@ type UnitDef struct {
 	Faction     string
 	Description string
 	SpawnsWild  bool
+	Worker      int
 	Equipments  []EquipmentItemDef
 	Attributes  map[string]int
 }
