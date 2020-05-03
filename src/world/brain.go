@@ -39,6 +39,7 @@ const (
 	StateAttack
 	StatePatrol
 	StateWork
+	StateReturn
 )
 
 func (b *Brain) GetOccupationString() string {
@@ -47,6 +48,9 @@ func (b *Brain) GetOccupationString() string {
 	}
 	if b.CurrentState == StateWork {
 		return "Working hard"
+	}
+	if b.CurrentState == StateReturn {
+		return "Going home"
 	}
 	description := ""
 	if b.CurrentState == StateChase {
@@ -83,6 +87,9 @@ func (b *Brain) ProcessState() {
 		return
 	case StateWork:
 		b.Work()
+		return
+	case StateReturn:
+		b.Return()
 		return
 	}
 	log.Fatal("Unknown state: " + strconv.Itoa(b.CurrentState))
@@ -124,7 +131,7 @@ func (b *Brain) Idle() {
 		b.ForceUpdate()
 		return
 	}
-	if !randomizer.PercentageRoll(10) {
+	if !randomizer.PercentageRoll(50) {
 		return
 	}
 	x := int(b.owner.GetX())
@@ -133,6 +140,31 @@ func (b *Brain) Idle() {
 	newX := randomizer.RandomInt(x-reach, x+reach)
 	newY := randomizer.RandomInt(y-reach, y+reach)
 	b.owner.SetDestination(float64(newX), float64(newY))
+}
+
+func (b *Brain) Return() {
+	if b.owner.IsMoving() {
+		return
+	}
+	home := b.owner.GetHome()
+	if home == nil {
+		return
+	}
+	if home.GetTile().GetCoord().Equals(b.owner.GetTileCoord()) {
+		b.ResetState()
+		return
+	}
+	homeSector := home.GetSector()
+	if homeSector == nil {
+		return
+	}
+	currentTile := b.owner.GetTile()
+	currentSector := currentTile.GetSector()
+	if currentSector == homeSector {
+		b.ResetState()
+		return
+	}
+	b.owner.SetDestination(home.GetTile().GetCenterPos())
 }
 
 func (b *Brain) Work() {
@@ -167,6 +199,10 @@ func (b *Brain) ResolveState() {
 		b.CurrentState = StateChase
 		b.TargetKey = nearestEnemy
 		b.target = theWorld.GetUnit(nearestEnemy)
+		return
+	}
+	if !b.owner.IsInOwnedSector() {
+		b.CurrentState = StateReturn
 		return
 	}
 	if b.owner.CanWork() {

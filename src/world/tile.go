@@ -35,6 +35,10 @@ func (t *Tile) GetRenderPos() (x, y float64) {
 	return t.GetF(RenderX), t.GetF(RenderY)
 }
 
+func (t *Tile) GetCenterPos() (x, y float64) {
+	return t.GetF(CenterX), t.GetF(CenterY)
+}
+
 func (t *Tile) SetBuilding(building *Building) {
 	t.Building = building.GetPointer()
 }

@@ -22,6 +22,10 @@ func (u *Unit) SetDestination(x, y float64) {
 	}
 }
 
+func (u *Unit) IsMoving() bool {
+	return u.Moving
+}
+
 func (u *Unit) OrientateTowardsPoint(x, y float64) {
 	if math.Abs(u.X-x)+1 > math.Abs(u.Y-y) {
 		if u.X > x {

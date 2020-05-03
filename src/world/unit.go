@@ -53,9 +53,6 @@ func NewUnit(templateName string, location tiling.Coord) *Unit {
 	aUnit.Brain = NewBrain()
 	aUnit.Init()
 	aUnit.Id = theWorld.AddUnit(aUnit)
-	if template.Faction != "" {
-		aUnit.SetFaction(theWorld.GetFactionByName(template.Faction))
-	}
 	return aUnit
 }
 

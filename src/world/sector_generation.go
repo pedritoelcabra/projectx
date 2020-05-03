@@ -22,7 +22,7 @@ func (g *Grid) SpawnSector(aChunk *Chunk) {
 	}
 	newSector := NewSector(centerCoord, template)
 	newFaction := NewFaction("Faction " + strconv.Itoa(len(theWorld.Entities.Factions)))
-	newSector.Set(FactionId, int(newFaction.GetId()))
+	newSector.SetFaction(newFaction)
 	newSector.CalculateNearbySectors()
 	tile := g.Tile(centerCoord)
 	tile.Set(Flora, 0)

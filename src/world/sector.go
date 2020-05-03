@@ -55,6 +55,7 @@ func (s *Sector) GetNearbySector(key SectorKey) SectorConnection {
 
 func (s *Sector) SpawnBuildings() {
 	centerBuilding := NewBuilding(s.Template.CenterBuilding, theWorld.Grid.Tile(s.Center))
+	centerBuilding.Set(FactionId, s.Get(FactionId))
 	centerBuilding.SpawnAllUnits()
 	for name, chance := range s.Template.Buildings {
 		firstSpawned := false
@@ -104,6 +105,7 @@ func (s *Sector) AttemptSpawnBuilding(def *defs.BuildingDef) {
 	}
 	if bestScore > -1000 {
 		building := NewBuilding(def.Name, theWorld.Grid.Tile(bestLocation))
+		building.Set(FactionId, s.Get(FactionId))
 		building.SpawnAllUnits()
 	}
 }
@@ -200,4 +202,45 @@ func (s *Sector) GetEmptyWorkPlace() *Building {
 		}
 	}
 	return nil
+}
+
+func (s *Sector) GetTileNearestTo(tile *Tile) *Tile {
+	if len(s.Tiles) == 0 {
+		return nil
+	}
+	tileCoord := tile.GetCoord()
+	bestDist := 999999
+	bestCoord := tiling.Coord{}
+	hasBest := false
+	for _, coord := range s.Tiles {
+		dist := tileCoord.ChebyshevDist(coord)
+		if !hasBest || bestDist > dist {
+			hasBest = true
+			bestDist = dist
+			bestCoord = coord
+		}
+	}
+	if !hasBest {
+		return nil
+	}
+	return theWorld.Grid.Tile(bestCoord)
+}
+
+func (s *Sector) SetFaction(faction *Faction) {
+	id := int(faction.GetId())
+	s.Set(FactionId, id)
+	for _, tileCoord := range s.Tiles {
+		tile := theWorld.Grid.Tile(tileCoord)
+		building := tile.GetBuilding()
+		if building == nil {
+			continue
+		}
+		building.Set(FactionId, id)
+		for _, unitPointer := range building.Units {
+			unit := unitPointer.Get()
+			if unit != nil {
+				unit.Set(FactionId, id)
+			}
+		}
+	}
 }

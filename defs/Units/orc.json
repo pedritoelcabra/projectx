@@ -1,7 +1,6 @@
 {
   "Name": "Orc",
   "Description": "description",
-  "Faction": "Orcs",
   "SpawnsWild": true,
   "Worker": 0,
   "Equipments": [

@@ -1,7 +1,6 @@
 {
   "Name": "Peasant",
   "Description": "description",
-  "Faction": "",
   "Worker": 1,
   "Equipments": [
     {

@@ -140,6 +140,7 @@ func (b *Building) CheckForDeceasedUnits() {
 func (b *Building) SpawnUnit() {
 	b.Set(UnitSpawnProgress, 0)
 	unit := b.GetTile().SpawnUnit(b.Template.Unit)
+	unit.SetFaction(b.GetFaction())
 	b.RegisterUnit(unit)
 	unit.SetHome(b)
 	_ = unit

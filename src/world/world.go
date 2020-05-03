@@ -112,7 +112,7 @@ func (w *World) WorldGeneration() {
 		firstSector := w.GetSector(0)
 		if firstSector != nil {
 			i = 100
-			firstSector.Set(FactionId, int(playerFaction.Id))
+			firstSector.SetFaction(playerFaction)
 			firstSector.SetName("Idleville")
 			w.PlayerUnit.unit.SetF(HomeSector, 0.0)
 			w.PlayerUnit.MoveToHomeSector()

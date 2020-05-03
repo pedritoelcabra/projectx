@@ -16,9 +16,9 @@ func (g *game) DebugInfo() string {
 	if g.HasLoadedWorld() {
 		//aString += "\nTick: " + strconv.Itoa(g.World.GetTick())
 
-		//pX, pY := g.World.PlayerUnit.GetPos()
+		pX, pY := g.World.PlayerUnit.GetPos()
 		//playerCoord := tiling.NewCoord(int(pX), int(pY))
-		//playerTileCoord := tiling.NewCoord(tiling.PixelIToTileI(int(pX), int(pY)))
+		playerTileCoord := tiling.NewCoord(tiling.PixelIToTileI(int(pX), int(pY)))
 		//aString += "\nPlayer Pos: " + playerCoord.ToString()
 		//aString += "\nPlayer Tile: " + playerTileCoord.ToString()
 		mx, my := ebiten.CursorPosition()
@@ -58,13 +58,21 @@ func (g *game) DebugInfo() string {
 		}
 		aString += "\nSector: " + sectorName
 
-		unitsAtLocation := g.World.UnitsCollidingWith(float64(mouseCoord.X()), float64(mouseCoord.Y()))
-		for _, unit := range unitsAtLocation {
-			aString += "\n" + unit.GetName()
-			playerFaction := unit.GetFaction()
-			if playerFaction != nil {
-				aString += " (" + playerFaction.GetName() + ")"
+		nearestSectorKey := world.SectorKey(-1)
+		nearestSectorDist := 999999
+		for _, nearSector := range g.World.Entities.Sectors {
+			dist := nearSector.GetCenter().ChebyshevDist(playerTileCoord)
+			if dist < nearestSectorDist {
+				nearestSectorDist = dist
+				nearestSectorKey = nearSector.GetId()
 			}
+		}
+		if nearestSectorKey != -1 {
+			nearestSector := g.World.GetSector(nearestSectorKey)
+			xDist := nearestSector.GetCenter().X() - playerTileCoord.X()
+			yDist := nearestSector.GetCenter().Y() - playerTileCoord.Y()
+			aString += "\n\nNearest sector to Player: " + nearestSector.GetName()
+			aString += "\n" + strconv.Itoa(xDist) + " / " + strconv.Itoa(yDist)
 		}
 	}
 	if g.debugMessage != "" {

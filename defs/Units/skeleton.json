@@ -1,7 +1,6 @@
 {
   "Name": "Skeleton",
   "Description": "description",
-  "Faction": "Undead",
   "SpawnsWild": true,
   "Worker": 0,
   "Equipments": [
