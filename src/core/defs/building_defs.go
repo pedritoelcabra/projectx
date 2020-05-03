@@ -12,6 +12,9 @@ type BuildingDef struct {
 	Description         string
 	Graphic             string
 	ConstructionGraphic string
+	Unit                string
+	UnitLimit           int
+	UnitTimer           int
 	ConstructionWork    int
 }
 
