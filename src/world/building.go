@@ -100,10 +100,6 @@ func (b *Building) DrawSprite(screen *gfx.Screen) {
 	b.Sprite.DrawSprite(screen, b.X, b.Y)
 }
 
-func (b *Building) SetPosition(x, y float64) {
-
-}
-
 func (b *Building) Update() {
 	b.UpdateUnitSpawn()
 }
