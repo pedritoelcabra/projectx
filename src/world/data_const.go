@@ -43,4 +43,6 @@ const (
 	HomeSector
 	LastCombatAction
 	PassiveHealthCooldown = 300
+
+	ConstructionProgress
 )

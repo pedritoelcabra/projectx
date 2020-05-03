@@ -11,17 +11,16 @@ type BuildingKey int
 type BuildingMap map[BuildingKey]*Building
 
 type Building struct {
-	Id                   BuildingKey
-	Sprite               gfx.Sprite `json:"-"`
-	SpriteKey            gfx.SpriteKey
-	Name                 string
-	Location             tiling.Coord
-	X                    float64
-	Y                    float64
-	Template             *defs.BuildingDef
-	ConstructionProgress int
-	Units                []UnitPointer
-	Attributes           *Attributes
+	Id         BuildingKey
+	Sprite     gfx.Sprite `json:"-"`
+	SpriteKey  gfx.SpriteKey
+	Name       string
+	Location   tiling.Coord
+	X          float64
+	Y          float64
+	Template   *defs.BuildingDef
+	Units      []UnitPointer
+	Attributes *Attributes
 }
 
 func NewBuilding(name string, location *Tile) *Building {
@@ -29,7 +28,7 @@ func NewBuilding(name string, location *Tile) *Building {
 	aBuilding := &Building{}
 	aBuilding.Template = buildingDefs[name]
 	aBuilding.Attributes = NewEmptyAttributes()
-	aBuilding.ConstructionProgress = aBuilding.Template.ConstructionWork
+	aBuilding.Set(ConstructionProgress, aBuilding.Template.ConstructionWork)
 	aBuilding.SpriteKey = gfx.GetSpriteKey(aBuilding.Template.Graphic)
 	aBuilding.Name = name
 	aBuilding.Init()
@@ -56,11 +55,11 @@ func (b *Building) SetConstructionProgress(value int) {
 	if value > b.Template.ConstructionWork {
 		value = b.Template.ConstructionWork
 	}
-	b.ConstructionProgress = value
+	b.Set(ConstructionProgress, value)
 }
 
 func (b *Building) GetConstructionProgress() int {
-	return b.ConstructionProgress
+	return b.Get(ConstructionProgress)
 }
 
 func (b *Building) AddConstructionProgress(value int) {
@@ -68,17 +67,17 @@ func (b *Building) AddConstructionProgress(value int) {
 }
 
 func (b *Building) ConstructionIsComplete() bool {
-	return b.ConstructionProgress >= b.Template.ConstructionWork
+	return b.Get(ConstructionProgress) >= b.Template.ConstructionWork
 }
 
 func (b *Building) CompleteConstruction() {
-	b.ConstructionProgress = b.Template.ConstructionWork
+	b.Set(ConstructionProgress, b.Template.ConstructionWork)
 	b.SpriteKey = gfx.GetSpriteKey(b.Template.Graphic)
 	b.Init()
 }
 
 func (b *Building) StartConstruction() {
-	b.ConstructionProgress = 0
+	b.Set(ConstructionProgress, 0)
 	b.SpriteKey = gfx.GetSpriteKey(b.Template.ConstructionGraphic)
 	b.Init()
 }
