@@ -20,12 +20,15 @@ type Building struct {
 	Y                    float64
 	Template             *defs.BuildingDef
 	ConstructionProgress int
+	Units                []UnitPointer
+	Attributes           *Attributes
 }
 
 func NewBuilding(name string, location *Tile) *Building {
 	buildingDefs := defs.BuildingDefs()
 	aBuilding := &Building{}
 	aBuilding.Template = buildingDefs[name]
+	aBuilding.Attributes = NewEmptyAttributes()
 	aBuilding.ConstructionProgress = aBuilding.Template.ConstructionWork
 	aBuilding.SpriteKey = gfx.GetSpriteKey(aBuilding.Template.Graphic)
 	aBuilding.Name = name
@@ -101,7 +104,12 @@ func (b *Building) SetPosition(x, y float64) {
 }
 
 func (b *Building) Update(tick int, grid *Grid) {
+	if b.ConstructionIsComplete() {
+		return
+	}
+	if len(b.Units) < b.Template.UnitLimit {
 
+	}
 }
 
 func (b *Building) GetName() string {
@@ -141,4 +149,20 @@ func (b *Building) GetStats() string {
 
 func (b *Building) GetPointer() BuildingPointer {
 	return MakeBuildingPointer(b.GetId())
+}
+
+func (b *Building) Get(key int) int {
+	return b.Attributes.Get(int(key))
+}
+
+func (b *Building) GetF(key int) float64 {
+	return b.Attributes.GetF(key)
+}
+
+func (b *Building) Set(key, value int) {
+	b.Attributes.Set(key, value)
+}
+
+func (b *Building) SetF(key int, value float64) {
+	b.Attributes.SetF(key, value)
 }

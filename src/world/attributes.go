@@ -11,6 +11,11 @@ type Attributes struct {
 	Data *container.Container
 }
 
+func NewEmptyAttributes() *Attributes {
+	emptyMap := make(AttributeMap)
+	return NewAttributes(emptyMap)
+}
+
 func NewAttributes(initialValues AttributeMap) *Attributes {
 	anAttributes := &Attributes{}
 	anAttributes.Data = container.NewContainer()
