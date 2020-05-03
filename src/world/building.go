@@ -10,14 +10,15 @@ type BuildingKey int
 type BuildingMap map[BuildingKey]*Building
 
 type Building struct {
-	Id        BuildingKey
-	Sprite    gfx.Sprite `json:"-"`
-	SpriteKey gfx.SpriteKey
-	Name      string
-	Location  tiling.Coord
-	X         float64
-	Y         float64
-	Template  *defs.BuildingDef
+	Id                   BuildingKey
+	Sprite               gfx.Sprite `json:"-"`
+	SpriteKey            gfx.SpriteKey
+	Name                 string
+	Location             tiling.Coord
+	X                    float64
+	Y                    float64
+	Template             *defs.BuildingDef
+	ConstructionProgress int
 }
 
 func NewBuilding(name string, location *Tile) *Building {
@@ -41,6 +42,40 @@ func (b *Building) Init() {
 	if tile != nil {
 		tile.SetBuilding(b)
 	}
+}
+
+func (b *Building) SetConstructionProgress(value int) {
+	if value < 0 {
+		value = 0
+	}
+	if value > b.Template.ConstructionWork {
+		value = b.Template.ConstructionWork
+	}
+	b.ConstructionProgress = value
+}
+
+func (b *Building) GetConstructionProgress() int {
+	return b.ConstructionProgress
+}
+
+func (b *Building) AddConstructionProgress(value int) {
+	b.SetConstructionProgress(value + b.GetConstructionProgress())
+}
+
+func (b *Building) ConstructionIsComplete() bool {
+	return b.ConstructionProgress >= b.Template.ConstructionWork
+}
+
+func (b *Building) CompleteConstruction() {
+	b.ConstructionProgress = b.Template.ConstructionWork
+	b.SpriteKey = gfx.GetSpriteKey(b.Template.Graphic)
+	b.Init()
+}
+
+func (b *Building) StartConstruction() {
+	b.ConstructionProgress = 0
+	b.SpriteKey = gfx.GetSpriteKey(b.Template.ConstructionGraphic)
+	b.Init()
 }
 
 func (b *Building) ShouldDraw() bool {

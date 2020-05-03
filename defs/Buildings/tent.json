@@ -1,5 +1,7 @@
 {
   "Name": "Tent",
   "Description": "description",
-  "Graphic": "desert-camp"
+  "Graphic": "desert-camp",
+  "ConstructionGraphic": "construction",
+  "ConstructionWork": 100
 }

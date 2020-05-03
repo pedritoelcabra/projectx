@@ -79,5 +79,6 @@ func (p *PlacementManager) PlaceBuilding() {
 		return
 	}
 	building := world.NewBuilding(p.selectedBuilding.Name, tile)
+	building.StartConstruction()
 	_ = building
 }

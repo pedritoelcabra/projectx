@@ -1,5 +1,7 @@
 {
   "Name": "Small House Ruin",
   "Description": "A small cottage, partly destroyed. Must be rebuilt before it can be used.",
-  "Graphic": "human-cottage-ruin"
+  "Graphic": "human-cottage-ruin",
+  "ConstructionGraphic": "construction",
+  "ConstructionWork": 100
 }

@@ -1,5 +1,7 @@
 {
   "Name": "City Ruin",
   "Description": "description",
-  "Graphic": "human-city-ruin3"
+  "Graphic": "human-city-ruin3",
+  "ConstructionGraphic": "construction",
+  "ConstructionWork": 100
 }

@@ -1,5 +1,7 @@
 {
   "Name": "Stone House",
   "Description": "description",
-  "Graphic": "human_house_2"
+  "Graphic": "human_house_2",
+  "ConstructionGraphic": "construction",
+  "ConstructionWork": 100
 }

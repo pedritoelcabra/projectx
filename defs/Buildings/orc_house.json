@@ -1,5 +1,7 @@
 {
   "Name": "Orc House",
   "Description": "description",
-  "Graphic": "orc3"
+  "Graphic": "orc3",
+  "ConstructionGraphic": "construction",
+  "ConstructionWork": 100
 }

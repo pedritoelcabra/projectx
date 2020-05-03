@@ -8,9 +8,11 @@ import (
 )
 
 type BuildingDef struct {
-	Name        string
-	Description string
-	Graphic     string
+	Name                string
+	Description         string
+	Graphic             string
+	ConstructionGraphic string
+	ConstructionWork    int
 }
 
 func (def *BuildingDef) GetName() string {

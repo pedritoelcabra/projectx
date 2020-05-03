@@ -1,5 +1,7 @@
 {
   "Name": "Wolf Cave",
   "Description": "description",
-  "Graphic": "cave"
+  "Graphic": "cave",
+  "ConstructionGraphic": "construction",
+  "ConstructionWork": 100
 }
