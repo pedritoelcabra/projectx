@@ -21,6 +21,7 @@ type Building struct {
 	Y          float64
 	Template   *defs.BuildingDef
 	Units      UnitList
+	Worker     UnitPointer
 	Attributes *Attributes
 }
 
@@ -28,6 +29,7 @@ func NewBuilding(name string, location *Tile) *Building {
 	buildingDefs := defs.BuildingDefs()
 	aBuilding := &Building{}
 	aBuilding.Template = buildingDefs[name]
+	aBuilding.Worker = MakeEmptyUnitPointer()
 	aBuilding.Attributes = NewEmptyAttributes()
 	aBuilding.Set(ConstructionProgress, aBuilding.Template.ConstructionWork)
 	aBuilding.Set(UnitSpawnProgress, 0)

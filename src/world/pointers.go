@@ -39,6 +39,10 @@ func MakeUnitPointer(key UnitKey) UnitPointer {
 	return aPointer
 }
 
+func MakeEmptyUnitPointer() UnitPointer {
+	return MakeUnitPointer(-1)
+}
+
 func (up *UnitPointer) Get() *Unit {
 	if up.Id < 0 {
 		return nil
