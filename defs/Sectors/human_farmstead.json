@@ -1,6 +1,7 @@
 {
   "Name": "Farmstead",
   "CenterBuilding": "Small House",
+  "Faction": "",
   "Weight": 100,
   "Size": 4
 }

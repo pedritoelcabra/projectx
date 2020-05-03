@@ -32,8 +32,8 @@ func SetUpHexTerrainOffsets() {
 			hexTerrainTypeMap[key] = imageRect
 		}
 	}
-	terrainToHex[utils.BasicWater] = 1
-	terrainToHex[utils.BasicDeepWater] = 0
+	terrainToHex[utils.BasicWater] = 85
+	terrainToHex[utils.BasicDeepWater] = 84
 	terrainToHex[utils.BasicHills] = 38
 	terrainToHex[utils.BasicGrass] = 51
 	terrainToHex[utils.BasicMountain] = 41

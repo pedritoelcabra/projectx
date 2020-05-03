@@ -13,6 +13,7 @@ type SectorDef struct {
 	Buildings      map[string]int
 	Weight         int
 	Size           int
+	Faction        string
 }
 
 func SectorDefs() map[string]*SectorDef {

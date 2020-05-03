@@ -2,9 +2,9 @@
   "Name": "Tent",
   "Description": "description",
   "Graphic": "desert-camp",
-  "Unit": "",
-  "UnitLimit": 0,
-  "UnitTimer": 0,
+  "Unit": "Bandit",
+  "UnitLimit": 1,
+  "UnitTimer": 45,
   "ConstructionGraphic": "construction",
   "ConstructionWork": 100
 }

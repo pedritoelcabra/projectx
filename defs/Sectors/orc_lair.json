@@ -1,6 +1,7 @@
 {
   "Name": "Orc Lair",
   "CenterBuilding": "Orc House",
+  "Faction": "Orcs",
   "Weight": 100,
   "Buildings": {
     "Orc House": 250

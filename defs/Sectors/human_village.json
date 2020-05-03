@@ -1,6 +1,7 @@
 {
   "Name": "Village",
   "CenterBuilding": "Stone House",
+  "Faction": "",
   "Buildings": {
     "Stone House": 50,
     "Small House": 250

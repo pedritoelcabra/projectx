@@ -1,6 +1,7 @@
 {
   "Name": "Player Village",
   "CenterBuilding": "Your Home",
+  "Faction": "Player",
   "Weight": 0,
   "Size": 3
 }

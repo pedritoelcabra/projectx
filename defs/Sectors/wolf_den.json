@@ -1,6 +1,7 @@
 {
   "Name": "Wolf Den",
   "CenterBuilding": "Wolf Cave",
+  "Faction": "Wild Carnivores",
   "Weight": 100,
   "Size": 8
 }

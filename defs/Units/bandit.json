@@ -1,0 +1,46 @@
+{
+  "Name": "Bandit",
+  "Description": "description",
+  "Worker": 1,
+  "Equipments": [
+    {
+      "Chance": 20,
+      "Slot": "Body",
+      "Graphic": "body/male/light"
+    },
+    {
+      "Chance": 20,
+      "Slot": "Body",
+      "Graphic": "body/male/tanned"
+    },
+    {
+      "Chance": 20,
+      "Slot": "Body",
+      "Graphic": "body/male/tanned2"
+    },
+    {
+      "Chance": 20,
+      "Slot": "Body",
+      "Graphic": "body/male/dark"
+    },
+    {
+      "Chance": 20,
+      "Slot": "Body",
+      "Graphic": "body/male/dark2"
+    },
+    {
+      "Chance": 100,
+      "Slot": "Legs",
+      "Graphic": "legs/pants/male/teal_pants_male"
+    }
+  ],
+  "Attributes" : {
+    "Speed" : 6,
+    "Size" : 32,
+    "AttackRange" : 32,
+    "AttackSpeed" : 60,
+    "AttackDamage" : 10,
+    "MaxHitPoints" : 60,
+    "Vision" : 200
+  }
+}

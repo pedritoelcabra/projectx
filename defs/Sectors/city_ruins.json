@@ -1,6 +1,7 @@
 {
   "Name": "City Ruins",
   "CenterBuilding": "City Ruin",
+  "Faction": "Undead",
   "Weight": 100,
   "Buildings": {
     "City Ruin": 150
