@@ -4,6 +4,7 @@ import (
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
+	"strconv"
 )
 
 type BuildingKey int
@@ -25,6 +26,7 @@ func NewBuilding(name string, location *Tile) *Building {
 	buildingDefs := defs.BuildingDefs()
 	aBuilding := &Building{}
 	aBuilding.Template = buildingDefs[name]
+	aBuilding.ConstructionProgress = aBuilding.Template.ConstructionWork
 	aBuilding.SpriteKey = gfx.GetSpriteKey(aBuilding.Template.Graphic)
 	aBuilding.Name = name
 	aBuilding.Init()
@@ -124,11 +126,16 @@ func (b *Building) GetTile() *Tile {
 
 func (b *Building) GetDescription() string {
 	stats := "Faction: " + b.GetFaction().GetName()
+	if !b.ConstructionIsComplete() {
+		stats += "\nConstruction Progress: " + strconv.Itoa(b.GetConstructionProgress())
+		stats += " / " + strconv.Itoa(b.Template.ConstructionWork)
+	}
 	stats += "\n" + b.Template.Description
 	return stats
 }
 
 func (b *Building) GetStats() string {
 	stats := ""
+	return stats
 	return stats
 }
