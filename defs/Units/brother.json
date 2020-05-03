@@ -1,0 +1,51 @@
+{
+  "Name": "Marcus",
+  "Description": "This is your brother Marcus",
+  "Faction": "Player",
+  "Equipments": [
+    {
+      "Chance": 20,
+      "Slot": "Body",
+      "Graphic": "body/male/light"
+    },
+    {
+      "Chance": 20,
+      "Slot": "Body",
+      "Graphic": "body/male/tanned"
+    },
+    {
+      "Chance": 20,
+      "Slot": "Body",
+      "Graphic": "body/male/tanned2"
+    },
+    {
+      "Chance": 20,
+      "Slot": "Body",
+      "Graphic": "body/male/dark"
+    },
+    {
+      "Chance": 20,
+      "Slot": "Body",
+      "Graphic": "body/male/dark2"
+    },
+    {
+      "Chance": 100,
+      "Slot": "Torso",
+      "Graphic": "torso/shirts/longsleeve/male/brown_longsleeve"
+    },
+    {
+      "Chance": 100,
+      "Slot": "Legs",
+      "Graphic": "legs/pants/male/red_pants_male"
+    }
+  ],
+  "Attributes" : {
+    "Speed" : 5,
+    "Size" : 32,
+    "AttackRange" : 32,
+    "AttackSpeed" : 30,
+    "AttackDamage" : 5,
+    "MaxHitPoints" : 60,
+    "Vision" : 200
+  }
+}

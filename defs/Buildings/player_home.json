@@ -1,0 +1,10 @@
+{
+  "Name": "Your Home",
+  "Description": "This is your house, you grew up here.",
+  "Graphic": "human-cottage-ruin",
+  "Unit": "Marcus",
+  "UnitLimit": 1,
+  "UnitTimer": 10,
+  "ConstructionGraphic": "construction",
+  "ConstructionWork": 100
+}

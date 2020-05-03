@@ -166,3 +166,7 @@ func (t *Tile) GetSectorId() SectorKey {
 	}
 	return sector.Id
 }
+
+func (t *Tile) SpawnUnit(name string) *Unit {
+	return NewUnit(name, tiling.NewCoordF(t.GetRenderPos()))
+}

@@ -29,6 +29,7 @@ func NewBuilding(name string, location *Tile) *Building {
 	aBuilding.Template = buildingDefs[name]
 	aBuilding.Attributes = NewEmptyAttributes()
 	aBuilding.Set(ConstructionProgress, aBuilding.Template.ConstructionWork)
+	aBuilding.Set(UnitSpawnProgress, 0)
 	aBuilding.SpriteKey = gfx.GetSpriteKey(aBuilding.Template.Graphic)
 	aBuilding.Name = name
 	aBuilding.Init()
@@ -107,7 +108,7 @@ func (b *Building) Update() {
 }
 
 func (b *Building) UpdateUnitSpawn() {
-	if b.ConstructionIsComplete() {
+	if !b.ConstructionIsComplete() {
 		return
 	}
 	if !theWorld.IsTock() {
@@ -118,10 +119,15 @@ func (b *Building) UpdateUnitSpawn() {
 	}
 	b.AddUnitSpawnProgress(1)
 	if b.UnitSpawnIsComplete() {
-		b.Set(UnitSpawnProgress, 0)
-		unit := NewUnit(b.Template.Unit, b.GetTile().GetCoord())
-		_ = unit
+		b.SpawnUnit()
 	}
+}
+
+func (b *Building) SpawnUnit() {
+	b.Set(UnitSpawnProgress, 0)
+	unit := b.GetTile().SpawnUnit(b.Template.Unit)
+	b.RegisterUnit(unit)
+	_ = unit
 }
 
 func (b *Building) AddUnitSpawnProgress(value int) {
@@ -163,10 +169,18 @@ func (b *Building) GetDescription() string {
 		stats += " / " + strconv.Itoa(b.Template.ConstructionWork)
 	}
 	if b.Template.UnitLimit > 0 {
-		housing := strconv.Itoa(len(b.Units)) + " / " + strconv.Itoa(b.Template.UnitLimit)
-		stats += "\nCurrently housing " + housing + " " + b.Template.Unit
+		currentUnits := len(b.Units)
+		maxUnits := b.Template.UnitLimit
+		housing := strconv.Itoa(currentUnits) + " / " + strconv.Itoa(maxUnits)
+		stats += "\n\nUnit: " + b.Template.Unit
+		stats += "\nCurrently housing " + housing
+		if currentUnits < maxUnits {
+			unitCost := b.Template.UnitTimer
+			unitProgress := b.Get(UnitSpawnProgress)
+			stats += "\nProgress to spawn: " + strconv.Itoa(unitProgress) + " / " + strconv.Itoa(unitCost)
+		}
 	}
-	stats += "\n" + b.Template.Description
+	stats += "\n\n" + b.Template.Description
 	return stats
 }
 

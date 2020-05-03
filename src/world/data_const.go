@@ -1,6 +1,10 @@
 package world
 
 const (
+	PassiveHealthCooldown = 300
+)
+
+const (
 	Height int = iota
 	Population
 	TerrainBase
@@ -42,7 +46,6 @@ const (
 	BusyTime
 	HomeSector
 	LastCombatAction
-	PassiveHealthCooldown = 300
 
 	ConstructionProgress
 	UnitSpawnProgress
