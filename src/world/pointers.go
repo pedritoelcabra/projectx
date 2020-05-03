@@ -22,3 +22,26 @@ func (bp *BuildingPointer) Get() *Building {
 	}
 	return bp.building
 }
+
+type UnitPointer struct {
+	Id          UnitKey
+	building    *Unit
+	initialised bool
+}
+
+func MakeUnitPointer(key UnitKey) UnitPointer {
+	aPointer := UnitPointer{}
+	aPointer.Id = key
+	return aPointer
+}
+
+func (up *UnitPointer) Get() *Unit {
+	if up.Id < 0 {
+		return nil
+	}
+	if !up.initialised {
+		up.building = theWorld.GetUnit(up.Id)
+		up.initialised = true
+	}
+	return up.building
+}
