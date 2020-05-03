@@ -71,7 +71,7 @@ func (g *Grid) Update() {
 	if !theWorld.IsTock() {
 		return
 	}
-	for _, chunk := range ChunksAroundPlayer(3) {
-		chunk.GenerateNPCs()
-	}
+	//for _, chunk := range ChunksAroundPlayer(3) {
+	//	chunk.GenerateNPCs()
+	//}
 }
