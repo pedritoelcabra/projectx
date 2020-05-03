@@ -26,7 +26,7 @@ func (g *Grid) SpawnSector(aChunk *Chunk) {
 	newSector.CalculateNearbySectors()
 	tile := g.Tile(centerCoord)
 	tile.Set(Flora, 0)
-	//logger.General("Spawned a "+template.Name+" sector in Chunk: "+aChunk.Location.ToString()+" at "+centerCoord.ToString(), nil)
+	logger.General("Spawned a "+template.Name+" sector in Chunk: "+aChunk.Location.ToString()+" at "+centerCoord.ToString(), nil)
 }
 
 func (s *Sector) CalculateNearbySectors() {

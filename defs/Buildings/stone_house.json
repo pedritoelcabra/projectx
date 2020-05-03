@@ -2,9 +2,9 @@
   "Name": "Stone House",
   "Description": "description",
   "Graphic": "human_house_2",
-  "Unit": "",
-  "UnitLimit": 0,
-  "UnitTimer": 0,
+  "Unit": "Peasant",
+  "UnitLimit": 2,
+  "UnitTimer": 40,
   "ConstructionGraphic": "construction",
   "ConstructionWork": 100
 }
