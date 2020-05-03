@@ -45,4 +45,5 @@ const (
 	PassiveHealthCooldown = 300
 
 	ConstructionProgress
+	UnitSpawnProgress
 )

@@ -224,6 +224,9 @@ func (w *World) Update() {
 	for _, e := range w.Entities.Units {
 		e.Update()
 	}
+	for _, b := range w.Entities.Buildings {
+		b.Update()
+	}
 	w.Grid.Update()
 	w.Data.Set(Tick, w.Data.Get(Tick)+1)
 }

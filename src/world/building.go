@@ -102,13 +102,38 @@ func (b *Building) SetPosition(x, y float64) {
 
 }
 
-func (b *Building) Update(tick int, grid *Grid) {
+func (b *Building) Update() {
+	b.UpdateUnitSpawn()
+}
+
+func (b *Building) UpdateUnitSpawn() {
 	if b.ConstructionIsComplete() {
 		return
 	}
-	if len(b.Units) < b.Template.UnitLimit {
-
+	if !theWorld.IsTock() {
+		return
 	}
+	if len(b.Units) >= b.Template.UnitLimit {
+		return
+	}
+	b.AddUnitSpawnProgress(1)
+	if b.UnitSpawnIsComplete() {
+		b.Set(UnitSpawnProgress, 0)
+		unit := NewUnit(b.Template.Unit, b.GetTile().GetCoord())
+		_ = unit
+	}
+}
+
+func (b *Building) AddUnitSpawnProgress(value int) {
+	b.Set(UnitSpawnProgress, b.Get(UnitSpawnProgress)+value)
+}
+
+func (b *Building) UnitSpawnIsComplete() bool {
+	return b.Get(UnitSpawnProgress) >= b.Template.UnitTimer
+}
+
+func (b *Building) RegisterUnit(unit *Unit) {
+	b.Units = append(b.Units, unit.GetPointer())
 }
 
 func (b *Building) GetName() string {
@@ -136,6 +161,10 @@ func (b *Building) GetDescription() string {
 	if !b.ConstructionIsComplete() {
 		stats += "\nConstruction Progress: " + strconv.Itoa(b.GetConstructionProgress())
 		stats += " / " + strconv.Itoa(b.Template.ConstructionWork)
+	}
+	if b.Template.UnitLimit > 0 {
+		housing := strconv.Itoa(len(b.Units)) + " / " + strconv.Itoa(b.Template.UnitLimit)
+		stats += "\nCurrently housing " + housing + " " + b.Template.Unit
 	}
 	stats += "\n" + b.Template.Description
 	return stats
