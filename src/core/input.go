@@ -89,6 +89,10 @@ func (g *game) InitInput() {
 	})
 	g.Input.AddListener("LeftClick", "leftClick", func(g *game) {
 		g.Gui.SetDisabled(ContextMenu, true)
+		if g.PlacementManager.HasBuilding() {
+			g.PlacementManager.PlaceBuilding()
+			return
+		}
 		g.OpenEntityMenu(g.MousePosCoord().XY())
 	})
 	g.Input.AddListener("EscapePress", "toggleMenu", func(g *game) {

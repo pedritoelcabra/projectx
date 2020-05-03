@@ -39,8 +39,10 @@ func (p *PlacementManager) Draw(screen *gfx.Screen) {
 	if !p.HasBuilding() {
 		return
 	}
-	pos := ProjectX.MouseTileCoord()
-	tile := ProjectX.World.Grid.Tile(pos)
+	tile := ProjectX.CurrentMouseTile()
+	if tile == nil {
+		return
+	}
 	x := tile.GetF(world.RenderX)
 	y := tile.GetF(world.RenderY)
 	op := &ebiten.DrawImageOptions{}
@@ -63,4 +65,19 @@ func (p *PlacementManager) BuildingCanBePlacedAtTile(tile *world.Tile) bool {
 		return false
 	}
 	return true
+}
+
+func (p *PlacementManager) PlaceBuilding() {
+	if !p.HasBuilding() {
+		return
+	}
+	tile := ProjectX.CurrentMouseTile()
+	if tile == nil {
+		return
+	}
+	if !p.BuildingCanBePlacedAtTile(tile) {
+		return
+	}
+	building := world.NewBuilding(p.selectedBuilding.Name, tile)
+	_ = building
 }

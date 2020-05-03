@@ -89,3 +89,8 @@ func (g *game) MousePosCoord() tiling.Coord {
 	my += int(cy)
 	return tiling.NewCoord(mx, my)
 }
+
+func (g *game) CurrentMouseTile() *world.Tile {
+	pos := g.MouseTileCoord()
+	return g.World.Grid.Tile(pos)
+}
