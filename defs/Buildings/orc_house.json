@@ -3,8 +3,8 @@
   "Description": "description",
   "Graphic": "orc3",
   "Unit": "",
-  "UnitLimit": "0",
-  "UnitTimer": "0",
+  "UnitLimit": 0,
+  "UnitTimer": 0,
   "ConstructionGraphic": "construction",
   "ConstructionWork": 100
 }

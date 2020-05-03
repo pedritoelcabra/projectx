@@ -3,8 +3,8 @@
   "Description": "A small cottage, partly destroyed. Must be rebuilt before it can be used.",
   "Graphic": "human-cottage-ruin",
   "Unit": "",
-  "UnitLimit": "0",
-  "UnitTimer": "0",
+  "UnitLimit": 0,
+  "UnitTimer": 0,
   "ConstructionGraphic": "construction",
   "ConstructionWork": 100
 }
