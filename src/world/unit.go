@@ -189,10 +189,6 @@ func (u *Unit) GetId() UnitKey {
 	return u.Id
 }
 
-func (u *Unit) GetDescription() string {
-	return u.Template.Description
-}
-
 func (u *Unit) GetPointer() UnitPointer {
 	return MakeUnitPointer(u.GetId())
 }
@@ -207,10 +203,15 @@ func (u *Unit) SetHome(building *Building) {
 
 func (u *Unit) GetStats() string {
 	stats := "Faction: " + u.GetFaction().GetName()
-	stats += "\n" + u.Brain.GetOccupationString()
-	stats += "\nHealth: " + gfx.HealthString(u)
+
+	stats += "\n\n" + u.Brain.GetOccupationString()
+
+	stats += "\n\nHealth: " + gfx.HealthString(u)
+
 	stats += "\nDamage: " + utils.NumberFormat(u.GetF(AttackDamage))
 	stats += "\nAttack Speed: " + utils.NumberFormat(60/u.GetAttackCoolDown())
 	stats += "\nMovement Speed: " + utils.NumberFormat(u.GetMovementSpeed())
+
+	stats += "\n\n" + u.Template.Description
 	return stats
 }

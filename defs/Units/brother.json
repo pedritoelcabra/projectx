@@ -4,29 +4,9 @@
   "Faction": "Player",
   "Equipments": [
     {
-      "Chance": 20,
-      "Slot": "Body",
-      "Graphic": "body/male/light"
-    },
-    {
-      "Chance": 20,
+      "Chance": 100,
       "Slot": "Body",
       "Graphic": "body/male/tanned"
-    },
-    {
-      "Chance": 20,
-      "Slot": "Body",
-      "Graphic": "body/male/tanned2"
-    },
-    {
-      "Chance": 20,
-      "Slot": "Body",
-      "Graphic": "body/male/dark"
-    },
-    {
-      "Chance": 20,
-      "Slot": "Body",
-      "Graphic": "body/male/dark2"
     },
     {
       "Chance": 100,

@@ -186,12 +186,14 @@ func (b *Building) GetTile() *Tile {
 	return theWorld.Grid.Tile(b.Location)
 }
 
-func (b *Building) GetDescription() string {
+func (b *Building) GetStats() string {
 	stats := "Faction: " + b.GetFaction().GetName()
+
 	if !b.ConstructionIsComplete() {
-		stats += "\nConstruction Progress: " + strconv.Itoa(b.GetConstructionProgress())
+		stats += "\n\nConstruction Progress: " + strconv.Itoa(b.GetConstructionProgress())
 		stats += " / " + strconv.Itoa(b.Template.ConstructionWork)
 	}
+
 	if b.Template.UnitLimit > 0 {
 		currentUnits := len(b.Units)
 		maxUnits := b.Template.UnitLimit
@@ -204,12 +206,8 @@ func (b *Building) GetDescription() string {
 			stats += "\nProgress to spawn: " + strconv.Itoa(unitProgress) + " / " + strconv.Itoa(unitCost)
 		}
 	}
-	stats += "\n\n" + b.Template.Description
-	return stats
-}
 
-func (b *Building) GetStats() string {
-	stats := ""
+	stats += "\n\n" + b.Template.Description
 	return stats
 }
 

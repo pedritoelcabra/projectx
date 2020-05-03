@@ -18,7 +18,6 @@ const (
 
 type Entity interface {
 	GetName() string
-	GetDescription() string
 	GetStats() string
 }
 
@@ -57,8 +56,7 @@ func (g *game) ShowEntity(entity Entity) {
 }
 
 func GetEntityText(entity Entity) string {
-	text := "\n" + entity.GetDescription()
-	text += "\n" + entity.GetStats()
+	text := "\n" + entity.GetStats()
 	return text
 }
 

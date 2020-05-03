@@ -22,12 +22,8 @@ func (def *BuildingDef) GetName() string {
 	return def.Name
 }
 
-func (def *BuildingDef) GetDescription() string {
-	return def.Description
-}
-
 func (def *BuildingDef) GetStats() string {
-	return ""
+	return def.Description
 }
 
 func BuildingDefs() map[string]*BuildingDef {
