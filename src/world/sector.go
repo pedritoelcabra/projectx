@@ -53,7 +53,8 @@ func (s *Sector) GetNearbySector(key SectorKey) SectorConnection {
 }
 
 func (s *Sector) SpawnBuildings() {
-	NewBuilding(s.Template.CenterBuilding, theWorld.Grid.Tile(s.Center))
+	centerBuilding := NewBuilding(s.Template.CenterBuilding, theWorld.Grid.Tile(s.Center))
+	centerBuilding.SpawnAllUnits()
 	for name, chance := range s.Template.Buildings {
 		firstSpawned := false
 		for remainingChance := chance; remainingChance > 0; {
@@ -101,7 +102,8 @@ func (s *Sector) AttemptSpawnBuilding(def *defs.BuildingDef) {
 		}
 	}
 	if bestScore > -1000 {
-		NewBuilding(def.Name, theWorld.Grid.Tile(bestLocation))
+		building := NewBuilding(def.Name, theWorld.Grid.Tile(bestLocation))
+		building.SpawnAllUnits()
 	}
 }
 

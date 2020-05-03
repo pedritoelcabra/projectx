@@ -143,7 +143,15 @@ func (b *Building) SpawnUnit() {
 	b.Set(UnitSpawnProgress, 0)
 	unit := b.GetTile().SpawnUnit(b.Template.Unit)
 	b.RegisterUnit(unit)
+	unit.SetHome(b)
 	_ = unit
+}
+
+func (b *Building) SpawnAllUnits() {
+	limit := b.Template.UnitLimit
+	for i := len(b.Units); i < limit; i++ {
+		b.SpawnUnit()
+	}
 }
 
 func (b *Building) AddUnitSpawnProgress(value int) {
