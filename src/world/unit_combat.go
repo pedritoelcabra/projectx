@@ -10,7 +10,7 @@ func (u *Unit) PerformAttackOn(target *Unit) {
 	}
 	u.SetF(LastCombatAction, float64(theWorld.GetTick()))
 	attackSpeed := u.GetAttackCoolDown()
-	u.SetF(BusyTime, attackSpeed)
+	u.SetBusyTimeF(attackSpeed)
 	x, y := target.GetPos()
 	u.QueueAttackAnimation(x, y, int(attackSpeed))
 	u.StopMovement()
@@ -20,6 +20,14 @@ func (u *Unit) PerformAttackOn(target *Unit) {
 	attack.Attacker = u
 	attack.Defender = target
 	target.ReceiveAttack(attack)
+}
+
+func (u *Unit) SetBusyTime(duration int) {
+	u.SetBusyTimeF(float64(duration))
+}
+
+func (u *Unit) SetBusyTimeF(duration float64) {
+	u.SetF(BusyTime, duration)
 }
 
 func (u *Unit) ReceiveAttack(attack *Attack) {
@@ -36,6 +44,10 @@ func (u *Unit) Die() {
 	home := u.GetHome()
 	if home != nil {
 		home.CheckForDeceasedUnits()
+	}
+	workPlace := u.GetWorkplace()
+	if workPlace != nil {
+		workPlace.Worker = MakeEmptyUnitPointer()
 	}
 }
 

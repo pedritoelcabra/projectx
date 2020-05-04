@@ -31,6 +31,7 @@ type Unit struct {
 	Alive        bool
 	Template     *defs.UnitDef
 	HomeBuilding BuildingPointer
+	WorkPlace    BuildingPointer
 }
 
 func NewUnit(templateName string, location tiling.Coord) *Unit {
@@ -40,6 +41,7 @@ func NewUnit(templateName string, location tiling.Coord) *Unit {
 	}
 	aUnit := &Unit{}
 	aUnit.HomeBuilding = MakeEmptyBuildingPointer()
+	aUnit.WorkPlace = MakeEmptyBuildingPointer()
 	aUnit.Template = template
 	aUnit.Alive = true
 	aUnit.Name = template.Name
@@ -196,6 +198,15 @@ func (u *Unit) GetHome() *Building {
 
 func (u *Unit) SetHome(building *Building) {
 	u.HomeBuilding = building.GetPointer()
+}
+
+func (u *Unit) GetWorkplace() *Building {
+	return u.WorkPlace.Get()
+}
+
+func (u *Unit) SetWorkplace(building *Building) {
+	u.WorkPlace = building.GetPointer()
+	building.SetWorker(u)
 }
 
 func (u *Unit) CanWork() bool {

@@ -236,3 +236,11 @@ func (b *Building) HasWorkSlot() bool {
 	}
 	return false
 }
+
+func (b *Building) GetWorker() *Unit {
+	return b.Worker.Get()
+}
+
+func (b *Building) SetWorker(unit *Unit) {
+	b.Worker = unit.GetPointer()
+}

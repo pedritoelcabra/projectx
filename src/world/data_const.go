@@ -2,6 +2,7 @@ package world
 
 const (
 	PassiveHealthCooldown = 300
+	TockDuration          = 60
 )
 
 const (

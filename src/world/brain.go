@@ -131,7 +131,7 @@ func (b *Brain) Idle() {
 		b.ForceUpdate()
 		return
 	}
-	if !randomizer.PercentageRoll(50) {
+	if !randomizer.PercentageRoll(10) {
 		return
 	}
 	x := int(b.owner.GetX())
@@ -168,17 +168,16 @@ func (b *Brain) Return() {
 }
 
 func (b *Brain) Work() {
-	b.ResolveState()
-	if b.CurrentState != StateWork {
-		b.ForceUpdate()
-		return
-	}
-	target := b.WorkTarget.Get()
+	target := b.owner.WorkPlace.Get()
 	if target == nil {
 		b.ForceUpdate()
 		return
 	}
-	b.owner.SetDestination(target.GetX(), target.GetY())
+	targetTile := target.GetTile()
+	if !targetTile.GetCoord().Equals(b.owner.GetTile().GetCoord()) {
+		b.owner.SetDestination(targetTile.GetCenterPos())
+		return
+	}
 }
 
 func (b *Brain) ForceUpdate() {
@@ -210,7 +209,7 @@ func (b *Brain) ResolveState() {
 		if sector != nil {
 			workTarget := sector.GetEmptyWorkPlace()
 			if workTarget != nil {
-				b.WorkTarget = workTarget.GetPointer()
+				b.owner.SetWorkplace(workTarget)
 				b.CurrentState = StateWork
 				return
 			}
