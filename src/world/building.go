@@ -12,17 +12,19 @@ type BuildingMap map[BuildingKey]*Building
 type UnitList []UnitPointer
 
 type Building struct {
-	Id         BuildingKey
-	Sprite     gfx.Sprite `json:"-"`
-	SpriteKey  gfx.SpriteKey
-	Name       string
-	Location   tiling.Coord
-	X          float64
-	Y          float64
-	Template   *defs.BuildingDef
-	Units      UnitList
-	Worker     UnitPointer
-	Attributes *Attributes
+	Id                    BuildingKey
+	Sprite                gfx.Sprite `json:"-"`
+	ConstructionSprite    gfx.Sprite `json:"-"`
+	SpriteKey             gfx.SpriteKey
+	ConstructionSpriteKey gfx.SpriteKey
+	Name                  string
+	Location              tiling.Coord
+	X                     float64
+	Y                     float64
+	Template              *defs.BuildingDef
+	Units                 UnitList
+	Worker                UnitPointer
+	Attributes            *Attributes
 }
 
 func NewBuilding(name string, location *Tile) *Building {
@@ -34,6 +36,7 @@ func NewBuilding(name string, location *Tile) *Building {
 	aBuilding.Set(ConstructionProgress, aBuilding.Template.ConstructionWork)
 	aBuilding.Set(UnitSpawnProgress, 0)
 	aBuilding.SpriteKey = gfx.GetSpriteKey(aBuilding.Template.Graphic)
+	aBuilding.ConstructionSpriteKey = gfx.GetSpriteKey(aBuilding.Template.ConstructionGraphic)
 	aBuilding.Name = name
 	aBuilding.Init()
 	aBuilding.Location = location.GetCoord()
@@ -46,6 +49,7 @@ func NewBuilding(name string, location *Tile) *Building {
 
 func (b *Building) Init() {
 	b.Sprite = gfx.NewHexSprite(b.SpriteKey)
+	b.ConstructionSprite = gfx.NewHexSprite(b.ConstructionSpriteKey)
 	tile := theWorld.Grid.Tile(b.Location)
 	if tile != nil {
 		tile.SetBuilding(b)
@@ -77,7 +81,6 @@ func (b *Building) ConstructionIsComplete() bool {
 
 func (b *Building) CompleteConstruction() {
 	b.Set(ConstructionProgress, b.Template.ConstructionWork)
-	b.SpriteKey = gfx.GetSpriteKey(b.Template.Graphic)
 	b.Init()
 	b.FireWorker()
 	sector := b.GetSector()
@@ -88,7 +91,6 @@ func (b *Building) CompleteConstruction() {
 
 func (b *Building) StartConstruction() {
 	b.Set(ConstructionProgress, 0)
-	b.SpriteKey = gfx.GetSpriteKey(b.Template.ConstructionGraphic)
 	b.Init()
 }
 
