@@ -5,6 +5,7 @@
   "Unit": "Marcus",
   "UnitLimit": 1,
   "UnitTimer": 10,
+  "Influence": 2,
   "ConstructionGraphic": "construction",
   "ConstructionWork": 100
 }

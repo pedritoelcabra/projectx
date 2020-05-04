@@ -5,6 +5,7 @@
   "Unit": "Skeleton",
   "UnitLimit": 2,
   "UnitTimer": 120,
+  "Influence": 2,
   "ConstructionGraphic": "construction",
   "ConstructionWork": 100
 }

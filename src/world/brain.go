@@ -173,7 +173,7 @@ func (b *Brain) Return() {
 func (b *Brain) Work() {
 	target := b.owner.WorkPlace.Get()
 	if target == nil {
-		b.ForceUpdate()
+		b.ResetState()
 		return
 	}
 	targetTile := target.GetTile()

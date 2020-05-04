@@ -80,6 +80,10 @@ func (b *Building) CompleteConstruction() {
 	b.SpriteKey = gfx.GetSpriteKey(b.Template.Graphic)
 	b.Init()
 	b.FireWorker()
+	sector := b.GetSector()
+	if sector != nil {
+		sector.GrowSectorToSize(b.Template.Influence, b.GetTile().GetCoord())
+	}
 }
 
 func (b *Building) StartConstruction() {
@@ -233,6 +237,10 @@ func (b *Building) SetF(key int, value float64) {
 }
 
 func (b *Building) HasWorkSlot() bool {
+	currentWorker := b.Worker.Get()
+	if currentWorker != nil {
+		return false
+	}
 	if !b.ConstructionIsComplete() {
 		return true
 	}

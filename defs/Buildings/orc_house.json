@@ -5,6 +5,7 @@
   "Unit": "Orc",
   "UnitLimit": 1,
   "UnitTimer": 60,
+  "Influence": 2,
   "ConstructionGraphic": "construction",
   "ConstructionWork": 100
 }

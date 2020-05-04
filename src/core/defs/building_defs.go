@@ -15,6 +15,7 @@ type BuildingDef struct {
 	Unit                string
 	UnitLimit           int
 	UnitTimer           int
+	Influence           int
 	ConstructionWork    int
 }
 

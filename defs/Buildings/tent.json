@@ -5,6 +5,7 @@
   "Unit": "Bandit",
   "UnitLimit": 1,
   "UnitTimer": 45,
+  "Influence": 1,
   "ConstructionGraphic": "construction",
   "ConstructionWork": 100
 }

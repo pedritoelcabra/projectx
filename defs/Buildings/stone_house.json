@@ -5,6 +5,7 @@
   "Unit": "Peasant",
   "UnitLimit": 2,
   "UnitTimer": 40,
+  "Influence": 2,
   "ConstructionGraphic": "construction",
   "ConstructionWork": 100
 }

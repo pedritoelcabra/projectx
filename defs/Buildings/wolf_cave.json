@@ -5,6 +5,7 @@
   "Unit": "Wolf",
   "UnitLimit": 4,
   "UnitTimer": 30,
+  "Influence": 3,
   "ConstructionGraphic": "construction",
   "ConstructionWork": 100
 }

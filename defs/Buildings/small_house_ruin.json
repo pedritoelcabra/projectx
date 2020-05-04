@@ -5,6 +5,7 @@
   "Unit": "",
   "UnitLimit": 0,
   "UnitTimer": 0,
+  "Influence": 0,
   "ConstructionGraphic": "construction",
   "ConstructionWork": 100
 }
