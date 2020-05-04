@@ -56,8 +56,9 @@ func (b *Building) SetConstructionProgress(value int) {
 	if value < 0 {
 		value = 0
 	}
-	if value > b.Template.ConstructionWork {
+	if value >= b.Template.ConstructionWork {
 		value = b.Template.ConstructionWork
+		b.CompleteConstruction()
 	}
 	b.Set(ConstructionProgress, value)
 }
@@ -78,6 +79,7 @@ func (b *Building) CompleteConstruction() {
 	b.Set(ConstructionProgress, b.Template.ConstructionWork)
 	b.SpriteKey = gfx.GetSpriteKey(b.Template.Graphic)
 	b.Init()
+	b.FireWorker()
 }
 
 func (b *Building) StartConstruction() {
@@ -243,4 +245,19 @@ func (b *Building) GetWorker() *Unit {
 
 func (b *Building) SetWorker(unit *Unit) {
 	b.Worker = unit.GetPointer()
+}
+
+func (b *Building) FireWorker() {
+	worker := b.Worker.Get()
+	if worker == nil {
+		return
+	}
+	worker.WorkPlace = MakeEmptyBuildingPointer()
+	b.Worker = MakeEmptyUnitPointer()
+}
+
+func (b *Building) AddWork() {
+	if !b.ConstructionIsComplete() {
+		b.AddConstructionProgress(1)
+	}
 }

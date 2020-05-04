@@ -96,6 +96,9 @@ func (b *Brain) ProcessState() {
 }
 
 func (b *Brain) SetUpdateFrequency() {
+	if b.CurrentState != StateIdle {
+		b.UpdateFrequency = 10
+	}
 	distanceToPlayer := b.owner.DistanceToUnit(theWorld.PlayerUnit.unit)
 	if distanceToPlayer <= gfx.ScreenWidth {
 		b.UpdateFrequency = 10
@@ -178,6 +181,7 @@ func (b *Brain) Work() {
 		b.owner.SetDestination(targetTile.GetCenterPos())
 		return
 	}
+	target.AddWork()
 }
 
 func (b *Brain) ForceUpdate() {
