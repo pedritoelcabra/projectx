@@ -12,19 +12,20 @@ type BuildingMap map[BuildingKey]*Building
 type UnitList []UnitPointer
 
 type Building struct {
-	Id                    BuildingKey
-	Sprite                gfx.Sprite `json:"-"`
-	ConstructionSprite    gfx.Sprite `json:"-"`
-	SpriteKey             gfx.SpriteKey
-	ConstructionSpriteKey gfx.SpriteKey
-	Name                  string
-	Location              tiling.Coord
-	X                     float64
-	Y                     float64
-	Template              *defs.BuildingDef
-	Units                 UnitList
-	Worker                UnitPointer
-	Attributes            *Attributes
+	Id                     BuildingKey
+	Sprite                 gfx.Sprite `json:"-"`
+	ConstructionSprite     gfx.Sprite `json:"-"`
+	SpriteKey              gfx.SpriteKey
+	ConstructionSpriteKey  gfx.SpriteKey
+	ConstructionPercentage float64
+	Name                   string
+	Location               tiling.Coord
+	X                      float64
+	Y                      float64
+	Template               *defs.BuildingDef
+	Units                  UnitList
+	Worker                 UnitPointer
+	Attributes             *Attributes
 }
 
 func NewBuilding(name string, location *Tile) *Building {
@@ -60,6 +61,7 @@ func (b *Building) SetConstructionProgress(value int) {
 	if value < 0 {
 		value = 0
 	}
+	b.ConstructionPercentage = (100.0 / float64(b.Template.ConstructionWork)) * float64(value)
 	if value >= b.Template.ConstructionWork {
 		value = b.Template.ConstructionWork
 		b.CompleteConstruction()
@@ -81,6 +83,7 @@ func (b *Building) ConstructionIsComplete() bool {
 
 func (b *Building) CompleteConstruction() {
 	b.Set(ConstructionProgress, b.Template.ConstructionWork)
+	b.ConstructionPercentage = 100.0
 	b.Init()
 	b.FireWorker()
 	sector := b.GetSector()
@@ -91,6 +94,7 @@ func (b *Building) CompleteConstruction() {
 
 func (b *Building) StartConstruction() {
 	b.Set(ConstructionProgress, 0)
+	b.ConstructionPercentage = 0
 	b.Init()
 }
 
@@ -107,6 +111,11 @@ func (b *Building) GetY() float64 {
 }
 
 func (b *Building) DrawSprite(screen *gfx.Screen) {
+	if !b.ConstructionIsComplete() {
+		b.ConstructionSprite.DrawSprite(screen, b.X, b.Y)
+		b.Sprite.DrawSpriteSubImage(screen, b.X, b.Y, b.ConstructionPercentage)
+		return
+	}
 	b.Sprite.DrawSprite(screen, b.X, b.Y)
 }
 

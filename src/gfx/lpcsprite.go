@@ -148,6 +148,10 @@ func (s *LpcSprite) DrawSpriteWithOptions(screen *Screen, x, y float64, op *ebit
 	screen.DrawImage(s.getFrame(), op)
 }
 
+func (s *LpcSprite) DrawSpriteSubImage(screen *Screen, x, y float64, percentage float64) {
+	s.DrawSprite(screen, x, y)
+}
+
 func (s *LpcSprite) getFrame() *ebiten.Image {
 	return GetImage(s.key).SubImage(s.getRect()).(*ebiten.Image)
 }

@@ -3,6 +3,7 @@ package gfx
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
+	"image"
 	"log"
 	"os"
 	"path/filepath"
@@ -60,6 +61,30 @@ func (h *HexSprite) DrawSprite(screen *Screen, x, y float64) {
 func (h *HexSprite) DrawSpriteWithOptions(screen *Screen, x, y float64, op *ebiten.DrawImageOptions) {
 	op.GeoM = ebiten.TranslateGeo(x, y)
 	screen.DrawImage(GetImage(h.key), op)
+}
+
+func (h *HexSprite) DrawSpriteSubImage(screen *Screen, x, y float64, percentage float64) {
+
+	op := &ebiten.DrawImageOptions{}
+	drawImage := GetImage(h.key)
+	if percentage < 0 {
+		percentage = 0.0
+	}
+	if percentage > 100 {
+		percentage = 100.0
+	}
+	width, height := drawImage.Size()
+	wantedHeight := (float64(height) / 100.0) * percentage
+	heightOffset := height - int(wantedHeight)
+	if heightOffset < 0 {
+		heightOffset = 0
+	}
+	if heightOffset > height {
+		heightOffset = height
+	}
+	rect := image.Rect(0, heightOffset, width, height)
+	op.GeoM = ebiten.TranslateGeo(x, y+float64(heightOffset))
+	screen.DrawImage(drawImage.SubImage(rect).(*ebiten.Image), op)
 }
 
 func (h *HexSprite) SetFacing(direction spriteFacing) {
