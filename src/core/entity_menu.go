@@ -16,11 +16,6 @@ const (
 	ClickableDistance       = 20
 )
 
-type Entity interface {
-	GetName() string
-	GetStats() string
-}
-
 func (g *game) BuildEntityMenu() *gui.Menu {
 	menu := gui.NewMenu(g.Gui)
 	menu.SetDisabled(true)
@@ -45,22 +40,31 @@ func (g *game) OpenEntityMenu(x, y int) {
 	}
 }
 
-func (g *game) ShowEntity(entity Entity) {
+func (g *game) DisableEntityMenu() {
+	g.Gui.SetDisabled(EntityMenu, true)
+	g.World.SetDisplayEntity(nil)
+	g.PlacementManager.UnSetBuilding()
+}
+
+func (g *game) ShowEntity(entity gui.Entity) {
+	g.World.SetDisplayEntity(entity)
 	menu := g.BuildEntityMenu()
 	menu.SetDisabled(false)
 	AddEntityTitle(menu, entity)
 	AddEntityText(menu, entity)
 	menu.SetLeftPadding(gfx.ScreenWidth - EntityMenuWidth)
 	menu.SetBottomPadding(EntityMenuBottomPadding)
+	buttonSize := image.Rect(0, 0, 150, 30)
+	entity.AddButtonsToEntityMenu(menu, buttonSize)
 	g.Gui.AddMenu(EntityMenu, menu)
 }
 
-func GetEntityText(entity Entity) string {
+func GetEntityText(entity gui.Entity) string {
 	text := "\n" + entity.GetStats()
 	return text
 }
 
-func AddEntityText(menu *gui.Menu, entity Entity) {
+func AddEntityText(menu *gui.Menu, entity gui.Entity) {
 	aBox := gui.NewTextBox()
 	aBox.SetBox(image.Rect(0, 0, EntityMenuWidth, EntityMenuBodyHeight))
 	aBox.SetColor(color.White)
@@ -74,7 +78,7 @@ func AddEntityText(menu *gui.Menu, entity Entity) {
 	menu.AddTextBox(aBox)
 }
 
-func AddEntityTitle(menu *gui.Menu, entity Entity) {
+func AddEntityTitle(menu *gui.Menu, entity gui.Entity) {
 	aBox := gui.NewTextBox()
 	aBox.SetBox(image.Rect(0, 0, EntityMenuWidth, EntityMenuTitleHeight))
 	aBox.SetColor(color.White)

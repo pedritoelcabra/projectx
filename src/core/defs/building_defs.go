@@ -2,6 +2,8 @@ package defs
 
 import (
 	"encoding/json"
+	"github.com/pedritoelcabra/projectx/src/gui"
+	"image"
 	"log"
 	"os"
 	"path/filepath"
@@ -25,6 +27,10 @@ func (def *BuildingDef) GetName() string {
 
 func (def *BuildingDef) GetStats() string {
 	return def.Description
+}
+
+func (def *BuildingDef) AddButtonsToEntityMenu(menu *gui.Menu, size image.Rectangle) {
+
 }
 
 func BuildingDefs() map[string]*BuildingDef {

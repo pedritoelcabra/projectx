@@ -4,8 +4,10 @@ import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/gfx"
+	"github.com/pedritoelcabra/projectx/src/gui"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/world/utils"
+	"image"
 	"log"
 )
 
@@ -226,4 +228,23 @@ func (u *Unit) GetStats() string {
 
 	stats += "\n\n" + u.Template.Description
 	return stats
+}
+
+func (u *Unit) AddButtonsToEntityMenu(menu *gui.Menu, size image.Rectangle) {
+	workPlace := u.WorkPlace.Get()
+	if workPlace != nil {
+		workPlaceButton := gui.NewButton(size, "Job: "+workPlace.GetName())
+		workPlaceButton.OnPressed = func(b *gui.Button) {
+			theWorld.SetDisplayEntity(workPlace)
+		}
+		menu.AddButton(workPlaceButton)
+	}
+	home := u.HomeBuilding.Get()
+	if home != nil {
+		homeButton := gui.NewButton(size, "Home: "+home.GetName())
+		homeButton.OnPressed = func(b *gui.Button) {
+			theWorld.SetDisplayEntity(home)
+		}
+		menu.AddButton(homeButton)
+	}
 }

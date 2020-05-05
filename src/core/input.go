@@ -82,8 +82,7 @@ func (g *game) InitInput() {
 	g.Input = NewInput()
 	g.Input.AddListener("RightClick", "rightClick", func(g *game) {
 		if g.PlacementManager.HasBuilding() {
-			g.PlacementManager.UnSetBuilding()
-			g.Gui.SetDisabled(EntityMenu, true)
+			g.DisableEntityMenu()
 		}
 		g.Gui.AddMenu(ContextMenu, g.BuildContextMenu(ebiten.CursorPosition()))
 	})
@@ -105,8 +104,7 @@ func (g *game) InitInput() {
 			return
 		}
 		if !g.Gui.GetMenu(EntityMenu).IsDisabled() {
-			g.Gui.SetDisabled(EntityMenu, true)
-			g.PlacementManager.UnSetBuilding()
+			g.DisableEntityMenu()
 			return
 		}
 		g.TogglePause()

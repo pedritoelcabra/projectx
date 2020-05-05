@@ -4,6 +4,7 @@ import (
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	"github.com/pedritoelcabra/projectx/src/gfx"
+	"github.com/pedritoelcabra/projectx/src/gui"
 	"github.com/pedritoelcabra/projectx/src/world/container"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/world/utils"
@@ -12,11 +13,30 @@ import (
 )
 
 type World struct {
-	Entities   *Entities
-	PlayerUnit *Player
-	Grid       *Grid
-	Data       *container.Container
-	screen     *gfx.Screen
+	Entities            *Entities
+	PlayerUnit          *Player
+	Grid                *Grid
+	Data                *container.Container
+	screen              *gfx.Screen
+	displayEntity       gui.Entity
+	lastDisplayedEntity int
+}
+
+func (w *World) ShouldDisplayEntity() bool {
+	return w.GetTick()-w.lastDisplayedEntity > 60
+}
+
+func (w *World) DisplayEntity() gui.Entity {
+	return w.displayEntity
+}
+
+func (w *World) MarkEntityDisplayed() {
+	w.lastDisplayedEntity = w.GetTick()
+}
+
+func (w *World) SetDisplayEntity(displayEntity gui.Entity) {
+	w.displayEntity = displayEntity
+	w.lastDisplayedEntity = 0
 }
 
 var theWorld = &World{}

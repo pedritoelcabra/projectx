@@ -81,6 +81,11 @@ func (g *game) UpdateMenus() {
 	if g.World.PlayerUnit.GetSectorUpdate() {
 		g.RebuildInGameMenu()
 	}
+	displayEntity := g.World.DisplayEntity()
+	if displayEntity != nil && g.World.ShouldDisplayEntity() {
+		g.ShowEntity(displayEntity)
+		g.World.MarkEntityDisplayed()
+	}
 }
 
 func (g *game) openContextMenu() {

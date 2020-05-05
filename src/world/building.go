@@ -3,7 +3,9 @@ package world
 import (
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/gfx"
+	"github.com/pedritoelcabra/projectx/src/gui"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
+	"image"
 	"strconv"
 )
 
@@ -278,5 +280,27 @@ func (b *Building) FireWorker() {
 func (b *Building) AddWork() {
 	if !b.ConstructionIsComplete() {
 		b.AddConstructionProgress(1)
+	}
+}
+
+func (b *Building) AddButtonsToEntityMenu(menu *gui.Menu, size image.Rectangle) {
+	worker := b.Worker.Get()
+	if worker != nil {
+		workerButton := gui.NewButton(size, "Worker: "+worker.GetName())
+		workerButton.OnPressed = func(b *gui.Button) {
+			theWorld.SetDisplayEntity(worker)
+		}
+		menu.AddButton(workerButton)
+	}
+	for _, unitPointer := range b.Units {
+		unit := unitPointer.Get()
+		if unit == nil {
+			continue
+		}
+		unitButton := gui.NewButton(size, "Inhabitant: "+unit.GetName())
+		unitButton.OnPressed = func(b *gui.Button) {
+			theWorld.SetDisplayEntity(unit)
+		}
+		menu.AddButton(unitButton)
 	}
 }

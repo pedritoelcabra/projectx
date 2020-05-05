@@ -3,8 +3,10 @@ package world
 import (
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
+	"github.com/pedritoelcabra/projectx/src/gui"
 	"github.com/pedritoelcabra/projectx/src/world/container"
 	"github.com/pedritoelcabra/projectx/src/world/tiling"
+	"image"
 	"log"
 	"math"
 	"strconv"
@@ -248,4 +250,8 @@ func (s *Sector) SetFaction(faction *Faction) {
 func (s *Sector) GetStats() string {
 	stats := ""
 	return stats
+}
+
+func (s *Sector) AddButtonsToEntityMenu(menu *gui.Menu, size image.Rectangle) {
+
 }

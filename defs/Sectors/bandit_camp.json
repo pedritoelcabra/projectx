@@ -2,7 +2,7 @@
   "Name": "Bandit Camp",
   "CenterBuilding": "Tent",
   "Faction": "Bandits",
-  "Weight": 1000,
+  "Weight": 100,
   "Buildings": {
     "Tent": 150
   },
