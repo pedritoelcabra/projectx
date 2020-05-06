@@ -248,7 +248,7 @@ func (s *Sector) SetFaction(faction *Faction) {
 }
 
 func (s *Sector) GetStats() string {
-	stats := ""
+	stats := "Faction: " + s.GetFaction().GetName()
 	return stats
 }
 

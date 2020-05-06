@@ -303,4 +303,12 @@ func (b *Building) AddButtonsToEntityMenu(menu *gui.Menu, size image.Rectangle) 
 		}
 		menu.AddButton(unitButton)
 	}
+	sector := b.GetSector()
+	if sector != nil {
+		sectorButton := gui.NewButton(size, "Sector: "+sector.GetName())
+		sectorButton.OnPressed = func(b *gui.Button) {
+			theWorld.SetDisplayEntity(sector)
+		}
+		menu.AddButton(sectorButton)
+	}
 }
