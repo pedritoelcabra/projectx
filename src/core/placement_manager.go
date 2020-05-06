@@ -4,6 +4,8 @@ import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/world"
+	"github.com/pedritoelcabra/projectx/src/core/world/tiling"
+	"github.com/pedritoelcabra/projectx/src/core/world/utils"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 )
 
@@ -52,6 +54,43 @@ func (p *PlacementManager) Draw(screen *gfx.Screen) {
 	}
 	op.ColorM.Scale(red, 1.0, 1.0, 0.7)
 	p.sprite.DrawSpriteWithOptions(screen, x, y, op)
+	p.DrawGatheringInfo(tile)
+}
+
+func (p *PlacementManager) DrawGatheringInfo(tile *world.Tile) {
+	if p.selectedBuilding.Gathers == "" {
+		return
+	}
+	radius := p.selectedBuilding.GatherRadius
+	coordCenter := tile.GetCoord()
+	for x := tile.X() - radius; x <= tile.X()+radius; x++ {
+		for y := tile.Y() - radius; y <= tile.Y()+radius; y++ {
+			tileCoord := tiling.NewCoord(x, y)
+			if tileCoord.Equals(coordCenter) {
+				continue
+			}
+			distance := int(tiling.HexDistance(coordCenter, tileCoord))
+			if distance > radius {
+				continue
+			}
+			t := ProjectX.World.Grid.Tile(tileCoord)
+			op := &ebiten.DrawImageOptions{}
+			op.ColorM.Scale(1.0, 1.0, 1.0, 0.5)
+			color := utils.GreenOverlay
+			if !t.HasResource(p.selectedBuilding.Gathers) {
+				color = utils.RedOverlay
+			}
+			sector := t.GetSector()
+			if sector == nil {
+				color = utils.RedOverlay
+			}
+			building := t.GetBuilding()
+			if building != nil {
+				color = utils.RedOverlay
+			}
+			gfx.DrawHexTerrain(t.GetF(world.RenderX), t.GetF(world.RenderY), color, ProjectX.World.GetScreen(), op)
+		}
+	}
 }
 
 func (p *PlacementManager) BuildingCanBePlacedAtTile(tile *world.Tile) bool {

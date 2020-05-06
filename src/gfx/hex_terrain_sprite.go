@@ -53,6 +53,8 @@ func SetUpHexTerrainOffsets() {
 	terrainToHex[utils.BorderS] = 108
 	terrainToHex[utils.BorderSW] = 109
 	terrainToHex[utils.BorderSE] = 110
+	terrainToHex[utils.GreenOverlay] = 101
+	terrainToHex[utils.RedOverlay] = 102
 }
 
 func DrawHexTerrain(x, y float64, terrain int, screen *Screen, op *ebiten.DrawImageOptions) {
