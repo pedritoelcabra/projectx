@@ -2,11 +2,11 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/src/core/logger"
-	tiling2 "github.com/pedritoelcabra/projectx/src/world/tiling"
+	"github.com/pedritoelcabra/projectx/src/core/world/tiling"
 )
 
 type node struct {
-	location  tiling2.Coord
+	location  tiling.Coord
 	parent    *node
 	total     float64
 	current   float64
@@ -28,9 +28,9 @@ func NewPathOptions() PathOptions {
 }
 
 type Path struct {
-	Path        []tiling2.Coord
-	Start       tiling2.Coord
-	End         tiling2.Coord
+	Path        []tiling.Coord
+	Start       tiling.Coord
+	End         tiling.Coord
 	Nodes       int
 	MaxLength   int
 	Cost        float64
@@ -41,7 +41,7 @@ type Path struct {
 	options     PathOptions
 }
 
-func (p *Path) GetSteps() []tiling2.Coord {
+func (p *Path) GetSteps() []tiling.Coord {
 	return p.Path
 }
 
@@ -53,11 +53,11 @@ func (p *Path) GetCost() float64 {
 	return p.Cost
 }
 
-func FindPath(start, end tiling2.Coord) Path {
+func FindPath(start, end tiling.Coord) Path {
 	return FindPathWithOptions(start, end, NewPathOptions())
 }
 
-func FindPathWithOptions(start, end tiling2.Coord, options PathOptions) Path {
+func FindPathWithOptions(start, end tiling.Coord, options PathOptions) Path {
 	aPath := Path{}
 	aPath.options = options
 	aPath.Valid = false
@@ -129,7 +129,7 @@ func (p *Path) ProcessNewNode(parent *node) {
 	}
 }
 
-func (p *Path) ExistsInList(aCoord tiling2.Coord) bool {
+func (p *Path) ExistsInList(aCoord tiling.Coord) bool {
 	for _, bNode := range p.open {
 		if aCoord.Equals(bNode.location) {
 			return true
@@ -153,7 +153,7 @@ func (p *Path) bestOpenNode() *node {
 	return aNode
 }
 
-func (p *Path) NewNode(location tiling2.Coord, parent *node) *node {
+func (p *Path) NewNode(location tiling.Coord, parent *node) *node {
 	aNode := &node{}
 	aNode.location = location
 	aNode.parent = parent
@@ -165,11 +165,11 @@ func (p *Path) NewNode(location tiling2.Coord, parent *node) *node {
 		}
 		aNode.current += parent.current
 	}
-	aNode.predicted = tiling2.HexDistance(location, p.End)
+	aNode.predicted = tiling.HexDistance(location, p.End)
 	aNode.total = aNode.current + aNode.predicted
 	return aNode
 }
 
-func getTileCost(coord tiling2.Coord) float64 {
+func getTileCost(coord tiling.Coord) float64 {
 	return theWorld.Grid.Tile(coord).GetF(MovementCost)
 }

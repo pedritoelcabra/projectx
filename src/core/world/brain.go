@@ -2,8 +2,8 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
+	utils2 "github.com/pedritoelcabra/projectx/src/core/world/utils"
 	"github.com/pedritoelcabra/projectx/src/gfx"
-	"github.com/pedritoelcabra/projectx/src/world/utils"
 	"log"
 	"strconv"
 )
@@ -243,7 +243,7 @@ func (b *Brain) Chase() {
 }
 
 func (b *Brain) PositionToAttackTarget() (x, y float64) {
-	return utils.AdvanceAlongLine(b.target.GetX(), b.target.GetY(), b.owner.GetX(), b.owner.GetY(), b.owner.GetF(AttackRange)-2.0)
+	return utils2.AdvanceAlongLine(b.target.GetX(), b.target.GetY(), b.owner.GetX(), b.owner.GetY(), b.owner.GetF(AttackRange)-2.0)
 }
 
 func (b *Brain) Attack() {

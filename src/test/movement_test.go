@@ -1,7 +1,7 @@
 package test
 
 import (
-	"github.com/pedritoelcabra/projectx/src/world/utils"
+	"github.com/pedritoelcabra/projectx/src/core/world/utils"
 	"math"
 	"testing"
 )

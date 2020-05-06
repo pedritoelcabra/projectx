@@ -1,7 +1,7 @@
 package tiling
 
 import (
-	utils2 "github.com/pedritoelcabra/projectx/src/world/utils"
+	"github.com/pedritoelcabra/projectx/src/core/world/utils"
 	"strconv"
 )
 
@@ -63,13 +63,13 @@ func (c Coord) Equals(b Coord) bool {
 }
 
 func (c1 Coord) ManhattanDist(c2 Coord) int {
-	yDist := utils2.AbsInt(c1.CY - c2.CY)
-	xDist := utils2.AbsInt(c1.CX - c2.CX)
+	yDist := utils.AbsInt(c1.CY - c2.CY)
+	xDist := utils.AbsInt(c1.CX - c2.CX)
 	return yDist + xDist
 }
 
 func (c1 Coord) ChebyshevDist(c2 Coord) int {
-	yDist := utils2.AbsInt(c1.CY - c2.CY)
-	xDist := utils2.AbsInt(c1.CX - c2.CX)
-	return utils2.MaxInt(yDist, xDist)
+	yDist := utils.AbsInt(c1.CY - c2.CY)
+	xDist := utils.AbsInt(c1.CX - c2.CX)
+	return utils.MaxInt(yDist, xDist)
 }

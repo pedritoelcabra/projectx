@@ -1,6 +1,8 @@
 package world
 
-import "github.com/pedritoelcabra/projectx/src/world/container"
+import (
+	container2 "github.com/pedritoelcabra/projectx/src/core/world/container"
+)
 
 type SaveGameData struct {
 	Seed          int
@@ -8,5 +10,5 @@ type SaveGameData struct {
 	Player        Player
 	Grid          Grid
 	WorldEntities *Entities
-	Data          *container.Container
+	Data          *container2.Container
 }

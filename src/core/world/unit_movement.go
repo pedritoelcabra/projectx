@@ -1,9 +1,9 @@
 package world
 
 import (
+	tiling2 "github.com/pedritoelcabra/projectx/src/core/world/tiling"
+	utils2 "github.com/pedritoelcabra/projectx/src/core/world/utils"
 	"github.com/pedritoelcabra/projectx/src/gfx"
-	"github.com/pedritoelcabra/projectx/src/world/tiling"
-	"github.com/pedritoelcabra/projectx/src/world/utils"
 	"math"
 )
 
@@ -60,8 +60,8 @@ func (u *Unit) GetPos() (x, y float64) {
 	return u.X, u.Y
 }
 
-func (u *Unit) GetTileCoord() tiling.Coord {
-	return tiling.PixelFToTileC(u.GetPos())
+func (u *Unit) GetTileCoord() tiling2.Coord {
+	return tiling2.PixelFToTileC(u.GetPos())
 }
 
 func (u *Unit) GetTile() *Tile {
@@ -73,7 +73,7 @@ func (u *Unit) DistanceToUnit(t *Unit) int {
 }
 
 func (u *Unit) DistanceToPoint(x, y float64) int {
-	return tiling.NewCoordF(u.GetPos()).ChebyshevDist(tiling.NewCoordF(x, y))
+	return tiling2.NewCoordF(u.GetPos()).ChebyshevDist(tiling2.NewCoordF(x, y))
 }
 
 func (u *Unit) DistanceWithinVision(distance int) bool {
@@ -86,5 +86,5 @@ func (u *Unit) DistanceWithinAttackRange(distance int) bool {
 }
 
 func (u *Unit) CollidesWith(x, y float64) bool {
-	return utils.CalculateDistance(u.X, u.Y, x, y) < u.GetF(Size)
+	return utils2.CalculateDistance(u.X, u.Y, x, y) < u.GetF(Size)
 }

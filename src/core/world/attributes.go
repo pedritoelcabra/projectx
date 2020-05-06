@@ -1,14 +1,14 @@
 package world
 
 import (
-	"github.com/pedritoelcabra/projectx/src/world/container"
+	container2 "github.com/pedritoelcabra/projectx/src/core/world/container"
 	"log"
 )
 
 type AttributeMap map[string]int
 
 type Attributes struct {
-	Data *container.Container
+	Data *container2.Container
 }
 
 func NewEmptyAttributes() *Attributes {
@@ -18,7 +18,7 @@ func NewEmptyAttributes() *Attributes {
 
 func NewAttributes(initialValues AttributeMap) *Attributes {
 	anAttributes := &Attributes{}
-	anAttributes.Data = container.NewContainer()
+	anAttributes.Data = container2.NewContainer()
 	anAttributes.SetValues(initialValues)
 	return anAttributes
 }

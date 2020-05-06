@@ -2,8 +2,8 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/src/core/logger"
+	tiling2 "github.com/pedritoelcabra/projectx/src/core/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/gfx"
-	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"strconv"
 )
 
@@ -32,7 +32,7 @@ type Player struct {
 func NewPlayer() *Player {
 	aPlayer := &Player{}
 	aPlayer.Init()
-	aPlayer.unit = NewUnit("Player", tiling.NewCoord(0, 0))
+	aPlayer.unit = NewUnit("Player", tiling2.NewCoord(0, 0))
 	aPlayer.unit.Name = "You"
 	aPlayer.attackX = 0.0
 	aPlayer.attackX = 0.0
@@ -68,7 +68,7 @@ func (p *Player) IsInOwnedSector() bool {
 	return p.unit.IsInOwnedSector()
 }
 
-func (p *Player) GetTileCoord() tiling.Coord {
+func (p *Player) GetTileCoord() tiling2.Coord {
 	return p.unit.GetTileCoord()
 }
 

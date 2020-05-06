@@ -3,8 +3,8 @@ package core
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/core/defs"
+	"github.com/pedritoelcabra/projectx/src/core/world"
 	"github.com/pedritoelcabra/projectx/src/gfx"
-	"github.com/pedritoelcabra/projectx/src/world"
 )
 
 type PlacementManager struct {

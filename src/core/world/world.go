@@ -3,11 +3,11 @@ package world
 import (
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
+	container2 "github.com/pedritoelcabra/projectx/src/core/world/container"
+	tiling2 "github.com/pedritoelcabra/projectx/src/core/world/tiling"
+	utils2 "github.com/pedritoelcabra/projectx/src/core/world/utils"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/gui"
-	"github.com/pedritoelcabra/projectx/src/world/container"
-	"github.com/pedritoelcabra/projectx/src/world/tiling"
-	"github.com/pedritoelcabra/projectx/src/world/utils"
 	"log"
 	"sort"
 )
@@ -16,7 +16,7 @@ type World struct {
 	Entities            *Entities
 	PlayerUnit          *Player
 	Grid                *Grid
-	Data                *container.Container
+	Data                *container2.Container
 	screen              *gfx.Screen
 	displayEntity       gui.Entity
 	lastDisplayedEntity int
@@ -54,7 +54,7 @@ func (w *World) IsInitialized() bool {
 func (w *World) SetSeed(seed int) {
 	w.Data.Set(Seed, seed)
 	randomizer.SetSeed(seed)
-	utils.Seed(seed)
+	utils2.Seed(seed)
 }
 
 func (w *World) GetSeed() int {
@@ -76,7 +76,7 @@ func (w *World) IsTock() bool {
 
 func FromSeed(seed int) *World {
 	w := NewWorld()
-	w.Data = container.NewContainer()
+	w.Data = container2.NewContainer()
 	w.Data.Set(Tick, 0)
 	w.SetSeed(seed)
 	w.Grid = NewGrid()
@@ -142,7 +142,7 @@ func (w *World) WorldGeneration() {
 
 func (w *World) Init() {
 	w.InitEntities()
-	tiling.InitTiling()
+	tiling2.InitTiling()
 	w.Data.Set(RenderMode, int(RenderModeBasic))
 	w.Data.Set(Initialized, 1)
 	InitTileRenderer()
@@ -196,9 +196,9 @@ func (w *World) ClosestUnitWithinRadius(x, y, radius int) *Unit {
 		if !u.IsAlive() {
 			continue
 		}
-		ux := utils.AbsInt(int(u.GetX()) - x)
-		uy := utils.AbsInt(int(u.GetY()) - y)
-		thisDist := utils.MaxInt(uy, ux)
+		ux := utils2.AbsInt(int(u.GetX()) - x)
+		uy := utils2.AbsInt(int(u.GetY()) - y)
+		thisDist := utils2.MaxInt(uy, ux)
 		if thisDist > radius || thisDist > bestDist {
 			continue
 		}

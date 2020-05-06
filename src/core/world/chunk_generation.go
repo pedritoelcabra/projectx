@@ -3,11 +3,11 @@ package world
 import (
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
-	"github.com/pedritoelcabra/projectx/src/world/tiling"
-	"github.com/pedritoelcabra/projectx/src/world/utils"
+	tiling2 "github.com/pedritoelcabra/projectx/src/core/world/tiling"
+	utils2 "github.com/pedritoelcabra/projectx/src/core/world/utils"
 )
 
-func (g *Grid) CreateNewChunk(chunkCoord tiling.Coord) {
+func (g *Grid) CreateNewChunk(chunkCoord tiling2.Coord) {
 	chunkIndex := g.chunkIndex(chunkCoord.X(), chunkCoord.Y())
 	aChunk := NewChunk(chunkCoord)
 	g.Chunks[chunkIndex] = aChunk
@@ -40,7 +40,7 @@ func (g *Grid) ProcessChunkGenerationQueue() {
 	g.GenerateChunk(chunkCoord)
 }
 
-func (g *Grid) GenerateChunk(chunkCoord tiling.Coord) {
+func (g *Grid) GenerateChunk(chunkCoord tiling2.Coord) {
 	aChunk := g.Chunk(chunkCoord)
 	if aChunk.IsGenerated() {
 		return
@@ -58,15 +58,15 @@ func (g *Grid) GenerateChunk(chunkCoord tiling.Coord) {
 }
 
 func (t *Tile) InitializeTile() {
-	height := utils.Generator.GetHeight(t.X(), t.Y())
-	biomeValue := utils.Generator.GetBiome(t.X(), t.Y())
+	height := utils2.Generator.GetHeight(t.X(), t.Y())
+	biomeValue := utils2.Generator.GetBiome(t.X(), t.Y())
 	biomeValue = 0
-	biome := utils.BiomeTemperate
+	biome := utils2.BiomeTemperate
 	if biomeValue > 250 {
-		biome = utils.BiomeDesert
+		biome = utils2.BiomeDesert
 	}
 	if biomeValue < -250 {
-		biome = utils.BiomeTundra
+		biome = utils2.BiomeTundra
 	}
 	t.Set(Biome, biome)
 	t.Set(Height, height)
@@ -78,23 +78,23 @@ func (t *Tile) InitializeTile() {
 func (t *Tile) SetTerrain() {
 	height := t.Get(Height)
 	terrain := -1
-	terrain = utils.BasicMountain
+	terrain = utils2.BasicMountain
 	if height < 300 {
-		terrain = utils.BasicHills
+		terrain = utils2.BasicHills
 	}
 	if height < 150 {
-		terrain = utils.BasicGrass
+		terrain = utils2.BasicGrass
 	}
 	if height < 0 {
-		terrain = utils.BasicWater
+		terrain = utils2.BasicWater
 	}
 	if height < -50 {
-		terrain = utils.BasicDeepWater
+		terrain = utils2.BasicDeepWater
 	}
-	if t.Get(Biome) == utils.BiomeTundra {
+	if t.Get(Biome) == utils2.BiomeTundra {
 		terrain += 10
 	}
-	if t.Get(Biome) == utils.BiomeDesert {
+	if t.Get(Biome) == utils2.BiomeDesert {
 		terrain += 20
 	}
 	t.Set(TerrainBase, terrain)
@@ -104,7 +104,7 @@ func (t *Tile) GenerateVegetation() {
 	if t.IsImpassable() || t.Get(Height) <= 0 {
 		return
 	}
-	bioMassScore := utils.Generator.GetBiomass(t.X(), t.Y())
+	bioMassScore := utils2.Generator.GetBiomass(t.X(), t.Y())
 	bioMassScore += randomizer.RandomInt(0, 500)
 	vegName := ""
 	if bioMassScore > 200 {

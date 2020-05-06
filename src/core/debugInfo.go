@@ -3,8 +3,8 @@ package core
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/core/defs"
-	"github.com/pedritoelcabra/projectx/src/world"
-	"github.com/pedritoelcabra/projectx/src/world/tiling"
+	"github.com/pedritoelcabra/projectx/src/core/world"
+	"github.com/pedritoelcabra/projectx/src/core/world/tiling"
 	"strconv"
 )
 

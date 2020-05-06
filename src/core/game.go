@@ -6,9 +6,9 @@ import (
 	"github.com/pedritoelcabra/projectx/src/core/file"
 	"github.com/pedritoelcabra/projectx/src/core/logger"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
+	"github.com/pedritoelcabra/projectx/src/core/world"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/gui"
-	"github.com/pedritoelcabra/projectx/src/world"
 	"strconv"
 )
 

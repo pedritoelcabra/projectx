@@ -2,9 +2,9 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/src/core/defs"
+	tiling2 "github.com/pedritoelcabra/projectx/src/core/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/gui"
-	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"image"
 	"strconv"
 )
@@ -21,7 +21,7 @@ type Building struct {
 	ConstructionSpriteKey  gfx.SpriteKey
 	ConstructionPercentage float64
 	Name                   string
-	Location               tiling.Coord
+	Location               tiling2.Coord
 	X                      float64
 	Y                      float64
 	Template               *defs.BuildingDef

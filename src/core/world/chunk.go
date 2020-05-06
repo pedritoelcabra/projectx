@@ -4,16 +4,16 @@ import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
+	container2 "github.com/pedritoelcabra/projectx/src/core/world/container"
+	tiling2 "github.com/pedritoelcabra/projectx/src/core/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/gfx"
-	"github.com/pedritoelcabra/projectx/src/world/container"
-	"github.com/pedritoelcabra/projectx/src/world/tiling"
 )
 
 type Chunk struct {
 	tiles               []*Tile
 	Features            []map[int]int
-	ChunkData           *container.Container
-	Location            tiling.Coord
+	ChunkData           *container2.Container
+	Location            tiling2.Coord
 	Generated           bool
 	queuedForGeneration bool
 	isPreloaded         bool
@@ -29,13 +29,13 @@ var savableChunkData = []int{
 	Road,
 }
 
-func NewChunk(location tiling.Coord) *Chunk {
+func NewChunk(location tiling2.Coord) *Chunk {
 	aChunk := &Chunk{}
 	aChunk.isPreloaded = false
 	aChunk.terrainImage = nil
 	aChunk.units = UnitArray{}
 	aChunk.unitsLastUpdated = 0
-	aChunk.ChunkData = container.NewContainer()
+	aChunk.ChunkData = container2.NewContainer()
 	aChunk.Preload(location)
 	return aChunk
 }
@@ -48,7 +48,7 @@ func (ch *Chunk) SetSector(sector *Sector) {
 	ch.sector = sector
 }
 
-func (ch *Chunk) Preload(location tiling.Coord) {
+func (ch *Chunk) Preload(location tiling2.Coord) {
 	if ch.isPreloaded {
 		return
 	}
@@ -58,22 +58,22 @@ func (ch *Chunk) Preload(location tiling.Coord) {
 		for y := 0; y < ChunkSize; y++ {
 			tileX := (ch.Location.X() * ChunkSize) + x
 			tileY := (ch.Location.Y() * ChunkSize) + y
-			tileLocation := tiling.NewCoord(tileX, tileY)
+			tileLocation := tiling2.NewCoord(tileX, tileY)
 			tileIndex := ch.tileIndex(tileX, tileY)
 			aTile := NewTile()
 			aTile.coordinates = tileLocation
 
-			centerX := float64(tileX) * tiling.TileHorizontalSeparation
-			centerY := float64(tileY) * tiling.TileHeight
+			centerX := float64(tileX) * tiling2.TileHorizontalSeparation
+			centerY := float64(tileY) * tiling2.TileHeight
 			if x%2 > 0 {
-				centerY += tiling.TileHeight / 2
+				centerY += tiling2.TileHeight / 2
 			}
-			renderX := centerX - tiling.TileWidth/2
-			renderY := centerY - tiling.TileHeight/2
+			renderX := centerX - tiling2.TileWidth/2
+			renderY := centerY - tiling2.TileHeight/2
 			aTile.SetF(RenderX, renderX)
 			aTile.SetF(RenderY, renderY)
-			renderDoubleX := centerX - tiling.TileWidth
-			renderDoubleY := centerY - tiling.TileHeight
+			renderDoubleX := centerX - tiling2.TileWidth
+			renderDoubleY := centerY - tiling2.TileHeight
 			aTile.SetF(RenderDoubleX, renderDoubleX)
 			aTile.SetF(RenderDoubleY, renderDoubleY)
 			aTile.SetF(CenterX, centerX)
@@ -142,7 +142,7 @@ func (ch *Chunk) RunOnAllTiles(f func(t *Tile)) {
 	}
 }
 
-func (ch *Chunk) Tile(tileCoord tiling.Coord) *Tile {
+func (ch *Chunk) Tile(tileCoord tiling2.Coord) *Tile {
 	return ch.tiles[ch.tileIndex(tileCoord.X(), tileCoord.Y())]
 }
 
@@ -164,17 +164,17 @@ func (ch *Chunk) GenerateImage() {
 	if ch.GetImage() != nil {
 		return
 	}
-	imageWidth := (ChunkSize + 1) * tiling.TileHorizontalSeparation
-	imageHeight := (ChunkSize + 1) * tiling.TileHeight
+	imageWidth := (ChunkSize + 1) * tiling2.TileHorizontalSeparation
+	imageHeight := (ChunkSize + 1) * tiling2.TileHeight
 	ch.terrainImage, _ = ebiten.NewImage(int(imageWidth), int(imageHeight), ebiten.FilterDefault)
 
 	for _, t := range ch.tiles {
 		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Scale(tiling.TileWidthScale, tiling.TileHeightScale)
-		xOff := tiling.TileHorizontalSeparation * float64(ch.Location.X()*ChunkSize)
-		yOff := tiling.TileHeight * float64(ch.Location.Y()*ChunkSize)
-		localX := t.GetF(RenderX) - xOff + (tiling.TileWidth / 2)
-		localY := t.GetF(RenderY) - yOff + (tiling.TileHeight / 2)
+		op.GeoM.Scale(tiling2.TileWidthScale, tiling2.TileHeightScale)
+		xOff := tiling2.TileHorizontalSeparation * float64(ch.Location.X()*ChunkSize)
+		yOff := tiling2.TileHeight * float64(ch.Location.Y()*ChunkSize)
+		localX := t.GetF(RenderX) - xOff + (tiling2.TileWidth / 2)
+		localY := t.GetF(RenderY) - yOff + (tiling2.TileHeight / 2)
 		gfx.DrawHexTerrainToImage(localX, localY, t.Get(TerrainBase), ch.terrainImage, op)
 	}
 }
@@ -198,7 +198,7 @@ func (ch *Chunk) GenerateNPCs() {
 	if def == nil {
 		return
 	}
-	NewUnit(def.Name, tiling.NewCoordF(spawnTile.GetRenderPos()))
+	NewUnit(def.Name, tiling2.NewCoordF(spawnTile.GetRenderPos()))
 	//logger.General("Generated a "+def.Name+" at "+spawnTile.GetCoord().ToString(), nil)
 }
 
@@ -260,17 +260,17 @@ func (ch *Chunk) CheckUnitArray() {
 	}
 }
 
-func ChunksAroundTile(tile tiling.Coord, radius int) []*Chunk {
+func ChunksAroundTile(tile tiling2.Coord, radius int) []*Chunk {
 	var chunks []*Chunk
 	chunkCoord := theWorld.Grid.ChunkCoord(tile)
 	for x := chunkCoord.X() - 3; x <= chunkCoord.X()+3; x++ {
 		for y := chunkCoord.Y() - 3; y <= chunkCoord.Y()+3; y++ {
-			chunks = append(chunks, theWorld.Grid.Chunk(tiling.NewCoord(x, y)))
+			chunks = append(chunks, theWorld.Grid.Chunk(tiling2.NewCoord(x, y)))
 		}
 	}
 	return chunks
 }
 
 func ChunksAroundPlayer(radius int) []*Chunk {
-	return ChunksAroundTile(tiling.NewCoord(tiling.PixelFToTileI(theWorld.PlayerUnit.GetPos())), radius)
+	return ChunksAroundTile(tiling2.NewCoord(tiling2.PixelFToTileI(theWorld.PlayerUnit.GetPos())), radius)
 }

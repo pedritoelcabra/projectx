@@ -3,9 +3,9 @@ package world
 import (
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
+	container2 "github.com/pedritoelcabra/projectx/src/core/world/container"
+	tiling2 "github.com/pedritoelcabra/projectx/src/core/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/gui"
-	"github.com/pedritoelcabra/projectx/src/world/container"
-	"github.com/pedritoelcabra/projectx/src/world/tiling"
 	"image"
 	"log"
 	"math"
@@ -21,18 +21,18 @@ type Sector struct {
 	Id            SectorKey
 	Size          int
 	Name          string
-	Center        tiling.Coord
-	Data          *container.Container
+	Center        tiling2.Coord
+	Data          *container2.Container
 	Template      *defs.SectorDef
-	Tiles         []tiling.Coord
+	Tiles         []tiling2.Coord
 	NearbySectors ConnectionMap
 }
 
-func NewSector(location tiling.Coord, def *defs.SectorDef) *Sector {
+func NewSector(location tiling2.Coord, def *defs.SectorDef) *Sector {
 	aSector := &Sector{}
 	aSector.NearbySectors = make(ConnectionMap)
 	aSector.Template = def
-	aSector.Data = container.NewContainer()
+	aSector.Data = container2.NewContainer()
 	aSector.Center = location
 	aSector.Id = theWorld.AddSector(aSector)
 	aSector.Name = aSector.Template.Name + " " + strconv.Itoa(int(aSector.Id))
@@ -89,7 +89,7 @@ func (s *Sector) SpawnBuildings() {
 
 func (s *Sector) AttemptSpawnBuilding(def *defs.BuildingDef) {
 	bestScore := -1000
-	bestLocation := tiling.NewCoord(0, 0)
+	bestLocation := tiling2.NewCoord(0, 0)
 	for _, tileCoord := range s.Tiles {
 		tile := theWorld.Grid.Tile(tileCoord)
 		if tile.IsImpassable() || !tile.IsLand() {
@@ -112,14 +112,14 @@ func (s *Sector) AttemptSpawnBuilding(def *defs.BuildingDef) {
 	}
 }
 
-func (s *Sector) GrowSectorToSize(size int, centerCoord tiling.Coord) {
+func (s *Sector) GrowSectorToSize(size int, centerCoord tiling2.Coord) {
 	s.Size = size
 	options := NewPathOptions()
 	options.MinMoveCost = 1.0
 	sizeF := float64(size)
 	for x := centerCoord.X() - size; x <= centerCoord.X()+size; x++ {
 		for y := centerCoord.Y() - size; y <= centerCoord.Y()+size; y++ {
-			aCoord := tiling.NewCoord(x, y)
+			aCoord := tiling2.NewCoord(x, y)
 			if theWorld.Grid.Tile(aCoord).HasSector() {
 				continue
 			}
@@ -132,7 +132,7 @@ func (s *Sector) GrowSectorToSize(size int, centerCoord tiling.Coord) {
 	s.RecalculateTiles()
 }
 
-func (s *Sector) AddTile(tileCoord tiling.Coord) {
+func (s *Sector) AddTile(tileCoord tiling2.Coord) {
 	for _, existantTiles := range s.Tiles {
 		if existantTiles.Equals(tileCoord) {
 			return
@@ -151,7 +151,7 @@ func (s *Sector) RecalculateTiles() {
 	}
 }
 
-func (s *Sector) GetCenter() tiling.Coord {
+func (s *Sector) GetCenter() tiling2.Coord {
 	return s.Center
 }
 
@@ -212,7 +212,7 @@ func (s *Sector) GetTileNearestTo(tile *Tile) *Tile {
 	}
 	tileCoord := tile.GetCoord()
 	bestDist := 999999
-	bestCoord := tiling.Coord{}
+	bestCoord := tiling2.Coord{}
 	hasBest := false
 	for _, coord := range s.Tiles {
 		dist := tileCoord.ChebyshevDist(coord)

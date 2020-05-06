@@ -2,7 +2,7 @@ package gfx
 
 import (
 	"github.com/hajimehoshi/ebiten"
-	"github.com/pedritoelcabra/projectx/src/world/utils"
+	"github.com/pedritoelcabra/projectx/src/core/world/utils"
 	"image"
 	"log"
 	"strconv"

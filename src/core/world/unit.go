@@ -3,10 +3,10 @@ package world
 import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/core/defs"
+	tiling2 "github.com/pedritoelcabra/projectx/src/core/world/tiling"
+	utils2 "github.com/pedritoelcabra/projectx/src/core/world/utils"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/gui"
-	"github.com/pedritoelcabra/projectx/src/world/tiling"
-	"github.com/pedritoelcabra/projectx/src/world/utils"
 	"image"
 	"log"
 )
@@ -36,7 +36,7 @@ type Unit struct {
 	WorkPlace    BuildingPointer
 }
 
-func NewUnit(templateName string, location tiling.Coord) *Unit {
+func NewUnit(templateName string, location tiling2.Coord) *Unit {
 	template := defs.UnitDefs()[templateName]
 	if template == nil {
 		log.Fatal("Invalid Unit Template: " + templateName)
@@ -126,8 +126,8 @@ func (u *Unit) Update() {
 			movementCost = 1.0
 		}
 		movementSpeed := u.GetF(Speed) / movementCost
-		newX, newY := utils.AdvanceAlongLine(u.X, u.Y, u.DestX, u.DestY, movementSpeed)
-		newCoord := tiling.PixelFToTileC(newX, newY)
+		newX, newY := utils2.AdvanceAlongLine(u.X, u.Y, u.DestX, u.DestY, movementSpeed)
+		newCoord := tiling2.PixelFToTileC(newX, newY)
 		canMove := true
 		if oldCoord != newCoord {
 			newTile := theWorld.Grid.Tile(newCoord)
@@ -222,9 +222,9 @@ func (u *Unit) GetStats() string {
 
 	stats += "\n\nHealth: " + gfx.HealthString(u)
 
-	stats += "\nDamage: " + utils.NumberFormat(u.GetF(AttackDamage))
-	stats += "\nAttack Speed: " + utils.NumberFormat(60/u.GetAttackCoolDown())
-	stats += "\nMovement Speed: " + utils.NumberFormat(u.GetMovementSpeed())
+	stats += "\nDamage: " + utils2.NumberFormat(u.GetF(AttackDamage))
+	stats += "\nAttack Speed: " + utils2.NumberFormat(60/u.GetAttackCoolDown())
+	stats += "\nMovement Speed: " + utils2.NumberFormat(u.GetMovementSpeed())
 
 	stats += "\n\n" + u.Template.Description
 	return stats
