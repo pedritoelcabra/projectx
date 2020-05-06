@@ -1,0 +1,14 @@
+{
+  "Name": "Woodcutter",
+  "Description": "Place near trees",
+  "Graphic": "human_house_1",
+  "Unit": "",
+  "UnitLimit": 0,
+  "UnitTimer": 0,
+  "Influence": 2,
+  "Gathers": "Wood",
+  "GatherRadius": 2,
+  "GatherTiles": 10,
+  "ConstructionGraphic": "construction",
+  "ConstructionWork": 100
+}

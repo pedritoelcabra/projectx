@@ -1,0 +1,11 @@
+{
+  "Name": "Guardhouse",
+  "Description": "description",
+  "Graphic": "human_house_2",
+  "Unit": "",
+  "UnitLimit": 0,
+  "UnitTimer": 0,
+  "Influence": 4,
+  "ConstructionGraphic": "construction",
+  "ConstructionWork": 100
+}

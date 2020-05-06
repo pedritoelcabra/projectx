@@ -2,6 +2,7 @@
   "Name": "Deciduous Forest Sparse",
   "Weight": 100,
   "MovementCost": 0.25,
+  "Resource": "Wood",
   "Graphics" : [
     "deciduous-summer-sparse",
     "deciduous-summer-sparse2",

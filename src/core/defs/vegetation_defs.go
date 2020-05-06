@@ -13,6 +13,7 @@ type VegetationDef struct {
 	Name         string
 	MovementCost float64
 	Weight       int
+	Resource     string
 	Graphics     []string
 }
 

@@ -174,3 +174,11 @@ func (t *Tile) GetSectorId() SectorKey {
 func (t *Tile) SpawnUnit(name string) *Unit {
 	return NewUnit(name, tiling2.NewCoordF(t.GetRenderPos()))
 }
+
+func (t *Tile) HasResource(name string) bool {
+	flora := t.Get(Flora)
+	if flora == 0 {
+		return false
+	}
+	return name == defs.VegetationById(flora).Resource
+}

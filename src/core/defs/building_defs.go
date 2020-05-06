@@ -19,6 +19,9 @@ type BuildingDef struct {
 	UnitTimer           int
 	Influence           int
 	ConstructionWork    int
+	Gathers             string
+	GatherRadius        int
+	GatherTiles         int
 }
 
 func (def *BuildingDef) GetName() string {
