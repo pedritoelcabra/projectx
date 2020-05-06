@@ -7,25 +7,25 @@ import (
 	"path/filepath"
 )
 
-type ResourceDef struct {
+type MaterialDef struct {
 	Name      string
 	Weight    int
 	StackSize int
 }
 
-func ResourceDefs() map[string]*ResourceDef {
-	return resourceDefs
+func MaterialDefs() map[string]*MaterialDef {
+	return materialDefs
 }
 
-func GetResourceDef(name string) *ResourceDef {
-	return resourceDefs[name]
+func GetMaterialDef(name string) *MaterialDef {
+	return materialDefs[name]
 }
 
-var resourceDefs = make(map[string]*ResourceDef)
+var materialDefs = make(map[string]*MaterialDef)
 
-func LoadResourceDefs() {
-	resourceDefs = make(map[string]*ResourceDef)
-	directoryPath, _ := filepath.Abs(defFolder + "Resources")
+func LoadMaterialDefs() {
+	materialDefs = make(map[string]*MaterialDef)
+	directoryPath, _ := filepath.Abs(defFolder + "Materials")
 	walkErr := filepath.Walk(directoryPath, func(path string, info os.FileInfo, walkErr error) error {
 		file, err := os.Open(path)
 		if err != nil {
@@ -35,12 +35,12 @@ func LoadResourceDefs() {
 		if filepath.Ext(path) != ".json" {
 			return nil
 		}
-		dataStructure := &ResourceDef{}
+		dataStructure := &MaterialDef{}
 		err = json.NewDecoder(file).Decode(dataStructure)
 		if err != nil {
 			log.Fatal(err)
 		}
-		resourceDefs[dataStructure.Name] = dataStructure
+		materialDefs[dataStructure.Name] = dataStructure
 		return walkErr
 	})
 	if walkErr != nil {
