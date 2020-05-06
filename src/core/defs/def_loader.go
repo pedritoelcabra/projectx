@@ -8,4 +8,5 @@ func InitDefs() {
 	LoadVegetationDefs()
 	LoadUnitDefs()
 	LoadFactionDefs()
+	LoadResourceDefs()
 }
