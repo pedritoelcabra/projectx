@@ -116,5 +116,8 @@ func (t *Tile) GenerateResources() {
 	if resourceName == "" {
 		return
 	}
-	t.Set(Resource, defs.ResourceByName(resourceName))
+	resourceId := defs.ResourceByName(resourceName)
+	resourceDef := defs.ResourceById(resourceId)
+	t.Set(Resource, resourceId)
+	t.Set(ResourceAmount, resourceDef.ResourceAmount)
 }

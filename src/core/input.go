@@ -2,6 +2,7 @@ package core
 
 import (
 	"github.com/hajimehoshi/ebiten"
+	"github.com/pedritoelcabra/projectx/src/core/logger"
 	"github.com/pedritoelcabra/projectx/src/core/world"
 )
 
@@ -168,5 +169,8 @@ func (g *game) InitInput() {
 	})
 	g.Input.AddListener("F1Press", "toggleDebug", func(g *game) {
 		g.Gui.ToggleDebug()
+	})
+	g.Input.AddListener("F12Press", "triggerBreakPoint", func(g *game) {
+		logger.General("triggered debug", nil)
 	})
 }

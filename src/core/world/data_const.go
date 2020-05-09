@@ -25,6 +25,7 @@ const (
 	MovementCost
 	Biome
 	Resource
+	ResourceAmount
 	Road
 	FactionId
 	Tick

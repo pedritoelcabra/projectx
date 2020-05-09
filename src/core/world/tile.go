@@ -182,3 +182,11 @@ func (t *Tile) HasResource(name string) bool {
 	}
 	return name == defs.ResourceById(resource).Resource
 }
+
+func (t *Tile) GetResource() int {
+	return t.Get(Resource)
+}
+
+func (t *Tile) GetResourceAmount() int {
+	return t.Get(ResourceAmount)
+}

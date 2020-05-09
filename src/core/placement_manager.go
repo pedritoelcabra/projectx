@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/world"
@@ -67,7 +66,7 @@ func (p *PlacementManager) DrawGatheringInfo(tile *world.Tile) {
 	}
 	radius := p.selectedBuilding.GatherRadius
 	coordCenter := tile.GetCoord()
-	gatherTiles := 0
+	gatherAmount := 0
 	for x := tile.X() - radius; x <= tile.X()+radius; x++ {
 		for y := tile.Y() - radius; y <= tile.Y()+radius; y++ {
 			tileCoord := tiling.NewCoord(x, y)
@@ -81,28 +80,32 @@ func (p *PlacementManager) DrawGatheringInfo(tile *world.Tile) {
 			t := ProjectX.World.Grid.Tile(tileCoord)
 			op := &ebiten.DrawImageOptions{}
 			op.ColorM.Scale(1.0, 1.0, 1.0, 0.5)
-			color := utils.GreenOverlay
+			color := utils.RedOverlay
+			canGather := true
 			if !t.HasResource(p.selectedBuilding.Gathers) {
-				color = utils.RedOverlay
+				canGather = false
 			}
 			sector := t.GetSector()
 			if sector == nil {
-				color = utils.RedOverlay
+				canGather = false
 			}
 			building := t.GetBuilding()
 			if building != nil {
-				color = utils.RedOverlay
+				canGather = false
 			}
-			if color == utils.GreenOverlay {
-				gatherTiles++
+			if canGather {
+				gatherAmount += t.GetResourceAmount()
+				color = utils.GreenOverlay
 			}
 			gfx.DrawHexTerrain(t.GetF(world.RenderX), t.GetF(world.RenderY), color, ProjectX.World.GetScreen(), op)
 		}
 	}
-	percentage := world.GetGatheringEfficiency(p.selectedBuilding, gatherTiles)
-	percentageString := fmt.Sprintf("%.0f", percentage) + " %"
 	x, y := tile.GetCenterPos()
-	DrawTextBoxOnWorldPosFixedBox(percentageString, x-20, y-20)
+	gatherText := utils.FormatCount(gatherAmount)
+	if gatherAmount > 0 && gatherText == "0" {
+		gatherAmount = 20
+	}
+	DrawTextBoxOnWorldPosFixedBox(utils.FormatCount(gatherAmount), x-20, y-20)
 }
 
 func (p *PlacementManager) BuildingCanBePlacedAtTile(tile *world.Tile) bool {

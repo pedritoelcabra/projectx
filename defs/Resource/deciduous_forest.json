@@ -3,6 +3,7 @@
   "Weight": 100,
   "MovementCost": 0.5,
   "Resource": "Wood",
+  "ResourceAmount": 100,
   "Graphics" : [
     "deciduous-summer",
     "deciduous-summer2",

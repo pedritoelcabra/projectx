@@ -10,11 +10,12 @@ import (
 )
 
 type ResourceDef struct {
-	Name         string
-	MovementCost float64
-	Weight       int
-	Resource     string
-	Graphics     []string
+	Name           string
+	MovementCost   float64
+	Weight         int
+	ResourceAmount int
+	Resource       string
+	Graphics       []string
 }
 
 func (v *ResourceDef) GetGraphic() string {

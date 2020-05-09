@@ -312,19 +312,3 @@ func (b *Building) AddButtonsToEntityMenu(menu *gui.Menu, size image.Rectangle) 
 		menu.AddButton(sectorButton)
 	}
 }
-
-func GetGatheringEfficiency(def *defs.BuildingDef, tiles int) float64 {
-	if tiles == 0 {
-		return 0.0
-	}
-	if def == nil {
-		return 0.0
-	}
-	if def.GatherTiles == 0 {
-		return 0.0
-	}
-	if def.GatherTiles <= tiles {
-		return 100.0
-	}
-	return (100.0 / float64(def.GatherTiles)) * float64(tiles)
-}
