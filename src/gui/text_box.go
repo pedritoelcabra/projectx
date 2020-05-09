@@ -163,3 +163,7 @@ func (t *TextBox) EstimateStringBounds(f font.Face, s string) fixed.Rectangle26_
 	_ = fontMaxH
 	return eaRect
 }
+
+func (t *TextBox) GetContentBuffer() *ebiten.Image {
+	return t.contentBuf
+}

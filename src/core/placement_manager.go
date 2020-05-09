@@ -1,12 +1,16 @@
 package core
 
 import (
+	"fmt"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/world"
 	"github.com/pedritoelcabra/projectx/src/core/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/core/world/utils"
 	"github.com/pedritoelcabra/projectx/src/gfx"
+	"github.com/pedritoelcabra/projectx/src/gui"
+	"image"
+	"image/color"
 )
 
 type PlacementManager struct {
@@ -63,6 +67,7 @@ func (p *PlacementManager) DrawGatheringInfo(tile *world.Tile) {
 	}
 	radius := p.selectedBuilding.GatherRadius
 	coordCenter := tile.GetCoord()
+	gatherTiles := 0
 	for x := tile.X() - radius; x <= tile.X()+radius; x++ {
 		for y := tile.Y() - radius; y <= tile.Y()+radius; y++ {
 			tileCoord := tiling.NewCoord(x, y)
@@ -88,9 +93,19 @@ func (p *PlacementManager) DrawGatheringInfo(tile *world.Tile) {
 			if building != nil {
 				color = utils.RedOverlay
 			}
+			if color == utils.GreenOverlay {
+				gatherTiles++
+			}
 			gfx.DrawHexTerrain(t.GetF(world.RenderX), t.GetF(world.RenderY), color, ProjectX.World.GetScreen(), op)
 		}
 	}
+	percentage := world.GetGatheringEfficiency(p.selectedBuilding, gatherTiles)
+	percentageString := fmt.Sprintf("%.0f", percentage) + " %"
+	xc, yc := tile.GetCenterPos()
+	xci := int(xc) - 20
+	yci := int(yc) - 20
+	rect := image.Rect(xci, yci, xci+50, yci+50)
+	DrawTextBoxOnWorldPos(percentageString, rect)
 }
 
 func (p *PlacementManager) BuildingCanBePlacedAtTile(tile *world.Tile) bool {
@@ -120,4 +135,15 @@ func (p *PlacementManager) PlaceBuilding() {
 	building := world.NewBuilding(p.selectedBuilding.Name, tile)
 	building.StartConstruction()
 	_ = building
+}
+
+func DrawTextBoxOnWorldPos(text string, box image.Rectangle) {
+	aBox := gui.NewTextBox()
+	aBox.SetBox(box)
+	aBox.SetText(text)
+	aBox.SetColor(color.White)
+	aBox.BuildTextBoxImage(ProjectX.Gui, box)
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(float64(box.Min.X), float64(box.Min.Y))
+	ProjectX.Screen.DrawImage(aBox.GetContentBuffer(), op)
 }
