@@ -81,9 +81,9 @@ func (t *Tile) IsLand() bool {
 
 func (t *Tile) CalculateMovementCost() {
 	movementCost := utils2.MovementCost(t.Get(TerrainBase))
-	flora := t.Get(Flora)
-	if flora != 0 {
-		movementCost += defs.VegetationById(flora).MovementCost
+	resource := t.Get(Resource)
+	if resource != 0 {
+		movementCost += defs.VegetationById(resource).MovementCost
 	}
 	t.SetF(MovementCost, movementCost)
 }
@@ -130,8 +130,8 @@ func DrawTerrain(t *Tile) {
 }
 
 func DrawVegetation(t *Tile) {
-	if t.Get(Flora) != 0 {
-		defs.DrawVegetation(t.Get(Flora), theWorld.GetScreen(), t.GetF(RenderDoubleX), t.GetF(RenderDoubleY))
+	if t.Get(Resource) != 0 {
+		defs.DrawVegetation(t.Get(Resource), theWorld.GetScreen(), t.GetF(RenderDoubleX), t.GetF(RenderDoubleY))
 	}
 }
 
@@ -176,9 +176,9 @@ func (t *Tile) SpawnUnit(name string) *Unit {
 }
 
 func (t *Tile) HasResource(name string) bool {
-	flora := t.Get(Flora)
-	if flora == 0 {
+	resource := t.Get(Resource)
+	if resource == 0 {
 		return false
 	}
-	return name == defs.VegetationById(flora).Resource
+	return name == defs.VegetationById(resource).Resource
 }

@@ -46,7 +46,7 @@ func (g *game) DebugInfo() string {
 		if building != nil {
 			aString += "\nBuilding: " + building.GetName()
 		}
-		veg := tile.Get(world.Flora)
+		veg := tile.Get(world.Resource)
 		if veg != 0 {
 			aString += "\n" + defs.VegetationById(veg).Name
 		}

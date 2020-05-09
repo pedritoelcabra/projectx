@@ -116,5 +116,5 @@ func (t *Tile) GenerateVegetation() {
 	if vegName == "" {
 		return
 	}
-	t.Set(Flora, defs.VegetationByName(vegName))
+	t.Set(Resource, defs.VegetationByName(vegName))
 }

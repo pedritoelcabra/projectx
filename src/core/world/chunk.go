@@ -25,7 +25,7 @@ type Chunk struct {
 }
 
 var savableChunkData = []int{
-	Flora,
+	Resource,
 	Road,
 }
 

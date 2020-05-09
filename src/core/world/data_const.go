@@ -24,7 +24,7 @@ const (
 	SectorId
 	MovementCost
 	Biome
-	Flora
+	Resource
 	Road
 	FactionId
 	Tick
