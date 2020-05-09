@@ -101,11 +101,8 @@ func (p *PlacementManager) DrawGatheringInfo(tile *world.Tile) {
 	}
 	percentage := world.GetGatheringEfficiency(p.selectedBuilding, gatherTiles)
 	percentageString := fmt.Sprintf("%.0f", percentage) + " %"
-	xc, yc := tile.GetCenterPos()
-	xci := int(xc) - 20
-	yci := int(yc) - 20
-	rect := image.Rect(xci, yci, xci+50, yci+50)
-	DrawTextBoxOnWorldPos(percentageString, rect)
+	x, y := tile.GetCenterPos()
+	DrawTextBoxOnWorldPosFixedBox(percentageString, x-20, y-20)
 }
 
 func (p *PlacementManager) BuildingCanBePlacedAtTile(tile *world.Tile) bool {
@@ -135,6 +132,10 @@ func (p *PlacementManager) PlaceBuilding() {
 	building := world.NewBuilding(p.selectedBuilding.Name, tile)
 	building.StartConstruction()
 	_ = building
+}
+
+func DrawTextBoxOnWorldPosFixedBox(text string, x, y float64) {
+	DrawTextBoxOnWorldPos(text, image.Rect(int(x), int(y), int(x)+100, int(y)+50))
 }
 
 func DrawTextBoxOnWorldPos(text string, box image.Rectangle) {
