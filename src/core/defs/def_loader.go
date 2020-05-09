@@ -5,7 +5,7 @@ const defFolder = "defs/"
 func InitDefs() {
 	LoadBuildingDefs()
 	LoadSectorDefs()
-	LoadVegetationDefs()
+	LoadResourceDefs()
 	LoadUnitDefs()
 	LoadFactionDefs()
 	LoadMaterialDefs()

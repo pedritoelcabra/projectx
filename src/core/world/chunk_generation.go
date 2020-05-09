@@ -46,7 +46,7 @@ func (g *Grid) GenerateChunk(chunkCoord tiling2.Coord) {
 		return
 	}
 	aChunk.RunOnAllTiles(func(t *Tile) {
-		t.GenerateVegetation()
+		t.GenerateResources()
 	})
 	g.SpawnSector(aChunk)
 	aChunk.RunOnAllTiles(func(t *Tile) {
@@ -100,21 +100,21 @@ func (t *Tile) SetTerrain() {
 	t.Set(TerrainBase, terrain)
 }
 
-func (t *Tile) GenerateVegetation() {
+func (t *Tile) GenerateResources() {
 	if t.IsImpassable() || t.Get(Height) <= 0 {
 		return
 	}
 	bioMassScore := utils2.Generator.GetBiomass(t.X(), t.Y())
 	bioMassScore += randomizer.RandomInt(0, 500)
-	vegName := ""
+	resourceName := ""
 	if bioMassScore > 200 {
-		vegName = "Deciduous Forest Sparse"
+		resourceName = "Deciduous Forest Sparse"
 	}
 	if bioMassScore > 350 {
-		vegName = "Deciduous Forest"
+		resourceName = "Deciduous Forest"
 	}
-	if vegName == "" {
+	if resourceName == "" {
 		return
 	}
-	t.Set(Resource, defs.VegetationByName(vegName))
+	t.Set(Resource, defs.ResourceByName(resourceName))
 }

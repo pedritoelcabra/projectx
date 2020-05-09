@@ -27,7 +27,7 @@ func InitTileRenderer() {
 func RenderTiles(screen *gfx.Screen, world *World, mode TileRenderMode) {
 	LoadTilesToRender(world)
 	CallTileRenderFunction(DrawTerrain)
-	CallTileRenderFunction(DrawVegetation)
+	CallTileRenderFunction(DrawResource)
 	CallTileRenderFunction(DrawSectorBorders)
 }
 

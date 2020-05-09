@@ -48,7 +48,7 @@ func (g *game) DebugInfo() string {
 		}
 		veg := tile.Get(world.Resource)
 		if veg != 0 {
-			aString += "\n" + defs.VegetationById(veg).Name
+			aString += "\n" + defs.ResourceById(veg).Name
 		}
 		sector := g.World.GetSector(world.SectorKey(tile.Get(world.SectorId)))
 		sectorName := "No mans land"

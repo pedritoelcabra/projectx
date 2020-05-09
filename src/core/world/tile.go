@@ -83,7 +83,7 @@ func (t *Tile) CalculateMovementCost() {
 	movementCost := utils2.MovementCost(t.Get(TerrainBase))
 	resource := t.Get(Resource)
 	if resource != 0 {
-		movementCost += defs.VegetationById(resource).MovementCost
+		movementCost += defs.ResourceById(resource).MovementCost
 	}
 	t.SetF(MovementCost, movementCost)
 }
@@ -129,9 +129,9 @@ func DrawTerrain(t *Tile) {
 	gfx.DrawHexTerrain(t.GetF(RenderX), t.GetF(RenderY), t.Get(TerrainBase), theWorld.GetScreen(), opts)
 }
 
-func DrawVegetation(t *Tile) {
+func DrawResource(t *Tile) {
 	if t.Get(Resource) != 0 {
-		defs.DrawVegetation(t.Get(Resource), theWorld.GetScreen(), t.GetF(RenderDoubleX), t.GetF(RenderDoubleY))
+		defs.DrawResource(t.Get(Resource), theWorld.GetScreen(), t.GetF(RenderDoubleX), t.GetF(RenderDoubleY))
 	}
 }
 
@@ -180,5 +180,5 @@ func (t *Tile) HasResource(name string) bool {
 	if resource == 0 {
 		return false
 	}
-	return name == defs.VegetationById(resource).Resource
+	return name == defs.ResourceById(resource).Resource
 }
