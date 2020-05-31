@@ -4,7 +4,6 @@ import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/world"
-	"github.com/pedritoelcabra/projectx/src/core/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/core/world/utils"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/gui"
@@ -64,41 +63,28 @@ func (p *PlacementManager) DrawGatheringInfo(tile *world.Tile) {
 	if p.selectedBuilding.Gathers == "" {
 		return
 	}
-	radius := p.selectedBuilding.GatherRadius
-	coordCenter := tile.GetCoord()
 	gatherAmount := 0
-	for x := tile.X() - radius; x <= tile.X()+radius; x++ {
-		for y := tile.Y() - radius; y <= tile.Y()+radius; y++ {
-			tileCoord := tiling.NewCoord(x, y)
-			if tileCoord.Equals(coordCenter) {
-				continue
-			}
-			distance := int(tiling.HexDistance(coordCenter, tileCoord))
-			if distance > radius {
-				continue
-			}
-			t := ProjectX.World.Grid.Tile(tileCoord)
-			op := &ebiten.DrawImageOptions{}
-			op.ColorM.Scale(1.0, 1.0, 1.0, 0.5)
-			color := utils.RedOverlay
-			canGather := true
-			if !t.HasResource(p.selectedBuilding.Gathers) {
-				canGather = false
-			}
-			sector := t.GetSector()
-			if sector == nil {
-				canGather = false
-			}
-			building := t.GetBuilding()
-			if building != nil {
-				canGather = false
-			}
-			if canGather {
-				gatherAmount += t.GetResourceAmount()
-				color = utils.GreenOverlay
-			}
-			gfx.DrawHexTerrain(t.GetF(world.RenderX), t.GetF(world.RenderY), color, ProjectX.World.GetScreen(), op)
+	for _, t := range tile.TilesInRadius(p.selectedBuilding.GatherRadius) {
+		op := &ebiten.DrawImageOptions{}
+		op.ColorM.Scale(1.0, 1.0, 1.0, 0.5)
+		color := utils.RedOverlay
+		canGather := true
+		if !t.HasResource(p.selectedBuilding.Gathers) {
+			canGather = false
 		}
+		sector := t.GetSector()
+		if sector == nil {
+			canGather = false
+		}
+		building := t.GetBuilding()
+		if building != nil {
+			canGather = false
+		}
+		if canGather {
+			gatherAmount += t.GetResourceAmount()
+			color = utils.GreenOverlay
+		}
+		gfx.DrawHexTerrain(t.GetF(world.RenderX), t.GetF(world.RenderY), color, ProjectX.World.GetScreen(), op)
 	}
 	x, y := tile.GetCenterPos()
 	gatherText := utils.FormatCount(gatherAmount)
