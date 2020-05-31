@@ -257,7 +257,33 @@ func (b *Building) HasWorkSlot() bool {
 	if !b.ConstructionIsComplete() {
 		return true
 	}
+	if b.Template.Gathers != "" {
+		status := b.Get(GatherStatus)
+		if status == GatherStatusUnknown {
+			b.UpdateGatherStatus()
+			status = b.Get(GatherStatus)
+		}
+		if status == GatherStatusAvailable {
+			return true
+		}
+	}
 	return false
+}
+
+func (b *Building) UpdateGatherStatus() {
+	b.Set(GatherStatus, GatherStatusExhausted)
+	if b.Template.Gathers != "" {
+		return
+	}
+	for _, t := range b.GetTile().TilesInRadius(b.Template.GatherRadius) {
+		if !t.HasResource(b.Template.Gathers) {
+			continue
+		}
+		b.Set(GatherStatus, GatherStatusAvailable)
+		b.Set(GatherTargetX, t.X())
+		b.Set(GatherTargetY, t.Y())
+		return
+	}
 }
 
 func (b *Building) GetWorker() *Unit {

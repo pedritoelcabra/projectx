@@ -51,4 +51,10 @@ const (
 
 	ConstructionProgress
 	UnitSpawnProgress
+	GatherStatus
+	GatherStatusUnknown
+	GatherStatusAvailable
+	GatherStatusExhausted
+	GatherTargetX
+	GatherTargetY
 )
