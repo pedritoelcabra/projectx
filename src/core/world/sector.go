@@ -4,6 +4,7 @@ import (
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	container2 "github.com/pedritoelcabra/projectx/src/core/world/container"
+	"github.com/pedritoelcabra/projectx/src/core/world/inventory"
 	tiling2 "github.com/pedritoelcabra/projectx/src/core/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/gui"
 	"image"
@@ -26,12 +27,14 @@ type Sector struct {
 	Template      *defs.SectorDef
 	Tiles         []tiling2.Coord
 	NearbySectors ConnectionMap
+	Inventory     *inventory.Inventory
 }
 
 func NewSector(location tiling2.Coord, def *defs.SectorDef) *Sector {
 	aSector := &Sector{}
 	aSector.NearbySectors = make(ConnectionMap)
 	aSector.Template = def
+	aSector.Inventory = inventory.NewInventory(inventory.DefaultSlotCount)
 	aSector.Data = container2.NewContainer()
 	aSector.Center = location
 	aSector.Id = theWorld.AddSector(aSector)
@@ -153,6 +156,10 @@ func (s *Sector) RecalculateTiles() {
 
 func (s *Sector) GetCenter() tiling2.Coord {
 	return s.Center
+}
+
+func (s *Sector) GetInventory() *inventory.Inventory {
+	return s.Inventory
 }
 
 func (s *Sector) GetName() string {

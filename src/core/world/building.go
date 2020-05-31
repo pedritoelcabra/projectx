@@ -6,6 +6,7 @@ import (
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/gui"
 	"image"
+	"log"
 	"strconv"
 )
 
@@ -276,6 +277,9 @@ func (b *Building) UpdateGatherStatus() {
 		return
 	}
 	for _, t := range b.GetTile().TilesInRadius(b.Template.GatherRadius) {
+		if t.GetSector() == nil || b.GetSector() == nil || t.GetSector().GetId() != b.GetSector().GetId() {
+			continue
+		}
 		if !t.HasResource(b.Template.Gathers) {
 			continue
 		}
@@ -306,7 +310,27 @@ func (b *Building) FireWorker() {
 func (b *Building) AddWork() {
 	if !b.ConstructionIsComplete() {
 		b.AddConstructionProgress(1)
+		return
 	}
+	b.PerformGathering()
+}
+
+func (b *Building) PerformGathering() {
+	if b.Get(GatherStatus) != GatherStatusAvailable {
+		return
+	}
+	target := theWorld.Grid.Tile(tiling.NewCoord(b.Get(GatherTargetY), b.Get(GatherTargetY)))
+	if target == nil {
+		log.Fatal("no target for gathering")
+	}
+	amount := target.GetResourceAmount()
+	newAmount := amount - 1
+	target.SetResourceAmount(newAmount)
+	sector := target.GetSector()
+	if sector == nil {
+		log.Fatal("target has no sector!")
+	}
+	sector.GetInventory().AddItem(defs.GetMaterialDef(b.Template.Gathers).ID, 1)
 }
 
 func (b *Building) GetWorkLocation() tiling.Coord {

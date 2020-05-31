@@ -191,6 +191,10 @@ func (t *Tile) GetResourceAmount() int {
 	return t.Get(ResourceAmount)
 }
 
+func (t *Tile) SetResourceAmount(amount int) {
+	t.Set(ResourceAmount, amount)
+}
+
 func (t *Tile) TilesInRadius(radius int) []*Tile {
 	tiles := make([]*Tile, 0)
 	coordCenter := t.GetCoord()
