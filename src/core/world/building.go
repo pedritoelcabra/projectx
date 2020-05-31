@@ -2,7 +2,7 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/src/core/defs"
-	tiling2 "github.com/pedritoelcabra/projectx/src/core/world/tiling"
+	tiling "github.com/pedritoelcabra/projectx/src/core/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/gui"
 	"image"
@@ -21,7 +21,7 @@ type Building struct {
 	ConstructionSpriteKey  gfx.SpriteKey
 	ConstructionPercentage float64
 	Name                   string
-	Location               tiling2.Coord
+	Location               tiling.Coord
 	X                      float64
 	Y                      float64
 	Template               *defs.BuildingDef
@@ -259,7 +259,7 @@ func (b *Building) HasWorkSlot() bool {
 	}
 	if b.Template.Gathers != "" {
 		status := b.Get(GatherStatus)
-		if status == GatherStatusUnknown {
+		if status == GatherStatusUnknown || status == 0 {
 			b.UpdateGatherStatus()
 			status = b.Get(GatherStatus)
 		}
@@ -272,7 +272,7 @@ func (b *Building) HasWorkSlot() bool {
 
 func (b *Building) UpdateGatherStatus() {
 	b.Set(GatherStatus, GatherStatusExhausted)
-	if b.Template.Gathers != "" {
+	if b.Template.Gathers == "" {
 		return
 	}
 	for _, t := range b.GetTile().TilesInRadius(b.Template.GatherRadius) {
@@ -307,6 +307,16 @@ func (b *Building) AddWork() {
 	if !b.ConstructionIsComplete() {
 		b.AddConstructionProgress(1)
 	}
+}
+
+func (b *Building) GetWorkLocation() tiling.Coord {
+	if !b.ConstructionIsComplete() {
+		return b.GetTile().GetCoord()
+	}
+	if b.Get(GatherStatus) == GatherStatusAvailable {
+		return tiling.NewCoord(b.Get(GatherTargetX), b.Get(GatherTargetY))
+	}
+	return b.GetTile().GetCoord()
 }
 
 func (b *Building) AddButtonsToEntityMenu(menu *gui.Menu, size image.Rectangle) {

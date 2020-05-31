@@ -176,7 +176,8 @@ func (b *Brain) Work() {
 		b.ResetState()
 		return
 	}
-	targetTile := target.GetTile()
+	targetCoord := target.GetWorkLocation()
+	targetTile := theWorld.Grid.Tile(targetCoord)
 	if !targetTile.GetCoord().Equals(b.owner.GetTile().GetCoord()) {
 		b.owner.SetDestination(targetTile.GetCenterPos())
 		return
