@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 )
 
 type MaterialDef struct {
@@ -20,6 +21,16 @@ func MaterialDefs() map[string]*MaterialDef {
 
 func GetMaterialDef(name string) *MaterialDef {
 	return materialDefs[name]
+}
+
+func GetMaterialDefByKey(key int) *MaterialDef {
+	for _, def := range materialDefs {
+		if def.ID == key {
+			return def
+		}
+	}
+	log.Fatal("Invalid material def: " + strconv.Itoa(key))
+	return nil
 }
 
 var materialDefs = make(map[string]*MaterialDef)

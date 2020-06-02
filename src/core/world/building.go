@@ -319,7 +319,7 @@ func (b *Building) PerformGathering() {
 	if b.Get(GatherStatus) != GatherStatusAvailable {
 		return
 	}
-	target := theWorld.Grid.Tile(tiling.NewCoord(b.Get(GatherTargetY), b.Get(GatherTargetY)))
+	target := theWorld.Grid.Tile(tiling.NewCoord(b.Get(GatherTargetX), b.Get(GatherTargetY)))
 	if target == nil {
 		log.Fatal("no target for gathering")
 	}

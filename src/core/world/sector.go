@@ -256,6 +256,8 @@ func (s *Sector) SetFaction(faction *Faction) {
 
 func (s *Sector) GetStats() string {
 	stats := "Faction: " + s.GetFaction().GetName()
+	stats += "\n"
+	stats += s.Inventory.GetContentList()
 	return stats
 }
 

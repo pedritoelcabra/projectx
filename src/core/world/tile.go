@@ -130,7 +130,7 @@ func DrawTerrain(t *Tile) {
 }
 
 func DrawResource(t *Tile) {
-	if t.Get(Resource) != 0 {
+	if t.HasAnyResource() {
 		defs.DrawResource(t.Get(Resource), theWorld.GetScreen(), t.GetF(RenderDoubleX), t.GetF(RenderDoubleY))
 	}
 }
@@ -183,6 +183,10 @@ func (t *Tile) HasResource(name string) bool {
 	return name == defs.ResourceById(resource).Resource
 }
 
+func (t *Tile) HasAnyResource() bool {
+	return t.Get(Resource) != 0
+}
+
 func (t *Tile) GetResource() int {
 	return t.Get(Resource)
 }
@@ -193,6 +197,9 @@ func (t *Tile) GetResourceAmount() int {
 
 func (t *Tile) SetResourceAmount(amount int) {
 	t.Set(ResourceAmount, amount)
+	if amount <= 0 {
+		t.Set(Resource, 0)
+	}
 }
 
 func (t *Tile) TilesInRadius(radius int) []*Tile {
