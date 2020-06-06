@@ -28,6 +28,7 @@ type Sector struct {
 	Tiles         []tiling2.Coord
 	NearbySectors ConnectionMap
 	Inventory     *inventory.Inventory
+	AvailableJobs []*Job
 }
 
 func NewSector(location tiling2.Coord, def *defs.SectorDef) *Sector {
@@ -199,16 +200,9 @@ func (s *Sector) GetFaction() *Faction {
 	return theWorld.GetFaction(FactionKey(s.Get(FactionId)))
 }
 
-func (s *Sector) GetEmptyWorkPlace() *Building {
-	for _, tileCoord := range s.Tiles {
-		tile := theWorld.Grid.Tile(tileCoord)
-		building := tile.GetBuilding()
-		if building == nil {
-			continue
-		}
-		if building.HasWorkSlot() {
-			return building
-		}
+func (s *Sector) GetEmptyWorkPlace() *Job {
+	for _, job := range s.AvailableJobs {
+		return job
 	}
 	return nil
 }

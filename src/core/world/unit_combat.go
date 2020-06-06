@@ -45,9 +45,8 @@ func (u *Unit) Die() {
 	if home != nil {
 		home.CheckForDeceasedUnits()
 	}
-	workPlace := u.GetWorkplace()
-	if workPlace != nil {
-		workPlace.Worker = MakeEmptyUnitPointer()
+	if u.Work != nil {
+		u.Work.Destroy()
 	}
 }
 

@@ -171,7 +171,11 @@ func (b *Brain) Return() {
 }
 
 func (b *Brain) Work() {
-	target := b.owner.WorkPlace.Get()
+	if b.owner.Work == nil {
+		b.ResetState()
+		return
+	}
+	target := b.owner.Work.GetBuilding()
 	if target == nil {
 		b.ResetState()
 		return
@@ -212,9 +216,9 @@ func (b *Brain) ResolveState() {
 	if b.owner.CanWork() {
 		sector := b.owner.GetTile().GetSector()
 		if sector != nil {
-			workTarget := sector.GetEmptyWorkPlace()
-			if workTarget != nil {
-				b.owner.SetWorkplace(workTarget)
+			job := sector.GetEmptyWorkPlace()
+			if job != nil {
+				job.SetWorker(b.owner)
 				b.CurrentState = StateWork
 				return
 			}

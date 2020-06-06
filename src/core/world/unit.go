@@ -33,7 +33,7 @@ type Unit struct {
 	Alive        bool
 	Template     *defs.UnitDef
 	HomeBuilding BuildingPointer
-	WorkPlace    BuildingPointer
+	Work         *Job
 }
 
 func NewUnit(templateName string, location tiling2.Coord) *Unit {
@@ -43,7 +43,6 @@ func NewUnit(templateName string, location tiling2.Coord) *Unit {
 	}
 	aUnit := &Unit{}
 	aUnit.HomeBuilding = MakeEmptyBuildingPointer()
-	aUnit.WorkPlace = MakeEmptyBuildingPointer()
 	aUnit.Template = template
 	aUnit.Alive = true
 	aUnit.Name = template.Name
@@ -202,13 +201,15 @@ func (u *Unit) SetHome(building *Building) {
 	u.HomeBuilding = building.GetPointer()
 }
 
-func (u *Unit) GetWorkplace() *Building {
-	return u.WorkPlace.Get()
+func (u *Unit) GetWork() *Job {
+	return u.Work
 }
 
-func (u *Unit) SetWorkplace(building *Building) {
-	u.WorkPlace = building.GetPointer()
-	building.SetWorker(u)
+func (u *Unit) SetWork(job *Job) {
+	u.Work = job
+	if job != nil {
+		job.SetWorker(u)
+	}
 }
 
 func (u *Unit) CanWork() bool {
@@ -231,13 +232,15 @@ func (u *Unit) GetStats() string {
 }
 
 func (u *Unit) AddButtonsToEntityMenu(menu *gui.Menu, size image.Rectangle) {
-	workPlace := u.WorkPlace.Get()
-	if workPlace != nil {
-		workPlaceButton := gui.NewButton(size, "Job: "+workPlace.GetName())
-		workPlaceButton.OnPressed = func(b *gui.Button) {
-			theWorld.SetDisplayEntity(workPlace)
+	if u.Work != nil {
+		workPlace := u.Work.GetBuilding()
+		if workPlace != nil {
+			workPlaceButton := gui.NewButton(size, "Job: "+workPlace.GetName())
+			workPlaceButton.OnPressed = func(b *gui.Button) {
+				theWorld.SetDisplayEntity(workPlace)
+			}
+			menu.AddButton(workPlaceButton)
 		}
-		menu.AddButton(workPlaceButton)
 	}
 	home := u.HomeBuilding.Get()
 	if home != nil {

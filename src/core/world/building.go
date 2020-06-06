@@ -27,15 +27,14 @@ type Building struct {
 	Y                      float64
 	Template               *defs.BuildingDef
 	Units                  UnitList
-	Worker                 UnitPointer
 	Attributes             *Attributes
+	Job                    *Job
 }
 
 func NewBuilding(name string, location *Tile) *Building {
 	buildingDefs := defs.BuildingDefs()
 	aBuilding := &Building{}
 	aBuilding.Template = buildingDefs[name]
-	aBuilding.Worker = MakeEmptyUnitPointer()
 	aBuilding.Attributes = NewEmptyAttributes()
 	aBuilding.Set(ConstructionProgress, aBuilding.Template.ConstructionWork)
 	aBuilding.Set(UnitSpawnProgress, 0)
@@ -88,7 +87,7 @@ func (b *Building) CompleteConstruction() {
 	b.Set(ConstructionProgress, b.Template.ConstructionWork)
 	b.ConstructionPercentage = 100.0
 	b.Init()
-	b.FireWorker()
+	b.DestroyJob()
 	sector := b.GetSector()
 	if sector != nil {
 		sector.GrowSectorToSize(b.Template.Influence, b.GetTile().GetCoord())
@@ -124,6 +123,23 @@ func (b *Building) DrawSprite(screen *gfx.Screen) {
 
 func (b *Building) Update() {
 	b.UpdateUnitSpawn()
+	b.UpdateJobSpawn()
+}
+
+func (b *Building) UpdateJobSpawn() {
+	if b.Job != nil {
+		return
+	}
+	if !b.ConstructionIsComplete() {
+		b.Job = NewBuildJob(b)
+		return
+	}
+	if b.Template.Gathers != "" {
+		status := b.Get(GatherStatus)
+		if status == GatherStatusUnknown || status == 0 {
+			b.UpdateGatherStatus()
+		}
+	}
 }
 
 func (b *Building) UpdateUnitSpawn() {
@@ -251,24 +267,25 @@ func (b *Building) SetF(key int, value float64) {
 }
 
 func (b *Building) HasWorkSlot() bool {
-	currentWorker := b.Worker.Get()
-	if currentWorker != nil {
-		return false
-	}
-	if !b.ConstructionIsComplete() {
-		return true
-	}
-	if b.Template.Gathers != "" {
-		status := b.Get(GatherStatus)
-		if status == GatherStatusUnknown || status == 0 {
-			b.UpdateGatherStatus()
-			status = b.Get(GatherStatus)
-		}
-		if status == GatherStatusAvailable {
-			return true
-		}
-	}
 	return false
+	//currentWorker := b.Worker.Get()
+	//if currentWorker != nil {
+	//	return false
+	//}
+	//if !b.ConstructionIsComplete() {
+	//	return true
+	//}
+	//if b.Template.Gathers != "" {
+	//	status := b.Get(GatherStatus)
+	//	if status == GatherStatusUnknown || status == 0 {
+	//		b.UpdateGatherStatus()
+	//		status = b.Get(GatherStatus)
+	//	}
+	//	if status == GatherStatusAvailable {
+	//		return true
+	//	}
+	//}
+	//return false
 }
 
 func (b *Building) UpdateGatherStatus() {
@@ -284,27 +301,27 @@ func (b *Building) UpdateGatherStatus() {
 			continue
 		}
 		b.Set(GatherStatus, GatherStatusAvailable)
-		b.Set(GatherTargetX, t.X())
-		b.Set(GatherTargetY, t.Y())
+		b.Job = NewGatheringJob(b, t.GetCoord())
 		return
 	}
 }
 
 func (b *Building) GetWorker() *Unit {
-	return b.Worker.Get()
+	if b.Job != nil {
+		return b.Job.GetWorker()
+	}
+	return nil
 }
 
-func (b *Building) SetWorker(unit *Unit) {
-	b.Worker = unit.GetPointer()
+func (b *Building) ClearJob() {
+	b.Job = nil
 }
 
-func (b *Building) FireWorker() {
-	worker := b.Worker.Get()
-	if worker == nil {
+func (b *Building) DestroyJob() {
+	if b.Job == nil {
 		return
 	}
-	worker.WorkPlace = MakeEmptyBuildingPointer()
-	b.Worker = MakeEmptyUnitPointer()
+	b.Job.Destroy()
 }
 
 func (b *Building) AddWork() {
@@ -344,13 +361,15 @@ func (b *Building) GetWorkLocation() tiling.Coord {
 }
 
 func (b *Building) AddButtonsToEntityMenu(menu *gui.Menu, size image.Rectangle) {
-	worker := b.Worker.Get()
-	if worker != nil {
-		workerButton := gui.NewButton(size, "Worker: "+worker.GetName())
-		workerButton.OnPressed = func(b *gui.Button) {
-			theWorld.SetDisplayEntity(worker)
+	if b.Job != nil {
+		worker := b.Job.GetWorker()
+		if worker != nil {
+			workerButton := gui.NewButton(size, "Worker: "+worker.GetName())
+			workerButton.OnPressed = func(b *gui.Button) {
+				theWorld.SetDisplayEntity(worker)
+			}
+			menu.AddButton(workerButton)
 		}
-		menu.AddButton(workerButton)
 	}
 	for _, unitPointer := range b.Units {
 		unit := unitPointer.Get()
