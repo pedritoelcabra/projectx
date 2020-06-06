@@ -1,6 +1,10 @@
 package world
 
-import "github.com/pedritoelcabra/projectx/src/core/world/tiling"
+import (
+	"github.com/pedritoelcabra/projectx/src/core/defs"
+	"github.com/pedritoelcabra/projectx/src/core/world/tiling"
+	"log"
+)
 
 type JobType int
 
@@ -42,6 +46,10 @@ func (j *Job) GetWorker() *Unit {
 	return j.Worker.Get()
 }
 
+func (j *Job) GetLocation() tiling.Coord {
+	return j.Location
+}
+
 func (j *Job) HireWorker(worker *Unit) {
 	j.Worker = worker.GetPointer()
 	worker.SetWork(j)
@@ -74,4 +82,32 @@ func (j *Job) GetName() string {
 		return "Gathering Job"
 	}
 	return "Unknown Job"
+}
+
+func (j *Job) AddWork() {
+	building := j.GetBuilding()
+	switch j.Type {
+	case BuildJob:
+		building.AddConstructionProgress(1)
+	case GatherJob:
+		if building.Get(GatherStatus) != GatherStatusAvailable {
+			j.Destroy()
+			return
+		}
+		tile := theWorld.Grid.Tile(j.GetLocation())
+		if tile == nil {
+			log.Fatal("no target for gathering")
+		}
+		amount := tile.GetResourceAmount()
+		newAmount := amount - 1
+		tile.SetResourceAmount(newAmount)
+		sector := tile.GetSector()
+		if sector == nil {
+			log.Fatal("target has no sector!")
+		}
+		sector.GetInventory().AddItem(defs.GetMaterialDef(building.Template.Gathers).ID, 1)
+		if newAmount <= 0 {
+			j.Destroy()
+		}
+	}
 }

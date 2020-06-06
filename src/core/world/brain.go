@@ -171,17 +171,12 @@ func (b *Brain) Return() {
 }
 
 func (b *Brain) Work() {
-	if b.owner.Work == nil {
-		b.ResetState()
-		return
-	}
-	target := b.owner.Work.GetBuilding()
+	target := b.owner.Work
 	if target == nil {
 		b.ResetState()
 		return
 	}
-	targetCoord := target.GetWorkLocation()
-	targetTile := theWorld.Grid.Tile(targetCoord)
+	targetTile := theWorld.Grid.Tile(target.GetLocation())
 	if !targetTile.GetCoord().Equals(b.owner.GetTile().GetCoord()) {
 		b.owner.SetDestination(targetTile.GetCenterPos())
 		return
