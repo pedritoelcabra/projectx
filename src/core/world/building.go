@@ -132,13 +132,17 @@ func (b *Building) UpdateJobSpawn() {
 	}
 	if !b.ConstructionIsComplete() {
 		b.Job = NewBuildJob(b)
+	}
+	if b.Job != nil {
+		b.GetSector().PublishJob(b.Job)
 		return
 	}
 	if b.Template.Gathers != "" {
-		status := b.Get(GatherStatus)
-		if status == GatherStatusUnknown || status == 0 {
-			b.SearchGatherJob()
-		}
+		b.Job = b.SearchGatherJob()
+	}
+	if b.Job != nil {
+		b.GetSector().PublishJob(b.Job)
+		return
 	}
 }
 
@@ -266,11 +270,15 @@ func (b *Building) SetF(key int, value float64) {
 	b.Attributes.SetF(key, value)
 }
 
-func (b *Building) SearchGatherJob() {
-	b.Set(GatherStatus, GatherStatusExhausted)
+func (b *Building) SearchGatherJob() *Job {
 	if b.Template.Gathers == "" {
-		return
+		return nil
 	}
+	status := b.Get(GatherStatus)
+	if status == GatherStatusExhausted {
+		return nil
+	}
+	b.Set(GatherStatus, GatherStatusExhausted)
 	for _, t := range b.GetTile().TilesInRadius(b.Template.GatherRadius) {
 		if t.GetSector() == nil || b.GetSector() == nil || t.GetSector().GetId() != b.GetSector().GetId() {
 			continue
@@ -279,9 +287,9 @@ func (b *Building) SearchGatherJob() {
 			continue
 		}
 		b.Set(GatherStatus, GatherStatusAvailable)
-		b.Job = NewGatheringJob(b, t.GetCoord())
-		return
+		return NewGatheringJob(b, t.GetCoord())
 	}
+	return nil
 }
 
 func (b *Building) GetWorker() *Unit {

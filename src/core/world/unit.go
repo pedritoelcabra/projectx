@@ -207,9 +207,6 @@ func (u *Unit) GetWork() *Job {
 
 func (u *Unit) SetWork(job *Job) {
 	u.Work = job
-	if job != nil {
-		job.SetWorker(u)
-	}
 }
 
 func (u *Unit) CanWork() bool {

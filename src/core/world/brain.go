@@ -218,7 +218,7 @@ func (b *Brain) ResolveState() {
 		if sector != nil {
 			job := sector.GetEmptyWorkPlace()
 			if job != nil {
-				job.SetWorker(b.owner)
+				job.HireWorker(b.owner)
 				b.CurrentState = StateWork
 				return
 			}

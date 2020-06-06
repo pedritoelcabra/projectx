@@ -10,5 +10,5 @@
   "GatherRadius": 2,
   "GatherTiles": 10,
   "ConstructionGraphic": "construction",
-  "ConstructionWork": 10
+  "ConstructionWork": 100
 }

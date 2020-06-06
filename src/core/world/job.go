@@ -42,9 +42,15 @@ func (j *Job) GetWorker() *Unit {
 	return j.Worker.Get()
 }
 
-func (j *Job) SetWorker(worker *Unit) {
+func (j *Job) HireWorker(worker *Unit) {
 	j.Worker = worker.GetPointer()
 	worker.SetWork(j)
+	if j.Building.Get() != nil {
+		sector := j.Building.Get().GetSector()
+		if sector != nil {
+			sector.RemoveJob(j)
+		}
+	}
 }
 
 func (j *Job) Destroy() {
@@ -53,6 +59,10 @@ func (j *Job) Destroy() {
 	}
 	if j.Building.Get() != nil {
 		j.Building.Get().ClearJob()
+		sector := j.Building.Get().GetSector()
+		if sector != nil {
+			sector.RemoveJob(j)
+		}
 	}
 }
 

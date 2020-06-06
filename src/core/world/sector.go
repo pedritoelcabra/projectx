@@ -252,9 +252,29 @@ func (s *Sector) GetStats() string {
 	stats := "Faction: " + s.GetFaction().GetName()
 	stats += "\n"
 	stats += s.Inventory.GetContentList()
+	if len(s.AvailableJobs) > 0 {
+		stats += "\n\nAvailable Jobs:"
+		for _, job := range s.AvailableJobs {
+			stats += "\n" + job.GetName()
+		}
+	}
 	return stats
 }
 
 func (s *Sector) AddButtonsToEntityMenu(menu *gui.Menu, size image.Rectangle) {
 
+}
+
+func (s *Sector) PublishJob(job *Job) {
+	s.AvailableJobs = append(s.AvailableJobs, job)
+}
+
+func (s *Sector) RemoveJob(job *Job) {
+	jobs := make([]*Job, 0)
+	for _, aJob := range s.AvailableJobs {
+		if aJob != job {
+			jobs = append(jobs, aJob)
+		}
+	}
+	s.AvailableJobs = jobs
 }
