@@ -369,6 +369,9 @@ func (b *Building) AddButtonsToEntityMenu(menu *gui.Menu, size image.Rectangle) 
 				theWorld.SetDisplayEntity(worker)
 			}
 			menu.AddButton(workerButton)
+		} else {
+			workerButton := gui.NewButton(size, b.Job.GetName())
+			menu.AddButton(workerButton)
 		}
 	}
 	for _, unitPointer := range b.Units {

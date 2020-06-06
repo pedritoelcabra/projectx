@@ -18,6 +18,7 @@ type Job struct {
 
 func NewGatheringJob(building *Building, location tiling.Coord) *Job {
 	aJob := &Job{}
+	aJob.Worker = MakeEmptyUnitPointer()
 	aJob.Type = GatherJob
 	aJob.Location = location
 	aJob.Building = building.GetPointer()
@@ -26,6 +27,7 @@ func NewGatheringJob(building *Building, location tiling.Coord) *Job {
 
 func NewBuildJob(building *Building) *Job {
 	aJob := &Job{}
+	aJob.Worker = MakeEmptyUnitPointer()
 	aJob.Type = BuildJob
 	aJob.Location = building.GetTile().GetCoord()
 	aJob.Building = building.GetPointer()
@@ -52,4 +54,14 @@ func (j *Job) Destroy() {
 	if j.Building.Get() != nil {
 		j.Building.Get().ClearJob()
 	}
+}
+
+func (j *Job) GetName() string {
+	switch j.Type {
+	case BuildJob:
+		return "Building Job"
+	case GatherJob:
+		return "Gathering Job"
+	}
+	return "Unknown Job"
 }
