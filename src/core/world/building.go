@@ -137,7 +137,7 @@ func (b *Building) UpdateJobSpawn() {
 	if b.Template.Gathers != "" {
 		status := b.Get(GatherStatus)
 		if status == GatherStatusUnknown || status == 0 {
-			b.UpdateGatherStatus()
+			b.SearchGatherJob()
 		}
 	}
 }
@@ -266,29 +266,7 @@ func (b *Building) SetF(key int, value float64) {
 	b.Attributes.SetF(key, value)
 }
 
-func (b *Building) HasWorkSlot() bool {
-	return false
-	//currentWorker := b.Worker.Get()
-	//if currentWorker != nil {
-	//	return false
-	//}
-	//if !b.ConstructionIsComplete() {
-	//	return true
-	//}
-	//if b.Template.Gathers != "" {
-	//	status := b.Get(GatherStatus)
-	//	if status == GatherStatusUnknown || status == 0 {
-	//		b.UpdateGatherStatus()
-	//		status = b.Get(GatherStatus)
-	//	}
-	//	if status == GatherStatusAvailable {
-	//		return true
-	//	}
-	//}
-	//return false
-}
-
-func (b *Building) UpdateGatherStatus() {
+func (b *Building) SearchGatherJob() {
 	b.Set(GatherStatus, GatherStatusExhausted)
 	if b.Template.Gathers == "" {
 		return
