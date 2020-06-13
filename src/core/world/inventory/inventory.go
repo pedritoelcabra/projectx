@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	DefaultSlotCount     = 50
-	DefaultSlotStackSize = 100
+	DefaultSlotCount     = 20
+	DefaultSlotStackSize = 50
 )
 
 type SlotList map[int]*Slot
@@ -58,21 +58,16 @@ func (i *Inventory) AddItem(itemType int, amount int) int {
 
 func (i *Inventory) GetContentList() string {
 	list := ""
-	items := make(map[int]int)
+	emptySlots := 0
 
 	for k := 0; k < i.SlotCount; k++ {
 		if i.Slots[k].IsEmpty() {
+			emptySlots++
 			continue
 		}
-		if _, ok := items[i.Slots[k].Type]; !ok {
-			items[i.Slots[k].Type] = 0
-		}
-		items[i.Slots[k].Type] += i.Slots[k].GetCount()
+		itemDef := defs.GetMaterialDefByKey(i.Slots[k].Type)
+		list += "\n" + strconv.Itoa(i.Slots[k].GetCount()) + " " + itemDef.Name
 	}
-
-	for key, count := range items {
-		itemDef := defs.GetMaterialDefByKey(key)
-		list += "\n" + strconv.Itoa(count) + " " + itemDef.Name
-	}
+	list += "\n" + strconv.Itoa(emptySlots) + " empty slots"
 	return list
 }
