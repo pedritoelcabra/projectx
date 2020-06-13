@@ -139,6 +139,7 @@ func (g *game) BuildContextMenu(x, y int) *gui.Menu {
 		buildingButton := gui.NewButton(buttonSize, building.GetName())
 		buildingButton.OnPressed = func(b *gui.Button) {
 			g.ShowEntity(building)
+			g.Gui.SetDisabled(ContextMenu, true)
 		}
 		aMenu.AddButton(buildingButton)
 	}
@@ -149,12 +150,14 @@ func (g *game) BuildContextMenu(x, y int) *gui.Menu {
 		growButton1 := gui.NewButton(buttonSize, "Grow Sector by 5")
 		growButton1.OnPressed = func(b *gui.Button) {
 			sector.GrowSectorToSize(5, mouseCoord)
+			g.Gui.SetDisabled(ContextMenu, true)
 		}
 		aMenu.AddButton(growButton1)
 
 		growButton2 := gui.NewButton(buttonSize, "Grow Sector by 8")
 		growButton2.OnPressed = func(b *gui.Button) {
 			sector.GrowSectorToSize(8, mouseCoord)
+			g.Gui.SetDisabled(ContextMenu, true)
 		}
 		aMenu.AddButton(growButton2)
 	}
@@ -163,12 +166,14 @@ func (g *game) BuildContextMenu(x, y int) *gui.Menu {
 	clickedCoord := g.MousePosCoord()
 	unitButton.OnPressed = func(b *gui.Button) {
 		world.NewUnit("Peasant", clickedCoord)
+		g.Gui.SetDisabled(ContextMenu, true)
 	}
 	aMenu.AddButton(unitButton)
 
 	unitButton2 := gui.NewButton(buttonSize, "Add Wolf")
 	unitButton2.OnPressed = func(b *gui.Button) {
 		world.NewUnit("Wolf", clickedCoord)
+		g.Gui.SetDisabled(ContextMenu, true)
 	}
 	aMenu.AddButton(unitButton2)
 

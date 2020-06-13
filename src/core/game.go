@@ -93,7 +93,7 @@ func (g *game) openContextMenu() {
 		g.rightMouseDown = true
 	} else {
 		if g.rightMouseDown {
-			g.Gui.AddMenu("context", g.BuildContextMenu(ebiten.CursorPosition()))
+			g.Gui.AddMenu(ContextMenu, g.BuildContextMenu(ebiten.CursorPosition()))
 		}
 		g.rightMouseDown = false
 	}

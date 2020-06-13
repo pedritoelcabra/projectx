@@ -4,6 +4,7 @@ import (
 	"github.com/hajimehoshi/ebiten"
 	"github.com/pedritoelcabra/projectx/src/core/logger"
 	"github.com/pedritoelcabra/projectx/src/core/world"
+	"github.com/pedritoelcabra/projectx/src/gui"
 )
 
 type listenerFunction func(g *game)
@@ -33,17 +34,19 @@ func (i *Input) Update() {
 	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonRight) {
 		i.rightMouseDown = true
 	} else {
-		if i.rightMouseDown {
+		if i.rightMouseDown && gui.RightClickAvailable() {
 			i.TriggerCallbacks("RightClick")
+			gui.UseRightClick()
 		}
 		i.rightMouseDown = false
 	}
 	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
 		i.leftMouseDown = true
-		ProjectX.HandleAttackClick()
 	} else {
-		if i.leftMouseDown {
+		if i.leftMouseDown && gui.LeftClickAvailable() {
+			ProjectX.HandleAttackClick()
 			i.TriggerCallbacks("LeftClick")
+			gui.UseLeftClick()
 		}
 		i.leftMouseDown = false
 	}

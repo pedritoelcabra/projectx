@@ -124,6 +124,7 @@ func (g *Gui) DisableAllMenus() {
 }
 
 func (g *Gui) Update() {
+	ResetClicks()
 	for _, menu := range g.menus {
 		menu.update()
 	}

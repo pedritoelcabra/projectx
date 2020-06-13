@@ -41,8 +41,9 @@ func (b *Button) update() {
 			b.mouseDown = false
 		}
 	} else {
-		if b.mouseDown && b.OnPressed != nil {
+		if b.mouseDown && b.OnPressed != nil && LeftClickAvailable() {
 			b.OnPressed(b)
+			UseLeftClick()
 		}
 		b.mouseDown = false
 	}
