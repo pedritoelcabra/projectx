@@ -4,6 +4,7 @@ import (
 	"github.com/golang/freetype/truetype"
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
+	"github.com/pedritoelcabra/projectx/src/core"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/gofont/goregular"
 	"image"
@@ -82,8 +83,8 @@ func (g *Gui) LoadFontSize(size FontSize) {
 }
 
 func (g *Gui) ToggleDebug() {
-	g.GetMenu("debug").ToggleDisabled()
-	g.GetMenu("log").ToggleDisabled()
+	g.GetMenu(core.DebugMenu).ToggleDisabled()
+	g.GetMenu(core.LogMenu).ToggleDisabled()
 }
 
 func (g *Gui) AddMenu(key string, menu *Menu) {
@@ -116,7 +117,7 @@ func (g *Gui) ToggleDisabled(key string) {
 
 func (g *Gui) DisableAllMenus() {
 	for key, menu := range g.menus {
-		if key == "debug" {
+		if key == core.DebugMenu {
 			continue
 		}
 		menu.SetDisabled(true)
