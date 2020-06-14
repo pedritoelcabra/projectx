@@ -146,6 +146,7 @@ func (t *Tile) SetResourceByName(resourceName string) {
 
 	resourceId := defs.ResourceByName(resourceName)
 	resourceDef := defs.ResourceById(resourceId)
+	defs.AddResourceLocation(resourceDef.Resource)
 	t.Set(Resource, resourceId)
 	t.Set(ResourceAmount, resourceDef.ResourceAmount)
 }

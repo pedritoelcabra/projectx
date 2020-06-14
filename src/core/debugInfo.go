@@ -9,6 +9,9 @@ import (
 )
 
 func (g *game) DebugInfo() string {
+
+	displayResourceTotals := true
+
 	aString := ""
 	aString += "\nFPS: " + strconv.Itoa(int(ebiten.CurrentFPS()))
 	aString += "\nTPS: " + strconv.Itoa(int(ebiten.CurrentTPS()))
@@ -37,26 +40,35 @@ func (g *game) DebugInfo() string {
 		//playerMouseDist := tiling.HexDistance(playerTileCoord, mouseTileCoord)
 		//aString += "\nMouse distance to player: " + fmt.Sprintf("%f", playerMouseDist)
 
-		drawUnitCount := g.World.Data.Get(world.CurrentDrawnUnits)
-		drawBuildingCount := g.World.Data.Get(world.CurrentDrawnBuildings)
-		aString += "\nDrawing " + strconv.Itoa(drawUnitCount) + " units, " + strconv.Itoa(drawBuildingCount) + " buildings"
-		aString += "\n-----"
+		//drawUnitCount := g.World.Data.Get(world.CurrentDrawnUnits)
+		//drawBuildingCount := g.World.Data.Get(world.CurrentDrawnBuildings)
+		//aString += "\nDrawing " + strconv.Itoa(drawUnitCount) + " units, " + strconv.Itoa(drawBuildingCount) + " buildings"
+		//aString += "\n-----"
 
-		building := tile.GetBuilding()
-		if building != nil {
-			aString += "\nBuilding: " + building.GetName()
+		//building := tile.GetBuilding()
+		//if building != nil {
+		//	aString += "\nBuilding: " + building.GetName()
+		//}
+		//veg := tile.Get(world.Resource)
+		//if veg != 0 {
+		//	aString += "\n" + defs.ResourceById(veg).Name
+		//}
+		//sector := g.World.GetSector(world.SectorKey(tile.Get(world.SectorId)))
+		//sectorName := "No mans land"
+		//if sector != nil {
+		//	factionName := g.World.GetFaction(world.FactionKey(sector.Get(world.FactionId))).GetName()
+		//	sectorName = sector.GetName() + " (" + factionName + ")"
+		//}
+		//aString += "\nSector: " + sectorName
+
+		if displayResourceTotals {
+			aString += "\nTotal spawned resource tiles: "
+			matDefs := defs.GetMaterialDefs()
+			for i := 1; i <= len(matDefs); i++ {
+				matDef := defs.GetMaterialDefByKey(i)
+				aString += "\n" + matDef.Name + ": " + strconv.Itoa(defs.GetResourceLocationTotals(matDef.Name))
+			}
 		}
-		veg := tile.Get(world.Resource)
-		if veg != 0 {
-			aString += "\n" + defs.ResourceById(veg).Name
-		}
-		sector := g.World.GetSector(world.SectorKey(tile.Get(world.SectorId)))
-		sectorName := "No mans land"
-		if sector != nil {
-			factionName := g.World.GetFaction(world.FactionKey(sector.Get(world.FactionId))).GetName()
-			sectorName = sector.GetName() + " (" + factionName + ")"
-		}
-		aString += "\nSector: " + sectorName
 
 		nearestSectorKey := world.SectorKey(-1)
 		nearestSectorDist := 999999

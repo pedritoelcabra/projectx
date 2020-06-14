@@ -15,7 +15,7 @@ type MaterialDef struct {
 	StackSize int
 }
 
-func MaterialDefs() map[string]*MaterialDef {
+func GetMaterialDefs() map[string]*MaterialDef {
 	return materialDefs
 }
 
