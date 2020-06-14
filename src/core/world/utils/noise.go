@@ -50,6 +50,21 @@ func (n *NoiseGenerator) GetBiomass(x, y int) int {
 	return int(val)
 }
 
+func (n *NoiseGenerator) GetStone(x, y int) int {
+	val := n.ApplyFilter(x, y+20000, 50.0, 1000.0)
+	return int(val)
+}
+
+func (n *NoiseGenerator) GetIron(x, y int) int {
+	val := n.ApplyFilter(x, y+30000, 50.0, 1000.0)
+	return int(val)
+}
+
+func (n *NoiseGenerator) GetCoal(x, y int) int {
+	val := n.ApplyFilter(x, y+40000, 50.0, 1000.0)
+	return int(val)
+}
+
 func (n *NoiseGenerator) ApplyFilter(x, y int, scale float64, intensity float64) float64 {
 	noise := n.p.Noise2D(float64(x)/scale, float64(y)/scale)
 	adjustedNoise := noise * intensity

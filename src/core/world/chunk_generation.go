@@ -104,18 +104,46 @@ func (t *Tile) GenerateResources() {
 	if t.IsImpassable() || t.Get(Height) <= 0 {
 		return
 	}
-	bioMassScore := utils2.Generator.GetBiomass(t.X(), t.Y())
+
+	x := t.X()
+	y := t.Y()
+
+	ironScore := utils2.Generator.GetIron(x, y)
+	if ironScore > 350 {
+		t.SetResourceByName("Iron Ore")
+		return
+	}
+
+	coalScore := utils2.Generator.GetCoal(x, y)
+	if coalScore > 350 {
+		t.SetResourceByName("Coal")
+		return
+	}
+
+	stoneScore := utils2.Generator.GetStone(x, y)
+	if stoneScore > 350 {
+		t.SetResourceByName("Stone")
+		return
+	}
+
+	bioMassScore := utils2.Generator.GetBiomass(x, y)
 	bioMassScore += randomizer.RandomInt(0, 500)
-	resourceName := ""
 	if bioMassScore > 200 {
-		resourceName = "Deciduous Forest Sparse"
+		t.SetResourceByName("Deciduous Forest Sparse")
+		return
 	}
 	if bioMassScore > 350 {
-		resourceName = "Deciduous Forest"
+		t.SetResourceByName("Deciduous Forest")
+		return
 	}
+	t.SetResourceByName("")
+}
+
+func (t *Tile) SetResourceByName(resourceName string) {
 	if resourceName == "" {
 		return
 	}
+
 	resourceId := defs.ResourceByName(resourceName)
 	resourceDef := defs.ResourceById(resourceId)
 	t.Set(Resource, resourceId)

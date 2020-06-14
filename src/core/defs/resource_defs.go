@@ -49,7 +49,8 @@ func LoadResourceDefs() {
 			log.Fatal(err)
 		}
 		defer file.Close()
-		if filepath.Ext(path) != ".json" {
+		ext := filepath.Ext(path)
+		if ext != ".json" {
 			return nil
 		}
 		dataStructure := &ResourceDef{}

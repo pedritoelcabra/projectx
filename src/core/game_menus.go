@@ -60,7 +60,7 @@ func (g *game) BuildStartMenu() *gui.Menu {
 
 	debugButton := gui.NewButton(buttonSize, "Toggle debug")
 	debugButton.OnPressed = func(b *gui.Button) {
-		g.Gui.ToggleDebug()
+		g.ToggleDebug()
 	}
 	aMenu.AddButton(debugButton)
 
@@ -87,6 +87,11 @@ func (g *game) BuildStartMenu() *gui.Menu {
 	aMenu.AddButton(stopButton)
 
 	return aMenu
+}
+
+func (g *game) ToggleDebug() {
+	g.Gui.GetMenu(DebugMenu).ToggleDisabled()
+	g.Gui.GetMenu(LogMenu).ToggleDisabled()
 }
 
 func (g *game) BuildDebugMenu() *gui.Menu {

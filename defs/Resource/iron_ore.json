@@ -1,0 +1,10 @@
+{
+  "Name": "Iron Ore",
+  "Weight": 100,
+  "MovementCost": 0.5,
+  "Resource": "Iron Ore",
+  "ResourceAmount": 500,
+  "Graphics" : [
+    "iron_ore"
+  ]
+}

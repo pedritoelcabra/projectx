@@ -24,6 +24,9 @@ func SetSeed(seed int) {
 }
 
 func RandomInt(min, max int) int {
+	if min == max {
+		return min
+	}
 	if min > max {
 		return RandomInt(max, min)
 	}

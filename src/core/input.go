@@ -162,7 +162,7 @@ func (g *game) InitInput() {
 		g.UpdatePlayerMovement(world.PLAYERDOWN, false)
 	})
 	g.Input.AddListener("GraveAccentPress", "toggleDebug", func(g *game) {
-		g.Gui.ToggleDebug()
+		g.ToggleDebug()
 	})
 	g.Input.AddListener("F5Press", "quickSave", func(g *game) {
 		g.QuickSave()
@@ -171,7 +171,7 @@ func (g *game) InitInput() {
 		g.QuickLoad()
 	})
 	g.Input.AddListener("F1Press", "toggleDebug", func(g *game) {
-		g.Gui.ToggleDebug()
+		g.ToggleDebug()
 	})
 	g.Input.AddListener("F12Press", "triggerBreakPoint", func(g *game) {
 		logger.General("triggered debug", nil)
