@@ -1,12 +1,12 @@
 {
-  "Name": "Woodcutter",
-  "Description": "Place near trees",
-  "Graphic": "woodcutter",
+  "Name": "Quarry",
+  "Description": "Place near stone",
+  "Graphic": "quarry",
   "Unit": "",
   "UnitLimit": 0,
   "UnitTimer": 0,
   "Influence": 2,
-  "Gathers": "Wood",
+  "Gathers": "Stone",
   "GatherRadius": 2,
   "ConstructionGraphic": "construction",
   "ConstructionWork": 10

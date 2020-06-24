@@ -1,12 +1,12 @@
 {
-  "Name": "Woodcutter",
-  "Description": "Place near trees",
-  "Graphic": "woodcutter",
+  "Name": "Iron Mine",
+  "Description": "Place near iron ore",
+  "Graphic": "iron_mine",
   "Unit": "",
   "UnitLimit": 0,
   "UnitTimer": 0,
   "Influence": 2,
-  "Gathers": "Wood",
+  "Gathers": "Iron Ore",
   "GatherRadius": 2,
   "ConstructionGraphic": "construction",
   "ConstructionWork": 10
