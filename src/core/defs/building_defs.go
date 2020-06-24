@@ -21,7 +21,6 @@ type BuildingDef struct {
 	ConstructionWork    int
 	Gathers             string
 	GatherRadius        int
-	GatherTiles         int
 }
 
 func (def *BuildingDef) GetName() string {
