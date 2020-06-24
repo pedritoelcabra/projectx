@@ -51,17 +51,17 @@ func (n *NoiseGenerator) GetBiomass(x, y int) int {
 }
 
 func (n *NoiseGenerator) GetStone(x, y int) int {
-	val := n.ApplyFilter(x, y+20000, 50.0, 1000.0)
+	val := n.ApplyFilter(x, y+20000, 15.0, 800.0)
 	return int(val)
 }
 
 func (n *NoiseGenerator) GetIron(x, y int) int {
-	val := n.ApplyFilter(x, y+30000, 50.0, 1000.0)
+	val := n.ApplyFilter(x, y+30000, 10.0, 600.0)
 	return int(val)
 }
 
 func (n *NoiseGenerator) GetCoal(x, y int) int {
-	val := n.ApplyFilter(x, y+40000, 50.0, 1000.0)
+	val := n.ApplyFilter(x, y+40000, 15.0, 700.0)
 	return int(val)
 }
 

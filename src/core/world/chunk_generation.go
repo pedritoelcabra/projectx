@@ -4,7 +4,7 @@ import (
 	"github.com/pedritoelcabra/projectx/src/core/defs"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	tiling2 "github.com/pedritoelcabra/projectx/src/core/world/tiling"
-	utils2 "github.com/pedritoelcabra/projectx/src/core/world/utils"
+	utils "github.com/pedritoelcabra/projectx/src/core/world/utils"
 )
 
 func (g *Grid) CreateNewChunk(chunkCoord tiling2.Coord) {
@@ -58,15 +58,15 @@ func (g *Grid) GenerateChunk(chunkCoord tiling2.Coord) {
 }
 
 func (t *Tile) InitializeTile() {
-	height := utils2.Generator.GetHeight(t.X(), t.Y())
-	biomeValue := utils2.Generator.GetBiome(t.X(), t.Y())
+	height := utils.Generator.GetHeight(t.X(), t.Y())
+	biomeValue := utils.Generator.GetBiome(t.X(), t.Y())
 	biomeValue = 0
-	biome := utils2.BiomeTemperate
+	biome := utils.BiomeTemperate
 	if biomeValue > 250 {
-		biome = utils2.BiomeDesert
+		biome = utils.BiomeDesert
 	}
 	if biomeValue < -250 {
-		biome = utils2.BiomeTundra
+		biome = utils.BiomeTundra
 	}
 	t.Set(Biome, biome)
 	t.Set(Height, height)
@@ -78,61 +78,63 @@ func (t *Tile) InitializeTile() {
 func (t *Tile) SetTerrain() {
 	height := t.Get(Height)
 	terrain := -1
-	terrain = utils2.BasicMountain
-	if height < 300 {
-		terrain = utils2.BasicHills
+	terrain = utils.BasicMountain
+	if height < utils.MountainHeight {
+		terrain = utils.BasicHills
 	}
-	if height < 150 {
-		terrain = utils2.BasicGrass
+	if height < utils.HillHeight {
+		terrain = utils.BasicGrass
 	}
 	if height < 0 {
-		terrain = utils2.BasicWater
+		terrain = utils.BasicWater
 	}
 	if height < -50 {
-		terrain = utils2.BasicDeepWater
+		terrain = utils.BasicDeepWater
 	}
-	if t.Get(Biome) == utils2.BiomeTundra {
+	if t.Get(Biome) == utils.BiomeTundra {
 		terrain += 10
 	}
-	if t.Get(Biome) == utils2.BiomeDesert {
+	if t.Get(Biome) == utils.BiomeDesert {
 		terrain += 20
 	}
 	t.Set(TerrainBase, terrain)
 }
 
 func (t *Tile) GenerateResources() {
-	if t.IsImpassable() || t.Get(Height) <= 0 {
+	tileHeight := t.Get(Height)
+	if t.IsImpassable() || tileHeight <= 0 {
 		return
 	}
 
 	x := t.X()
 	y := t.Y()
 
-	ironScore := utils2.Generator.GetIron(x, y)
-	if ironScore > 350 {
+	bioMassScore := utils.Generator.GetBiomass(x, y)
+	bioMassScore += randomizer.RandomInt(0, 500)
+
+	ironScore := utils.Generator.GetIron(x, y)
+	if ironScore > 350 && tileHeight > utils.HillHeight {
 		t.SetResourceByName("Iron Ore")
 		return
 	}
 
-	coalScore := utils2.Generator.GetCoal(x, y)
-	if coalScore > 350 {
+	coalScore := utils.Generator.GetCoal(x, y)
+	if coalScore > 350 && bioMassScore > utils.ScarceForestBioMass {
 		t.SetResourceByName("Coal")
 		return
 	}
 
-	stoneScore := utils2.Generator.GetStone(x, y)
+	stoneScore := utils.Generator.GetStone(x, y)
 	if stoneScore > 350 {
 		t.SetResourceByName("Stone")
 		return
 	}
 
-	bioMassScore := utils2.Generator.GetBiomass(x, y)
-	bioMassScore += randomizer.RandomInt(0, 500)
-	if bioMassScore > 200 {
+	if bioMassScore > utils.ScarceForestBioMass {
 		t.SetResourceByName("Deciduous Forest Sparse")
 		return
 	}
-	if bioMassScore > 350 {
+	if bioMassScore > utils.ForestBioMass {
 		t.SetResourceByName("Deciduous Forest")
 		return
 	}

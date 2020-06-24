@@ -72,7 +72,7 @@ func LoadResourceDefs() {
 			log.Fatal(err)
 		}
 		for _, graphicName := range dataStructure.Graphics {
-			id := len(resourceDefs)
+			id := len(resourceDefs) + 1
 			resourceDefs[id] = dataStructure
 			resourceTotals[dataStructure.Name] = 0
 			resourceSprites[id] = gfx.NewHexSprite(gfx.GetSpriteKey(graphicName))

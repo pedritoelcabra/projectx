@@ -3,6 +3,16 @@ package utils
 type TerrainTypes int
 
 const (
+	MountainHeight = 300
+	HillHeight     = 150
+)
+
+const (
+	ScarceForestBioMass = 200
+	ForestBioMass       = 350
+)
+
+const (
 	BasicHills     = 1
 	BasicGrass     = 2
 	BasicWater     = 3
