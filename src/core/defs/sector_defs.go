@@ -14,6 +14,14 @@ type SectorDef struct {
 	Weight         int
 	Size           int
 	Faction        string
+	Resources      []StartingResourceDef
+}
+
+type StartingResourceDef struct {
+	Type   string
+	Chance int
+	Min    int
+	Max    int
 }
 
 func SectorDefs() map[string]*SectorDef {
