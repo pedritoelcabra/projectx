@@ -36,6 +36,7 @@ func NewSector(location tiling.Coord, def *defs.SectorDef) *Sector {
 	aSector.NearbySectors = make(ConnectionMap)
 	aSector.Template = def
 	aSector.Inventory = inventory.NewInventory(inventory.DefaultSlotCount)
+	aSector.AddStartingResources()
 	aSector.Data = container2.NewContainer()
 	aSector.Center = location
 	aSector.Id = theWorld.AddSector(aSector)
@@ -57,6 +58,16 @@ func (s *Sector) GetNearbySectors() ConnectionMap {
 
 func (s *Sector) GetNearbySector(key SectorKey) SectorConnection {
 	return s.NearbySectors[key]
+}
+
+func (s *Sector) AddStartingResources() {
+	for _, startResourceDef := range s.Template.Resources {
+		if !randomizer.PercentageRoll(startResourceDef.Chance) {
+			continue
+		}
+		amount := randomizer.RandomInt(startResourceDef.Min, startResourceDef.Max)
+		s.Inventory.AddItem(defs.GetMaterialKeyByName(startResourceDef.Type), amount)
+	}
 }
 
 func (s *Sector) SpawnBuildings() {

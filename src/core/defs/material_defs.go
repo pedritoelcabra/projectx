@@ -23,6 +23,10 @@ func GetMaterialDef(name string) *MaterialDef {
 	return materialDefs[name]
 }
 
+func GetMaterialKeyByName(name string) int {
+	return materialDefs[name].ID
+}
+
 func GetMaterialDefByKey(key int) *MaterialDef {
 	for _, def := range materialDefs {
 		if def.ID == key {
