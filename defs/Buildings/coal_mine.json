@@ -9,5 +9,7 @@
   "Gathers": "Coal",
   "GatherRadius": 2,
   "ConstructionGraphic": "construction",
-  "ConstructionWork": 10
+  "ConstructionWork": 10,
+  "Resources": [
+  ]
 }

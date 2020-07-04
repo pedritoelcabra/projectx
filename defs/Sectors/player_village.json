@@ -16,6 +16,12 @@
       "Chance" : 100,
       "Min": 20,
       "Max": 20
+    },
+    {
+      "Type" : "Basic Tools",
+      "Chance" : 100,
+      "Min": 10,
+      "Max": 10
     }
   ]
 }

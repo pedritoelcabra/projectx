@@ -2,10 +2,10 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/src/core/defs"
+	"github.com/pedritoelcabra/projectx/src/core/inventory"
 	"github.com/pedritoelcabra/projectx/src/core/randomizer"
 	container2 "github.com/pedritoelcabra/projectx/src/core/world/container"
-	"github.com/pedritoelcabra/projectx/src/core/world/inventory"
-	tiling "github.com/pedritoelcabra/projectx/src/core/world/tiling"
+	"github.com/pedritoelcabra/projectx/src/core/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/gui"
 	"image"
 	"log"

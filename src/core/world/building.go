@@ -2,6 +2,7 @@ package world
 
 import (
 	"github.com/pedritoelcabra/projectx/src/core/defs"
+	"github.com/pedritoelcabra/projectx/src/core/inventory"
 	"github.com/pedritoelcabra/projectx/src/core/world/tiling"
 	"github.com/pedritoelcabra/projectx/src/gfx"
 	"github.com/pedritoelcabra/projectx/src/gui"
@@ -28,12 +29,14 @@ type Building struct {
 	Units                  UnitList
 	Attributes             *Attributes
 	Job                    *Job
+	ResourceRequests       []*inventory.ResourceRequest
 }
 
 func NewBuilding(name string, location *Tile) *Building {
 	buildingDefs := defs.BuildingDefs()
 	aBuilding := &Building{}
 	aBuilding.Template = buildingDefs[name]
+	aBuilding.ResourceRequests = make([]*inventory.ResourceRequest, 0)
 	aBuilding.Attributes = NewEmptyAttributes()
 	aBuilding.Set(ConstructionProgress, aBuilding.Template.ConstructionWork)
 	aBuilding.Set(UnitSpawnProgress, 0)
@@ -96,7 +99,12 @@ func (b *Building) CompleteConstruction() {
 func (b *Building) StartConstruction() {
 	b.Set(ConstructionProgress, 0)
 	b.ConstructionPercentage = 0
+	b.LoadResourceRequests(b.Template.Resources)
 	b.Init()
+}
+
+func (b *Building) LoadResourceRequests(source []*defs.ResourceRequirement) {
+	b.ResourceRequests = inventory.CopyResourceRequirements(source, b.ResourceRequests)
 }
 
 func (b *Building) ShouldDraw() bool {
@@ -230,6 +238,13 @@ func (b *Building) GetStats() string {
 	if !b.ConstructionIsComplete() {
 		stats += "\n\nConstruction Progress: " + strconv.Itoa(b.GetConstructionProgress())
 		stats += " / " + strconv.Itoa(b.Template.ConstructionWork)
+	}
+
+	if len(b.ResourceRequests) > 0 {
+		stats += "\n\nNeeded resources:"
+		for _, request := range b.ResourceRequests {
+			stats += "\n" + request.Type + ": " + strconv.Itoa(request.Amount)
+		}
 	}
 
 	if b.Template.UnitLimit > 0 {

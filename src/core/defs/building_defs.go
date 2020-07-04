@@ -21,6 +21,12 @@ type BuildingDef struct {
 	ConstructionWork    int
 	Gathers             string
 	GatherRadius        int
+	Resources           []*ResourceRequirement
+}
+
+type ResourceRequirement struct {
+	Type   string
+	Amount int
 }
 
 func (def *BuildingDef) GetName() string {

@@ -7,5 +7,7 @@
   "UnitTimer": 0,
   "Influence": 4,
   "ConstructionGraphic": "construction",
-  "ConstructionWork": 100
+  "ConstructionWork": 100,
+  "Resources": [
+  ]
 }

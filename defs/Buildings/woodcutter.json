@@ -9,5 +9,15 @@
   "Gathers": "Wood",
   "GatherRadius": 2,
   "ConstructionGraphic": "construction",
-  "ConstructionWork": 10
+  "ConstructionWork": 10,
+  "Resources": [
+    {
+      "Type": "Wood",
+      "Amount":  10
+    },
+    {
+      "Type": "Basic Tools",
+      "Amount":  1
+    }
+  ]
 }
