@@ -3,5 +3,19 @@
   "CenterBuilding": "Your Home",
   "Faction": "Player",
   "Weight": 0,
-  "Size": 3
+  "Size": 3,
+  "Resources": [
+    {
+      "Type" : "Wood",
+      "Chance" : 100,
+      "Min": 100,
+      "Max": 100
+    },
+    {
+      "Type" : "Stone",
+      "Chance" : 100,
+      "Min": 20,
+      "Max": 20
+    }
+  ]
 }

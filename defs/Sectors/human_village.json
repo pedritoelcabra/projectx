@@ -7,5 +7,19 @@
     "Small House": 250
   },
   "Weight": 70,
-  "Size": 7
+  "Size": 7,
+  "Resources": [
+    {
+      "Type" : "Wood",
+      "Chance" : 100,
+      "Min": 20,
+      "Max": 300
+    },
+    {
+      "Type" : "Stone",
+      "Chance" : 75,
+      "Min": 10,
+      "Max": 75
+    }
+  ]
 }

@@ -3,5 +3,19 @@
   "CenterBuilding": "Small House",
   "Faction": "",
   "Weight": 100,
-  "Size": 4
+  "Size": 4,
+  "Resources": [
+    {
+      "Type" : "Wood",
+      "Chance" : 100,
+      "Min": 20,
+      "Max": 100
+    },
+    {
+      "Type" : "Stone",
+      "Chance" : 50,
+      "Min": 2,
+      "Max": 20
+    }
+  ]
 }

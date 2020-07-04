@@ -6,5 +6,7 @@
   "Buildings": {
     "Orc House": 250
   },
-  "Size": 5
+  "Size": 5,
+  "Resources": [
+  ]
 }

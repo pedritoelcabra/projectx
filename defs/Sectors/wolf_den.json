@@ -3,5 +3,7 @@
   "CenterBuilding": "Wolf Cave",
   "Faction": "Wild Carnivores",
   "Weight": 100,
-  "Size": 8
+  "Size": 8,
+  "Resources": [
+  ]
 }
