@@ -56,6 +56,26 @@ func (i *Inventory) AddItem(itemType int, amount int) int {
 	return remain
 }
 
+/**
+Returns number of items removed
+*/
+func (i *Inventory) RemoveItems(itemType int, amount int) int {
+	amountRemaining := amount
+	for k := i.SlotCount - 1; k >= 0; k-- {
+		if i.Slots[k].IsEmpty() {
+			continue
+		}
+		if i.Slots[k].GetType() != itemType {
+			continue
+		}
+		amountRemaining -= i.Slots[k].RemoveItems(amount)
+		if amountRemaining == 0 {
+			break
+		}
+	}
+	return amount - amountRemaining
+}
+
 func (i *Inventory) GetContentList() string {
 	list := ""
 	emptySlots := 0

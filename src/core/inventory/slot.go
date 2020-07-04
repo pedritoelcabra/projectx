@@ -56,10 +56,12 @@ func (s *Slot) AddItems(itemType int, amount int) bool {
 	return true
 }
 
-func (s *Slot) RemoveItems(amount int) bool {
+func (s *Slot) RemoveItems(amount int) int {
 	if s.Count < amount {
-		return false
+		removed := s.Count
+		s.Count = 0
+		return removed
 	}
 	s.Count -= amount
-	return true
+	return amount
 }

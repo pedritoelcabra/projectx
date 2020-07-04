@@ -29,7 +29,7 @@ type Building struct {
 	Units                  UnitList
 	Attributes             *Attributes
 	Job                    *Job
-	ResourceRequests       []*inventory.ResourceRequest
+	ResourceRequests       inventory.RequestList
 }
 
 func NewBuilding(name string, location *Tile) *Building {
@@ -100,11 +100,16 @@ func (b *Building) StartConstruction() {
 	b.Set(ConstructionProgress, 0)
 	b.ConstructionPercentage = 0
 	b.LoadResourceRequests(b.Template.Resources)
+	b.FulfillResourceRequests()
 	b.Init()
 }
 
 func (b *Building) LoadResourceRequests(source []*defs.ResourceRequirement) {
 	b.ResourceRequests = inventory.CopyResourceRequirements(source, b.ResourceRequests)
+}
+
+func (b *Building) FulfillResourceRequests() {
+	b.ResourceRequests = inventory.FulfillResourceRequests(b.GetSector().Inventory, b.ResourceRequests)
 }
 
 func (b *Building) ShouldDraw() bool {
@@ -135,6 +140,9 @@ func (b *Building) Update() {
 
 func (b *Building) UpdateJobSpawn() {
 	if b.Job != nil {
+		return
+	}
+	if len(b.ResourceRequests) != 0 {
 		return
 	}
 	if !b.ConstructionIsComplete() {
@@ -243,7 +251,8 @@ func (b *Building) GetStats() string {
 	if len(b.ResourceRequests) > 0 {
 		stats += "\n\nNeeded resources:"
 		for _, request := range b.ResourceRequests {
-			stats += "\n" + request.Type + ": " + strconv.Itoa(request.Amount)
+			def := defs.GetMaterialDefByKey(request.Type)
+			stats += "\n" + def.Name + ": " + strconv.Itoa(request.Amount)
 		}
 	}
 
